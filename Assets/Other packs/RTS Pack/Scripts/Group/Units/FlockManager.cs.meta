@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 57ccc2d1a0b0fb649a3c8d00152520f9
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - gridLineTexture: {fileID: 2800000, guid: 1e6edc72c27006b42a494c3437f5f652, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

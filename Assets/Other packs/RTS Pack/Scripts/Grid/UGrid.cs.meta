@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 1e78d5fe4fbab47418c3f9e9f98f1155
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - selectionTexture: {fileID: 2800000, guid: 349e81cd9cb2b524f87ae272c078acc5, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

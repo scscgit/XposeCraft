@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 127f11905b6dad347b1414b1bf5a9eac
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - parentObj: {instanceID: 0}
+  - cam: {instanceID: 0}
+  - healthBar: {fileID: 2800000, guid: c26db31bfba1b44aebdd9b42911e6c04, type: 3}
+  - backgroundBar: {fileID: 2800000, guid: 1782f3e10a976465794d888416edab3f, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
