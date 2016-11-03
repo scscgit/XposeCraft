@@ -1,3 +1,14 @@
+# Ignored optional experimental assets not meant for Git distribution
+/[Aa]ssets/Gitignore/
+/[Aa]ssets/Gitignore.meta
+
+# Visual Studio Local History extension
+/.localhistory/
+
+#####
+# GitHub provided .gitignore for Unity follows
+#####
+
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
