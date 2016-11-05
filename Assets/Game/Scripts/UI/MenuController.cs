@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Toggle support for Menu window.
+/// </summary>
 public class MenuController : MonoBehaviour
 {
 	public GameObject menu;
