@@ -8,7 +8,8 @@ rvm:
 before_install:
 - chmod a+x ./Scripts/install.sh
 - chmod a+x ./Scripts/build.sh
+# 'travis_wait minutes' extends the max. execution time of commands that do not write any output
 install:
-- ./Scripts/install.sh
+- travis_wait 120 ./Scripts/install.sh
 script:
-- ./Scripts/build.sh
+- travis_wait 120 ./Scripts/build.sh

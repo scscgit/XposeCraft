@@ -128,7 +128,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000011117099752}
   m_Layer: 0
-  m_Name: EightCrystals
+  m_Name: EightLargeCrystals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
