@@ -53,6 +53,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="App\Program.cs" />
+    <Compile Include="App\TestRunner\Log.cs" />
     <Compile Include="GameInternal\RegisteredEvents.cs" />
     <Compile Include="Game\Actors\Actor.cs" />
     <Compile Include="Game\Actors\Buildings\BaseCenter.cs" />
@@ -67,15 +68,17 @@
     <Compile Include="Game\Actors\Units\IUnit.cs" />
     <Compile Include="Game\Actors\Units\Worker.cs" />
     <Compile Include="Game\Arguments.cs" />
+    <Compile Include="Game\Enums\BuildingType.cs" />
+    <Compile Include="Game\Enums\UnitType.cs" />
     <Compile Include="Game\Event.cs" />
-    <Compile Include="Game\Events.cs" />
+    <Compile Include="Game\Enums\EventType.cs" />
     <Compile Include="GameInternal\EventScheduler.cs" />
     <Compile Include="Game\Helpers\ActorHelper.cs" />
     <Compile Include="Game\Helpers\BuildingHelper.cs" />
     <Compile Include="Game\Helpers\MaterialHelper.cs" />
     <Compile Include="Game\Helpers\UnitHelper.cs" />
     <Compile Include="GameInternal\Model.cs" />
-    <Compile Include="Game\Places.cs" />
+    <Compile Include="Game\Enums\PlaceType.cs" />
     <Compile Include="Game\Position.cs" />
     <Compile Include="GameInternal\GameTimer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

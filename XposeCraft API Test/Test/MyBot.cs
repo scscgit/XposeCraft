@@ -12,6 +12,8 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 	/// </summary>
 	public class MyBot
 	{
+		public static int Army = 0;
+		public static bool AttackPhase = false;
 		public static IUnit HealMeetPointUnit { get; set; }
 		public static IList<IUnit> CurrentEnemies = new List<IUnit>();
 	}

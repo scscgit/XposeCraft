@@ -13,7 +13,7 @@ namespace XposeCraft_UI_API_Prototype_Test.Game.Actors.Buildings
 	/// </summary>
 	class BaseCenter : Building
 	{
-		BaseCenter(Position position) : base(position)
+		public BaseCenter(Position position) : base(position)
 		{
 		}
 
@@ -27,8 +27,9 @@ namespace XposeCraft_UI_API_Prototype_Test.Game.Actors.Buildings
 				EventScheduler.CreateUnit
 				(
 					WorkerCreateTime,
-					() => new Worker(this.Position)
+					() => Model.Instance.Units.Add(new Worker(this.Position))
 				);
+				return true;
 			}
 			return false;
 		}

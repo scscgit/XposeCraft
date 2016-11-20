@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XposeCraft_UI_API_Prototype_Test.Game.Actors.Buildings;
 using XposeCraft_UI_API_Prototype_Test.Game.Actors.Units;
 
 namespace XposeCraft_UI_API_Prototype_Test.Game
@@ -17,8 +18,17 @@ namespace XposeCraft_UI_API_Prototype_Test.Game
 
 		public IDictionary<string, string> StringMap { get; private set; } = new Dictionary<string, string>();
 
+		/// <summary>
+		/// Game resources
+		/// </summary>
+
 		public int Minerals { get; set; }
 
+		/// <summary>
+		/// Actors
+		/// </summary>
+
 		public IUnit Unit { get; set; }
+		public IBuilding Building { get; set; }
 	}
 }

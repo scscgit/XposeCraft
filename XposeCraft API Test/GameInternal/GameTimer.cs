@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace XposeCraft_UI_API_Prototype_Test.GameInternal
 {
+	/// <summary>
+	/// Pair of actions and their delays for time calculation.
+	/// </summary>
 	class DelayActionPair
 	{
 		public DelayActionPair()
@@ -22,6 +25,9 @@ namespace XposeCraft_UI_API_Prototype_Test.GameInternal
 		public GameTimer.TimedAction Action;
 	}
 
+	/// <summary>
+	/// System for handling time of game cycles and their atomicity.
+	/// </summary>
 	class GameTimer
 	{
 		public delegate bool EndConditionDelegate();

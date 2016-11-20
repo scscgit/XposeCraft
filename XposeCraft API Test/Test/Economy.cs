@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using XposeCraft_UI_API_Prototype_Test.Game;
 using XposeCraft_UI_API_Prototype_Test.Game.Actors.Buildings;
 using XposeCraft_UI_API_Prototype_Test.Game.Actors.Units;
+using XposeCraft_UI_API_Prototype_Test.Game.Enums;
 using XposeCraft_UI_API_Prototype_Test.Game.Helpers;
 
 /// <summary>
@@ -33,7 +34,7 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 
 		void EventForCreatingAnother()
 		{
-			Event.Register(Events.MineralsChanged, argsA =>
+			Event.Register(EventType.MineralsChanged, argsA =>
 			{
 				if (argsA.Minerals > 50)
 				{
@@ -42,7 +43,7 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 					baseCenter.CreateWorker();
 
 					// After creating (it means after few seconds), he will need to go gather too
-					Event.Register(Events.UnitCreated, argsB =>
+					Event.Register(EventType.UnitCreated, argsB =>
 					{
 						if (argsB.Unit.GetType().Equals(typeof(Worker)))
 						{

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XposeCraft_UI_API_Prototype_Test.Game.Actors.Buildings
+namespace XposeCraft_UI_API_Prototype_Test.Game.Enums
 {
-	public interface IBuilding: IActor
+	enum BuildingType
 	{
-		bool IsFinished { get; set; }
+		BaseCenter,
+		NubianArmory,
 	}
 }

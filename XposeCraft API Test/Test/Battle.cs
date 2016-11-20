@@ -19,9 +19,9 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 		{
 		}
 
-		/*
 		public void BattleStage()
 		{
+			/*
 			var buildingArmy = Event.Register(Events.EnemyOnSight, args =>
 			{
 				if (args<Unit[]>().Length > GetUnits().Length)
@@ -37,8 +37,10 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 					GetUnits().ReplaceActions(queue);
 				}
 			});
+			*/
 		}
 
+		/*
 		private void AttackPhase()
 		{
 			GetUnits().AttackMoveTo(Places.EnemyBasePositionF) // TODO: decide if units can do this or just after ForEach

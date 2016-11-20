@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XposeCraft_UI_API_Prototype_Test.Game
+namespace XposeCraft_UI_API_Prototype_Test.Game.Enum
 {
-	class Places
+	class PlaceType
 	{
 		public static Position NearBase { get; } = new Position();
 		public static Position UnderBaseRamp { get; } = new Position();

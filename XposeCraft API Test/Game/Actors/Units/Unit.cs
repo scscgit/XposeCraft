@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace XposeCraft_UI_API_Prototype_Test.Game.Actors.Units
 {
-	class Unit: Actor, IUnit
+	abstract class Unit : Actor, IUnit
 	{
 		protected Unit(Position position):base(position)
 		{

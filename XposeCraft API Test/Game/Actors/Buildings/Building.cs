@@ -6,10 +6,16 @@ using System.Threading.Tasks;
 
 namespace XposeCraft_UI_API_Prototype_Test.Game.Actors.Buildings
 {
-	class Building : Actor, IBuilding
+	abstract class Building : Actor, IBuilding
 	{
+		public bool IsFinished
+		{
+			get; set;
+		} = false;
+
 		protected Building(Position position) : base(position)
 		{
+
 		}
 	}
 }

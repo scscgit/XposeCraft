@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace XposeCraft_UI_API_Prototype_Test.Game.Actors.Materials
 {
-	class Material : Actor, IMaterial
+	abstract class Material : Actor, IMaterial
 	{
 		protected Material(Position position) : base(position)
 		{

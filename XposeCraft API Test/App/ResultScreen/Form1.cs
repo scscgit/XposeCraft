@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using XposeCraft_UI_API_Prototype_Test.App.TestRunner;
 
 namespace XposeCraft_UI_API_Prototype_Test
 {
@@ -31,7 +32,7 @@ namespace XposeCraft_UI_API_Prototype_Test
 			{
 				new Thread(() =>
 					this.BeginInvoke(
-						new Action(() => new TestRunner.TestRunner().RunTests())
+						new Action(() => new TestRunner().RunTests())
 					)
 				).Start();
 			}

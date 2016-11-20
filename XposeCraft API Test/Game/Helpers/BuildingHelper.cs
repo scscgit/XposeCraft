@@ -20,6 +20,12 @@ namespace XposeCraft_UI_API_Prototype_Test.Game.Helpers
 			return list;
 		}
 
+		public static Position ClosestEmptySpaceTo(IBuilding building)
+		{
+			// TODO: implement, demo
+			return new Position();
+		}
+
 		public static BuildingType[] GetBuildings<BuildingType>() where BuildingType : IBuilding
 		{
 			return GetBuildingsAsList<BuildingType>().ToArray();
