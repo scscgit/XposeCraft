@@ -28,24 +28,38 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 			Worker firstWorker = UnitHelper.GetUnits<Worker>()[0];
 			firstWorker.SendGather(MaterialHelper.GetNearestMineralsTo(firstWorker));
 
-			// After he collected minerals, he will get to start the next stage
-			Event.Register(Events.MineralsChanged, args =>
-			{
-				if (args.Minerals > 50)
-				{
-					var baseCenter = BuildingHelper.GetBuildings<BaseCenter>()[0];
-					baseCenter.
-					// After creating, he needs to go gather too
-					Event.Register(Events.UnitCreated, args =>
-					{
-						if (args.Unit.GetType().Equals(typeof(Worker)))
-						{
-							TryNubianArmory();
-							worker.SendGather(MaterialHelper.GetNearestMineralsTo(worker));
+			EventForCreatingAnother();
+		}
 
+		void EventForCreatingAnother()
+		{
+			Event.Register(Events.MineralsChanged, argsA =>
+			{
+				if (argsA.Minerals > 50)
+				{
+					// After he collected minerals, another worker will be built
+					var baseCenter = BuildingHelper.GetBuildings<BaseCenter>()[0];
+					baseCenter.CreateWorker();
+
+					// After creating (it means after few seconds), he will need to go gather too
+					Event.Register(Events.UnitCreated, argsB =>
+					{
+						if (argsB.Unit.GetType().Equals(typeof(Worker)))
+						{
+							Worker worker = (Worker)argsB.Unit;
+							worker.SendGather(MaterialHelper.GetNearestMineralsTo(worker));
+							argsB.ThisEvent.UnregisterEvent();
 						}
 					});
 
+				}
+				argsA.ThisEvent.UnregisterEvent();
+
+				// This event will work only while there are not enough workers.
+				// After that, minerals will be left to go over 150.
+				if (UnitHelper.GetUnits<Worker>().Length >= 5)
+				{
+					argsA.ThisEvent.UnregisterEvent();
 				}
 			});
 		}

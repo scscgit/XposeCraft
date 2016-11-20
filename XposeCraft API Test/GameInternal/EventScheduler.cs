@@ -16,9 +16,15 @@ namespace XposeCraft_UI_API_Prototype_Test.GameInternal
 			get;
 		} = new EventScheduler();
 
-		public static void CreateUnit(double delay, GameTimer.TimedAction)
-		{
 
+
+		public static void CreateUnit(double delay, GameTimer.TimedAction action)
+		{
+			GameTimer.Schedule(delay, () =>
+			{
+				action();
+
+			});
 		}
 	}
 }

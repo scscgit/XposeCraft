@@ -29,17 +29,17 @@ namespace XposeCraft_UI_API_Prototype_Test.GameInternal
 		public IList<IUnit> Units
 		{
 			get; set;
-		}
+		} = new List<IUnit>();
 
 		public IList<IBuilding> Buildings
 		{
 			get; set;
-		}
+		} = new List<IBuilding>();
 
 		public IList<IMaterial> Materials
 		{
 			get; set;
-		}
+		} = new List<IMaterial>();
 
 		/// <summary>
 		/// Currencies of the player
@@ -48,6 +48,6 @@ namespace XposeCraft_UI_API_Prototype_Test.GameInternal
 		public int Minerals
 		{
 			get; set;
-		}
+		} = 80;
 	}
 }

@@ -9,7 +9,10 @@ namespace XposeCraft_UI_API_Prototype_Test.Game
 {
 	class Event
 	{
-		bool IsRegistered;
+		public bool IsRegistered
+		{
+			get; private set;
+		} = false;
 		public Events GameEvent { get; private set; }
 		public FunctionWithArguments Function { get; private set; }
 
@@ -30,6 +33,10 @@ namespace XposeCraft_UI_API_Prototype_Test.Game
 
 		public void UnregisterEvent()
 		{
+			if (!IsRegistered)
+			{
+				throw new Exception("Cannot unregister the same event instance (" + GameEvent.ToString() + ") twice!");
+			}
 			IsRegistered = false;
 			RegisteredEvents.Registered[GameEvent].Remove(this);
 		}
