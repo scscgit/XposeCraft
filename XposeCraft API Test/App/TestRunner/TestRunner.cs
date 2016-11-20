@@ -30,6 +30,7 @@ namespace XposeCraft_UI_API_Prototype_Test.TestRunner
 		public void RunTests()
 		{
 			bool result;
+			GameInternal.RegisteredEvents.Initialize();
 
 			Log(null, "----------------------------------");
 			Log(null, ">>  Starting a new Test Round.  <<");

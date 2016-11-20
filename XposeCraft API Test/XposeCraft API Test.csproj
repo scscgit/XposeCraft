@@ -53,10 +53,14 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="App\Program.cs" />
+    <Compile Include="GameInternal\RegisteredEvents.cs" />
     <Compile Include="Game\Actors\IActor.cs" />
     <Compile Include="Game\Actors\Unit.cs" />
     <Compile Include="Game\Actors\Units\IUnit.cs" />
     <Compile Include="Game\Actors\Units\Worker.cs" />
+    <Compile Include="Game\Arguments.cs" />
+    <Compile Include="Game\Event.cs" />
+    <Compile Include="Game\Events.cs" />
     <Compile Include="Game\Helpers\MaterialHelper.cs" />
     <Compile Include="Game\Helpers\UnitHelper.cs" />
     <Compile Include="GameInternal\Model.cs" />
