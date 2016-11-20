@@ -13,12 +13,9 @@ namespace XposeCraft_UI_API_Prototype_Test.Game.Helpers
 		public static IList<BuildingType> GetBuildingsAsList<BuildingType>() where BuildingType : IBuilding
 		{
 			var list = new List<BuildingType>();
-			ForEach(unit =>
+			ForEach<BuildingType>(building =>
 			{
-				if (unit is BuildingType)
-				{
-					list.Add((BuildingType)unit);
-				}
+				list.Add(building);
 			}, from: Model.Instance.Buildings);
 			return list;
 		}

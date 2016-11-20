@@ -14,10 +14,17 @@ namespace XposeCraft_UI_API_Prototype_Test.GameInternal
 	/// </summary>
 	public class Model
 	{
+		/// <summary>
+		/// Instance of the game Model
+		/// </summary>
 		public static Model Instance
 		{
 			get;
 		} = new Model();
+
+		/// <summary>
+		/// In-game Actors
+		/// </summary>
 
 		public IList<IUnit> Units
 		{
@@ -30,6 +37,15 @@ namespace XposeCraft_UI_API_Prototype_Test.GameInternal
 		}
 
 		public IList<IMaterial> Materials
+		{
+			get; set;
+		}
+
+		/// <summary>
+		/// Currencies of the player
+		/// </summary>
+
+		public int Minerals
 		{
 			get; set;
 		}

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using XposeCraft_UI_API_Prototype_Test.Game;
 using XposeCraft_UI_API_Prototype_Test.Game.Actors.Units;
 using XposeCraft_UI_API_Prototype_Test.GameInternal;
 using XposeCraft_UI_API_Prototype_Test.Test;
@@ -33,7 +34,7 @@ namespace XposeCraft_UI_API_Prototype_Test.TestRunner
 		{
 			bool result;
 			GameInternal.RegisteredEvents.Initialize();
-			Model.Instance.Units.Add(new Worker());
+			Model.Instance.Units.Add(new Worker(Places.NearBase));
 
 			Log(null, "----------------------------------");
 			Log(null, ">>  Starting a new Test Round.  <<");
@@ -57,7 +58,21 @@ namespace XposeCraft_UI_API_Prototype_Test.TestRunner
 			Log(first, "End of Battle Stage: " + SuccessString(result));
 
 			Log(null, "");
-			Log(null, ">>   End of a Test Round.   <<");
+			Log(null, ">>   End of a Planning Phase.   <<");
+			Log(null, "");
+
+			var gameTimer = new GameTimer();
+			gameTimer.RunGame(() =>
+			{
+				if (gameTimer.Cycle >= 500)
+				{
+					return true;
+				}
+				return false;
+			});
+
+			Log(null, "");
+			Log(null, ">>   End of Game.   <<");
 			Log(null, "");
 		}
 

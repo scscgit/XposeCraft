@@ -8,6 +8,7 @@ namespace XposeCraft_UI_API_Prototype_Test.Game
 	enum Events
 	{
 		MineralsChanged,
-		StartedCreatingBuilding
+		UnitCreated,
+		BuildingCreated
 	}
 }

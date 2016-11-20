@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XposeCraft_UI_API_Prototype_Test.Game.Actors.Units;
+using XposeCraft_UI_API_Prototype_Test.Game.Helpers;
 
 /// <summary>
 /// Druha faza hry.
@@ -16,6 +18,23 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 	{
 		public Building()
 		{
+		}
+
+		/// <summary>
+		/// Finds a worker that is just gathering any materials, without any other task
+		/// </summary>
+		/// <returns>A bored worker</returns>
+		private Worker FindWorkerThatGathers()
+		{
+			foreach (Worker worker in UnitHelper.GetUnits<Worker>())
+			{
+				if (worker.Gathering != null)
+				{
+					return worker;
+				}
+			}
+			// First one by default if all have work, a bad workaround
+			return UnitHelper.GetUnits<Worker>()[0];
 		}
 
 		/*

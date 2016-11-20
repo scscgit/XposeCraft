@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace XposeCraft_UI_API_Prototype_Test.Game
 {
-	class Position
+	public class Position
 	{
 		public static bool operator <(Position left, Position right)
 		{

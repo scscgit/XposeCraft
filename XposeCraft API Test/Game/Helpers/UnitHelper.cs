@@ -13,17 +13,14 @@ namespace XposeCraft_UI_API_Prototype_Test.Game.Helpers
 	/// Provide easy access for operations, that may be complicated or impossible by using direct API of other classess.
 	/// TODO: decide what hierarchy should they have.
 	/// </summary>
-	class UnitHelper : ActorHelper<IActor>
+	class UnitHelper : ActorHelper<IUnit>
 	{
 		public static IList<UnitType> GetUnitsAsList<UnitType>() where UnitType : IUnit
 		{
 			var list = new List<UnitType>();
-			ForEach(unit =>
+			ForEach<UnitType>(unit =>
 			{
-				if (unit is UnitType)
-				{
-					list.Add((UnitType)unit);
-				}
+				list.Add(unit);
 			}, from: Model.Instance.Units);
 			return list;
 		}

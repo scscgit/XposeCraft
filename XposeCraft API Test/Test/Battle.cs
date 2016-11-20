@@ -84,6 +84,6 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 				GetUnits().ForEach(unit->unit.AddAction(unit->unit.Attack(enemy)));
 			});
 		}
-	}
 	*/
+	}
 }

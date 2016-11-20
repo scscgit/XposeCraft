@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XposeCraft_UI_API_Prototype_Test.Game.Actors.Materials;
 
 namespace XposeCraft_UI_API_Prototype_Test.Game.Actors.Units
 {
@@ -15,14 +16,14 @@ namespace XposeCraft_UI_API_Prototype_Test.Game.Actors.Units
 		{
 		}
 
-		public bool IsGathering
+		public IMaterial Gathering
 		{
 			get; private set;
-		} = false;
+		} = null;
 
-		public bool SendGather()
+		public void SendGather(IMaterial material)
 		{
-			return IsGathering = true;
+			Gathering = material;
 		}
 	}
 }

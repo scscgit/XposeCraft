@@ -15,12 +15,9 @@ namespace XposeCraft_UI_API_Prototype_Test.Game.Helpers
 		public static IList<MaterialType> GetMaterialsAsList<MaterialType>() where MaterialType : IMaterial
 		{
 			var list = new List<MaterialType>();
-			ForEach(unit =>
+			ForEach<MaterialType>(material =>
 			{
-				if (unit is MaterialType)
-				{
-					list.Add((MaterialType)unit);
-				}
+				list.Add(material);
 			}, from: Model.Instance.Materials);
 			return list;
 		}
@@ -30,7 +27,7 @@ namespace XposeCraft_UI_API_Prototype_Test.Game.Helpers
 			return GetMaterialsAsList<MaterialType>().ToArray();
 		}
 
-		public Mineral GetNearestMineralsTo(IActor actor)
+		public static Mineral GetNearestMineralsTo(IActor actor)
 		{
 			Mineral closestMineral = null;
 			ForEach<Mineral>(mineral =>
