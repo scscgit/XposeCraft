@@ -53,6 +53,13 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="App\Program.cs" />
+    <Compile Include="Game\Actors\IActor.cs" />
+    <Compile Include="Game\Actors\Unit.cs" />
+    <Compile Include="Game\Actors\Units\IUnit.cs" />
+    <Compile Include="Game\Actors\Units\Worker.cs" />
+    <Compile Include="Game\Helpers\MaterialHelper.cs" />
+    <Compile Include="Game\Helpers\UnitHelper.cs" />
+    <Compile Include="GameInternal\Model.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="App\TestRunner\TestRunner.cs" />
     <Compile Include="Test\Battle.cs" />
@@ -84,9 +91,7 @@
   <ItemGroup>
     <None Include="App\App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Game\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

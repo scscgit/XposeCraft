@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XposeCraft_UI_API_Prototype_Test.Game;
+using XposeCraft_UI_API_Prototype_Test.Game.Actors.Units;
+using XposeCraft_UI_API_Prototype_Test.Game.Helpers;
 
 /// <summary>
 /// Prva faza hry.
@@ -20,10 +23,11 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 
 		public void EconomyStage()
 		{
-			Worker worker = GetUnits < Worker >[0];
-			worker.SendGather(MaterialHelper.GetNearestMaterialTo(worker));
+			Worker worker = UnitHelper.GetUnits<Worker>()[0];
+			worker.SendGather(MaterialHelper.GetNearestMineralsTo(worker));
 
-			RegisterEvent(Events.MineralsChanged, args => {
+			RegisterEvent(Events.MineralsChanged, args =>
+			{
 				if (args<Minerals>() > 50)
 				{
 					Worker worker = base.CreateUnit<Worker>();
