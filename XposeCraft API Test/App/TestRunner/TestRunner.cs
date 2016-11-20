@@ -12,6 +12,11 @@ namespace XposeCraft_UI_API_Prototype_Test.TestRunner
 	{
 		Form1 main = Program.MainForm;
 
+		protected void Sleep(int milliseconds)
+		{
+			System.Threading.Thread.Sleep(milliseconds);
+		}
+
 		protected void Log(object context, string text)
 		{
 			main.Log(context, text);
@@ -34,7 +39,6 @@ namespace XposeCraft_UI_API_Prototype_Test.TestRunner
 			var first = new Economy();
 			result = Economy(first);
 			Log(first, "End of Economy Stage: " + SuccessString(result));
-
 
 			Log(this, "Starting Building Stage");
 			var second = new Building();
