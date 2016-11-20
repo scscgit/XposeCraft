@@ -20,7 +20,17 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 
 		public void EconomyStage()
 		{
+			Worker worker = GetUnits < Worker >[0];
+			worker.SendGather(MaterialHelper.GetNearestMaterialTo(worker));
 
+			RegisterEvent(Events.MineralsChanged, args => {
+				if (args<Minerals>() > 50)
+				{
+					Worker worker = base.CreateUnit<Worker>();
+					worker.SendGather();
+					TryNubianArmory();
+				}
+			});
 		}
 	}
 }

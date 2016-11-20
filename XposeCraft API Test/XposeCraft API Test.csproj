@@ -58,6 +58,7 @@
     <Compile Include="Test\Battle.cs" />
     <Compile Include="Test\Building.cs" />
     <Compile Include="Test\Economy.cs" />
+    <Compile Include="Test\MyBot.cs" />
     <EmbeddedResource Include="App\ResultScreen\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
