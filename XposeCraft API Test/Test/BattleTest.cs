@@ -45,7 +45,7 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 					UnitActionQueue queue = new UnitActionQueue();
 					foreach (Unit enemy in args.EnemyUnits)
 					{
-						queue.Add(new Attack(enemy));
+						queue.After(new Attack(enemy));
 					}
 					foreach (IUnit unit in UnitHelper.GetUnits<IUnit>())
 					{
@@ -55,21 +55,30 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 			});
 		}
 
-		/*
-		private void AttackPhase()
+		void AttackPhase()
 		{
-			GetUnits().AttackMoveTo(Places.EnemyBasePositionF) // TODO: decide if units can do this or just after ForEach
-				.After(units->units.ForEach(unit->unit.WaitForActionsOf(units)))
-				.After(units->WorkersCanExpand())
-				.After(units-> {
-				units.ForEach(unit->unit.AttackMoveTo(Places.EnemyBaseCenter); )
-					ScheduleTacticsWhenLowHp(units);
+			var myUnits = UnitHelper.GetUnits<IUnit>();
+			// TODO: decide if units can do this or just after ForEach
+			Array.ForEach(myUnits, unit =>
+			{
+				unit.AttackMoveTo(PlaceType.EnemyBasePositionRight)
+					.After(new WaitForActionsOf(myUnits))
+					.After(new CustomFunction(() =>
+					{
+						WorkersCanExpand();
+					}))
+					.After(new AttackMove(PlaceType.EnemyBaseCenter));
 			});
 		}
 
-		private void ScheduleTacticsWhenLowHp(Unit[] units)
+		void WorkersCanExpand()
 		{
-			RegisterEvent(Events.UnitReceivedFire, args =>
+
+		}
+
+		void ScheduleTacticsWhenLowHp(Unit[] units)
+		{
+			Event.Register(EventType.UnitReceivedFire, args =>
 			{
 				UnitQueue actions = args<Unit>().GetActions();
 				if (args<Unit>().Health < args<Unit>().MaxHealth / 2)
@@ -103,6 +112,5 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 				GetUnits().ForEach(unit->unit.AddAction(unit->unit.Attack(enemy)));
 			});
 		}
-		*/
 	}
 }

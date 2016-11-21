@@ -17,12 +17,13 @@ namespace XposeCraft_UI_API_Prototype_Test.Game.Control
 
 		public UnitActionQueue(IGameAction action)
 		{
-			Add(action);
+			After(action);
 		}
 
-		public void Add(IGameAction action)
+		public UnitActionQueue After(IGameAction action)
 		{
 			Queue.Enqueue(action);
+			return this;
 		}
 	}
 }

@@ -16,14 +16,24 @@ namespace XposeCraft_UI_API_Prototype_Test.Game.Actors.Units
 		{
 		}
 
-		public void ReplaceActionQueue(UnitActionQueue queue)
+		public UnitActionQueue ReplaceActionQueue(UnitActionQueue queue)
 		{
-			ActionQueue = queue;
+			return ActionQueue = queue;
 		}
 
-		public void MoveTo(Position position)
+		public UnitActionQueue Attack(IUnit unit)
 		{
-			ReplaceActionQueue(new UnitActionQueue(new Move(position)));
+			return ReplaceActionQueue(new UnitActionQueue(new Attack(unit)));
+		}
+
+		public UnitActionQueue MoveTo(Position position)
+		{
+			return ReplaceActionQueue(new UnitActionQueue(new Move(position)));
+		}
+
+		public UnitActionQueue AttackMoveTo(Position position)
+		{
+			return ReplaceActionQueue(new UnitActionQueue(new AttackMove(position)));
 		}
 	}
 }

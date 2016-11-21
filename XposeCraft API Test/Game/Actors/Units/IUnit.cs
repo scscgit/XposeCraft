@@ -9,8 +9,10 @@ namespace XposeCraft_UI_API_Prototype_Test.Game.Actors.Units
 {
 	public interface IUnit : IActor
 	{
-		void MoveTo(Position position);
+		UnitActionQueue ReplaceActionQueue(UnitActionQueue queue);
 
-		void ReplaceActionQueue(UnitActionQueue queue);
+		UnitActionQueue Attack(IUnit unit);
+		UnitActionQueue MoveTo(Position position);
+		UnitActionQueue AttackMoveTo(Position position);
 	}
 }
