@@ -1,37 +1,25 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en-us">
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="XposeCraft-API-Test : Tutorial for the XposeCraft game in the form of a website.">
-
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>XposeCraft-API-Test</title>
+    <meta charset="UTF-8">
+    <title>XposeCraft API Test by scscgit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
   </head>
-
   <body>
+    <section class="page-header">
+      <h1 class="project-name">XposeCraft API Test</h1>
+      <h2 class="project-tagline">Tutorial for the XposeCraft game in the form of a website.</h2>
+      <a href="https://github.com/scscgit/XposeCraft-API-Test" class="btn">View on GitHub</a>
+      <a href="https://github.com/scscgit/XposeCraft-API-Test/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/scscgit/XposeCraft-API-Test/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/scscgit/XposeCraft-API-Test">View on GitHub</a>
-
-          <h1 id="project_title">XposeCraft-API-Test</h1>
-          <h2 id="project_tagline">Tutorial for the XposeCraft game in the form of a website.</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/scscgit/XposeCraft-API-Test/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/scscgit/XposeCraft-API-Test/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>
+    <section class="main-content">
+      <h3>
 <a id="vitajte-v-pomocníkovi-pre-hru-xposecraft" class="anchor" href="#vitajte-v-pomocn%C3%ADkovi-pre-hru-xposecraft" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Vitajte v pomocníkovi pre hru XposeCraft</h3>
 
 <p>Hra <a href="https://github.com/scscgit/XposeCraft">XposeCraft</a> nie je obyčajná (zábavná) hra podobná hrám, ktoré sa ovládajú klávesnicou a myšou. Je to náučné prostredie určené na výučbu programovania v jazyku C#. Hru je potrebné hrať písaním zdrojového kódu robota, ktorý sa následne s hrou spojí a bude sa hrať samostatne. Ide o stratégiu, v ktorej je vašim cieľom zničiť všetky nepriateľské budovy skôr, než nepriateľ zničí tie vaše.</p>
@@ -39,7 +27,7 @@
 <h3>
 <a id="inštalácia-prostredia" class="anchor" href="#in%C5%A1tal%C3%A1cia-prostredia" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Inštalácia prostredia</h3>
 
-<p>Pre programovanie odporúčam buď bezplatné vývojárske prostredie od Microsoftu <a href="https://www.visualstudio.com/cs/downloads/">Visual Studio Community</a>, alebo jednu z vhodných (lepších) alternatív, ktorou je nástroj od firmy JetBrains, ktorý majú študenti k dispozícii zadarmo <a href="https://www.jetbrains.com/rider/">Rider</a>, V čase písania je bol v stave Early Build.</p>
+<p>Pre programovanie odporúčam buď bezplatné vývojárske prostredie od Microsoftu <a href="https://www.visualstudio.com/cs/downloads/">Visual Studio Community</a>, alebo jednu z vhodných (lepších) alternatív, ktorou je nástroj od firmy JetBrains, ktorý majú študenti k dispozícii zadarmo <a href="https://www.jetbrains.com/rider/">Rider</a>. V čase písania bol v stave Early Build.</p>
 
 <h3>
 <a id="príprava-prostredia" class="anchor" href="#pr%C3%ADprava-prostredia" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Príprava prostredia</h3>
@@ -56,29 +44,62 @@
 <h3>
 <a id="diagram-tried-dostupného-rozhrania" class="anchor" href="#diagram-tried-dostupn%C3%A9ho-rozhrania" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Diagram Tried dostupného rozhrania</h3>
 
-<p><img src="ClassDiagramGame.png" alt="Class Diagram"></p>
+<p><a href="ClassDiagramGame.png"><img src="ClassDiagramGame.png" alt="Class Diagram"></a></p>
 
 <h3>
 <a id="Úlohy" class="anchor" href="#%C3%9Alohy" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Úlohy</h3>
 
-<p>TODO</p>
+<p>Scenár č. 1: Nastavenie vývojárskeho prostredia pre programovanie robota.  </p>
+
+<ul>
+<li>S1.1. Nájdite a prečítajte si (tento) návod na hranie, obsahujúci diagram tried rozhrania.<br>
+</li>
+<li>S1.2. Podľa návodu si nainštalujte vývojárske prostredie.<br>
+</li>
+<li>S1.3. Stiahnite a otvorte si projekt hry vo vývojárskom prostredí, cez ktoré hru úspešne spustíte.<br>
+</li>
+</ul>
+
+<p>Scenár č. 2: Splnenie základných úloh v rámci ekonomickej fázy hry pre získanie dostatočného množstva surovín.  </p>
+
+<ul>
+<li>S2.1. Hru ste začali s jednou budovou BaseBuilding a jedným pracovníkom Worker. Pošlite pracovníka zbierať suroviny.<br>
+</li>
+<li>S2.2. Čo najskôr ako to len bude možné, vytvorte štyroch ďalších pracovníkov a posielajte ich zbierať ďalšie suroviny.<br>
+</li>
+</ul>
+
+<p>Scenár č. 3: Vytvorenie budovy a vytváranie jednotiek použitím nazbieraných surovín.  </p>
+
+<ul>
+<li>S3.1. Počkajte, kým získate 150 minerálov a postavte prvú budovu NubianArmory blízko vašej prvej BaseBuilding.<br>
+</li>
+<li>S3.2. Čo najskôr vytvorte 5 bojovníkov s názvom DonkeyGun.<br>
+</li>
+</ul>
+
+<p>Scenár č. 4: Zaútočenie na nepriateľa.  </p>
+
+<ul>
+<li>S4.1. Pošlite bojovníkov útočiť smerom k nepriateľovi a cestou útočte na nepriateľské jednotky.<br>
+</li>
+<li>S4.2. Vylepšite stratégiu aby vaše jednotky prežili čo najdlhšie a vyberali si iba vhodné momenty na útok.<br>
+</li>
+</ul>
 
 <h3>
 <a id="ukončenie-testu" class="anchor" href="#ukon%C4%8Denie-testu" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ukončenie testu</h3>
 
 <p>Po vykonaní všetkých požadovaných testov stačí odovzdať váš zdrojový kód osobne dopredu dohodnutým spôsobom - stačí napríklad zazipovať adresár Test, keďže očakávam, že všetky zmeny nastali iba tam.</p>
-      </section>
-    </div>
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">XposeCraft-API-Test maintained by <a href="https://github.com/scscgit">scscgit</a></p>
-        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/scscgit/XposeCraft-API-Test">XposeCraft API Test</a> is maintained by <a href="https://github.com/scscgit">scscgit</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
       </footer>
-    </div>
 
-    
+    </section>
 
+  
   </body>
 </html>
