@@ -9,8 +9,12 @@ namespace XposeCraft_UI_API_Prototype_Test.Game.Actors.Units
 	/// <summary>
 	/// Can gather various materials (mainly minerals) and build various buildings - based on a current API level.
 	/// </summary>
-	public class Worker : Unit
+	class Worker : Unit
 	{
+		public Worker(Position position) : base(position)
+		{
+		}
+
 		public bool IsGathering
 		{
 			get; private set;

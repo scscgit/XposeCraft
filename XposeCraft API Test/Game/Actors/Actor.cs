@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace XposeCraft_UI_API_Prototype_Test.Game.Actors
 {
-	public class Unit
+	class Actor : IActor
 	{
+		protected Actor(Position position)
+		{
+			this.Position = position;
+		}
+
+		public Position Position
+		{
+			get; protected set;
+		}
 	}
 }

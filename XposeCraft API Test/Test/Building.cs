@@ -18,6 +18,7 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 		{
 		}
 
+		/*
 		public void BuildingStage()
 		{
 			var firstBuilding = RegisterEvent(Events.MineralsChanged, args => {
@@ -60,5 +61,6 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 				}
 			});
 		}
+	*/
 	}
 }

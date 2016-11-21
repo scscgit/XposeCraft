@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XposeCraft_UI_API_Prototype_Test.Game;
 
 /// <summary>
 /// Tretia faza hry.
@@ -18,9 +19,10 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 		{
 		}
 
+		/*
 		public void BattleStage()
 		{
-			var buildingArmy = RegisterEvent(Events.EnemyOnSight, args =>
+			var buildingArmy = Event.Register(Events.EnemyOnSight, args =>
 			{
 				if (args<Unit[]>().Length > GetUnits().Length)
 				{
@@ -83,4 +85,5 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 			});
 		}
 	}
+	*/
 }

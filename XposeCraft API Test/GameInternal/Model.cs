@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using XposeCraft_UI_API_Prototype_Test.Game.Actors;
+using XposeCraft_UI_API_Prototype_Test.Game.Actors.Buildings;
+using XposeCraft_UI_API_Prototype_Test.Game.Actors.Materials;
+using XposeCraft_UI_API_Prototype_Test.Game.Actors.Units;
 
 namespace XposeCraft_UI_API_Prototype_Test.GameInternal
 {
@@ -17,7 +19,17 @@ namespace XposeCraft_UI_API_Prototype_Test.GameInternal
 			get;
 		} = new Model();
 
-		public IList<Unit> Units
+		public IList<IUnit> Units
+		{
+			get; set;
+		}
+
+		public IList<IBuilding> Buildings
+		{
+			get; set;
+		}
+
+		public IList<IMaterial> Materials
 		{
 			get; set;
 		}

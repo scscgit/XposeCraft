@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XposeCraft_UI_API_Prototype_Test.Game.Actors
+namespace XposeCraft_UI_API_Prototype_Test.Game.Actors.Materials
 {
-	public interface IActor
+	public interface IMaterial: IActor
 	{
-		Position Position { get; }
 	}
 }

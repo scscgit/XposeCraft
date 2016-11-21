@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using XposeCraft_UI_API_Prototype_Test.Game.Actors.Units;
+using XposeCraft_UI_API_Prototype_Test.GameInternal;
 using XposeCraft_UI_API_Prototype_Test.Test;
 
 namespace XposeCraft_UI_API_Prototype_Test.TestRunner
@@ -31,6 +33,7 @@ namespace XposeCraft_UI_API_Prototype_Test.TestRunner
 		{
 			bool result;
 			GameInternal.RegisteredEvents.Initialize();
+			Model.Instance.Units.Add(new Worker());
 
 			Log(null, "----------------------------------");
 			Log(null, ">>  Starting a new Test Round.  <<");

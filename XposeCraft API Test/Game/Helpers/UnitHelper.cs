@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using XposeCraft_UI_API_Prototype_Test.Game.Actors;
+using XposeCraft_UI_API_Prototype_Test.Game.Actors.Units;
 using XposeCraft_UI_API_Prototype_Test.GameInternal;
 
 namespace XposeCraft_UI_API_Prototype_Test.Game.Helpers
@@ -12,39 +13,24 @@ namespace XposeCraft_UI_API_Prototype_Test.Game.Helpers
 	/// Provide easy access for operations, that may be complicated or impossible by using direct API of other classess.
 	/// TODO: decide what hierarchy should they have.
 	/// </summary>
-	public class UnitHelper
+	class UnitHelper : ActorHelper<IActor>
 	{
-		public delegate void ForEachAction(Unit unit);
-
-		private static readonly object ForEachLock = new object();
-		protected static void ForEach(ForEachAction action)
-		{
-			lock (ForEachLock)
-			{
-				foreach (Unit unit in Model.Instance.Units)
-				{
-					action(unit);
-				}
-			}
-		}
-
-		public static IList<UnitType> GetUnitsList<UnitType>() where UnitType : Unit
+		public static IList<UnitType> GetUnitsAsList<UnitType>() where UnitType : IUnit
 		{
 			var list = new List<UnitType>();
 			ForEach(unit =>
 			{
-				var unitOfType = unit as UnitType;
-				if (unitOfType != null)
+				if (unit is UnitType)
 				{
-					list.Add(unitOfType);
+					list.Add((UnitType)unit);
 				}
-			});
+			}, from: Model.Instance.Units);
 			return list;
 		}
 
-		public static UnitType[] GetUnits<UnitType>() where UnitType : Unit
+		public static UnitType[] GetUnits<UnitType>() where UnitType : IUnit
 		{
-			return GetUnitsList<UnitType>().ToArray();
+			return GetUnitsAsList<UnitType>().ToArray();
 		}
 	}
 }
