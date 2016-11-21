@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using XposeCraft_UI_API_Prototype_Test.Game.Actors;
 using XposeCraft_UI_API_Prototype_Test.Game.Actors.Units;
+using XposeCraft_UI_API_Prototype_Test.Game.Enums;
 using XposeCraft_UI_API_Prototype_Test.GameInternal;
 
 namespace XposeCraft_UI_API_Prototype_Test.Game.Helpers
@@ -25,6 +25,7 @@ namespace XposeCraft_UI_API_Prototype_Test.Game.Helpers
 			return list;
 		}
 
+		// TODO: GetUnits() overload that implies UnitType = IUnit, but it causes error when I simply overload it
 		public static UnitType[] GetUnits<UnitType>() where UnitType : IUnit
 		{
 			return GetUnitsAsList<UnitType>().ToArray();

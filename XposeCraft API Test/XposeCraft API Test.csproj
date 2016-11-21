@@ -64,10 +64,16 @@
     <Compile Include="Game\Actors\Materials\IMaterial.cs" />
     <Compile Include="Game\Actors\Materials\Material.cs" />
     <Compile Include="Game\Actors\Materials\Minerals\Mineral.cs" />
+    <Compile Include="Game\Actors\Units\DonkeyGun.cs" />
     <Compile Include="Game\Actors\Units\Unit.cs" />
     <Compile Include="Game\Actors\Units\IUnit.cs" />
     <Compile Include="Game\Actors\Units\Worker.cs" />
     <Compile Include="Game\Arguments.cs" />
+    <Compile Include="Game\Control\GameActions\GameAction.cs" />
+    <Compile Include="Game\Control\GameActions\Attack.cs" />
+    <Compile Include="Game\Control\GameActions\IGameAction.cs" />
+    <Compile Include="Game\Control\GameActions\Move.cs" />
+    <Compile Include="Game\Control\UnitActionQueue.cs" />
     <Compile Include="Game\Enums\BuildingType.cs" />
     <Compile Include="Game\Enums\UnitType.cs" />
     <Compile Include="Game\Event.cs" />

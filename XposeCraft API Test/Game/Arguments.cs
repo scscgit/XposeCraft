@@ -30,7 +30,7 @@ namespace XposeCraft_UI_API_Prototype_Test.Game
 
 		public IUnit MyUnit { get; set; }
 		public IBuilding MyBuilding { get; set; }
-		public IUnit EnemyUnit { get; set; }
-		public IBuilding EnemyBuilding { get; set; }
+		public IUnit[] EnemyUnits { get; set; }
+		public IBuilding[] EnemyBuildings { get; set; }
 	}
 }

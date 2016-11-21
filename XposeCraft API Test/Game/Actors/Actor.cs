@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace XposeCraft_UI_API_Prototype_Test.Game.Actors
 {
-	abstract class Actor : IActor
+	public abstract class Actor : IActor
 	{
 		protected Actor(Position position)
 		{

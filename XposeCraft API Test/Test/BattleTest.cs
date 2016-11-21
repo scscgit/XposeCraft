@@ -5,7 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using XposeCraft_UI_API_Prototype_Test.App.TestRunner;
 using XposeCraft_UI_API_Prototype_Test.Game;
+using XposeCraft_UI_API_Prototype_Test.Game.Actors.Units;
+using XposeCraft_UI_API_Prototype_Test.Game.Control;
+using XposeCraft_UI_API_Prototype_Test.Game.Control.GameActions;
+using XposeCraft_UI_API_Prototype_Test.Game.Enum;
 using XposeCraft_UI_API_Prototype_Test.Game.Enums;
+using XposeCraft_UI_API_Prototype_Test.Game.Helpers;
 
 /// <summary>
 /// Tretia faza hry.
@@ -21,25 +26,33 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 		{
 		}
 
+		Event BuildingUpArmy;
+
 		public void BattleStage(TestRunner.NextStageStarter startNextStage)
 		{
-			/*
-			var buildingArmy = Event.Register(EventType.EnemyOnSight, args =>
+			BuildingUpArmy = Event.Register(EventType.EnemyUnitsOnSight, args =>
 			{
-				if (args<Unit[]>().Length > GetUnits().Length)
+				if (args.EnemyUnits.Length > UnitHelper.GetUnits<IUnit>().Length)
 				{
-					GetUnits().MoveTo(Places.Base);
-				}
-				else {
-					UnitQueue queue = new UnitQueue();
-					foreach (Unit enemy in args<Unit[]>())
+					// Too many enemies, return back
+					foreach (IUnit unit in UnitHelper.GetUnits<IUnit>())
 					{
-						queue.AddAttack(enemy);
+						unit.MoveTo(PlaceType.NearBase);
 					}
-					GetUnits().ReplaceActions(queue);
+				}
+				else
+				{
+					UnitActionQueue queue = new UnitActionQueue();
+					foreach (Unit enemy in args.EnemyUnits)
+					{
+						queue.Add(new Attack(enemy));
+					}
+					foreach (IUnit unit in UnitHelper.GetUnits<IUnit>())
+					{
+						unit.ReplaceActionQueue(queue);
+					}
 				}
 			});
-			*/
 		}
 
 		/*
