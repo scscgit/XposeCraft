@@ -18,6 +18,7 @@ namespace XposeCraft_UI_API_Prototype_Test.GameInternal
 		// TODO: static constructor (for now in tester)
 		public static void Initialize()
 		{
+			Registered.Clear();
 			foreach (EventType gameEvent in Enum.GetValues(typeof(EventType)))
 			{
 				Registered.Add(gameEvent, new List<Event>());
