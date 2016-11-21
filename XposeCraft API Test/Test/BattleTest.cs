@@ -19,6 +19,7 @@ using XposeCraft_UI_API_Prototype_Test.Game.Helpers;
 /// Cielom je pouzitim postavenych jednotiek znicit nepriatela,
 /// pripadne pocas boja stavat dalsie jednotky a rozsirovat svoju zakladnu.
 /// </summary>
+
 namespace XposeCraft_UI_API_Prototype_Test.Test
 {
 	class BattleTest
@@ -31,6 +32,7 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 
 		public void BattleStage(TestRunner.NextStageStarter startNextStage)
 		{
+			// Plan individual unit attacks or a return when meeting too many units
 			BuildingUpArmy = Event.Register(EventType.EnemyUnitsOnSight, args =>
 			{
 				if (args.EnemyUnits.Length > UnitHelper.GetUnits<IUnit>().Length)
@@ -54,9 +56,18 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 					}
 				}
 			});
+
+			// Initiate the attack
+			GoAttack();
+			// When the units get to low health, they will return back to heal
+			ScheduleTacticsWhenLowHp();
+			// Stores enemies for later possible calculations
+			RememberEnemies();
+			// Destroys buildings when possible, should be preferable contitioned
+			DestroyBuildings();
 		}
 
-		void AttackPhase()
+		void GoAttack()
 		{
 			var myUnits = UnitHelper.GetUnits<IUnit>();
 			// TODO: decide if units can do this or just after ForEach
@@ -64,20 +75,17 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 			{
 				unit.AttackMoveTo(PlaceType.EnemyBasePositionRight)
 					.After(new WaitForActionsOf(myUnits))
-					.After(new CustomFunction(() =>
-					{
-						WorkersCanExpand();
-					}))
+					.After(new CustomFunction(() => { WorkersCanExpand(); }))
 					.After(new AttackMove(PlaceType.EnemyBaseCenter));
 			});
 		}
 
 		void WorkersCanExpand()
 		{
-			// TODO
+			// TODO: make workers expand to other minerals over the map
 		}
 
-		void ScheduleTacticsWhenLowHp(Unit[] units)
+		void ScheduleTacticsWhenLowHp()
 		{
 			Event.Register(EventType.UnitReceivedFire, args =>
 			{
@@ -86,20 +94,16 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 				{
 					// Any unit of course exposes its position in form of coordinates; MyBot is custom player’s class
 					args.MyUnit.MoveTo(MyBot.HealMeetPointUnit.Position);
-					MyBot.MeetPointEvent = Event.Register(EventType.UnitGainedHealth, argsB =>
-					{
-						argsB.MyUnit.ReplaceActionQueue(oldActions);
-					});
+					MyBot.MeetPointEvent = Event.Register(EventType.UnitGainedHealth,
+						argsB => { argsB.MyUnit.ReplaceActionQueue(oldActions); });
 				}
 			});
 		}
 
-		void x()
+		void RememberEnemies()
 		{
 			Event.Register(EventType.EnemyUnitsOnSight, args =>
 			{
-				// Decision pending: how to discriminate between two semantics of Unit at EnemyFound event? Will be documented
-				var my = args.MyUnit;
 				var enemies = args.EnemyUnits;
 				foreach (IUnit enemy in enemies)
 				{
@@ -110,12 +114,14 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 				}
 				// TODO: use Set; TODO: remove on kill / losing sight
 			});
+		}
 
-			// When destroying enemy base
+		// Preferably called only when destroying enemy base
+		void DestroyBuildings()
+		{
 			Event.Register(EventType.EnemyBuildingsOnSight, args =>
 			{
 				// TODO: my unit does not necessarily have to be a unit, even building can see a building
-				var my = args.MyUnit;
 				var enemies = args.EnemyBuildings;
 				foreach (IUnit unit in UnitHelper.GetUnits<IUnit>())
 				{
