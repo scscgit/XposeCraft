@@ -10,5 +10,6 @@ namespace XposeCraft_UI_API_Prototype_Test.Game.Enums
 		MineralsChanged,
 		UnitCreated,
 		BuildingCreated,
+		EnemyOnSight,
 	}
 }

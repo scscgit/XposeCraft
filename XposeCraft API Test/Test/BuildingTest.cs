@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XposeCraft_UI_API_Prototype_Test.App.TestRunner;
 using XposeCraft_UI_API_Prototype_Test.Game;
 using XposeCraft_UI_API_Prototype_Test.Game.Actors.Buildings;
 using XposeCraft_UI_API_Prototype_Test.Game.Actors.Units;
@@ -17,9 +18,9 @@ using XposeCraft_UI_API_Prototype_Test.Game.Helpers;
 /// </summary>
 namespace XposeCraft_UI_API_Prototype_Test.Test
 {
-	public class Building
+	class BuildingTest
 	{
-		public Building()
+		public BuildingTest()
 		{
 		}
 
@@ -40,7 +41,7 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 			return UnitHelper.GetUnits<Worker>()[0];
 		}
 
-		public void BuildingStage()
+		public void BuildingStage(TestRunner.NextStageStarter startNextStage)
 		{
 			// A first building
 			Event.Register(EventType.MineralsChanged, args =>
@@ -60,12 +61,12 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 			Event.Register(EventType.BuildingCreated, args =>
 			{
 				if (
-				args.Building.GetType().Equals(typeof(NubianArmory))
+				args.MyBuilding.GetType().Equals(typeof(NubianArmory))
 				&&
-				args.Unit.GetType().Equals(typeof(Worker))
+				args.MyUnit.GetType().Equals(typeof(Worker))
 				)
 				{
-					var worker = (Worker)args.Unit;
+					var worker = (Worker)args.MyUnit;
 					worker.SendGather(MaterialHelper.GetNearestMineralsTo(worker));
 					BuildArmy();
 				}
@@ -83,13 +84,13 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 					{
 						if (armory.CreateUnit(UnitType.DonkeyGun))
 						{
+							if (MyBot.Army++ >= 5)
+							{
+								args.ThisEvent.UnregisterEvent();
+								MyBot.AttackPhase = true;
+							}
 							break;
 						}
-					}
-					if (MyBot.Army++ >= 5)
-					{
-						args.ThisEvent.UnregisterEvent();
-						MyBot.AttackPhase = true;
 					}
 				}
 			});

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XposeCraft_UI_API_Prototype_Test.App.TestRunner;
 using XposeCraft_UI_API_Prototype_Test.Game;
+using XposeCraft_UI_API_Prototype_Test.Game.Enums;
 
 /// <summary>
 /// Tretia faza hry.
@@ -13,16 +15,16 @@ using XposeCraft_UI_API_Prototype_Test.Game;
 /// </summary>
 namespace XposeCraft_UI_API_Prototype_Test.Test
 {
-	public class Battle
+	class BattleTest
 	{
-		public Battle()
+		public BattleTest()
 		{
 		}
 
-		public void BattleStage()
+		public void BattleStage(TestRunner.NextStageStarter startNextStage)
 		{
 			/*
-			var buildingArmy = Event.Register(Events.EnemyOnSight, args =>
+			var buildingArmy = Event.Register(EventType.EnemyOnSight, args =>
 			{
 				if (args<Unit[]>().Length > GetUnits().Length)
 				{
@@ -71,7 +73,8 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 
 		void x()
 		{
-			RegisterEvent(Events.EnemyUnitFound, args => {
+			RegisterEvent(Events.EnemyUnitFound, args =>
+			{
 				// Decision pending: how to discriminate between two semantics of Unit at EnemyFound event? Will be documented
 				var my = args<Unit>(Events.EnemyFound.MyUnit);
 				var enemy = args<Unit>(Events.EnemyFound.EnemyUnit);
@@ -80,12 +83,13 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 			});
 
 			// When destroying enemy base
-			RegisterEvent(Events.EnemyBuildingFound, args => {
+			RegisterEvent(Events.EnemyBuildingFound, args =>
+			{
 				// TODO: my unit does not necessarily have to be a unit, even building can see a building
-				var my = args<Unit>(Events.EnemyFound.MyUnit); var enemy = args<Building>();
+				var my = args<Unit>(Events.EnemyFound.MyUnit); var enemy = args<BuildingTest>();
 				GetUnits().ForEach(unit->unit.AddAction(unit->unit.Attack(enemy)));
 			});
 		}
-	*/
+		*/
 	}
 }

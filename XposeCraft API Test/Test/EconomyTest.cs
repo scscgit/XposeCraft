@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using XposeCraft_UI_API_Prototype_Test.App.TestRunner;
 using XposeCraft_UI_API_Prototype_Test.Game;
 using XposeCraft_UI_API_Prototype_Test.Game.Actors.Buildings;
 using XposeCraft_UI_API_Prototype_Test.Game.Actors.Units;
@@ -17,13 +18,13 @@ using XposeCraft_UI_API_Prototype_Test.Game.Helpers;
 /// </summary>
 namespace XposeCraft_UI_API_Prototype_Test.Test
 {
-	public class Economy
+	class EconomyTest
 	{
-		public Economy()
+		public EconomyTest()
 		{
 		}
 
-		public void EconomyStage()
+		public void EconomyStage(TestRunner.NextStageStarter startNextStage)
 		{
 			// Game started, the first worker will get to work
 			Worker firstWorker = UnitHelper.GetUnits<Worker>()[0];
@@ -45,9 +46,9 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 					// After creating (it means after few seconds), he will need to go gather too
 					Event.Register(EventType.UnitCreated, argsB =>
 					{
-						if (argsB.Unit.GetType().Equals(typeof(Worker)))
+						if (argsB.MyUnit.GetType().Equals(typeof(Worker)))
 						{
-							Worker worker = (Worker)argsB.Unit;
+							Worker worker = (Worker)argsB.MyUnit;
 							worker.SendGather(MaterialHelper.GetNearestMineralsTo(worker));
 							argsB.ThisEvent.UnregisterEvent();
 						}

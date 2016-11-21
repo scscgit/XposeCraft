@@ -28,7 +28,9 @@ namespace XposeCraft_UI_API_Prototype_Test.Game
 		/// Actors
 		/// </summary>
 
-		public IUnit Unit { get; set; }
-		public IBuilding Building { get; set; }
+		public IUnit MyUnit { get; set; }
+		public IBuilding MyBuilding { get; set; }
+		public IUnit EnemyUnit { get; set; }
+		public IBuilding EnemyBuilding { get; set; }
 	}
 }
