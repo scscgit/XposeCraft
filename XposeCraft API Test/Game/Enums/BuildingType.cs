@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace XposeCraft_UI_API_Prototype_Test.Game.Enums
 {
-	enum BuildingType
+	public enum BuildingType
 	{
 		BaseCenter,
 		NubianArmory,

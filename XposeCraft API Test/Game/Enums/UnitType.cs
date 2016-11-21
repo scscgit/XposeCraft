@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace XposeCraft_UI_API_Prototype_Test.Game.Enums
 {
-	enum UnitType
+	public enum UnitType
 	{
 		Worker,
 		DonkeyGun,

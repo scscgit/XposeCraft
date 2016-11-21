@@ -31,6 +31,7 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 			firstWorker.SendGather(MaterialHelper.GetNearestMineralsTo(firstWorker));
 
 			EventForCreatingAnother();
+			startNextStage();
 		}
 
 		void EventForCreatingAnother()

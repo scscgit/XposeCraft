@@ -68,13 +68,13 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 				{
 					var worker = (Worker)args.MyUnit;
 					worker.SendGather(MaterialHelper.GetNearestMineralsTo(worker));
-					BuildArmy();
+					BuildArmy(startNextStage);
 				}
 				args.ThisEvent.UnregisterEvent();
 			});
 		}
 
-		void BuildArmy()
+		void BuildArmy(TestRunner.NextStageStarter startNextStage)
 		{
 			var buildingArmy = Event.Register(EventType.MineralsChanged, args =>
 			{
@@ -87,7 +87,7 @@ namespace XposeCraft_UI_API_Prototype_Test.Test
 							if (MyBot.Army++ >= 5)
 							{
 								args.ThisEvent.UnregisterEvent();
-								MyBot.AttackPhase = true;
+								startNextStage();
 							}
 							break;
 						}

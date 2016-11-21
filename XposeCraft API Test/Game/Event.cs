@@ -8,7 +8,7 @@ using XposeCraft_UI_API_Prototype_Test.GameInternal;
 
 namespace XposeCraft_UI_API_Prototype_Test.Game
 {
-	class Event
+	public class Event
 	{
 		public bool IsRegistered
 		{

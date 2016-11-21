@@ -8,7 +8,9 @@ namespace XposeCraft_UI_API_Prototype_Test.Game.Actors.Units
 {
 	class DonkeyGun : Unit
 	{
-		public DonkeyGun(Position position) : base(position)
+		public static readonly int MAX_HP = 120;
+
+		public DonkeyGun(Position position) : base(position, MAX_HP)
 		{
 		}
 	}

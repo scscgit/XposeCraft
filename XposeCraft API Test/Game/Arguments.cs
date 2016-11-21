@@ -8,7 +8,7 @@ using XposeCraft_UI_API_Prototype_Test.Game.Actors.Units;
 
 namespace XposeCraft_UI_API_Prototype_Test.Game
 {
-	class Arguments
+	public class Arguments
 	{
 		/// <summary>
 		/// Before running the function, the instance to this current even will be returned here and can be used,

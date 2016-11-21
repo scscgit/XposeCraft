@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace XposeCraft_UI_API_Prototype_Test.Game.Enum
 {
-	class PlaceType
+	public class PlaceType
 	{
 		public static Position NearBase { get; } = new Position();
 		public static Position UnderBaseRamp { get; } = new Position();

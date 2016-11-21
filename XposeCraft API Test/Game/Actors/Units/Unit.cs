@@ -10,12 +10,17 @@ namespace XposeCraft_UI_API_Prototype_Test.Game.Actors.Units
 {
 	public abstract class Unit : Actor, IUnit
 	{
-		UnitActionQueue ActionQueue;
+		public UnitActionQueue ActionQueue { get; protected set; }
 
-		protected Unit(Position position) : base(position)
+		public int Health { get; protected set; }
+		public int MaxHealth { get; private set; }
+
+		protected Unit(Position position, int maxHealth) : base(position)
 		{
+			MaxHealth = maxHealth;
 		}
 
+		// TODO: deprecate in favor of equals operator?
 		public UnitActionQueue ReplaceActionQueue(UnitActionQueue queue)
 		{
 			return ActionQueue = queue;

@@ -9,6 +9,10 @@ namespace XposeCraft_UI_API_Prototype_Test.Game.Actors.Units
 {
 	public interface IUnit : IActor
 	{
+		int Health { get; }
+		int MaxHealth { get; }
+
+		UnitActionQueue ActionQueue { get; }
 		UnitActionQueue ReplaceActionQueue(UnitActionQueue queue);
 
 		UnitActionQueue Attack(IUnit unit);

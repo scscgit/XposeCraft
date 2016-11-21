@@ -15,10 +15,12 @@ namespace XposeCraft_UI_API_Prototype_Test.Game.Actors.Units
 	/// </summary>
 	class Worker : Unit
 	{
+		public static readonly int MAX_HP = 120;
+
 		public static readonly int BASE_CENTER_DELAY = 150;
 		public static readonly int NUBIAN_ARMORY_DELAY = 75;
 
-		public Worker(Position position) : base(position)
+		public Worker(Position position) : base(position, MAX_HP)
 		{
 		}
 
