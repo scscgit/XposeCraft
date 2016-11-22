@@ -1,4 +1,4 @@
-﻿namespace XposeCraft_UI_API_Prototype_Test
+﻿namespace XposeCraft.App.ResultScreen
 {
 	partial class Form1
 	{

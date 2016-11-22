@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XposeCraft_UI_API_Prototype_Test.Game.Enums;
+using XposeCraft.Game.Enums;
 
-namespace XposeCraft_UI_API_Prototype_Test.Game.Actors.Buildings
+namespace XposeCraft.Game.Actors.Buildings
 {
 	class NubianArmory : Building
 	{

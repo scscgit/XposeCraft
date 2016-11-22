@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XposeCraft_UI_API_Prototype_Test.Game.Control;
-using XposeCraft_UI_API_Prototype_Test.Game.Control.GameActions;
+using XposeCraft.Game.Control;
+using XposeCraft.Game.Control.GameActions;
 
-namespace XposeCraft_UI_API_Prototype_Test.Game.Actors.Units
+namespace XposeCraft.Game.Actors.Units
 {
 	public abstract class Unit : Actor, IUnit
 	{

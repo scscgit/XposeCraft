@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace XposeCraft_UI_API_Prototype_Test.Properties
+namespace XposeCraft.Properties
 {
 
 

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace XposeCraft_UI_API_Prototype_Test.GameInternal
+namespace XposeCraft.GameInternal
 {
 	/// <summary>
 	/// Pair of actions and their delays for time calculation.
@@ -33,6 +30,7 @@ namespace XposeCraft_UI_API_Prototype_Test.GameInternal
 		public delegate bool EndConditionDelegate();
 
 		public delegate void TimedAction();
+
 		public double Cycle
 		{
 			get; private set;
@@ -82,7 +80,6 @@ namespace XposeCraft_UI_API_Prototype_Test.GameInternal
 
 		protected void ExecuteGameProgress()
 		{
-
 		}
 	}
 }

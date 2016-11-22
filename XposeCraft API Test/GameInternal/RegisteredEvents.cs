@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XposeCraft_UI_API_Prototype_Test.Game;
-using XposeCraft_UI_API_Prototype_Test.Game.Enums;
+using XposeCraft.Game;
+using XposeCraft.Game.Enums;
 
-namespace XposeCraft_UI_API_Prototype_Test.GameInternal
+namespace XposeCraft.GameInternal
 {
 	/// <summary>
 	/// Actions hooked to events that can, but don't have to be, run at any time.
@@ -26,6 +23,7 @@ namespace XposeCraft_UI_API_Prototype_Test.GameInternal
 		}
 
 		public static readonly object FiredEventLock = new object();
+
 		public static void FiredEvent(EventType eventType, Arguments args)
 		{
 			lock (FiredEventLock)

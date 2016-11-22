@@ -1,24 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XposeCraft_UI_API_Prototype_Test.Game.Actors.Buildings;
-using XposeCraft_UI_API_Prototype_Test.Game.Actors.Materials;
-using XposeCraft_UI_API_Prototype_Test.Game.Enums;
-using XposeCraft_UI_API_Prototype_Test.GameInternal;
+using XposeCraft.Game.Actors.Buildings;
+using XposeCraft.Game.Actors.Materials;
+using XposeCraft.Game.Enums;
+using XposeCraft.GameInternal;
 
-namespace XposeCraft_UI_API_Prototype_Test.Game.Actors.Units
+namespace XposeCraft.Game.Actors.Units
 {
 	/// <summary>
 	/// Can gather various materials (mainly minerals) and build various buildings - based on a current API level.
 	/// </summary>
 	class Worker : Unit
 	{
-		public static readonly int MAX_HP = 120;
+		static readonly int MAX_HP = 120;
 
-		public static readonly int BASE_CENTER_DELAY = 150;
-		public static readonly int NUBIAN_ARMORY_DELAY = 75;
+		static readonly int BASE_CENTER_DELAY = 150;
+		static readonly int NUBIAN_ARMORY_DELAY = 75;
 
 		public Worker(Position position) : base(position, MAX_HP)
 		{

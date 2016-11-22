@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace XposeCraft_UI_API_Prototype_Test.Properties
+namespace XposeCraft.Properties
 {
 
 
@@ -44,7 +44,7 @@ namespace XposeCraft_UI_API_Prototype_Test.Properties
 			{
 				if ((resourceMan == null))
 				{
-					global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("XposeCraft_UI_API_Prototype_Test.Properties.Resources", typeof(Resources).Assembly);
+					global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("XposeCraft.Properties.Resources", typeof(Resources).Assembly);
 					resourceMan = temp;
 				}
 				return resourceMan;

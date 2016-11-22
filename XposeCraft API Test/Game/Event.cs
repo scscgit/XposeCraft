@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XposeCraft_UI_API_Prototype_Test.Game.Enums;
-using XposeCraft_UI_API_Prototype_Test.GameInternal;
+using XposeCraft.Game.Enums;
+using XposeCraft.GameInternal;
 
-namespace XposeCraft_UI_API_Prototype_Test.Game
+namespace XposeCraft.Game
 {
 	public class Event
 	{
@@ -17,8 +14,9 @@ namespace XposeCraft_UI_API_Prototype_Test.Game
 		public EventType GameEvent { get; private set; }
 		public FunctionWithArguments Function { get; private set; }
 
-		Event(EventType chosenEvent, FunctionWithArguments function)
+		Event(EventType gameEvent, FunctionWithArguments function)
 		{
+			this.GameEvent = gameEvent;
 			this.Function = function;
 		}
 

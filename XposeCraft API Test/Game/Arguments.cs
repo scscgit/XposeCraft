@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XposeCraft_UI_API_Prototype_Test.Game.Actors.Buildings;
-using XposeCraft_UI_API_Prototype_Test.Game.Actors.Units;
+using XposeCraft.Game.Actors.Buildings;
+using XposeCraft.Game.Actors.Units;
 
-namespace XposeCraft_UI_API_Prototype_Test.Game
+namespace XposeCraft.Game
 {
 	public class Arguments
 	{

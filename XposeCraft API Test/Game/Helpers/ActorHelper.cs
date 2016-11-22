@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XposeCraft_UI_API_Prototype_Test.Game.Actors;
+using XposeCraft.Game.Actors;
 
-namespace XposeCraft_UI_API_Prototype_Test.Game.Helpers
+namespace XposeCraft.Game.Helpers
 {
 	abstract class ActorHelper<ForActorType> where ForActorType : IActor
 	{
@@ -19,7 +16,7 @@ namespace XposeCraft_UI_API_Prototype_Test.Game.Helpers
 		{
 			lock (ForEachLock)
 			{
-				foreach (IActor unit in from)
+				foreach (ForActorType unit in from)
 				{
 					if (unit is ActorType)
 					{

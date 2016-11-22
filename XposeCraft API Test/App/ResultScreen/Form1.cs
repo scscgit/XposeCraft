@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using XposeCraft_UI_API_Prototype_Test.App.TestRunner;
+using XposeCraft.App.TestRunner;
 
-namespace XposeCraft_UI_API_Prototype_Test
+namespace XposeCraft.App.ResultScreen
 {
 	public partial class Form1 : Form
 	{
@@ -32,7 +26,7 @@ namespace XposeCraft_UI_API_Prototype_Test
 			{
 				new Thread(() =>
 					this.BeginInvoke(
-						new Action(() => new TestRunner().RunTests())
+						new Action(() => new Runner().RunTests())
 					)
 				).Start();
 			}

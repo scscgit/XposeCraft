@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XposeCraft_UI_API_Prototype_Test.Game.Actors.Units;
+using XposeCraft.Game.Actors.Units;
 
-namespace XposeCraft_UI_API_Prototype_Test.Game.Control.GameActions
+namespace XposeCraft.Game.Control.GameActions
 {
 	/// <summary>
 	/// Action of waiting for other unit to finish its queue

@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XposeCraft_UI_API_Prototype_Test.Game.Actors;
-using XposeCraft_UI_API_Prototype_Test.Game.Actors.Materials;
-using XposeCraft_UI_API_Prototype_Test.Game.Actors.Materials.Minerals;
-using XposeCraft_UI_API_Prototype_Test.GameInternal;
+using XposeCraft.Game.Actors;
+using XposeCraft.Game.Actors.Materials;
+using XposeCraft.Game.Actors.Materials.Minerals;
+using XposeCraft.GameInternal;
 
-namespace XposeCraft_UI_API_Prototype_Test.Game.Helpers
+namespace XposeCraft.Game.Helpers
 {
 	class MaterialHelper : ActorHelper<IMaterial>
 	{
@@ -42,7 +40,6 @@ namespace XposeCraft_UI_API_Prototype_Test.Game.Helpers
 				}
 			}, Model.Instance.Materials);
 			return closestMineral;
-
 		}
 	}
 }

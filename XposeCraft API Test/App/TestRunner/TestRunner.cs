@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using XposeCraft_UI_API_Prototype_Test.Game.Actors.Buildings;
-using XposeCraft_UI_API_Prototype_Test.Game.Actors.Units;
-using XposeCraft_UI_API_Prototype_Test.Game.Enum;
-using XposeCraft_UI_API_Prototype_Test.GameInternal;
-using XposeCraft_UI_API_Prototype_Test.Test;
+﻿using XposeCraft.Game.Actors.Buildings;
+using XposeCraft.Game.Actors.Units;
+using XposeCraft.Game.Enums;
+using XposeCraft.GameInternal;
+using XposeCraft.Test;
 
-namespace XposeCraft_UI_API_Prototype_Test.App.TestRunner
+namespace XposeCraft.App.TestRunner
 {
-	class TestRunner
+	class Runner
 	{
 		protected void Sleep(int milliseconds)
 		{

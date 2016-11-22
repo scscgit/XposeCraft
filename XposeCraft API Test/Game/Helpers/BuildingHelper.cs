@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XposeCraft_UI_API_Prototype_Test.Game.Actors.Buildings;
-using XposeCraft_UI_API_Prototype_Test.GameInternal;
+using XposeCraft.Game.Actors.Buildings;
+using XposeCraft.GameInternal;
 
-namespace XposeCraft_UI_API_Prototype_Test.Game.Helpers
+namespace XposeCraft.Game.Helpers
 {
 	class BuildingHelper : ActorHelper<IBuilding>
 	{

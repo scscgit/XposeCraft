@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XposeCraft_UI_API_Prototype_Test.Game.Actors.Units;
-using XposeCraft_UI_API_Prototype_Test.GameInternal;
+using XposeCraft.Game.Actors.Units;
+using XposeCraft.GameInternal;
 
-namespace XposeCraft_UI_API_Prototype_Test.Game.Actors.Buildings
+namespace XposeCraft.Game.Actors.Buildings
 {
 	/// <summary>
 	/// A base building that creates new workers and receives collected materials.

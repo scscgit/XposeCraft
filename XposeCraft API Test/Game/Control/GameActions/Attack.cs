@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XposeCraft_UI_API_Prototype_Test.Game.Actors;
+using XposeCraft.Game.Actors;
 
-namespace XposeCraft_UI_API_Prototype_Test.Game.Control.GameActions
+namespace XposeCraft.Game.Control.GameActions
 {
 	/// <summary>
 	/// Action of attack to a unit
