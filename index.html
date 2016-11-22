@@ -118,6 +118,84 @@
 <hr>
 
 <h3>
+<a id="enumeračný-typ-eventtype-xposecraft_ui_api_prototype_testgameenums" class="anchor" href="#enumera%C4%8Dn%C3%BD-typ-eventtype-xposecraft_ui_api_prototype_testgameenums" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Enumeračný typ <strong>EventType</strong> (XposeCraft_UI_API_Prototype_Test.Game.Enums)</h3>
+
+<p>Použitie:  </p>
+
+<ul>
+<li>Herná logika je riadená udalosťami, ktoré môžu nastať a ovplyvniť rozhodnutia súperov. Vždy, keď v hre nastane nová udalosť, vykonajú sa funkcie všetkých inštancií udalosti, ktoré sú k tomuto typu udalosti priradené. Funkcia zároveň dostane informácie o konkrétnej udalosti pomocou premennej typu Arguments. Každá udalosť má inú podmienku a poskytuje iné informácie.</li>
+</ul>
+
+<p>Možnosti:  </p>
+
+<ul>
+<li>MineralsChanged - Nastala zmena v počte minerálov, ktoré má hráč k dispozícii. Argumenty:
+
+<ul>
+<li>int Minerals - Aktuálny počet minerálov.</li>
+</ul>
+</li>
+<li>UnitCreated - V budove bola vytvorená nová jednotka.
+
+<ul>
+<li>IBuilding MyBuilding - Budova, v ktorej bola vytvorená nová jednotka.</li>
+<li>IUnit MyUnit - V rámci udalosti vytvorená jednotka.</li>
+</ul>
+</li>
+<li>BuildingCreated - Úsilím pracovníka bola vytvorená nová budova.
+
+<ul>
+<li>IUnit MyUnit - Pracovník typu Worker, ktorý vytvoril budovu.</li>
+<li>IBuilding MyBuilding- V rámci udalosti vytvorená budova.</li>
+</ul>
+</li>
+<li>EnemyUnitsOnSight - Naše jednotky uvideli nepriateľské jednotky.
+
+<ul>
+<li>IUnit MyUnit - Jednotka, ktorá uvidela nepriateľa.</li>
+<li>IUnit[] EnemyUnits - Jednotky nepriateľa, ktoré boli zbadané.</li>
+</ul>
+</li>
+<li>EnemyBuildingsOnSight - Naše jednotky uvideli nepriateľské budovy.
+
+<ul>
+<li>IUnit MyUnit - Jednotka, ktorá uvidela nepriateľa.</li>
+<li>IBuilding[] EnemyBuildings - Budovy nepriateľa, ktoré boli zbadané.</li>
+</ul>
+</li>
+<li>UnitReceivedFire - Nepriateľ zaútočil na našu jednotku.
+
+<ul>
+<li>IUnit MyUnit - Jednotka, na ktorú zaútočil nepriateľ.</li>
+<li>IUnit[] EnemyUnits - Jednotky nepriateľa, ktoré našej jednotke spôsobili zranenie.</li>
+</ul>
+</li>
+<li>BuildingReceivedFire - Nepriateľ zaútočil na našu budovu.
+
+<ul>
+<li>IBuilding MyBuilding - Budova, na ktorú zaútočil nepriateľ.</li>
+<li>IUnit[] EnemyUnits - Jednotky nepriateľa, ktoré našej budove spôsobili poškodenie.</li>
+</ul>
+</li>
+<li>UnitGainedHealth - Jednotka bola úplne vyliečená buď po určitej dobe, alebo druhou vlastnou jednotkou.
+
+<ul>
+<li>IUnit MyUnit - Jednotka, ktorá bola vyliečená.</li>
+</ul>
+</li>
+</ul>
+
+<p>Príklad:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> <span class="pl-k">event</span> = Event.Register(EventType.EnemyUnitsOnSight, args =&gt; {
+    <span class="pl-k">foreach</span>(IUnit unit <span class="pl-k">in</span> UnitHelper.GetUnits&lt;DonkeyGun&gt;()) {
+        unit.Attack(args.EnemyUnits[<span class="pl-c1">0</span>]);
+    }
+});</pre></div>
+
+<hr>
+
+<h3>
 <a id="trieda-unithelper-xposecraft_ui_api_prototype_testgamehelpersunithelper" class="anchor" href="#trieda-unithelper-xposecraft_ui_api_prototype_testgamehelpersunithelper" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Trieda <strong>UnitHelper</strong> (XposeCraft_UI_API_Prototype_Test.Game.Helpers.UnitHelper)</h3>
 
 <p>Statické metódy:</p>
@@ -196,11 +274,9 @@
 <h1>
 <a id="diskusia" class="anchor" href="#diskusia" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Diskusia</h1>
 
-<div id="disqus_thread"></div>
-
-
-
-Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+<p>{{embed '_includes/disqus.html' 'html')}}
+test
+{{embed 'disqus.html' 'html')}}</p>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/scscgit/XposeCraft-API-Test">XposeCraft API Test</a> is maintained by <a href="https://github.com/scscgit">scscgit</a>.</span>
