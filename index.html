@@ -68,6 +68,8 @@
 
 <p>Adresár (balíček) s poskytovaným API hry sa nazýva Game a na vyššie uvedenom obrázku sú znázornené všetky jeho časti. Táto sekcia obsahuje podrobný popis každej z nich, ale pozostáva iba z verejne viditeľných členov (public). Nadpis každej triedy obsahuje v zátvorke úplne jednoznačný názov, ktorý v prípade priloženia sekcie <code>using</code> nie je potrebné písať namiesto skráteného tvaru. Sekcia 'using' sa pre danú triedu vytvorí napríklad stlačením kombinácie kláves CTRL+BODKA vo Visual Studiu alebo ALT+ENTER pri používaní skratiek programu Rider nad názvom triedy v kóde a zvolením tejto voľby.</p>
 
+<hr>
+
 <h3>
 <a id="trieda-event-xposecraft_ui_api_prototype_testgameevent" class="anchor" href="#trieda-event-xposecraft_ui_api_prototype_testgameevent" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Trieda <strong>Event</strong> (XposeCraft_UI_API_Prototype_Test.Game.Event)</h3>
 
@@ -112,6 +114,32 @@
 });
 
 <span class="pl-k">event</span>.UnregisterEvent();</pre></div>
+
+<hr>
+
+<h3>
+<a id="trieda-unithelper-xposecraft_ui_api_prototype_testgamehelpersunithelper" class="anchor" href="#trieda-unithelper-xposecraft_ui_api_prototype_testgamehelpersunithelper" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Trieda <strong>UnitHelper</strong> (XposeCraft_UI_API_Prototype_Test.Game.Helpers.UnitHelper)</h3>
+
+<p>Statické metódy:</p>
+
+<ul>
+<li>static IList GetUnitsAsList()  where UnitType : IUnit</li>
+<li>static UnitType[] GetUnits() where UnitType : IUnit</li>
+</ul>
+
+<p>Použitie:</p>
+
+<ul>
+<li>Trieda pomocníka poskytuje možnosť staticky získať ľubovoľné vlastnené jednotky, ktoré má hráč možnosť ovládať. Vrátené jednotky budú iba tie, ktoré spĺňajú typ UnitType, takže pre vrátenie všetkých je možné použiť typ IUnit. Návratový typ môže byť buď list alebo pole.</li>
+</ul>
+
+<p>Príklad:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">if</span>(UnitHelper.GetUnits&lt;Worker&gt;().Length &lt; <span class="pl-c1">5</span>) {
+    <span class="pl-k">foreach</span>(Worker worker <span class="pl-k">in</span> UnitHelper.GetUnits&lt;Worker&gt;()) {
+        worker.MoveTo(PlaceType.NearBase);
+    }
+}</pre></div>
 
 <hr>
 
@@ -168,28 +196,11 @@
 <h1>
 <a id="diskusia" class="anchor" href="#diskusia" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Diskusia</h1>
 
-<p>
 <div id="disqus_thread"></div>
-<script>
 
-/**
-*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-/*
-var disqus_config = function () {
-this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-};
-*/
-(function() { // DON'T EDIT BELOW THIS LINE
-var d = document, s = d.createElement('script');
-s.src = '//xposecraft-api-test.disqus.com/embed.js';
-s.setAttribute('data-timestamp', +new Date());
-(d.head || d.body).appendChild(s);
-})();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</p>
+
+
+Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
 
       <footer class="site-footer">
         <span class="site-footer-owner"><a href="https://github.com/scscgit/XposeCraft-API-Test">XposeCraft API Test</a> is maintained by <a href="https://github.com/scscgit">scscgit</a>.</span>
