@@ -19,37 +19,107 @@
     </section>
 
     <section class="main-content">
-      <h3>
-<a id="vitajte-v-pomocníkovi-pre-hru-xposecraft" class="anchor" href="#vitajte-v-pomocn%C3%ADkovi-pre-hru-xposecraft" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Vitajte v pomocníkovi pre hru XposeCraft</h3>
+      <h1>
+<a id="vitajte-v-pomocníkovi-pre-hru-xposecraft" class="anchor" href="#vitajte-v-pomocn%C3%ADkovi-pre-hru-xposecraft" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Vitajte v pomocníkovi pre hru XposeCraft</h1>
 
-<p>Hra <a href="https://github.com/scscgit/XposeCraft">XposeCraft</a> nie je obyčajná (zábavná) hra podobná hrám, ktoré sa ovládajú klávesnicou a myšou. Je to náučné prostredie určené na výučbu programovania v jazyku C#. Hru je potrebné hrať písaním zdrojového kódu robota, ktorý sa následne s hrou spojí a bude sa hrať samostatne. Ide o stratégiu, v ktorej je vašim cieľom zničiť všetky nepriateľské budovy skôr, než nepriateľ zničí tie vaše.</p>
+<p>Hra <strong><a href="https://github.com/scscgit/XposeCraft">XposeCraft</a></strong> nie je obyčajná (zábavná) hra podobná hrám, ktoré sa ovládajú klávesnicou a myšou. Je to náučné prostredie určené na výučbu programovania v jazyku C#. Hru je potrebné hrať písaním zdrojového kódu robota, ktorý sa následne s hrou spojí a bude sa hrať samostatne. Ide o stratégiu, v ktorej je vašim cieľom zničiť všetky nepriateľské budovy skôr, než nepriateľ zničí tie vaše.</p>
 
-<h3>
-<a id="inštalácia-prostredia" class="anchor" href="#in%C5%A1tal%C3%A1cia-prostredia" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Inštalácia prostredia</h3>
+<h1>
+<a id="inštalácia-prostredia" class="anchor" href="#in%C5%A1tal%C3%A1cia-prostredia" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Inštalácia prostredia</h1>
 
-<p>Pre programovanie odporúčam buď bezplatné vývojárske prostredie od Microsoftu <a href="https://www.visualstudio.com/cs/downloads/">Visual Studio Community</a>, alebo jednu z vhodných (lepších) alternatív, ktorou je nástroj od firmy JetBrains, ktorý majú študenti k dispozícii zadarmo <a href="https://www.jetbrains.com/rider/">Rider</a>. V čase písania bol v stave Early Build.</p>
+<p>Pre programovanie odporúčam buď bezplatné vývojárske prostredie <strong><a href="https://www.visualstudio.com/cs/downloads/">Visual Studio Community</a></strong> od Microsoftu, alebo jednu z vhodných (lepších) alternatív, ktorou je nástroj od firmy JetBrains, keďže ho majú študenti k dispozícii zadarmo - <strong><a href="https://www.jetbrains.com/rider/">Rider</a></strong>. V čase písania bol v stave Early Build.</p>
 
-<h3>
-<a id="príprava-prostredia" class="anchor" href="#pr%C3%ADprava-prostredia" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Príprava prostredia</h3>
+<h1>
+<a id="príprava-prostredia" class="anchor" href="#pr%C3%ADprava-prostredia" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Príprava prostredia</h1>
 
-<p>Je potrebné stiahnuť súbory z tohto GitHub projektu. Najrýchlejší spôsob buď tlačidlo na vrchu tejto stránky, alebo na stránke <a href="https://github.com/scscgit/XposeCraft-Helping-Tutorial/">https://github.com/scscgit/XposeCraft-Helping-Tutorial/</a> vpravo kliknúť na tlačidlo Clone or download a zvoliť voľbu Download ZIP, prípadne kliknúť <a href="https://github.com/scscgit/XposeCraft-Helping-Tutorial/archive/master.zip"></a>. Druhou alternatívou je lokálne si projekt pomocou Gitu naklonovať. Následne vo vašom obľúbenom C# editore projekt spustíte, napríklad otvorením súboru s príponou .sln v koreňovom adresári projektu.</p>
+<p>Je potrebné stiahnuť súbory z tohto GitHub projektu. Najrýchlejší spôsob buď tlačidlo na vrchu tejto stránky, alebo na stránke <a href="https://github.com/scscgit/XposeCraft-API-Test/">https://github.com/scscgit/XposeCraft-API-Test/</a> vpravo kliknúť na tlačidlo Clone or download a zvoliť voľbu Download ZIP, prípadne kliknúť <a href="https://github.com/scscgit/XposeCraft-API-Test/archive/master.zip"></a>. Druhou alternatívou je lokálne si projekt pomocou Gitu naklonovať. Následne vo vašom obľúbenom C# editore projekt spustíte, napríklad otvorením súboru s príponou .sln v koreňovom adresári projektu.</p>
 
-<h3>
-<a id="písanie-testov-a-overovanie-úspešnosti" class="anchor" href="#p%C3%ADsanie-testov-a-overovanie-%C3%BAspe%C5%A1nosti" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Písanie testov a overovanie úspešnosti</h3>
+<hr>
 
-<p>Spustený projekt obsahuje adresár Test, v ktorom sa nachádza niekoľko súborov, každý z nich reprezentujúci jednu triedu. Ide o 3 fázy hry prebiehajúcich v nasledujúcom poradí: Economy, Building, Battle. Ich význam je ale čisto obrazný, keďže okrem na prvý pohľad zmenšenej prehľadnosti kódu by sa nestalo nič zlé, keby bol všetok váš kód iba v jednej z nich, kým ostatné triedy by obsahovali iba prázdne bloky funkcií. Po akejkoľvek zmene je možnosť projekt spustiť a nechať zbehnúť testy, čím sa overí ako správnosť syntaxe, tak aj správne využitie funkcií.</p>
+<h1>
+<a id="programátorské-rozhranie-hry-api" class="anchor" href="#program%C3%A1torsk%C3%A9-rozhranie-hry-api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Programátorské rozhranie hry (API)</h1>
+
+<p>Jazyk, v ktorom je napísaná samotná hra a ktorý sa používa aj na písanie robota sa volá <strong>C#</strong>. Existujú rôzne návody vo forme kníh alebo webstránok, príkladmi sú jedna <strong><a href="https://www.tutorialspoint.com/csharp/csharp_basic_syntax.htm">anglická</a></strong> a jedna <strong><a href="http://programujte.com/clanky/34-serial-c/">česká</a></strong> stránka, ktoré sa zaoberajú úplnými základmi. Platí ale, že väčšinou už prvé lekcie pracujú s funkciami z rámca .NET, akou je napríklad <a href="https://msdn.microsoft.com/en-us/library/system.console.writeline(v=vs.110).aspx"><code>Console.WriteLine</code></a>. Počas programovania robota bude ale táto znalosť zbytočná, keďže sa neprogramuje aplikácia pre konzolu. Poskytujem ale podobnú funkcionalitu, ktorú je dobrovoľne možné využívať na písanie správ do výstupného logu zobrazovaného po spustení simulácie, napríklad cez <code>Log.i(object kontext, string sprava);</code>.</p>
+
+<h2>
+<a id="písanie-testov-a-overovanie-úspešnosti" class="anchor" href="#p%C3%ADsanie-testov-a-overovanie-%C3%BAspe%C5%A1nosti" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Písanie testov a overovanie úspešnosti</h2>
+
+<p>Práca na vlastnom kóde robota prebieha výhradne v adresári (balíku) <strong><a href="https://github.com/scscgit/XposeCraft-API-Test/tree/master/XposeCraft%20API%20Test/Test">Test</a></strong>, nachádzajúcom sa v adresári projektu. Obsahuje 3 triedy s fázami hry prebiehajúcimi v nasledujúcom poradí:</p>
+
+<ul>
+<li>Economy - získavanie surovín,</li>
+<li>Building - stavanie budov a jednotiek,</li>
+<li>Battle - bojovanie s nepriateľom.</li>
+</ul>
+
+<p>Na voľbe umiestnenia kódu síce striktne nezáleží, ale dodržanie tejto štruktúry výrazne zlepší prehľadnosť kódu. Každá trieda obsahuje jednu hlavnú public void metódu, kde sa má nachádzať váš kód, a ktorá poskytuje cez vstupný parameter funkciu <code>startNextStage</code>, ktorej zavolanie ako <code>startNextStage();</code> spustí nasledujúcu fázu. Prvou fázou je teda EconomyStage. Okrem týchto tried je povolené ľubovoľné vytváranie ďalších tried. Príkladom je pripravená trieda <code>MyBot</code>.</p>
+
+<p>Po akejkoľvek zmene je možnosť projekt spustiť a nechať zbehnúť testy, čím sa overí ako správnosť syntaxe, tak aj správne využitie funkcií.</p>
 
 <p><strong>Upozornenie: Program je stále v testovacom štádiu, takže správnosť kódu nie je vôbec testovaná spoľahlivo, ide teda hlavne o kontrolu syntaxe - aby nebol odovzdaný úplne nepreložiteľný kód.</strong></p>
 
-<h3>
-<a id="diagram-tried-dostupného-rozhrania" class="anchor" href="#diagram-tried-dostupn%C3%A9ho-rozhrania" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Diagram Tried dostupného rozhrania</h3>
+<h2>
+<a id="diagram-tried-dostupného-rozhrania" class="anchor" href="#diagram-tried-dostupn%C3%A9ho-rozhrania" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Diagram Tried dostupného rozhrania</h2>
 
 <p><a href="ClassDiagramGame.png"><img src="ClassDiagramGame.png" alt="Class Diagram"></a></p>
 
-<h3>
-<a id="Úlohy" class="anchor" href="#%C3%9Alohy" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Úlohy</h3>
+<h2>
+<a id="návod-ku-programátorskému-rozhraniu-hry-api" class="anchor" href="#n%C3%A1vod-ku-program%C3%A1torsk%C3%A9mu-rozhraniu-hry-api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Návod ku programátorskému rozhraniu hry (API)</h2>
 
-<p>Scenár č. 1: Nastavenie vývojárskeho prostredia pre programovanie robota.  </p>
+<p>Adresár (balíček) s poskytovaným API hry sa nazýva Game a na vyššie uvedenom obrázku sú znázornené všetky jeho časti. Táto sekcia obsahuje podrobný popis každej z nich, ale pozostáva iba z verejne viditeľných členov (public). Nadpis každej triedy obsahuje v zátvorke úplne jednoznačný názov, ktorý nie je potrebné písať v prípade priloženia sekcie <code>using</code>, napríklad stlačením CTRL+MEDZERA vo Visual Studiu alebo ALT+ENTER pri používaní skratiek programu Rider nad názvom triedy a zvolením priloženia triedy.</p>
+
+<h3>
+<a id="trieda-event-xposecraft_ui_api_prototype_testgameevent" class="anchor" href="#trieda-event-xposecraft_ui_api_prototype_testgameevent" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Trieda <strong>Event</strong> (XposeCraft_UI_API_Prototype_Test.Game.Event)</h3>
+
+<p>Dátové členy:</p>
+
+<ul>
+<li>bool IsRegistered { get; }</li>
+<li>EventType GameEvent { get; }</li>
+<li>FunctionWithArguments Function { get; }</li>
+</ul>
+
+<p>Delegáty:</p>
+
+<ul>
+<li>delegate void FunctionWithArguments(Arguments args);</li>
+</ul>
+
+<p>Statické metódy:</p>
+
+<ul>
+<li>static Event Register(EventType gameEvent, FunctionWithArguments function)</li>
+</ul>
+
+<p>Metódy:</p>
+
+<ul>
+<li>void UnregisterEvent()</li>
+</ul>
+
+<p>Použitie:</p>
+
+<ul>
+<li>Na získanie inštancie registrovanej udalosti (Eventu) sa používa iba statická metóda Register. Táto udalosť zaregistruje v systéme udalostí, čo spôsobí, že pokiaľ v hre kedykoľvek nastane zvolená udalosť typu EventType, vykoná sa funkcia, ktorej vstupom budú argumenty súvisiace s aktuálnou udalosťou. Ak sa už vykonávanie funkcie v hre nevyžaduje, inštanciu registrovanej udalosti je potrebné odstránit zavolaním jej metódy UnregisterEvent(). Pred použitím udalosti sa pre viac detailov obráťťe na jej dokumentáciu.</li>
+</ul>
+
+<p>Príklad:</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> <span class="pl-k">event</span> = Event.Register(EventType.EnemyUnitsOnSight, args =&gt; {
+    <span class="pl-k">foreach</span>(Worker worker <span class="pl-k">in</span> UnitHelper.GetUnits&lt;Worker&gt;()) {
+        worker.MoveTo(PlaceType.NearBase);
+    }
+});
+
+<span class="pl-k">event</span>.UnregisterEvent();</pre></div>
+
+<hr>
+
+<h1>
+<a id="Úlohy" class="anchor" href="#%C3%9Alohy" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Úlohy</h1>
+
+<h3>
+<a id="scenár-č-1-nastavenie-vývojárskeho-prostredia-pre-programovanie-robota" class="anchor" href="#scen%C3%A1r-%C4%8D-1-nastavenie-v%C3%BDvoj%C3%A1rskeho-prostredia-pre-programovanie-robota" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Scenár č. 1: Nastavenie vývojárskeho prostredia pre programovanie robota.</h3>
 
 <ul>
 <li>S1.1. Nájdite a prečítajte si (tento) návod na hranie, obsahujúci diagram tried rozhrania.<br>
@@ -60,7 +130,8 @@
 </li>
 </ul>
 
-<p>Scenár č. 2: Splnenie základných úloh v rámci ekonomickej fázy hry pre získanie dostatočného množstva surovín.  </p>
+<h3>
+<a id="scenár-č-2-splnenie-základných-úloh-v-rámci-ekonomickej-fázy-hry-pre-získanie-dostatočného-množstva-surovín" class="anchor" href="#scen%C3%A1r-%C4%8D-2-splnenie-z%C3%A1kladn%C3%BDch-%C3%BAloh-v-r%C3%A1mci-ekonomickej-f%C3%A1zy-hry-pre-z%C3%ADskanie-dostato%C4%8Dn%C3%A9ho-mno%C5%BEstva-surov%C3%ADn" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Scenár č. 2: Splnenie základných úloh v rámci ekonomickej fázy hry pre získanie dostatočného množstva surovín.</h3>
 
 <ul>
 <li>S2.1. Hru ste začali s jednou budovou BaseBuilding a jedným pracovníkom Worker. Pošlite pracovníka zbierať suroviny.<br>
@@ -69,7 +140,8 @@
 </li>
 </ul>
 
-<p>Scenár č. 3: Vytvorenie budovy a vytváranie jednotiek použitím nazbieraných surovín.  </p>
+<h3>
+<a id="scenár-č-3-vytvorenie-budovy-a-vytváranie-jednotiek-použitím-nazbieraných-surovín" class="anchor" href="#scen%C3%A1r-%C4%8D-3-vytvorenie-budovy-a-vytv%C3%A1ranie-jednotiek-pou%C5%BEit%C3%ADm-nazbieran%C3%BDch-surov%C3%ADn" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Scenár č. 3: Vytvorenie budovy a vytváranie jednotiek použitím nazbieraných surovín.</h3>
 
 <ul>
 <li>S3.1. Počkajte, kým získate 150 minerálov a postavte prvú budovu NubianArmory blízko vašej prvej BaseBuilding.<br>
@@ -78,7 +150,8 @@
 </li>
 </ul>
 
-<p>Scenár č. 4: Zaútočenie na nepriateľa.  </p>
+<h3>
+<a id="scenár-č-4-zaútočenie-na-nepriateľa" class="anchor" href="#scen%C3%A1r-%C4%8D-4-za%C3%BAto%C4%8Denie-na-nepriate%C4%BEa" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Scenár č. 4: Zaútočenie na nepriateľa.</h3>
 
 <ul>
 <li>S4.1. Pošlite bojovníkov útočiť smerom k nepriateľovi a cestou útočte na nepriateľské jednotky.<br>
@@ -87,8 +160,8 @@
 </li>
 </ul>
 
-<h3>
-<a id="ukončenie-testu" class="anchor" href="#ukon%C4%8Denie-testu" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ukončenie testu</h3>
+<h1>
+<a id="ukončenie-testu" class="anchor" href="#ukon%C4%8Denie-testu" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ukončenie testu</h1>
 
 <p>Po vykonaní všetkých požadovaných testov stačí odovzdať váš zdrojový kód osobne dopredu dohodnutým spôsobom - stačí napríklad zazipovať adresár Test, keďže očakávam, že všetky zmeny nastali iba tam.</p>
 
