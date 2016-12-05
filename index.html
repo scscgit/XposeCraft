@@ -71,32 +71,32 @@
 <hr>
 
 <h3>
-<a id="trieda-event-xposecraft_ui_api_prototype_testgameevent" class="anchor" href="#trieda-event-xposecraft_ui_api_prototype_testgameevent" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Trieda <strong>Event</strong> (XposeCraft_UI_API_Prototype_Test.Game.Event)</h3>
+<a id="trieda-event-xposecraftgameevent" class="anchor" href="#trieda-event-xposecraftgameevent" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a name="event"></a>Trieda <strong>Event</strong> (XposeCraft.Game.Event)</h3>
 
 <p>Dátové členy:</p>
 
 <ul>
-<li>bool IsRegistered { get; }</li>
-<li>EventType GameEvent { get; }</li>
-<li>FunctionWithArguments Function { get; }</li>
+<li><code>bool IsRegistered { get; }</code></li>
+<li><code>EventType GameEvent { get; }</code></li>
+<li><code>FunctionWithArguments Function { get; }</code></li>
 </ul>
 
 <p>Delegáty:</p>
 
 <ul>
-<li>delegate void FunctionWithArguments(Arguments args);</li>
+<li><code>delegate void FunctionWithArguments(Arguments args)</code></li>
 </ul>
 
 <p>Statické metódy:</p>
 
 <ul>
-<li>static Event Register(EventType gameEvent, FunctionWithArguments function)</li>
+<li><code>static Event Register(EventType gameEvent, FunctionWithArguments function)</code></li>
 </ul>
 
 <p>Metódy:</p>
 
 <ul>
-<li>void UnregisterEvent()</li>
+<li><code>void UnregisterEvent()</code></li>
 </ul>
 
 <p>Použitie:</p>
@@ -107,18 +107,41 @@
 
 <p>Príklad:</p>
 
-<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> <span class="pl-k">event</span> = Event.Register(EventType.EnemyUnitsOnSight, args =&gt; {
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> registeredEvent = Event.Register(EventType.EnemyUnitsOnSight, args =&gt; {
     <span class="pl-k">foreach</span>(Worker worker <span class="pl-k">in</span> UnitHelper.GetUnits&lt;Worker&gt;()) {
         worker.MoveTo(PlaceType.NearBase);
     }
 });
-
+<span class="pl-c">// When the event is not needed anymore</span>
 <span class="pl-k">event</span>.UnregisterEvent();</pre></div>
 
 <hr>
 
 <h3>
-<a id="enumeračný-typ-eventtype-xposecraft_ui_api_prototype_testgameenums" class="anchor" href="#enumera%C4%8Dn%C3%BD-typ-eventtype-xposecraft_ui_api_prototype_testgameenums" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Enumeračný typ <strong>EventType</strong> (XposeCraft_UI_API_Prototype_Test.Game.Enums)</h3>
+<a id="trieda-arguments-xposecraftgamearguments" class="anchor" href="#trieda-arguments-xposecraftgamearguments" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a name="arguments"></a>Trieda <strong>Arguments</strong> (XposeCraft.Game.Arguments)</h3>
+
+<p>Dátové členy:</p>
+
+<ul>
+<li><code>Event ThisEvent { get; set; }</code></li>
+<li><code>IDictionary&lt;string, string&gt; StringMap { get; }</code></li>
+<li><code>int Minerals { get; set; }</code></li>
+<li><code>public IUnit MyUnit { get; set; }</code></li>
+<li><code>public IBuilding MyBuilding { get; set; }</code></li>
+<li><code>public IUnit[] EnemyUnits { get; set; }</code></li>
+<li><code>public IBuilding[] EnemyBuildings { get; set; }</code></li>
+</ul>
+
+<p>Použitie:</p>
+
+<ul>
+<li>Každá funkcia registrovaná pre <a href="#event">Event</a> je typu <strong>Event.FunctionWithArguments</strong>, takže sa jedná o inštanciu delegáta na funkciu, ktorá vracia void a jej vstup je typu Arguments. Tento vstup je poskytnutý danou udalosťou, ktorá v hre nastala a dostupnosť rôznych hodnôt je definovaná v dokumentácii triedy <a href="#event-type">EventType</a>. Ostatné hodnoty nemusia byť k dispozicii. Medzi špeciálne členy patrí <strong>ThisEvent</strong>, ktorý poskytuje inštanciu na aktuálny <a href="#event">Event</a>, ktorý túto funkciu spustil.</li>
+</ul>
+
+<hr>
+
+<h3>
+<a id="enumeračný-typ-eventtype-xposecraftgameenums" class="anchor" href="#enumera%C4%8Dn%C3%BD-typ-eventtype-xposecraftgameenums" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a name="event-type"></a>Enumeračný typ <strong>EventType</strong> (XposeCraft.Game.Enums)</h3>
 
 <p>Použitie:  </p>
 
@@ -126,10 +149,10 @@
 <li>Herná logika je riadená udalosťami, ktoré môžu nastať a ovplyvniť rozhodnutia súperov. Vždy, keď v hre nastane nová udalosť, vykonajú sa funkcie všetkých inštancií udalosti, ktoré sú k tomuto typu udalosti priradené. Funkcia zároveň dostane informácie o konkrétnej udalosti pomocou premennej typu Arguments. Každá udalosť má inú podmienku a poskytuje iné informácie.</li>
 </ul>
 
-<p>Možnosti:  </p>
+<p>Možnosti + ich dostupné argumenty pre Event:  </p>
 
 <ul>
-<li>MineralsChanged - Nastala zmena v počte minerálov, ktoré má hráč k dispozícii. Argumenty:
+<li>MineralsChanged - Nastala zmena v počte minerálov, ktoré má hráč k dispozícii.
 
 <ul>
 <li>int Minerals - Aktuálny počet minerálov.</li>
@@ -177,7 +200,7 @@
 <li>IUnit[] EnemyUnits - Jednotky nepriateľa, ktoré našej budove spôsobili poškodenie.</li>
 </ul>
 </li>
-<li>UnitGainedHealth - Jednotka bola úplne vyliečená buď po určitej dobe, alebo druhou vlastnou jednotkou.
+<li>UnitGainedHealth - Jednotka bola úplne vyliečená buď po určitej dobe, alebo druhou jednotkou.
 
 <ul>
 <li>IUnit MyUnit - Jednotka, ktorá bola vyliečená.</li>
@@ -187,7 +210,7 @@
 
 <p>Príklad:</p>
 
-<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> <span class="pl-k">event</span> = Event.Register(EventType.EnemyUnitsOnSight, args =&gt; {
+<div class="highlight highlight-source-cs"><pre>Event.Register(EventType.EnemyUnitsOnSight, args =&gt; {
     <span class="pl-k">foreach</span>(IUnit unit <span class="pl-k">in</span> UnitHelper.GetUnits&lt;DonkeyGun&gt;()) {
         unit.Attack(args.EnemyUnits[<span class="pl-c1">0</span>]);
     }
@@ -196,13 +219,13 @@
 <hr>
 
 <h3>
-<a id="trieda-unithelper-xposecraft_ui_api_prototype_testgamehelpersunithelper" class="anchor" href="#trieda-unithelper-xposecraft_ui_api_prototype_testgamehelpersunithelper" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Trieda <strong>UnitHelper</strong> (XposeCraft_UI_API_Prototype_Test.Game.Helpers.UnitHelper)</h3>
+<a id="trieda-unithelper-xposecraftgamehelpersunithelper" class="anchor" href="#trieda-unithelper-xposecraftgamehelpersunithelper" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><a name="unit-helper"></a>Trieda <strong>UnitHelper</strong> (XposeCraft.Game.Helpers.UnitHelper)</h3>
 
 <p>Statické metódy:</p>
 
 <ul>
-<li>static IList GetUnitsAsList()  where UnitType : IUnit</li>
-<li>static UnitType[] GetUnits() where UnitType : IUnit</li>
+<li><code>static IList&lt;UnitType&gt; GetUnitsAsList&lt;UnitType&gt;()  where UnitType : IUnit</code></li>
+<li><code>static UnitType[] GetUnits&lt;UnitType&gt;() where UnitType : IUnit</code></li>
 </ul>
 
 <p>Použitie:</p>
@@ -240,9 +263,9 @@
 <a id="scenár-č-2-splnenie-základných-úloh-v-rámci-ekonomickej-fázy-hry-pre-získanie-dostatočného-množstva-surovín" class="anchor" href="#scen%C3%A1r-%C4%8D-2-splnenie-z%C3%A1kladn%C3%BDch-%C3%BAloh-v-r%C3%A1mci-ekonomickej-f%C3%A1zy-hry-pre-z%C3%ADskanie-dostato%C4%8Dn%C3%A9ho-mno%C5%BEstva-surov%C3%ADn" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Scenár č. 2: Splnenie základných úloh v rámci ekonomickej fázy hry pre získanie dostatočného množstva surovín.</h3>
 
 <ul>
-<li>S2.1. Hru ste začali s jednou budovou BaseBuilding a jedným pracovníkom Worker. Pošlite pracovníka zbierať suroviny.<br>
+<li>S2.1. Hru ste začali s jednou budovou BaseCenter a jedným pracovníkom Worker. Pošlite pracovníka zbierať suroviny.<br>
 </li>
-<li>S2.2. Čo najskôr ako to len bude možné, vytvorte štyroch ďalších pracovníkov a posielajte ich zbierať ďalšie suroviny.<br>
+<li>S2.2. Čo najskôr ako to len bude možné, vytvorte štyroch ďalších pracovníkov (cena každého je 50 minerálov) a posielajte ich zbierať ďalšie suroviny.<br>
 </li>
 </ul>
 
@@ -250,9 +273,9 @@
 <a id="scenár-č-3-vytvorenie-budovy-a-vytváranie-jednotiek-použitím-nazbieraných-surovín" class="anchor" href="#scen%C3%A1r-%C4%8D-3-vytvorenie-budovy-a-vytv%C3%A1ranie-jednotiek-pou%C5%BEit%C3%ADm-nazbieran%C3%BDch-surov%C3%ADn" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Scenár č. 3: Vytvorenie budovy a vytváranie jednotiek použitím nazbieraných surovín.</h3>
 
 <ul>
-<li>S3.1. Počkajte, kým získate 150 minerálov a postavte prvú budovu NubianArmory blízko vašej prvej BaseBuilding.<br>
+<li>S3.1. Počkajte, kým získate 150 minerálov a použite ich na konštrukciu prvej budovy typu NubianArmory (ktorej účel je vytváranie jednotiek) blízko vašej prvej BaseCenter.<br>
 </li>
-<li>S3.2. Čo najskôr vytvorte 5 bojovníkov s názvom DonkeyGun.<br>
+<li>S3.2. Čo najskôr vytvorte 5 bojovníkov s názvom DonkeyGun (cena každého je 50 minerálov).<br>
 </li>
 </ul>
 
@@ -269,7 +292,7 @@
 <h1>
 <a id="ukončenie-testu" class="anchor" href="#ukon%C4%8Denie-testu" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ukončenie testu</h1>
 
-<p>Po vykonaní všetkých požadovaných testov stačí odovzdať váš zdrojový kód osobne dopredu dohodnutým spôsobom - stačí napríklad zazipovať adresár Test, keďže očakávam, že všetky zmeny nastali iba tam.</p>
+<p>Po vykonaní všetkých požadovaných testov stačí odovzdať váš zdrojový kód osobne dopredu dohodnutým spôsobom - stačí napríklad zazipovať adresár Test, keďže očakávam, že všetky zmeny nastali iba tam.  </p>
 
 <h1>
 <a id="diskusia" class="anchor" href="#diskusia" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Diskusia</h1>
