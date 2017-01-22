@@ -5,6 +5,10 @@
 # Visual Studio Local History extension
 /.localhistory/
 
+# Rider
+/.idea/
+/*.sln.DotSettings
+
 #####
 # GitHub provided .gitignore for Unity follows
 #####

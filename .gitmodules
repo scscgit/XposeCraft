@@ -1,0 +1,3 @@
+[submodule "Assets/Game/Scripts/Editor/UnityWorkarounds/Downloaded/JetBrains"]
+	path = Assets/Game/Scripts/Editor/UnityWorkarounds/Downloaded/JetBrains
+	url = https://github.com/JetBrains/Unity3dRider

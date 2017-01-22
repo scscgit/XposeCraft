@@ -3,8 +3,8 @@
 # Example install script for Unity3D project. See the entire example: https://github.com/JonathanPorta/ci-build
 
 BASE_URL=http://netstorage.unity3d.com/unity
-HASH=01f4c123905a
-VERSION=5.4.3f1
+HASH=5a3967d8c55d
+VERSION=5.4.4f1
 
 download() {
   file=$1
