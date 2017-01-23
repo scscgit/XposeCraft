@@ -2,24 +2,26 @@ using UnityEngine;
 
 public class FlockManager : MonoBehaviour
 {
-	public Formation[] formations;
-	public Texture gridLineTexture;
+    public Formation[] formations;
+    public Texture gridLineTexture;
 }
 
 [System.Serializable]
 public class Formation
 {
-	public string name = "Formation";
-	public FLine[] fLines;
-	//FPoint[] fPoints;
-	public FGrid grid = new FGrid();
+    public string name = "Formation";
+
+    public FLine[] fLines;
+
+    //FPoint[] fPoints;
+    public FGrid grid = new FGrid();
 }
 
 [System.Serializable]
 public class FLine
 {
-	public float percent = 25;
-	public Vector2 pointIndex = new Vector2(0, 1);
+    public float percent = 25;
+    public Vector2 pointIndex = new Vector2(0, 1);
 }
 
 /*
@@ -33,6 +35,6 @@ class FPoint {
 [System.Serializable]
 public class FGrid
 {
-	public Vector2 lw;
-	public float pointDisp;
+    public Vector2 lw;
+    public float pointDisp;
 }
