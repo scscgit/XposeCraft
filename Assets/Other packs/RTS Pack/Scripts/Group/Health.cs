@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Health : MonoBehaviour {
 	UnitController unit;
 	BuildingController build;
-	int state = 0;
+	int state;
 	public float yIncrease = 20;
 	public int scale = 50;
 	public int yScale = 10;
@@ -13,9 +12,9 @@ public class Health : MonoBehaviour {
 	public HealthElement[] element = new HealthElement[0];
 	[HideInInspector]
 	Camera cam;
-	
-	bool displayed = false;
-	
+
+	//bool displayed = false;
+
 	void Start () {
 		unit = GetComponent<UnitController>();
 		if(unit == null){
@@ -23,7 +22,7 @@ public class Health : MonoBehaviour {
 			build = GetComponent<BuildingController>();
 		}
 	}
-	
+
 	public void Display () {
 		if(!cam){
 			cam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
@@ -42,7 +41,7 @@ public class Health : MonoBehaviour {
 		int widthSubtraction = (int)(scale/2);
 		DisplayGUI(point, maxHealth, health, widthSubtraction);
 	}
-	
+
 	public void DisplayGUI (Vector2 point, int maxHealth, int health, int widthSubtraction){
 		if(backgroundBar != null){
 			GUI.DrawTexture(new Rect(point.x-widthSubtraction, Screen.height-point.y, scale*((float)1), yScale), backgroundBar);

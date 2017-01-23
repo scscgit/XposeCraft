@@ -1,14 +1,14 @@
 using UnityEngine;
-using System.Collections;
 
-public class UGridManager : MonoBehaviour {
-	
+public class UGridManager : MonoBehaviour
+{
 	public UGrid grid;
 	public bool displayGrid;
-	public bool generate = false;
-	public int size = 0;
-	
-	void OnDrawGizmos () {
+	public bool generate;
+	public int size;
+
+	void OnDrawGizmos()
+	{
 		grid.grids[0].displayGrid = displayGrid;
 		grid.grids[0].size = size;
 		grid.generate = generate;

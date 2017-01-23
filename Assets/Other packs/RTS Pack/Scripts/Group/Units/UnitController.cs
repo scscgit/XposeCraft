@@ -7,13 +7,13 @@ using System.Collections;
 [RequireComponent (typeof (AudioSource))]
 [RequireComponent (typeof (Rigidbody))]
 public class UnitController : MonoBehaviour {		
-	public string name = "Unit";
+	public new string name = "Unit";
 	public int maxHealth = 100;
 	public int health = 100;
 	public int group;
-	Group mGroup;
+	Faction mGroup;
 	int index = 0;
-	public Type type;
+	public UnitType type;
 	public SWeapon weapon = new SWeapon();
 	public SBuild build = new SBuild();
 	public SAnimSounds anim = new SAnimSounds();
@@ -30,9 +30,7 @@ public class UnitController : MonoBehaviour {
 	public GameObject target;
 	public Vector3 targetPoint;
 	public int size = 1;
-	Vector3 lastTargetPoint;
 	Health healthObj;
-	bool healthD = false;
 
 	public enum Target {
 		Resource,
@@ -78,12 +76,12 @@ public class UnitController : MonoBehaviour {
 		vision = gameObject.GetComponent<VisionSignal>();
 		miniMap = gameObject.GetComponent<MiniMapSignal>();
 		gui.type = "Unit";
-		mGroup = GameObject.Find("Faction Manager").GetComponent<GroupManager>().groupList[group].GetComponent<Group>();
+		mGroup = GameObject.Find("Faction Manager").GetComponent<FactionManager>().FactionList[group].GetComponent<Faction>();
 		gui.Start(gameObject);
 		for(int x = 0; x < techEffect.Length; x++){
-			mGroup.tech[techEffect[x].index].AddListener(gameObject);
-			if(mGroup.tech[techEffect[x].index].active){
-				Upgraded(mGroup.tech[techEffect[x].index].name);
+			mGroup.Tech[techEffect[x].index].AddListener(gameObject);
+			if(mGroup.Tech[techEffect[x].index].active){
+				Upgraded(mGroup.Tech[techEffect[x].index].name);
 			}
 		}
 		gameObject.name = name;
@@ -95,7 +93,7 @@ public class UnitController : MonoBehaviour {
 		if(healthObj){
 			healthObj.Display();
 		}
-		healthD = true;
+		//healthD = true;
 	}
 	
 	void FixedUpdate () {
@@ -138,30 +136,30 @@ public class UnitController : MonoBehaviour {
 		else if(targetType == Target.Unit){
 			if(movement.pathComplete){
 				transform.LookAt(new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z));
-			    if(!weapon.InRange(target.transform.position, transform.position)){
-			        if(anim.state != "Move"){
+				if(!weapon.InRange(target.transform.position, transform.position)){
+					if(anim.state != "Move"){
 						anim.state = "Move";
 						anim.Animate();
 					}
 					movement.target = target.transform.position;
-	            	movement.GetPath(target.transform.position);
-	            	lastTargetPoint = target.transform.position;
-			    }
+					movement.GetPath(target.transform.position);
+					//lastTargetPoint = target.transform.position;
+				}
 				else{
 					
 				}
 				if(tState == TargetState.Undecided){
 					UnitController targetController = target.GetComponent<UnitController>();
-					if(mGroup.relations[targetController.group].state == 0){
+					if(mGroup.Relations[targetController.group].state == 0){
 						tState = TargetState.Ally;
 					}
-					else if(mGroup.relations[targetController.group].state == 1){
+					else if(mGroup.Relations[targetController.group].state == 1){
 						tState = TargetState.Neutral;
 					}
-					else if(mGroup.relations[targetController.group].state == 2){
+					else if(mGroup.Relations[targetController.group].state == 2){
 						tState = TargetState.Enemy;
 					}
-					else if(mGroup.relations[targetController.group].state == 3){
+					else if(mGroup.Relations[targetController.group].state == 3){
 						tState = TargetState.Self;
 					}
 				}
@@ -207,16 +205,16 @@ public class UnitController : MonoBehaviour {
 				transform.LookAt(new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z));
 				if(tState == TargetState.Undecided){
 					BuildingController targetController = target.GetComponent<BuildingController>();
-					if(mGroup.relations[targetController.group].state == 0){
+					if(mGroup.Relations[targetController.group].state == 0){
 						tState = TargetState.Ally;
 					}
-					else if(mGroup.relations[targetController.group].state == 1){
+					else if(mGroup.Relations[targetController.group].state == 1){
 						tState = TargetState.Neutral;
 					}
-					else if(mGroup.relations[targetController.group].state == 2){
+					else if(mGroup.Relations[targetController.group].state == 2){
 						tState = TargetState.Enemy;
 					}
-					else if(mGroup.relations[targetController.group].state == 3){
+					else if(mGroup.Relations[targetController.group].state == 3){
 						tState = TargetState.Self;
 					}
 				}
@@ -271,7 +269,7 @@ public class UnitController : MonoBehaviour {
 	public int DetermineRelations (int g){
 		if(mGroup != null){
 			if(g != group){
-				return mGroup.relations[g].state;
+				return mGroup.Relations[g].state;
 			}
 			else{
 				return 3;
@@ -282,7 +280,7 @@ public class UnitController : MonoBehaviour {
 		}
 	}
 	
-    public void Damage (Type nType, int attackDamage){
+	public void Damage (UnitType nType, int attackDamage){
 		for(int x = 0; x < type.weaknesses.Length; x++){
 			if(type.weaknesses[x].targetName == nType.name){
 				attackDamage = (int)(attackDamage/type.weaknesses[x].amount);
@@ -297,7 +295,7 @@ public class UnitController : MonoBehaviour {
 		if(health <= 0){
 			anim.Die(gameObject);
 		}
-    }
+	}
 
 	public void Select (bool select){
 		selected = select;
@@ -315,7 +313,7 @@ public class UnitController : MonoBehaviour {
 	public void SetTarget (GameObject nTarget, Vector3 nTargetPoint, string nTargetType){
 		target = nTarget;
 		targetPoint = nTargetPoint;
-		lastTargetPoint = nTargetPoint;
+		//lastTargetPoint = nTargetPoint;
 		if(nTargetType == "Unit"){
 			targetType = Target.Unit;
 		}

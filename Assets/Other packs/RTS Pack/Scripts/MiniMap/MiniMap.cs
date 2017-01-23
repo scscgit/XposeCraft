@@ -88,7 +88,7 @@ public class MiniMap : MonoBehaviour {
 			}
 		}
 		
-		Vector2 loc = Determine2dLoc(cam.transform.position);
+		//Vector2 loc = Determine2dLoc(cam.transform.position);
 		MiniMapElement details = cameraElement;
 		if(details.image){
 			GUI.color = details.tints[0];

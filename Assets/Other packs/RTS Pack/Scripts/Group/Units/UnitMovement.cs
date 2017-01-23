@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 
 public class UnitMovement : MonoBehaviour {
-	Group group;
+	Faction group;
 	public int speed;
 	public int rotateSpeed;
 	public Vector3 target;
@@ -17,8 +17,6 @@ public class UnitMovement : MonoBehaviour {
 	public AStarManager pathing;
 	public float checkDist = 1;
 	public int layer;
-	bool originalState = false;
-	int lastLoc = 0;
 	Transform myTransform;
 	
 	void Start () {

@@ -20,7 +20,7 @@ public class Arrow : MonoBehaviour {
 		transform.Translate(Vector3.forward*speed*Time.deltaTime);
 		float dist = Vector3.Distance(target.transform.position, transform.position);
 		if(dist < 1){
-			TimedDestruction destroy = GetComponent<TimedDestruction>();
+			//TimedDestruction destroy = GetComponent<TimedDestruction>();
 			landed = true;
 			gameObject.SetActive(false);
 		}

@@ -1,17 +1,18 @@
 using UnityEngine;
-using System.Collections;
 
-public class CursorObject : MonoBehaviour {
-	
+public class CursorObject : MonoBehaviour
+{
 	CursorManager mang;
 	public string cursorTag;
-	
-	void Start () {
+
+	void Start()
+	{
 		mang = GameObject.Find("Cursor Manager").GetComponent<CursorManager>();
 	}
 
-	void OnMouseOver () {
-		if(this.enabled)
+	void OnMouseOver()
+	{
+		if (this.enabled)
 			mang.SendMessage("CursorSet", cursorTag);
 	}
 }

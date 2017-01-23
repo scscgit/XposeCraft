@@ -1,40 +1,38 @@
 using UnityEngine;
-using System.Collections;
 
-public class SeedObjects : MonoBehaviour {
-
+public class SeedObjects : MonoBehaviour
+{
 	public Seed[] obj;
 	UGrid grid;
 	public int gridI;
-	public bool generate = false;
+	public bool generate;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void OnDrawGizmos () {
-		if(!grid)
+	void OnDrawGizmos()
+	{
+		if (!grid)
 			grid = GameObject.Find("UGrid").GetComponent<UGrid>();
-			
-		if(generate){
-			for(int x = 0; x < obj.Length; x++){
+
+		if (generate)
+		{
+			for (int x = 0; x < obj.Length; x++)
+			{
 				GameObject folder = new GameObject();
 				folder.name = "Folder";
-				for(int z = 0; z < obj[x].amount; z++){
+				for (int z = 0; z < obj[x].amount; z++)
+				{
 					int loc = 0;
 					bool viable = false;
-					while(viable == false){
+					while (viable == false)
+					{
 						loc = Random.Range(0, grid.grids[gridI].grid.Length);
 						Vector3 point = grid.grids[gridI].grid[loc].loc;
-						if(point.x >= obj[x].area.x && point.x <= obj[x].area.width && point.z >= obj[x].area.y && point.z <= obj[x].area.height){
+						if (point.x >= obj[x].area.x && point.x <= obj[x].area.width && point.z >= obj[x].area.y &&
+						    point.z <= obj[x].area.height)
+						{
 							viable = true;
 						}
-						else{
-							viable = false;
-						}
-						if(grid.grids[gridI].grid[loc].state == 2){
+						if (grid.grids[gridI].grid[loc].state == 2)
+						{
 							viable = false;
 						}
 					}

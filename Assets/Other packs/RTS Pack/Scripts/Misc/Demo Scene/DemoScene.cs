@@ -22,7 +22,7 @@ public class DemoScene : MonoBehaviour {
 	}
 	void FixedUpdate () {
 		if(state == 0){
-			if(select.curSelectedLength > 0){
+			if(select != null && select.curSelectedLength > 0){
 				state = 1;
 			}
 		}

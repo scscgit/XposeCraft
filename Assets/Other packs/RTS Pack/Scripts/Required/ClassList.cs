@@ -14,7 +14,7 @@ public class SWeapon {
 	public Transform attackSphere;
 	public Transform lookSphere;
 	
-	public void AttackObject (GameObject target, GameObject self, string type, Type selfType) {
+	public void AttackObject (GameObject target, GameObject self, string type, UnitType selfType) {
         if (attackRate + lastAttackTime < Time.time)
         {
 			if(type == "Unit"){
@@ -477,19 +477,19 @@ public class STechBuilding {
 		}
 	}
 	
-	public void CancelProduction (int x, Group g){
+	public void CancelProduction (int x, Faction g){
 		jobs.RemoveAt(x);
 		jobsAmount--;
-		g.tech[jobs[x].index].beingProduced = false;
+		g.Tech[jobs[x].index].beingProduced = false;
 	}
 	
-	public void Produce (Group g) {
+	public void Produce (Faction g) {
 		for(int x = 0; x < canBuildAtOnce; x++){
 			if(x < jobsAmount){
-				g.tech[jobs[x].index].beingProduced = true;
+				g.Tech[jobs[x].index].beingProduced = true;
 				if(jobs[x].Produce()){
-					g.tech[jobs[x].index].active = true;
-					g.tech[jobs[x].index].Researched();
+					g.Tech[jobs[x].index].active = true;
+					g.Tech[jobs[x].index].Researched();
 					jobs.RemoveAt(x);
 					x--;
 					jobsAmount--;
@@ -846,7 +846,7 @@ public class APath {
 }
 
 [System.Serializable]
-public class UPath { 
+public class UPath {
 	public int[] list = new int[0];
 	// TODO Implement functionality for Cost
 	public float cost = 0;
@@ -900,7 +900,7 @@ public class UPath {
 
 
 [System.Serializable]
-public class Type {
+public class UnitType {
 	public string name = "Name";
 	public Ratio[] strengths = new Ratio[0];
 	public Ratio[] weaknesses = new Ratio[0];
@@ -1217,12 +1217,12 @@ public class SUnitBuilding {
 		jobsAmount--;
 	}
 	
-	public void Produce (Group g, int group, UGrid grid, int gridI) {
+	public void Produce (Faction g, int group, UGrid grid, int gridI) {
 		for(int x = 0; x < canBuildAtOnce; x++){
 			if(x < jobsAmount){
 				if(jobs[x].Produce()){
 					Vector3 loc = grid.DetermineNearestPoint(buildLoc.transform.position, buildLoc.transform.position, gridI);
-					GameObject obj = GameObject.Instantiate(g.unitList[jobs[x].groupIndex].obj, loc, Quaternion.identity) as GameObject;
+					GameObject obj = GameObject.Instantiate(g.UnitList[jobs[x].groupIndex].obj, loc, Quaternion.identity) as GameObject;
 					UnitController script = obj.GetComponent<UnitController>();
 					if(script)
 						script.group = group;

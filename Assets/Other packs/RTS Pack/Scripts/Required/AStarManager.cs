@@ -11,7 +11,6 @@ public class AStarManager : MonoBehaviour {
 	List<Vector3> startList;
 	List<GameObject> returnList;
 	int listAmount;
-	UPath[] pathList;
 	public int amountOfThreads;
 	bool[] startedThreads;
 	int passes = 0;
@@ -23,7 +22,7 @@ public class AStarManager : MonoBehaviour {
 	}
 	
 	void Start () {
-		pathList = new UPath[amountOfThreads];
+		//pathList = new UPath[amountOfThreads];
   		targetList = new List<Vector3>();
 		startList = new List<Vector3>();
 		indexList = new List<int>();
