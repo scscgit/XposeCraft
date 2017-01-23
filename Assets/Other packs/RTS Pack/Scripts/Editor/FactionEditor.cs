@@ -250,7 +250,7 @@ public class FactionEditor : EditorWindow {
 				}
 				else{
 					if(GUI.Button(new Rect(200*rect.x,0*rect.y,200*rect.x,750*rect.y), "+")){
-						target.groupList[groupId].AddComponent("Group");
+						target.groupList[groupId].AddComponent<Group>();
 					}
 				}
 			}
@@ -774,7 +774,7 @@ public class FactionEditor : EditorWindow {
 								GUI.DrawTexture(new Rect(767*rect.x, 25*rect.y, 367*rect.x, 20*rect.y), selectionTexture, ScaleMode.StretchToFill);
 								if(myTargetMap == null){
 									if(GUI.Button(new Rect(400*rect.x, 45*rect.y, 1100*rect.x, 705*rect.y), "Add MiniMap Components")){
-										nTarget.unitList[unitId].obj.AddComponent("MiniMapSignal");
+										nTarget.unitList[unitId].obj.AddComponent<MiniMapSignal>();
 									}
 								}
 								else{
@@ -815,7 +815,7 @@ public class FactionEditor : EditorWindow {
 								GUI.DrawTexture(new Rect(1134*rect.x, 25*rect.y, 366*rect.x, 20*rect.y), selectionTexture, ScaleMode.StretchToFill);
 								if(myTargetVision == null){
 									if(GUI.Button(new Rect(400*rect.x, 45*rect.y, 1100*rect.x, 705*rect.y), "Add Vision Components")){
-										nTarget.unitList[unitId].obj.AddComponent("VisionSignal");
+										nTarget.unitList[unitId].obj.AddComponent<VisionSignal>();
 										// Add More Components
 									}
 								}
@@ -1661,7 +1661,7 @@ public class FactionEditor : EditorWindow {
 								GUI.DrawTexture(new Rect(840*rect.x, 25*rect.y, 220*rect.x, 20*rect.y), selectionTexture, ScaleMode.StretchToFill);
 								if(myTargetMap == null){
 									if(GUI.Button(new Rect(400*rect.x, 45*rect.y, 1100*rect.x, 705*rect.y), "Add MiniMap Components")){
-										nTarget.buildingList[unitId].obj.AddComponent("MiniMapSignal");
+										nTarget.buildingList[unitId].obj.AddComponent<MiniMapSignal>();
 									}
 								}
 								else{
@@ -1702,7 +1702,7 @@ public class FactionEditor : EditorWindow {
 								GUI.DrawTexture(new Rect(1060*rect.x, 25*rect.y, 220*rect.x, 20*rect.y), selectionTexture, ScaleMode.StretchToFill);
 								if(myTargetVision == null){
 									if(GUI.Button(new Rect(400*rect.x, 45*rect.y, 1100*rect.x, 705*rect.y), "Add Vision Components")){
-										nTarget.buildingList[unitId].obj.AddComponent("VisionSignal");
+										nTarget.buildingList[unitId].obj.AddComponent<VisionSignal>();
 										// Add More Components
 									}
 								}
