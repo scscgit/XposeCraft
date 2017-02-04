@@ -10,22 +10,22 @@ public class GetGridPointInfo : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        if (snap)
+        if (!snap)
         {
-            int loc = ConvertLoc(transform.position);
-            gridLoc = loc;
-            transform.position = myGrid.grids[gridI].grid[loc].loc;
-            point = myGrid.grids[gridI].grid[loc];
+            return;
         }
+        int loc = ConvertLoc(transform.position);
+        gridLoc = loc;
+        transform.position = myGrid.grids[gridI].grid[loc].loc;
+        point = myGrid.grids[gridI].grid[loc];
     }
 
     public int ConvertLoc(Vector3 point)
     {
-        float xLoc = (point.x - myGrid.grids[gridI].startLoc.x);
-        float zLoc = (point.z - myGrid.grids[gridI].startLoc.z);
+        float xLoc = point.x - myGrid.grids[gridI].startLoc.x;
+        float zLoc = point.z - myGrid.grids[gridI].startLoc.z;
         int x = Mathf.RoundToInt(xLoc / myGrid.grids[gridI].nodeDist);
         int z = Mathf.RoundToInt(zLoc / myGrid.grids[gridI].nodeDist);
-        int loc = x + (z * myGrid.grids[gridI].size);
-        return loc;
+        return x + (z * myGrid.grids[gridI].size);
     }
 }

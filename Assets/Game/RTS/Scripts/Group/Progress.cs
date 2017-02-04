@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Progress : MonoBehaviour
 {
@@ -11,7 +10,7 @@ public class Progress : MonoBehaviour
     public Color color = Color.green;
 
     Camera cam;
-    int cur = 0;
+    int cur;
 
     public void Start()
     {
@@ -28,18 +27,19 @@ public class Progress : MonoBehaviour
         {
             cam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         }
-        Vector2 point = cam.WorldToScreenPoint(new Vector3(transform.position.x, transform.position.y + yIncrease,
+        Vector2 point = cam.WorldToScreenPoint(new Vector3(
+            transform.position.x,
+            transform.position.y + yIncrease,
             transform.position.z));
-        float progressReq = 0;
-        float progressCur = 0;
-        progressReq = build.progressReq;
-        progressCur = build.progressCur;
+        float progressReq = build.progressReq;
+        float progressCur = build.progressCur;
         cur = (int) ((texture.Length - 1) * (progressCur / progressReq));
         if (texture[cur] != null)
         {
             Color originalColor = GUI.color;
             GUI.color = color;
-            GUI.DrawTexture(new Rect(point.x - scale / 2, (Screen.height - point.y) - yScale / 2, scale, yScale),
+            GUI.DrawTexture(
+                new Rect(point.x - scale / 2, (Screen.height - point.y) - yScale / 2, scale, yScale),
                 texture[cur]);
             GUI.color = originalColor;
         }

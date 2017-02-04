@@ -48,13 +48,10 @@ public class CursorManager : MonoBehaviour
             {
                 break;
             }
-            else
+            if (cursor[x].tag == state)
             {
-                if (cursor[x].tag == state)
-                {
-                    curState = state;
-                    break;
-                }
+                curState = state;
+                break;
             }
         }
     }

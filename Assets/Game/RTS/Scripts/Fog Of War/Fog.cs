@@ -59,11 +59,17 @@ public class Fog : MonoBehaviour
     {
         // This is required so that the terrain's mat will be reset after the game ends. This is only for Unity testing issues
         if (!Application.isPlaying)
+        {
             if (terrainMat != null)
+            {
                 terrainMat.SetTexture("_FOWTex", transparentTexture);
+            }
+        }
 
         if (gameObject.name != "Fog")
+        {
             gameObject.name = "Fog";
+        }
     }
 
     void Awake()
@@ -83,7 +89,9 @@ public class Fog : MonoBehaviour
         {
             GameObject obj = GameObject.Find("MiniMap");
             if (obj)
+            {
                 map = obj.GetComponent<MiniMap>();
+            }
         }
         if (map)
         {
@@ -96,7 +104,7 @@ public class Fog : MonoBehaviour
         {
             for (int y = 0; y < length; y++)
             {
-                RaycastHit hit = new RaycastHit();
+                RaycastHit hit;
                 Physics.Raycast(new Vector3(x * disp, 1000, y * disp), Vector3.down, out hit, 10000, terrainLayer);
                 fogHeight[x + y * width] = hit.point.y;
             }
@@ -107,7 +115,9 @@ public class Fog : MonoBehaviour
     {
         // If the function is already running then we don't need to run another function
         if (!funActive)
+        {
             UpdateFog();
+        }
     }
 
     // The main fog function, it is executed whenever the thread is clear
@@ -194,21 +204,22 @@ public class Fog : MonoBehaviour
         }
         for (int x = 0; x < agentsAmount; x++)
         {
-            if (x < locA.Length)
+            if (x >= locA.Length)
             {
-                Vector2 loc = DetermineLoc(locA[x]);
-                int rad = agentsRadius[x];
-                int locX = (int) loc.x;
-                int locY = (int) loc.y;
-                float uslope = agentsUSlope[x];
-                float dslope = agentsDSlope[x];
-                for (int z = -agentsRadius[x]; z <= agentsRadius[x]; z++)
-                {
-                    line(locX, locY, locX + z, locY - rad, rad, ref fogVision, ref fColor, locA[x].y, uslope, dslope);
-                    line(locX, locY, locX + z, locY + rad, rad, ref fogVision, ref fColor, locA[x].y, uslope, dslope);
-                    line(locX, locY, locX - rad, locY + z, rad, ref fogVision, ref fColor, locA[x].y, uslope, dslope);
-                    line(locX, locY, locX + rad, locY + z, rad, ref fogVision, ref fColor, locA[x].y, uslope, dslope);
-                }
+                continue;
+            }
+            Vector2 loc = DetermineLoc(locA[x]);
+            int rad = agentsRadius[x];
+            int locX = (int) loc.x;
+            int locY = (int) loc.y;
+            float uslope = agentsUSlope[x];
+            float dslope = agentsDSlope[x];
+            for (int z = -agentsRadius[x]; z <= agentsRadius[x]; z++)
+            {
+                Line(locX, locY, locX + z, locY - rad, rad, ref fogVision, ref fColor, locA[x].y, uslope, dslope);
+                Line(locX, locY, locX + z, locY + rad, rad, ref fogVision, ref fColor, locA[x].y, uslope, dslope);
+                Line(locX, locY, locX - rad, locY + z, rad, ref fogVision, ref fColor, locA[x].y, uslope, dslope);
+                Line(locX, locY, locX + rad, locY + z, rad, ref fogVision, ref fColor, locA[x].y, uslope, dslope);
             }
         }
         fogColor = fColor;
@@ -217,7 +228,7 @@ public class Fog : MonoBehaviour
     }
 
     // Bresenham's Line Algorithm at work for shadow casting
-    void line(int x, int y, int x2, int y2, int radius, ref int[] fogVision, ref Color32[] fColor, float locY,
+    void Line(int x, int y, int x2, int y2, int radius, ref int[] fogVision, ref Color32[] fColor, float locY,
         float upwardSlopeHeight, float downwardSlopeHeight)
     {
         int orPosX = x;
@@ -325,27 +336,28 @@ public class Fog : MonoBehaviour
     {
         for (int x = 0; x < hideAmount; x++)
         {
-            if (x < locH.Length)
+            if (x >= locH.Length)
             {
-                Vector2 loc = DetermineLoc(locH[x]);
-                int setting = 2;
-                setting = fogVision[(int) (loc.x + loc.y * width)];
-                if (setting != 0)
+                continue;
+            }
+            Vector2 loc = DetermineLoc(locH[x]);
+            int setting = 2;
+            setting = fogVision[(int) (loc.x + loc.y * width)];
+            if (setting != 0)
+            {
+                for (int y = 0; y < hiddenRend[x].anchors.Length; y++)
                 {
-                    for (int y = 0; y < hiddenRend[x].anchors.Length; y++)
+                    if (fogVision[
+                            (int) (loc.x + hiddenRend[x].anchors[y].x +
+                                   (loc.y + hiddenRend[x].anchors[y].y) * width)] < setting)
                     {
-                        if (fogVision[
-                                (int) (loc.x + hiddenRend[x].anchors[y].x +
-                                       (loc.y + hiddenRend[x].anchors[y].y) * width)] < setting)
-                        {
-                            setting = fogVision[
-                                (int) (loc.x + hiddenRend[x].anchors[y].x +
-                                       (loc.y + hiddenRend[x].anchors[y].y) * width)];
-                        }
+                        setting = fogVision[
+                            (int) (loc.x + hiddenRend[x].anchors[y].x +
+                                   (loc.y + hiddenRend[x].anchors[y].y) * width)];
                     }
                 }
-                hideSetting[x] = setting;
             }
+            hideSetting[x] = setting;
         }
     }
 
@@ -367,7 +379,7 @@ public class Fog : MonoBehaviour
         {
             for (int y = -range; y < range; y++)
             {
-                float dist = Mathf.Sqrt((x) * (x) + (y) * (y));
+                float dist = Mathf.Sqrt(x * x + y * y);
                 if (dist <= range)
                 {
                     fogHeight[(int) loc.x + x + ((int) loc.y + y) * width] = height;
@@ -387,21 +399,16 @@ public class Fog : MonoBehaviour
 
     Vector2 DetermineLoc(Vector3 loc)
     {
-        float xLoc = (loc.x - startPos.x);
-        float yLoc = (loc.z - startPos.z);
+        float xLoc = loc.x - startPos.x;
+        float yLoc = loc.z - startPos.z;
         int x = Mathf.RoundToInt(xLoc / disp);
         int y = Mathf.RoundToInt(yLoc / disp);
-        Vector2 nLoc = new Vector2(x, y);
-        return nLoc;
+        return new Vector2(x, y);
     }
 
     public bool CheckLocation(Vector3 loc)
     {
         Vector2 point = DetermineLoc(loc);
-        if (fogColor[(int) point.x + ((int) point.y) * width] == hidden)
-        {
-            return false;
-        }
-        return true;
+        return fogColor[(int) point.x + ((int) point.y) * width] != hidden;
     }
 }

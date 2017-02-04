@@ -96,31 +96,24 @@ public class BuildingController : MonoBehaviour
         {
             Place();
         }
-        if (buildingType == BuildingType.CompleteBuilding)
+        if (buildingType != BuildingType.CompleteBuilding)
         {
-            if (unitProduction.canProduce)
-            {
-                unitProduction.Produce(g, group, grid, gridI);
-            }
-            if (techProduction.canProduce)
-            {
-                techProduction.Produce(g);
-            }
+            return;
+        }
+        if (unitProduction.canProduce)
+        {
+            unitProduction.Produce(g, group, grid, gridI);
+        }
+        if (techProduction.canProduce)
+        {
+            techProduction.Produce(g);
         }
     }
 
     public void Select(bool state, int index)
     {
-        if (index == 0)
-        {
-            selected = state;
-            //displayGUI = state;
-        }
-        else
-        {
-            selected = state;
-            //displayGUI = false;
-        }
+        selected = state;
+        //displayGUI = index == 0 ? state : false;
     }
 
     public void Place()
@@ -151,7 +144,7 @@ public class BuildingController : MonoBehaviour
         health = health - damage;
         if (health <= 0)
         {
-            building.OpenPoints(GameObject.Find("UGrid").GetComponent<UGrid>(), gridI, loc);
+            building.OpenPoints(grid, gridI, loc);
             Destroy(gameObject);
         }
     }
@@ -170,53 +163,57 @@ public class BuildingController : MonoBehaviour
         int y1 = 0;
         for (int x = 0; x < unitProduction.units.Length; x++)
         {
-            if (unitProduction.units[x].canProduce)
+            if (!unitProduction.units[x].canProduce)
             {
-                if (bGUI.unitGUI.Display(x1, y1, unitProduction.units[x].customName,
-                    unitProduction.units[x].customTexture, ratioX,
-                    ratioY))
-                {
-                    unitProduction.StartProduction(x);
-                }
-                if (bGUI.unitGUI.contains)
-                {
-                    manager.mouseOverGUI = true;
-                    manager.mouseOverUnitProduction = true;
-                    manager.unitProductionIndex = x;
-                }
-                x1++;
-                if (x1 >= bGUI.unitGUI.buttonPerRow)
-                {
-                    x1 = 0;
-                    y1++;
-                }
+                continue;
             }
+            if (bGUI.unitGUI.Display(x1, y1, unitProduction.units[x].customName,
+                unitProduction.units[x].customTexture, ratioX,
+                ratioY))
+            {
+                unitProduction.StartProduction(x);
+            }
+            if (bGUI.unitGUI.contains)
+            {
+                manager.mouseOverGUI = true;
+                manager.mouseOverUnitProduction = true;
+                manager.unitProductionIndex = x;
+            }
+            x1++;
+            if (x1 < bGUI.unitGUI.buttonPerRow)
+            {
+                continue;
+            }
+            x1 = 0;
+            y1++;
         }
         x1 = 0;
         y1 = 0;
         for (int x = 0; x < techProduction.techs.Length; x++)
         {
-            if (techProduction.techs[x].canProduce && !g.Tech[techProduction.techs[x].index].beingProduced)
+            if (!techProduction.techs[x].canProduce || g.Tech[techProduction.techs[x].index].beingProduced)
             {
-                if (bGUI.technologyGUI.Display(x1, y1, techProduction.techs[x].customName,
-                    techProduction.techs[x].customTexture,
-                    ratioX, ratioY))
-                {
-                    techProduction.StartProduction(x);
-                }
-                if (bGUI.technologyGUI.contains)
-                {
-                    manager.mouseOverGUI = true;
-                    manager.mouseOverTechProduction = true;
-                    manager.techProductionIndex = x;
-                }
-                x1++;
-                if (x1 >= bGUI.technologyGUI.buttonPerRow)
-                {
-                    x1 = 0;
-                    y1++;
-                }
+                continue;
             }
+            if (bGUI.technologyGUI.Display(x1, y1, techProduction.techs[x].customName,
+                techProduction.techs[x].customTexture,
+                ratioX, ratioY))
+            {
+                techProduction.StartProduction(x);
+            }
+            if (bGUI.technologyGUI.contains)
+            {
+                manager.mouseOverGUI = true;
+                manager.mouseOverTechProduction = true;
+                manager.techProductionIndex = x;
+            }
+            x1++;
+            if (x1 < bGUI.technologyGUI.buttonPerRow)
+            {
+                continue;
+            }
+            x1 = 0;
+            y1++;
         }
         x1 = 0;
         y1 = 0;
@@ -233,11 +230,12 @@ public class BuildingController : MonoBehaviour
                 manager.mouseOverGUI = true;
             }
             x1++;
-            if (x1 >= bGUI.jobsGUI.buttonPerRow)
+            if (x1 < bGUI.jobsGUI.buttonPerRow)
             {
-                x1 = 0;
-                y1++;
+                continue;
             }
+            x1 = 0;
+            y1++;
         }
         for (int x = 0; x < techProduction.jobsAmount; x++)
         {
@@ -252,11 +250,12 @@ public class BuildingController : MonoBehaviour
                 manager.mouseOverGUI = true;
             }
             x1++;
-            if (x1 >= bGUI.jobsGUI.buttonPerRow)
+            if (x1 < bGUI.jobsGUI.buttonPerRow)
             {
-                x1 = 0;
-                y1++;
+                continue;
             }
+            x1 = 0;
+            y1++;
         }
     }
 

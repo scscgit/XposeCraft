@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class DemoScene : MonoBehaviour
 {
     public GUISkin skin;
-    public GameObject siloTemplate = null;
+    public GameObject siloTemplate;
 
     string[] displayText =
     {
@@ -17,7 +16,7 @@ public class DemoScene : MonoBehaviour
         ""
     };
 
-    int state = 0;
+    int state;
     public UnitSelection select;
 
     void OnGUI()

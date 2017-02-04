@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -13,7 +12,8 @@ public class AStarManager : MonoBehaviour
     int listAmount;
     public int amountOfThreads;
     bool[] startedThreads;
-    int passes = 0;
+
+    //int passes;
 
     void OnDrawGizmos()
     {
@@ -34,66 +34,58 @@ public class AStarManager : MonoBehaviour
         UGrid gridScript = GameObject.Find("UGrid").GetComponent<UGrid>();
         for (int x = 0; x < apath.Length; x++)
         {
-            apath[x] = new APath();
-            apath[x].gridScript = gridScript;
+            apath[x] = new APath {gridScript = gridScript};
         }
         startedThreads = new bool[amountOfThreads];
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
-        passes++;
+        //passes++;
         int startListAmount = listAmount;
         for (int x = 0; x < amountOfThreads; x++)
         {
-            if (x < startListAmount)
+            if (x < startListAmount && !startedThreads[x])
             {
-                if (!startedThreads[x])
-                {
-                    Vector3 loc = startList[x];
-                    Vector3 loc1 = targetList[x];
-                    apath[x].myPath = null;
-                    apath[x].start = loc;
-                    apath[x].gridI = indexList[x];
-                    apath[x].end = loc1;
-                    apath[x].generate = true;
-                    apath[x].index = returnList[x].name;
-                    ThreadPool.QueueUserWorkItem(new WaitCallback(apath[x].FindMTPath));
-                    startedThreads[x] = true;
-                }
+                Vector3 loc = startList[x];
+                Vector3 loc1 = targetList[x];
+                apath[x].myPath = null;
+                apath[x].start = loc;
+                apath[x].gridI = indexList[x];
+                apath[x].end = loc1;
+                apath[x].generate = true;
+                apath[x].index = returnList[x].name;
+                ThreadPool.QueueUserWorkItem(apath[x].FindMTPath);
+                startedThreads[x] = true;
             }
         }
-        int y = 0;
-        bool allDone = true;
         for (int x = 0; x < amountOfThreads; x++)
         {
             if (apath[x].generate)
             {
-                allDone = false;
+                return;
             }
         }
-        if (allDone)
-        {
-            for (int x = 0; x < amountOfThreads; x++)
-            {
-                if (startedThreads[x] && !apath[x].generate)
-                {
-                    if (x < startListAmount)
-                    {
-                        returnList[y].GetComponent<UnitMovement>().myPath = apath[x].myPath;
-                        returnList.RemoveAt(y);
-                        targetList.RemoveAt(y);
-                        indexList.RemoveAt(y);
-                        startList.RemoveAt(y);
 
-                        listAmount--;
-                        startedThreads[x] = false;
-                        y--;
-                    }
+        int y = 0;
+        for (int x = 0; x < amountOfThreads; x++)
+        {
+            if (startedThreads[x] && !apath[x].generate)
+            {
+                if (x < startListAmount)
+                {
+                    returnList[y].GetComponent<UnitMovement>().myPath = apath[x].myPath;
+                    returnList.RemoveAt(y);
+                    targetList.RemoveAt(y);
+                    indexList.RemoveAt(y);
+                    startList.RemoveAt(y);
+
+                    listAmount--;
+                    startedThreads[x] = false;
+                    y--;
                 }
-                y++;
             }
+            y++;
         }
     }
 

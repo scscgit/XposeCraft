@@ -1,21 +1,16 @@
 using UnityEngine;
-using System.Collections;
 
 public class MiniMapSignal : MonoBehaviour
 {
     public string miniMapTag;
     public bool display;
-    [HideInInspector] public int group = 0;
-    public bool isStatic = false;
+    [HideInInspector] public int group;
+    public bool isStatic;
     VisionReceiver receiver;
 
-    // Use this for initialization
     void Awake()
     {
-        if (GameObject.Find("MiniMap").GetComponent<MiniMap>().AddElement(gameObject, miniMapTag, this, group))
-        {
-        }
-        else
+        if (!GameObject.Find("MiniMap").GetComponent<MiniMap>().AddElement(gameObject, miniMapTag, this, group))
         {
             Debug.Log("MiniMap : Unit Tag : " + miniMapTag + " Not Found");
         }
@@ -25,13 +20,6 @@ public class MiniMapSignal : MonoBehaviour
     //If the renderer is disabled, the minimap icon will not show up
     void FixedUpdate()
     {
-        if (receiver == null)
-        {
-            display = true;
-        }
-        else
-        {
-            display = (receiver.curState < 2);
-        }
+        display = receiver == null || receiver.curState < 2;
     }
 }

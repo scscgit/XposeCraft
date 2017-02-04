@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class ResourceManager : MonoBehaviour
@@ -7,7 +6,7 @@ public class ResourceManager : MonoBehaviour
     public ResourceType[] resourceTypes;
     public List<GameObject> dropOffPoints;
     public List<bool[]> dropOffTypes = new List<bool[]>(0);
-    public int dropOffAmount = 0;
+    public int dropOffAmount;
 
     public void AddDropOff(GameObject obj, bool[] type)
     {

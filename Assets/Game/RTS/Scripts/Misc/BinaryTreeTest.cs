@@ -1,24 +1,16 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class BinaryTreeTest : MonoBehaviour
 {
-    public bool remove = false;
-    public bool recalculate = false;
-    public int indexChanged = 0;
-    public bool add = false;
-    public int numberToAdd = 0;
-    public int indexToAdd = 0;
-    public int lowestNumber = 0;
+    public bool remove;
+    public bool recalculate;
+    public int indexChanged;
+    public bool add;
+    public int numberToAdd;
+    public int indexToAdd;
+    public int lowestNumber;
     public BinaryHeap heap;
 
-
-    // Use this for initialization
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
     void OnDrawGizmos()
     {
         if (add)

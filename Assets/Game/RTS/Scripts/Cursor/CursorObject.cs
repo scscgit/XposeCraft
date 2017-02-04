@@ -13,6 +13,8 @@ public class CursorObject : MonoBehaviour
     void OnMouseOver()
     {
         if (this.enabled)
+        {
             mang.SendMessage("CursorSet", cursorTag);
+        }
     }
 }

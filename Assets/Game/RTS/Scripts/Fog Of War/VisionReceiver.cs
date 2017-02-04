@@ -38,66 +38,70 @@ public class VisionReceiver : MonoBehaviour
         {
             cursorObj = gameObject.GetComponent<CursorObject>();
             if (cursorObj == null)
+            {
                 hideCursorIcon = false;
+            }
         }
     }
 
     public void SetRenderer(int state)
     {
         curState = state;
-        // In Vision
-        if (state == 0)
+        switch (state)
         {
-            for (int x = 0; x < renderers.Length; x++)
-            {
-                if (x == 0 && renderers[x].material.color == defaultMat[x] && renderers[x].enabled)
-                    break;
-                else
+            // In Vision
+            case 0:
+                for (int x = 0; x < renderers.Length; x++)
                 {
+                    if (x == 0 && renderers[x].material.color == defaultMat[x] && renderers[x].enabled)
+                    {
+                        break;
+                    }
                     renderers[x].material.color = defaultMat[x];
                     renderers[x].enabled = true;
                     if (hideCursorIcon)
+                    {
                         cursorObj.enabled = true;
+                    }
                 }
-            }
-        }
-        // Discovered
-        else if (state == 1)
-        {
-            for (int x = 0; x < renderers.Length; x++)
-            {
-                if (x == 0 && renderers[x].material.color == pastVisibleMat[x] && renderers[x].enabled)
-                    break;
-                else
+                break;
+            // Discovered
+            case 1:
+                for (int x = 0; x < renderers.Length; x++)
                 {
+                    if (x == 0 && renderers[x].material.color == pastVisibleMat[x] && renderers[x].enabled)
+                    {
+                        break;
+                    }
                     if (pastVisibleMat.Length > x)
+                    {
                         renderers[x].material.color = pastVisibleMat[x];
-                    if (hideObjectWhenNotSeen)
-                        renderers[x].enabled = false;
-                    else
-                        renderers[x].enabled = true;
+                    }
+                    renderers[x].enabled = !hideObjectWhenNotSeen;
                     if (hideCursorIcon)
+                    {
                         cursorObj.enabled = true;
+                    }
                 }
-            }
-        }
-        // Undiscovered
-        else
-        {
-            for (int x = 0; x < renderers.Length; x++)
-            {
-                if (x == 0 && !renderers[x].enabled)
-                    break;
-                else
+                break;
+            // Undiscovered
+            default:
+                for (int x = 0; x < renderers.Length; x++)
                 {
+                    if (x == 0 && !renderers[x].enabled)
+                    {
+                        break;
+                    }
                     if (hideObject)
                     {
                         renderers[x].enabled = false;
                     }
                     if (hideCursorIcon)
+                    {
                         cursorObj.enabled = false;
+                    }
                 }
-            }
+                break;
         }
     }
 }

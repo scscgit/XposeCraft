@@ -1,13 +1,12 @@
 using UnityEngine;
-using System.Collections;
 
 public class ResourceSource : MonoBehaviour
 {
-    public int resourceIndex = 0;
-    public int amount = 0;
-    public bool deleteWhenExhausted = false;
+    public int resourceIndex;
+    public int amount;
+    public bool deleteWhenExhausted;
     public int closeSize = 1;
-    public int gridI = 0;
+    public int gridI;
 
     public void Start()
     {
@@ -21,13 +20,11 @@ public class ResourceSource : MonoBehaviour
             amount = amount - rAmount;
             return rAmount;
         }
-        else
-        {
-            amount = 0;
-            OpenPoints();
-            Destroy(gameObject);
-            return amount;
-        }
+
+        amount = 0;
+        OpenPoints();
+        Destroy(gameObject);
+        return amount;
     }
 
     public void OpenPoints()

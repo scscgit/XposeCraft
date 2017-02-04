@@ -12,15 +12,14 @@ public class UGridFindPoint : EditorWindow
     [MenuItem("Window/Grid Find Point")]
     static void Init()
     {
-        EditorWindow.GetWindow(typeof(UGridFindPoint));
+        GetWindow(typeof(UGridFindPoint));
     }
 
     void OnGUI()
     {
         if (findPoint == null)
         {
-            findPoint = new GameObject();
-            findPoint.name = "Find Point";
+            findPoint = new GameObject {name = "Find Point"};
             pointCube = findPoint.AddComponent<DrawCube>();
         }
         if (grid == null)
@@ -38,13 +37,10 @@ public class UGridFindPoint : EditorWindow
                                 ", Z : " + grid.grids[index].grid[loc].loc.z);
             }
         }
-        if (index < grid.grids.Length)
+        if (index < grid.grids.Length && loc < grid.grids[index].grid.Length)
         {
-            if (loc < grid.grids[index].grid.Length)
-            {
-                findPoint.transform.position = grid.grids[index].grid[loc].loc;
-                pointCube.index = index;
-            }
+            findPoint.transform.position = grid.grids[index].grid[loc].loc;
+            pointCube.index = index;
         }
     }
 }

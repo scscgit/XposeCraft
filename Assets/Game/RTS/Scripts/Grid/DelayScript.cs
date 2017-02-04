@@ -24,12 +24,13 @@ public class DelayScript : MonoBehaviour
 
     public void Update()
     {
-        if (clearDelayAmount == total * increment + amountCur)
+        if (clearDelayAmount != total * increment + amountCur)
         {
-            amountCur = 0;
-            total = 0;
-            clearDelayAmount = 0;
+            return;
         }
+        amountCur = 0;
+        total = 0;
+        clearDelayAmount = 0;
     }
 
     public void ClearDelay()

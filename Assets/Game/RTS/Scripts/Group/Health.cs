@@ -31,10 +31,12 @@ public class Health : MonoBehaviour
         {
             cam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         }
-        Vector2 point = cam.WorldToScreenPoint(new Vector3(transform.position.x, transform.position.y + yIncrease,
+        Vector2 point = cam.WorldToScreenPoint(new Vector3(
+            transform.position.x,
+            transform.position.y + yIncrease,
             transform.position.z));
-        int maxHealth = 0;
-        int health = 0;
+        int maxHealth;
+        int health;
         if (state == 0)
         {
             maxHealth = unit.maxHealth;
@@ -45,7 +47,7 @@ public class Health : MonoBehaviour
             maxHealth = build.maxHealth;
             health = build.health;
         }
-        int widthSubtraction = (int) (scale / 2);
+        int widthSubtraction = scale / 2;
         DisplayGUI(point, maxHealth, health, widthSubtraction);
     }
 
@@ -53,20 +55,31 @@ public class Health : MonoBehaviour
     {
         if (backgroundBar != null)
         {
-            GUI.DrawTexture(new Rect(point.x - widthSubtraction, Screen.height - point.y, scale * ((float) 1), yScale),
+            GUI.DrawTexture(
+                new Rect(point.x - widthSubtraction,
+                    Screen.height - point.y,
+                    scale * ((float) 1),
+                    yScale),
                 backgroundBar);
         }
         if (healthBar != null)
         {
             GUI.DrawTexture(
-                new Rect(point.x - widthSubtraction, Screen.height - point.y, scale * ((float) health / maxHealth),
-                    yScale), healthBar);
+                new Rect(
+                    point.x - widthSubtraction,
+                    Screen.height - point.y,
+                    scale * ((float) health / maxHealth),
+                    yScale),
+                healthBar);
         }
         for (int x = 0; x < element.Length; x++)
         {
             GUI.DrawTexture(
-                new Rect(point.x + element[x].loc.x - widthSubtraction, Screen.height - (point.y + element[x].loc.y),
-                    element[x].loc.width, element[x].loc.height), element[x].image);
+                new Rect(point.x + element[x].loc.x - widthSubtraction,
+                    Screen.height - (point.y + element[x].loc.y),
+                    element[x].loc.width,
+                    element[x].loc.height),
+                element[x].image);
         }
     }
 }

@@ -1,6 +1,4 @@
 using UnityEngine;
-using System.Collections;
-
 
 [RequireComponent(typeof(UnitMovement))]
 [RequireComponent(typeof(Animator))]
@@ -13,7 +11,7 @@ public class UnitController : MonoBehaviour
     public int health = 100;
     public int group;
     Faction mGroup;
-    int index = 0;
+    int index;
     public UnitType type;
     public SWeapon weapon = new SWeapon();
     public SBuild build = new SBuild();
@@ -23,7 +21,7 @@ public class UnitController : MonoBehaviour
     public SRatio[] ratio;
     public TechEffect[] techEffect = new TechEffect[0];
     Resources[] cost;
-    bool selected = false;
+    bool selected;
     public VisionSignal vision;
     public MiniMapSignal miniMap;
     public UnitMovement movement;
@@ -72,14 +70,15 @@ public class UnitController : MonoBehaviour
                 anim.source.loop = true;
             }
         }
-        if (weapon.fighterUnit)
+        if (!weapon.fighterUnit)
         {
-            if (weapon.attackSphere == null || weapon.lookSphere == null)
-            {
-                weapon.RangeSpheres(gameObject);
-            }
-            weapon.CheckSpheres();
+            return;
         }
+        if (weapon.attackSphere == null || weapon.lookSphere == null)
+        {
+            weapon.RangeSpheres(gameObject);
+        }
+        weapon.CheckSpheres();
     }
 
     void Start()
@@ -121,237 +120,225 @@ public class UnitController : MonoBehaviour
         {
             targetType = Target.None;
         }
-        if (targetType == Target.None && anim.state != "Idle")
+        switch (targetType)
         {
-            anim.state = "Idle";
-            anim.Animate();
-        }
-        else if (targetType == Target.Resource)
-        {
-            if (resource.source == null)
-            {
-                resource.source = target.GetComponent<ResourceSource>();
-                resource.target = target;
-            }
-            else if (resource.source.gameObject != target)
-            {
-                resource.source = target.GetComponent<ResourceSource>();
-                resource.target = target;
-            }
-            if (movement.pathComplete)
-            {
-                transform.LookAt(new Vector3(target.transform.position.x, transform.position.y,
-                    target.transform.position.z));
-
-                if (anim.state != "Gather")
+            case Target.None:
+                if (anim.state != "Idle")
                 {
-                    anim.state = "Gather";
+                    anim.state = "Idle";
                     anim.Animate();
                 }
-                if (resource.Gather(this, gameObject))
+                break;
+            case Target.Resource:
+                if (resource.source == null)
                 {
+                    resource.source = target.GetComponent<ResourceSource>();
+                    resource.target = target;
                 }
-                else
+                else if (resource.source.gameObject != target)
+                {
+                    resource.source = target.GetComponent<ResourceSource>();
+                    resource.target = target;
+                }
+                if (movement.pathComplete)
+                {
+                    transform.LookAt(new Vector3(
+                        target.transform.position.x,
+                        transform.position.y,
+                        target.transform.position.z));
+
+                    if (anim.state != "Gather")
+                    {
+                        anim.state = "Gather";
+                        anim.Animate();
+                    }
+                    if (!resource.Gather(this, gameObject))
+                    {
+                        ResetTarget();
+                    }
+                }
+                else if (anim.state != "Move")
+                {
+                    anim.state = "Move";
+                    anim.Animate();
+                }
+                break;
+            case Target.Unit:
+                if (movement.pathComplete)
+                {
+                    transform.LookAt(new Vector3(
+                        target.transform.position.x,
+                        transform.position.y,
+                        target.transform.position.z));
+                    if (!weapon.InRange(target.transform.position, transform.position))
+                    {
+                        if (anim.state != "Move")
+                        {
+                            anim.state = "Move";
+                            anim.Animate();
+                        }
+                        movement.target = target.transform.position;
+                        movement.GetPath(target.transform.position);
+                        //lastTargetPoint = target.transform.position;
+                    }
+                    switch (tState)
+                    {
+                        case TargetState.Undecided:
+                            UnitController targetController = target.GetComponent<UnitController>();
+                            switch (mGroup.Relations[targetController.group].state)
+                            {
+                                case 0:
+                                    tState = TargetState.Ally;
+                                    break;
+                                case 1:
+                                    tState = TargetState.Neutral;
+                                    break;
+                                case 2:
+                                    tState = TargetState.Enemy;
+                                    break;
+                                case 3:
+                                    tState = TargetState.Self;
+                                    break;
+                            }
+                            break;
+                        case TargetState.Ally:
+                            break;
+                        case TargetState.Neutral:
+                            // I haven't quite figured out what to do here so I recommend against setting anything to neutral at this moment
+                            break;
+                        case TargetState.Enemy:
+                            weapon.AttackObject(target, gameObject, "Unit", type);
+                            if (weapon.fighterUnit && anim.state != "Attack")
+                            {
+                                anim.state = "Attack";
+                                anim.Animate();
+                            }
+                            break;
+                    }
+                }
+                else if (anim.state != "Move")
+                {
+                    anim.state = "Move";
+                    anim.Animate();
+                }
+                if (weapon.InRange(target.transform.position, transform.position))
+                {
+                    movement.pathComplete = true;
+                }
+                break;
+            case Target.Location:
+                if (movement.pathComplete)
                 {
                     ResetTarget();
                 }
-            }
-            else if (anim.state != "Move")
-            {
-                anim.state = "Move";
-                anim.Animate();
-            }
-        }
-        else if (targetType == Target.Unit)
-        {
-            if (movement.pathComplete)
-            {
-                transform.LookAt(new Vector3(target.transform.position.x, transform.position.y,
-                    target.transform.position.z));
-                if (!weapon.InRange(target.transform.position, transform.position))
+                else if (anim.state != "Move")
                 {
-                    if (anim.state != "Move")
-                    {
-                        anim.state = "Move";
-                        anim.Animate();
-                    }
-                    movement.target = target.transform.position;
-                    movement.GetPath(target.transform.position);
-                    //lastTargetPoint = target.transform.position;
+                    anim.state = "Move";
+                    anim.Animate();
                 }
-                else
+                break;
+            case Target.Build:
+                if ((transform.position - target.transform.position).sqrMagnitude < build.buildDist)
                 {
+                    movement.pathComplete = true;
                 }
-                if (tState == TargetState.Undecided)
+                if (movement.pathComplete)
                 {
-                    UnitController targetController = target.GetComponent<UnitController>();
-                    if (mGroup.Relations[targetController.group].state == 0)
+                    transform.LookAt(new Vector3(
+                        target.transform.position.x,
+                        transform.position.y,
+                        target.transform.position.z));
+                    if (tState == TargetState.Undecided)
                     {
-                        tState = TargetState.Ally;
-                    }
-                    else if (mGroup.Relations[targetController.group].state == 1)
-                    {
-                        tState = TargetState.Neutral;
-                    }
-                    else if (mGroup.Relations[targetController.group].state == 2)
-                    {
-                        tState = TargetState.Enemy;
-                    }
-                    else if (mGroup.Relations[targetController.group].state == 3)
-                    {
-                        tState = TargetState.Self;
-                    }
-                }
-                else if (tState == TargetState.Ally)
-                {
-                }
-                else if (tState == TargetState.Neutral)
-                {
-                    // I haven't quite figured out what to do here so I recommend against setting anything to neutral at this moment
-                }
-                else if (tState == TargetState.Enemy)
-                {
-                    weapon.AttackObject(target, gameObject, "Unit", type);
-                    if (weapon.fighterUnit && anim.state != "Attack")
-                    {
-                        anim.state = "Attack";
-                        anim.Animate();
-                    }
-                }
-            }
-            else if (anim.state != "Move")
-            {
-                anim.state = "Move";
-                anim.Animate();
-            }
-            if (weapon.InRange(target.transform.position, transform.position))
-            {
-                movement.pathComplete = true;
-            }
-        }
-        else if (targetType == Target.Location)
-        {
-            if (movement.pathComplete)
-            {
-                ResetTarget();
-            }
-            else if (anim.state != "Move")
-            {
-                anim.state = "Move";
-                anim.Animate();
-            }
-        }
-        else if (targetType == Target.Build)
-        {
-            float dist = (transform.position - target.transform.position).sqrMagnitude;
-            if (dist < build.buildDist)
-            {
-                movement.pathComplete = true;
-            }
-            if (movement.pathComplete)
-            {
-                transform.LookAt(new Vector3(target.transform.position.x, transform.position.y,
-                    target.transform.position.z));
-                if (tState == TargetState.Undecided)
-                {
-                    BuildingController targetController = target.GetComponent<BuildingController>();
-                    if (mGroup.Relations[targetController.group].state == 0)
-                    {
-                        tState = TargetState.Ally;
-                    }
-                    else if (mGroup.Relations[targetController.group].state == 1)
-                    {
-                        tState = TargetState.Neutral;
-                    }
-                    else if (mGroup.Relations[targetController.group].state == 2)
-                    {
-                        tState = TargetState.Enemy;
-                    }
-                    else if (mGroup.Relations[targetController.group].state == 3)
-                    {
-                        tState = TargetState.Self;
-                    }
-                }
-                if (tState == TargetState.Self)
-                {
-                    if (build.source == null)
-                    {
-                        build.source = target.GetComponent<BuildingController>();
-                    }
-                    else if (build.source.gameObject != target)
-                    {
-                        build.source = target.GetComponent<BuildingController>();
-                    }
-                    else
-                    {
-                        if (build.Build())
+                        BuildingController targetController = target.GetComponent<BuildingController>();
+                        switch (mGroup.Relations[targetController.group].state)
                         {
-                            if (anim.state != "Build")
+                            case 0:
+                                tState = TargetState.Ally;
+                                break;
+                            case 1:
+                                tState = TargetState.Neutral;
+                                break;
+                            case 2:
+                                tState = TargetState.Enemy;
+                                break;
+                            case 3:
+                                tState = TargetState.Self;
+                                break;
+                        }
+                    }
+                    switch (tState)
+                    {
+                        case TargetState.Self:
+                            if (build.source == null)
                             {
-                                anim.state = "Build";
+                                build.source = target.GetComponent<BuildingController>();
+                            }
+                            else if (build.source.gameObject != target)
+                            {
+                                build.source = target.GetComponent<BuildingController>();
+                            }
+                            else
+                            {
+                                if (build.Build())
+                                {
+                                    if (anim.state != "Build")
+                                    {
+                                        anim.state = "Build";
+                                        anim.Animate();
+                                    }
+                                }
+                                else
+                                {
+                                    ResetTarget();
+                                }
+                            }
+                            break;
+                        case TargetState.Enemy:
+                            weapon.AttackObject(target, gameObject, "Building", type);
+                            if (anim.state != "Attack")
+                            {
+                                anim.state = "Attack";
                                 anim.Animate();
                             }
-                        }
-                        else
-                        {
-                            ResetTarget();
-                        }
+                            break;
                     }
                 }
-                else if (tState == TargetState.Enemy)
+                else if (anim.state != "Move")
                 {
-                    weapon.AttackObject(target, gameObject, "Building", type);
-                    if (anim.state != "Attack")
-                    {
-                        anim.state = "Attack";
-                        anim.Animate();
-                    }
+                    anim.state = "Move";
+                    anim.Animate();
                 }
-            }
-            else if (anim.state != "Move")
-            {
-                anim.state = "Move";
-                anim.Animate();
-            }
-        }
-        else if (targetType == Target.DropOff)
-        {
-            float dist = (transform.position - target.transform.position).sqrMagnitude;
-            if (dist < build.buildDist)
-            {
-                movement.pathComplete = true;
-            }
-            if (movement.pathComplete)
-            {
-                transform.LookAt(new Vector3(target.transform.position.x, transform.position.y,
-                    target.transform.position.z));
-                resource.DropOff(this);
-            }
-            else if (anim.state != "Move")
-            {
-                anim.state = "Move";
-                anim.Animate();
-            }
+                break;
+            case Target.DropOff:
+                if ((transform.position - target.transform.position).sqrMagnitude < build.buildDist)
+                {
+                    movement.pathComplete = true;
+                }
+                if (movement.pathComplete)
+                {
+                    transform.LookAt(
+                        new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z));
+                    resource.DropOff(this);
+                }
+                else if (anim.state != "Move")
+                {
+                    anim.state = "Move";
+                    anim.Animate();
+                }
+                break;
         }
     }
 
     public int DetermineRelations(int g)
     {
-        if (mGroup != null)
-        {
-            if (g != group)
-            {
-                return mGroup.Relations[g].state;
-            }
-            else
-            {
-                return 3;
-            }
-        }
-        else
+        if (mGroup == null)
         {
             return 3;
         }
+        return g != group
+            ? mGroup.Relations[g].state
+            : 3;
     }
 
     public void Damage(UnitType nType, int attackDamage)
@@ -399,25 +386,23 @@ public class UnitController : MonoBehaviour
         target = nTarget;
         targetPoint = nTargetPoint;
         //lastTargetPoint = nTargetPoint;
-        if (nTargetType == "Unit")
+        switch (nTargetType)
         {
-            targetType = Target.Unit;
-        }
-        else if (nTargetType == "Resource")
-        {
-            targetType = Target.Resource;
-        }
-        else if (nTargetType == "Location")
-        {
-            targetType = Target.Location;
-        }
-        else if (nTargetType == "Building")
-        {
-            targetType = Target.Build;
-        }
-        else if (nTargetType == "DropOff")
-        {
-            targetType = Target.DropOff;
+            case "Unit":
+                targetType = Target.Unit;
+                break;
+            case "Resource":
+                targetType = Target.Resource;
+                break;
+            case "Location":
+                targetType = Target.Location;
+                break;
+            case "Building":
+                targetType = Target.Build;
+                break;
+            case "DropOff":
+                targetType = Target.DropOff;
+                break;
         }
         movement.target = nTargetPoint;
         movement.GetPath(targetPoint);
@@ -432,15 +417,14 @@ public class UnitController : MonoBehaviour
 
     public void SphereSignal(int type, GameObject obj)
     {
-        if (weapon.fighterUnit)
+        if (!weapon.fighterUnit
+            || targetType != Target.Location && targetType != Target.None && targetType != Target.Resource)
         {
-            if (targetType == Target.Location || targetType == Target.None || targetType == Target.Resource)
-            {
-                target = obj;
-                targetPoint = obj.transform.position;
-                targetType = Target.Unit;
-            }
+            return;
         }
+        target = obj;
+        targetPoint = obj.transform.position;
+        targetType = Target.Unit;
     }
 
 
@@ -827,14 +811,7 @@ public class UnitController : MonoBehaviour
 
     public int GetSpeed()
     {
-        if (movement != null)
-        {
-            return movement.speed;
-        }
-        else
-        {
-            return 0;
-        }
+        return movement != null ? movement.speed : 0;
     }
 
     public void SetSpeed(float nVal)
@@ -865,14 +842,7 @@ public class UnitController : MonoBehaviour
 
     public int GetRotateSpeed()
     {
-        if (movement != null)
-        {
-            return movement.rotateSpeed;
-        }
-        else
-        {
-            return 0;
-        }
+        return movement != null ? movement.rotateSpeed : 0;
     }
 
     public void SetRotateSpeed(float nVal)
@@ -903,14 +873,7 @@ public class UnitController : MonoBehaviour
 
     public string GetMiniMapTag()
     {
-        if (miniMap != null)
-        {
-            return miniMap.miniMapTag;
-        }
-        else
-        {
-            return "";
-        }
+        return miniMap != null ? miniMap.miniMapTag : "";
     }
 
     public void SetMiniMapTag(string nVal)
@@ -925,14 +888,7 @@ public class UnitController : MonoBehaviour
 
     public int GetVisionRadius()
     {
-        if (vision != null)
-        {
-            return vision.radius;
-        }
-        else
-        {
-            return 0;
-        }
+        return vision != null ? vision.radius : 0;
     }
 
     public void SetVisionRadius(float nVal)

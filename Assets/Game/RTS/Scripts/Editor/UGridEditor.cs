@@ -33,66 +33,61 @@ public class UGridEditor : Editor
         if (starget.index >= gridList.Length)
         {
             starget.index = 0;
+            return;
         }
-        else
+        EditorGUILayout.BeginHorizontal("");
+        if (GUILayout.Button("Settings"))
         {
-            EditorGUILayout.BeginHorizontal("");
-            if (GUILayout.Button("Settings"))
+            menuSetting = 0;
+        }
+        if (menuSetting == 0)
+        {
+            GUI.DrawTexture(GUILayoutUtility.GetLastRect(), selected);
+        }
+        if (GUILayout.Button("Display"))
+        {
+            menuSetting = 1;
+        }
+        if (menuSetting == 1)
+        {
+            GUI.DrawTexture(GUILayoutUtility.GetLastRect(), selected);
+        }
+        EditorGUILayout.EndHorizontal();
+        int i = starget.index;
+        if (menuSetting == 0)
+        {
+            starget.grids[i].size = EditorGUILayout.IntField("Grid Size : ", starget.grids[i].size);
+            starget.grids[i].nodeDist = EditorGUILayout.FloatField("Node Size : ", starget.grids[i].nodeDist);
+            EditorGUILayout.Space();
+            starget.grids[i].startLoc = EditorGUILayout.Vector3Field("Start Loc : ", starget.grids[i].startLoc);
+            starget.grids[i].octileConnection = EditorGUILayout.Toggle(
+                "Octile Connection : ",
+                starget.grids[i].octileConnection);
+            starget.grids[i].displaceDown = EditorGUILayout.Toggle("Displace Down : ", starget.grids[i].displaceDown);
+            starget.grids[i].checkSlope = EditorGUILayout.Toggle("Check Slope : ", starget.grids[i].checkSlope);
+            if (starget.grids[i].checkSlope)
             {
-                menuSetting = 0;
+                starget.grids[i].slopeMax = EditorGUILayout.FloatField("Slope Max : ", starget.grids[i].slopeMax);
             }
-            if (menuSetting == 0)
-            {
-                GUI.DrawTexture(GUILayoutUtility.GetLastRect(), selected);
-            }
-            if (GUILayout.Button("Display"))
-            {
-                menuSetting = 1;
-            }
-            if (menuSetting == 1)
-            {
-                GUI.DrawTexture(GUILayoutUtility.GetLastRect(), selected);
-            }
-            EditorGUILayout.EndHorizontal();
-            int i = starget.index;
-            if (menuSetting == 0)
-            {
-                starget.grids[i].size = EditorGUILayout.IntField("Grid Size : ", starget.grids[i].size);
-                starget.grids[i].nodeDist = EditorGUILayout.FloatField("Node Size : ", starget.grids[i].nodeDist);
-                EditorGUILayout.Space();
-                starget.grids[i].startLoc = EditorGUILayout.Vector3Field("Start Loc : ", starget.grids[i].startLoc);
-                starget.grids[i].octileConnection =
-                    EditorGUILayout.Toggle("Octile Connection : ", starget.grids[i].octileConnection);
-                starget.grids[i].displaceDown =
-                    EditorGUILayout.Toggle("Displace Down : ", starget.grids[i].displaceDown);
-                starget.grids[i].checkSlope = EditorGUILayout.Toggle("Check Slope : ", starget.grids[i].checkSlope);
-                if (starget.grids[i].checkSlope)
-                {
-                    starget.grids[i].slopeMax = EditorGUILayout.FloatField("Slope Max : ", starget.grids[i].slopeMax);
-                }
-                EditorGUILayout.Space();
-                starget.grids[i].checkLayer =
-                    LayerMaskField("State Check Layers : ", starget.grids[i].checkLayer, true);
-                starget.grids[i].displaceLayer =
-                    LayerMaskField("Displace Layer : ", starget.grids[i].displaceLayer, true);
-            }
-            else if (menuSetting == 1)
-            {
-                starget.grids[i].displayGrid = EditorGUILayout.Toggle("Display Cubes : ", starget.grids[i].displayGrid);
-                starget.grids[i].displayLines =
-                    EditorGUILayout.Toggle("Display Lines : ", starget.grids[i].displayLines);
-            }
-            if (GUILayout.Button("Generate Grid"))
-            {
-                starget.GenerateGrid(starget.index);
-            }
+            EditorGUILayout.Space();
+            starget.grids[i].checkLayer = LayerMaskField("State Check Layers : ", starget.grids[i].checkLayer, true);
+            starget.grids[i].displaceLayer = LayerMaskField("Displace Layer : ", starget.grids[i].displaceLayer, true);
+        }
+        else if (menuSetting == 1)
+        {
+            starget.grids[i].displayGrid = EditorGUILayout.Toggle("Display Cubes : ", starget.grids[i].displayGrid);
+            starget.grids[i].displayLines = EditorGUILayout.Toggle("Display Lines : ", starget.grids[i].displayLines);
+        }
+        if (GUILayout.Button("Generate Grid"))
+        {
+            starget.GenerateGrid(starget.index);
         }
     }
 
     public static LayerMask LayerMaskField(string label, LayerMask selected, bool showSpecial)
     {
-        if (layers == null || (System.DateTime.Now.Ticks - lastUpdateTick > 10000000L &&
-                               Event.current.type == EventType.Layout))
+        if (layers == null
+            || System.DateTime.Now.Ticks - lastUpdateTick > 10000000L && Event.current.type == EventType.Layout)
         {
             lastUpdateTick = System.DateTime.Now.Ticks;
             if (layers == null)
@@ -114,7 +109,10 @@ public class UGridEditor : Editor
 
                 if (layerName != "")
                 {
-                    for (; emptyLayers > 0; emptyLayers--) layers.Add("Layer " + (i - emptyLayers));
+                    for (; emptyLayers > 0; emptyLayers--)
+                    {
+                        layers.Add("Layer " + (i - emptyLayers));
+                    }
                     layerNumbers.Add(i);
                     layers.Add(layerName);
                 }
@@ -128,7 +126,10 @@ public class UGridEditor : Editor
             {
                 layerNames = new string[layers.Count];
             }
-            for (int i = 0; i < layerNames.Length; i++) layerNames[i] = layers[i];
+            for (int i = 0; i < layerNames.Length; i++)
+            {
+                layerNames[i] = layers[i];
+            }
         }
 
         selected.value = EditorGUILayout.MaskField(label, selected.value, layerNames);

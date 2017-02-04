@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using Object = UnityEngine.Object;
 
-[System.Serializable]
+[Serializable]
 public class SWeapon
 {
     public bool fighterUnit = false;
@@ -17,34 +19,28 @@ public class SWeapon
 
     public void AttackObject(GameObject target, GameObject self, string type, UnitType selfType)
     {
-        if (attackRate + lastAttackTime < Time.time)
+        if (!(attackRate + lastAttackTime < Time.time))
         {
-            if (type == "Unit")
-            {
-                target.GetComponent<UnitController>().Damage(selfType, attackDamage);
-            }
-            else if (type == "Building")
-            {
-                target.GetComponent<BuildingController>().Damage(selfType, attackDamage);
-            }
-            attackObj.transform.position = self.transform.position;
-            attackObj.SetActive(true);
-            attackObj.SendMessage("Attack", target, SendMessageOptions.DontRequireReceiver);
-            lastAttackTime = Time.time;
+            return;
         }
+        switch (type)
+        {
+            case "Unit":
+                target.GetComponent<UnitController>().Damage(selfType, attackDamage);
+                break;
+            case "Building":
+                target.GetComponent<BuildingController>().Damage(selfType, attackDamage);
+                break;
+        }
+        attackObj.transform.position = self.transform.position;
+        attackObj.SetActive(true);
+        attackObj.SendMessage("Attack", target, SendMessageOptions.DontRequireReceiver);
+        lastAttackTime = Time.time;
     }
 
     public bool InRange(Vector3 target, Vector3 self)
     {
-        float dist = (self - target).magnitude;
-        if (dist < attackRange)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (self - target).magnitude < attackRange;
     }
 
     public void RangeSpheres(GameObject self)
@@ -58,28 +54,29 @@ public class SWeapon
             obj.GetComponent<SphereCollider>().isTrigger = true;
             obj.transform.parent = self.transform;
             obj.layer = 2;
-            Component.DestroyImmediate(obj.GetComponent<MeshRenderer>());
+            Object.DestroyImmediate(obj.GetComponent<MeshRenderer>());
             sig = obj.AddComponent<RangeSignal>();
             sig.cont = self.GetComponent<UnitController>();
             sig.type = 0;
             attackSphere = obj.transform;
             attackSphere.localScale = new Vector3(attackRange, attackRange, attackRange);
         }
-        if (lookSphere == null)
+        if (lookSphere != null)
         {
-            obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            obj.name = "Look Range";
-            obj.GetComponent<SphereCollider>().isTrigger = true;
-            obj.transform.parent = self.transform;
-            obj.layer = 2;
-            Component.DestroyImmediate(obj.GetComponent<MeshRenderer>());
-
-            lookSphere = obj.transform;
-            lookSphere.localScale = new Vector3(lookRange, lookRange, lookRange);
-            sig = obj.AddComponent<RangeSignal>();
-            sig.type = 1;
-            sig.cont = self.GetComponent<UnitController>();
+            return;
         }
+        obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        obj.name = "Look Range";
+        obj.GetComponent<SphereCollider>().isTrigger = true;
+        obj.transform.parent = self.transform;
+        obj.layer = 2;
+        Object.DestroyImmediate(obj.GetComponent<MeshRenderer>());
+
+        lookSphere = obj.transform;
+        lookSphere.localScale = new Vector3(lookRange, lookRange, lookRange);
+        sig = obj.AddComponent<RangeSignal>();
+        sig.type = 1;
+        sig.cont = self.GetComponent<UnitController>();
     }
 
     public void CheckSpheres()
@@ -91,7 +88,7 @@ public class SWeapon
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class SAnimSounds
 {
     public Animator manager;
@@ -107,10 +104,13 @@ public class SAnimSounds
 
     public void Animate()
     {
-        if (lastState != state)
+        if (lastState == state)
         {
-            if (state == "Gather")
-            {
+            return;
+        }
+        switch (state)
+        {
+            case "Gather":
                 if (manager)
                 {
                     manager.SetInteger("State", 2);
@@ -120,9 +120,8 @@ public class SAnimSounds
                     source.clip = gatherAudio;
                     source.Play();
                 }
-            }
-            else if (state == "Attack")
-            {
+                break;
+            case "Attack":
                 if (manager)
                 {
                     manager.SetInteger("State", 3);
@@ -132,9 +131,8 @@ public class SAnimSounds
                     source.clip = attackAudio;
                     source.Play();
                 }
-            }
-            else if (state == "Move")
-            {
+                break;
+            case "Move":
                 if (manager)
                 {
                     manager.SetInteger("State", 1);
@@ -144,9 +142,8 @@ public class SAnimSounds
                     source.clip = moveAudio;
                     source.Play();
                 }
-            }
-            else if (state == "Build")
-            {
+                break;
+            case "Build":
                 if (manager)
                 {
                     manager.SetInteger("State", 4);
@@ -156,9 +153,8 @@ public class SAnimSounds
                     source.clip = buildAudio;
                     source.Play();
                 }
-            }
-            else if (state == "Idle")
-            {
+                break;
+            case "Idle":
                 if (manager)
                 {
                     manager.SetInteger("State", 0);
@@ -168,28 +164,28 @@ public class SAnimSounds
                     source.clip = idleAudio;
                     source.Play();
                 }
-            }
-            lastState = state;
+                break;
         }
+        lastState = state;
     }
 
     public void Die(GameObject obj)
     {
         if (deathObject)
         {
-            GameObject.Instantiate(deathObject, obj.transform.position, obj.transform.rotation);
+            Object.Instantiate(deathObject, obj.transform.position, obj.transform.rotation);
         }
-        GameObject.Destroy(obj);
+        Object.Destroy(obj);
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class SResource
 {
     public bool resourceUnit;
     public ResourceBehaviour[] behaviour;
     public ResourceSource source;
-    public int sourceIndex = 0;
+    public int sourceIndex;
     public GameObject target;
     public ResourceManager manager;
     public GameObject nearestDropOff;
@@ -200,103 +196,74 @@ public class SResource
         {
             manager = GameObject.Find("Player Manager").GetComponent<ResourceManager>();
         }
-        if (resourceUnit)
+        if (!resourceUnit || source == null)
         {
-            if (source != null)
+            return false;
+        }
+        sourceIndex = source.resourceIndex;
+        if (!behaviour[sourceIndex].canGather)
+        {
+            return false;
+        }
+        if (!(behaviour[sourceIndex].lastGather + behaviour[sourceIndex].rate < Time.time))
+        {
+            return true;
+        }
+        int amount;
+        behaviour[sourceIndex].lastGather = Time.time;
+        if (behaviour[sourceIndex].returnWhenFull)
+        {
+            int drainAmount = 0;
+            if (drainAmount <= behaviour[sourceIndex].carryCapacity - behaviour[sourceIndex].carrying)
             {
-                sourceIndex = source.resourceIndex;
-                if (behaviour[sourceIndex].canGather)
-                {
-                    if (behaviour[sourceIndex].lastGather + behaviour[sourceIndex].rate < Time.time)
-                    {
-                        int amount = 0;
-                        behaviour[sourceIndex].lastGather = Time.time;
-                        if (behaviour[sourceIndex].returnWhenFull)
-                        {
-                            int drainAmount = 0;
-                            if (drainAmount <= behaviour[sourceIndex].carryCapacity - behaviour[sourceIndex].carrying)
-                            {
-                                drainAmount = behaviour[sourceIndex].amount;
-                            }
-                            else
-                            {
-                                drainAmount = behaviour[sourceIndex].carryCapacity - behaviour[sourceIndex].carrying;
-                            }
-                            amount = source.RequestResource(drainAmount);
-                            if (nearestDropOff == null)
-                            {
-                                FindNearestDropOff(obj);
-                            }
-                            behaviour[sourceIndex].carrying += amount;
-                            if (source == null || behaviour[sourceIndex].carrying >=
-                                behaviour[sourceIndex].carryCapacity)
-                                ReturnToDropOff(cont);
-                        }
-                        else
-                        {
-                            amount = source.RequestResource(behaviour[sourceIndex].amount);
-                            manager.resourceTypes[sourceIndex].amount += amount;
-                        }
-                        if (amount > 0)
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        return true;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
+                drainAmount = behaviour[sourceIndex].amount;
             }
             else
             {
-                return false;
+                drainAmount = behaviour[sourceIndex].carryCapacity - behaviour[sourceIndex].carrying;
+            }
+            amount = source.RequestResource(drainAmount);
+            if (nearestDropOff == null)
+            {
+                FindNearestDropOff(obj);
+            }
+            behaviour[sourceIndex].carrying += amount;
+            if (source == null || behaviour[sourceIndex].carrying >= behaviour[sourceIndex].carryCapacity)
+            {
+                ReturnToDropOff(cont);
             }
         }
         else
         {
-            return false;
+            amount = source.RequestResource(behaviour[sourceIndex].amount);
+            manager.resourceTypes[sourceIndex].amount += amount;
         }
+        return amount > 0;
     }
 
     public void FindNearestDropOff(GameObject obj)
     {
-        if (manager.dropOffAmount >= 1)
+        if (manager.dropOffAmount < 1)
         {
-            float closeDist = -1;
-            int index = -1;
-            for (int x = 0; x < manager.dropOffAmount; x++)
-            {
-                if (manager.dropOffTypes[x][sourceIndex])
-                {
-                    float dist = (manager.dropOffPoints[x].transform.position - obj.transform.position).sqrMagnitude;
-                    if (dist < closeDist || closeDist == -1)
-                    {
-                        index = x;
-                        closeDist = dist;
-                    }
-                }
-            }
-            if (index != -1)
-            {
-                nearestDropOff = manager.dropOffPoints[index];
-            }
-            else
-            {
-                nearestDropOff = null;
-            }
+            return;
         }
-        else
+        float closeDist = -1;
+        int index = -1;
+        for (int x = 0; x < manager.dropOffAmount; x++)
         {
+            if (!manager.dropOffTypes[x][sourceIndex])
+            {
+                continue;
+            }
+            float dist = (manager.dropOffPoints[x].transform.position - obj.transform.position).sqrMagnitude;
+            if (!(dist < closeDist) && closeDist != -1)
+            {
+                continue;
+            }
+            index = x;
+            closeDist = dist;
         }
+        nearestDropOff = index != -1 ? manager.dropOffPoints[index] : null;
     }
 
     public void ReturnToDropOff(UnitController cont)
@@ -318,7 +285,7 @@ public class SResource
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class ResourceBehaviour
 {
     public bool canGather;
@@ -330,12 +297,12 @@ public class ResourceBehaviour
     //Optional Features
 
     public bool returnWhenFull;
-    public int carrying = 0;
+    public int carrying;
     public int carryCapacity = 15;
 }
 
 
-[System.Serializable]
+[Serializable]
 public class SBuild
 {
     public bool builderUnit;
@@ -345,43 +312,34 @@ public class SBuild
 
     public bool Build()
     {
-        if (builderUnit)
-        {
-            if (build[source.buildIndex].canBuild)
-            {
-                if (build[source.buildIndex].lastBuild + build[source.buildIndex].rate < Time.time)
-                {
-                    bool returnVal = source.RequestBuild(build[source.buildIndex].amount);
-                    build[source.buildIndex].lastBuild = Time.time;
-                    return returnVal;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
+        if (!builderUnit)
         {
             return false;
         }
+        if (!build[source.buildIndex].canBuild)
+        {
+            return false;
+        }
+        if (!(build[source.buildIndex].lastBuild + build[source.buildIndex].rate < Time.time))
+        {
+            return true;
+        }
+        bool returnVal = source.RequestBuild(build[source.buildIndex].amount);
+        build[source.buildIndex].lastBuild = Time.time;
+        return returnVal;
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class BuildBehaviour
 {
     public bool canBuild;
     public float rate = 1;
     public int amount = 1;
-    public float lastBuild = 0;
+    public float lastBuild;
 }
 
-[System.Serializable]
+[Serializable]
 public class SGUI
 {
     public GameObject[] selectObjs = new GameObject[0];
@@ -394,26 +352,20 @@ public class SGUI
 
     public void SetType(string ntype)
     {
-        if (ntype == "Unit")
-        {
-            type = "Unit";
-        }
-        else
-        {
-            type = "Building";
-        }
+        type = ntype == "Unit" ? "Unit" : "Building";
     }
 
     public void Start(GameObject obj)
     {
         select = GameObject.Find("Player Manager").GetComponent<UnitSelection>();
-        if (type == "Unit")
+        switch (type)
         {
-            select.AddUnit(obj);
-        }
-        else if (type == "Building")
-        {
-            select.AddBuilding(obj);
+            case "Unit":
+                select.AddUnit(obj);
+                break;
+            case "Building":
+                select.AddBuilding(obj);
+                break;
         }
     }
 
@@ -421,33 +373,23 @@ public class SGUI
     {
         if (lastState != state)
         {
-            if (state)
+            foreach (var selectObj in selectObjs)
             {
-                for (int x = 0; x < selectObjs.Length; x++)
-                {
-                    selectObjs[x].SetActive(true);
-                }
-            }
-            else
-            {
-                for (int x = 0; x < selectObjs.Length; x++)
-                {
-                    selectObjs[x].SetActive(false);
-                }
+                selectObj.SetActive(state);
             }
         }
         lastState = state;
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class SRatio
 {
     public string name;
     public float amount;
 }
 
-[System.Serializable]
+[Serializable]
 public class Seed
 {
     public GameObject obj;
@@ -455,20 +397,20 @@ public class Seed
     public Rect area;
 }
 
-[System.Serializable]
+[Serializable]
 public class ProduceUnit
 {
     public int groupIndex;
     public bool canProduce = true;
     public int[] cost = new int[0];
-    public Texture customTexture = null;
+    public Texture customTexture;
     public string customName = "Unit";
     public float dur = 10;
     public float rate = 5;
-    public float amount = 0;
+    public float amount;
     public string description = "Description";
-    float curDur = 0;
-    float lastTime = 0;
+    float curDur;
+    float lastTime;
 
     public ProduceUnit(ProduceUnit unit)
     {
@@ -490,41 +432,31 @@ public class ProduceUnit
 
     public bool Produce()
     {
-        if (lastTime + rate <= Time.time)
-        {
-            lastTime = Time.time;
-            curDur += amount;
-            if (curDur >= dur)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
+        if (!(lastTime + rate <= Time.time))
         {
             return false;
         }
+        lastTime = Time.time;
+        curDur += amount;
+        return curDur >= dur;
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class ProduceTech
 {
-    public int index = 0;
+    public int index;
     public string techName = "";
     public bool canProduce = true;
     public int[] cost = new int[0];
     public Texture customTexture;
-    public string customName = "";
+    public string customName;
     public float dur = 10;
     public float rate = 5;
-    public float amount = 0;
+    public float amount;
     public string description = "Description";
-    float curDur = 0;
-    float lastTime = 0;
+    float curDur;
+    float lastTime;
 
     public ProduceTech(ProduceTech tech)
     {
@@ -548,33 +480,23 @@ public class ProduceTech
 
     public bool Produce()
     {
-        if (lastTime + rate <= Time.time)
-        {
-            lastTime = Time.time;
-            curDur += amount;
-            if (curDur >= dur)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
+        if (!(lastTime + rate <= Time.time))
         {
             return false;
         }
+        lastTime = Time.time;
+        curDur += amount;
+        return curDur >= dur;
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class STechBuilding
 {
     public bool canProduce = false;
     public ProduceTech[] techs;
     public List<ProduceTech> jobs = new List<ProduceTech>(0);
-    public int jobsAmount = 0;
+    public int jobsAmount;
     public int maxAmount = 10;
     public int canBuildAtOnce = 1;
 
@@ -614,7 +536,7 @@ public class STechBuilding
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class SBuildingGUI
 {
     public BGUISetting unitGUI = new BGUISetting();
@@ -622,39 +544,28 @@ public class SBuildingGUI
     public BGUISetting jobsGUI = new BGUISetting();
 }
 
-[System.Serializable]
+[Serializable]
 public class BGUISetting
 {
     public Vector2 startPos;
     public Vector2 buttonSize;
     public int buttonPerRow;
     public Vector2 displacement;
-    [HideInInspector] public bool contains = false;
+    [HideInInspector] public bool contains;
 
     public bool Display(int x, int y, string text, Texture image, float ratioX, float ratioY)
     {
-        Rect loc = new Rect((startPos.x + (buttonSize.x + displacement.x) * x) * ratioX,
-            (startPos.y + (buttonSize.y + displacement.y) * y) * ratioY, buttonSize.x * ratioX, buttonSize.y * ratioY);
-        if (loc.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)))
-        {
-            contains = true;
-        }
-        else
-        {
-            contains = false;
-        }
-        if (GUI.Button(loc, new GUIContent(text, image)))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        Rect loc = new Rect(
+            (startPos.x + (buttonSize.x + displacement.x) * x) * ratioX,
+            (startPos.y + (buttonSize.y + displacement.y) * y) * ratioY,
+            buttonSize.x * ratioX,
+            buttonSize.y * ratioY);
+        contains = loc.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y));
+        return GUI.Button(loc, new GUIContent(text, image));
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class SBuildingAnim
 {
     public Animator manager;
@@ -668,10 +579,13 @@ public class SBuildingAnim
 
     public void Animate()
     {
-        if (lastState != state)
+        if (lastState == state)
         {
-            if (state == "Idle")
-            {
+            return;
+        }
+        switch (state)
+        {
+            case "Idle":
                 if (manager)
                 {
                     manager.SetInteger("State", 0);
@@ -681,9 +595,8 @@ public class SBuildingAnim
                     source.clip = idleAudio;
                     source.Play();
                 }
-            }
-            else if (state == "Build Unit")
-            {
+                break;
+            case "Build Unit":
                 if (manager)
                 {
                     manager.SetInteger("State", 1);
@@ -693,9 +606,8 @@ public class SBuildingAnim
                     source.clip = buildUnitAudio;
                     source.Play();
                 }
-            }
-            else if (state == "Build Tech")
-            {
+                break;
+            case "Build Tech":
                 if (manager)
                 {
                     manager.SetInteger("State", 2);
@@ -705,23 +617,23 @@ public class SBuildingAnim
                     source.clip = buildTechAudio;
                     source.Play();
                 }
-            }
-            lastState = state;
+                break;
         }
+        lastState = state;
     }
 
     public void Die(GameObject obj)
     {
         if (deathObject)
         {
-            GameObject.Instantiate(deathObject, obj.transform.position, obj.transform.rotation);
+            Object.Instantiate(deathObject, obj.transform.position, obj.transform.rotation);
         }
-        GameObject.Destroy(obj);
+        Object.Destroy(obj);
     }
 }
 
 
-[System.Serializable]
+[Serializable]
 public class APath
 {
     public Vector3 start;
@@ -733,7 +645,7 @@ public class APath
     public string index = "";
 
     // TODO add in auto copy of the Grid Array
-    public bool generate = false;
+    public bool generate;
 
     // The Interior Implementation
     public void FindMTPath(object x)
@@ -756,13 +668,12 @@ public class APath
                 mGrid[z] = new GridPoint(gridScript.grids[gridI].grid[z]);
             }
         }
-        if (generate)
+        if (!generate)
         {
-            UPath mp = new UPath();
-            mp = FindPath(end, start);
-            myPath = mp;
-            generate = false;
+            return;
         }
+        myPath = FindPath(end, start);
+        generate = false;
     }
 
     // The Vector3 based implementation
@@ -772,19 +683,13 @@ public class APath
         Vector3 loc2 = gridScript.DetermineNearestPoint(endLoc, startLoc, 0);
         int pointLoc1 = DetermineLoc(loc1);
         int pointLoc2 = DetermineLoc(loc2);
-        UPath mp = new UPath();
-        mp = FindNormalPath(pointLoc1, pointLoc2);
-        myPath = mp;
-        return mp;
+        return myPath = FindNormalPath(pointLoc1, pointLoc2);
     }
 
     // Finds the First Path
     public UPath FindFirstPath(Vector3 startLoc, Vector3 endLoc)
     {
-        int loc1 = DetermineLoc(startLoc);
-        int loc2 = DetermineLoc(endLoc);
-        UPath mp = FindFastPath(loc1, loc2);
-        return mp;
+        return FindFastPath(DetermineLoc(startLoc), DetermineLoc(endLoc));
     }
 
     // Finds a normal A* Path
@@ -803,10 +708,10 @@ public class APath
         int oLLength = 1;
         checkedList[startLoc] = true;
         UPath mp = null;
-        int g_cost = 0;
-        int h_cost = 0;
-        int f_cost = 0;
-        int point = 0;
+        int g_cost;
+        int h_cost;
+        int f_cost;
+        int point;
         while (oLLength > 0)
         {
             point = openList.binaryHeap[0].index;
@@ -822,25 +727,29 @@ public class APath
                 }
             }
             oLLength--;
-            for (int x = 0; x < mGrid[point].children.Length; x++)
+            for (var x = 0; x < mGrid[point].children.Length; x++)
             {
                 int lPoint = mGrid[point].children[x];
                 if (checkedList[lPoint] || mGrid[lPoint].state == 2)
-                    continue;
-                g_cost = (int) ((mGrid[lPoint].loc - mGrid[point].loc).sqrMagnitude + gcostList[point]);
-                if (!addedList[lPoint] || gcostList[lPoint] > g_cost)
                 {
-                    h_cost = (int) ((mGrid[lPoint].loc - mGrid[endLoc].loc).sqrMagnitude);
-                    f_cost = g_cost + h_cost;
-                    mGrid[lPoint].parent = point;
-                    gcostList[lPoint] = g_cost;
-                    if (!addedList[lPoint])
-                    {
-                        addedList[lPoint] = true;
-                        openList.Add(lPoint, f_cost);
-                        oLLength++;
-                    }
+                    continue;
                 }
+                g_cost = (int) ((mGrid[lPoint].loc - mGrid[point].loc).sqrMagnitude + gcostList[point]);
+                if (addedList[lPoint] && gcostList[lPoint] <= g_cost)
+                {
+                    continue;
+                }
+                h_cost = (int) ((mGrid[lPoint].loc - mGrid[endLoc].loc).sqrMagnitude);
+                f_cost = g_cost + h_cost;
+                mGrid[lPoint].parent = point;
+                gcostList[lPoint] = g_cost;
+                if (addedList[lPoint])
+                {
+                    continue;
+                }
+                addedList[lPoint] = true;
+                openList.Add(lPoint, f_cost);
+                oLLength++;
             }
         }
         return mp;
@@ -859,8 +768,7 @@ public class APath
         {
             lGrid[x] = new GridPoint(gridScript.grids[gridI].grid[x]);
         }
-        List<int> openList = new List<int>();
-        openList.Add(startLoc);
+        List<int> openList = new List<int> {startLoc};
         int oLLength = 1;
         checkedList[openList[0]] = true;
         UPath mp = null;
@@ -879,26 +787,29 @@ public class APath
                 }
             }
             oLLength--;
-            for (int x = 0; x < lGrid[point].children.Length; x++)
+            foreach (int lPoint in lGrid[point].children)
             {
-                int lPoint = lGrid[point].children[x];
                 if (checkedList[lPoint] || lGrid[lPoint].state == 2)
+                {
                     continue;
+                }
                 float g_cost = (lGrid[lPoint].loc - lGrid[point].loc).sqrMagnitude + gcostList[point];
                 float h_cost = (lGrid[lPoint].loc - lGrid[endLoc].loc).sqrMagnitude;
                 float f_cost = g_cost + h_cost;
-                if (!addedList[lPoint] || fcostList[lPoint] > f_cost)
+                if (addedList[lPoint] && !(fcostList[lPoint] > f_cost))
                 {
-                    lGrid[lPoint].parent = point;
-                    fcostList[lPoint] = f_cost;
-                    gcostList[lPoint] = g_cost;
-                    if (!addedList[lPoint])
-                    {
-                        addedList[lPoint] = true;
-                        openList.Add(lPoint);
-                        oLLength++;
-                    }
+                    continue;
                 }
+                lGrid[lPoint].parent = point;
+                fcostList[lPoint] = f_cost;
+                gcostList[lPoint] = g_cost;
+                if (addedList[lPoint])
+                {
+                    continue;
+                }
+                addedList[lPoint] = true;
+                openList.Add(lPoint);
+                oLLength++;
             }
         }
         return mp;
@@ -915,8 +826,7 @@ public class APath
         {
             mGrid[x].state = gridScript.grids[gridI].grid[x].state;
         }
-        List<int> openList = new List<int>();
-        openList.Add(startLoc);
+        List<int> openList = new List<int> {startLoc};
         int oLLength = 1;
         checkedList[openList[0]] = true;
         UPath mp = null;
@@ -935,7 +845,7 @@ public class APath
                 }
             }
             oLLength--;
-            for (int x = 0; x < mGrid[point].children.Length; x++)
+            for (var x = 0; x < mGrid[point].children.Length; x++)
             {
                 int lPoint = mGrid[point].children[x];
                 if (lPoint != endLoc)
@@ -945,24 +855,26 @@ public class APath
                         continue;
                     }
                 }
-                float g_cost =
-                (new Vector3(mGrid[lPoint].loc.x, 0, mGrid[lPoint].loc.z) -
-                 new Vector3(mGrid[point].loc.x, 0, mGrid[point].loc.z)).sqrMagnitude + gcostList[point];
-                float h_cost = (new Vector3(mGrid[lPoint].loc.x, 0, mGrid[lPoint].loc.z) -
-                                new Vector3(mGrid[endLoc].loc.x, 0, mGrid[endLoc].loc.z)).sqrMagnitude;
+                float g_cost = (new Vector3(mGrid[lPoint].loc.x, 0, mGrid[lPoint].loc.z)
+                                - new Vector3(mGrid[point].loc.x, 0, mGrid[point].loc.z)
+                               ).sqrMagnitude + gcostList[point];
+                float h_cost = (new Vector3(mGrid[lPoint].loc.x, 0, mGrid[lPoint].loc.z)
+                                - new Vector3(mGrid[endLoc].loc.x, 0, mGrid[endLoc].loc.z)).sqrMagnitude;
                 float f_cost = g_cost + h_cost;
-                if (!addedList[lPoint] || fcostList[lPoint] > f_cost)
+                if (addedList[lPoint] && !(fcostList[lPoint] > f_cost))
                 {
-                    mGrid[lPoint].parent = point;
-                    fcostList[lPoint] = f_cost;
-                    gcostList[lPoint] = g_cost;
-                    if (!addedList[lPoint])
-                    {
-                        addedList[lPoint] = true;
-                        openList.Add(lPoint);
-                        oLLength++;
-                    }
+                    continue;
                 }
+                mGrid[lPoint].parent = point;
+                fcostList[lPoint] = f_cost;
+                gcostList[lPoint] = g_cost;
+                if (addedList[lPoint])
+                {
+                    continue;
+                }
+                addedList[lPoint] = true;
+                openList.Add(lPoint);
+                oLLength++;
             }
         }
         return mp;
@@ -977,8 +889,7 @@ public class APath
             loc = lGrid[lGridLookup[loc]].parent;
             pathSize++;
         }
-        UPath mp = new UPath();
-        mp.list = new int[pathSize];
+        UPath mp = new UPath {list = new int[pathSize]};
         loc = endLoc;
         for (int x = pathSize - 1; x >= 0; x--)
         {
@@ -997,8 +908,7 @@ public class APath
             loc = lGrid[loc].parent;
             pathSize++;
         }
-        UPath mp = new UPath();
-        mp.list = new int[pathSize];
+        UPath mp = new UPath {list = new int[pathSize]};
         loc = endLoc;
         for (int x = pathSize - 1; x >= 0; x--)
         {
@@ -1010,25 +920,24 @@ public class APath
 
     int DetermineLoc(Vector3 loc)
     {
-        float xLoc = (loc.x - gridScript.grids[gridI].startLoc.x);
-        float yLoc = (loc.z - gridScript.grids[gridI].startLoc.z);
+        float xLoc = loc.x - gridScript.grids[gridI].startLoc.x;
+        float yLoc = loc.z - gridScript.grids[gridI].startLoc.z;
         int x = Mathf.RoundToInt(xLoc / gridScript.grids[gridI].nodeDist);
         int y = Mathf.RoundToInt(yLoc / gridScript.grids[gridI].nodeDist);
-        int nLoc = x + (y * gridScript.grids[gridI].size);
-        return nLoc;
+        return x + y * gridScript.grids[gridI].size;
     }
 
     int DetermineSector(int loc, int gridSize, int sectorSize)
     {
         gridSize = (int) Mathf.Sqrt(gridSize);
-        int x = (int) (loc - (((int) (loc / gridSize)) * gridSize)) / sectorSize;
-        int size = (int) gridSize / sectorSize;
-        int y = ((int) ((int) (loc / gridSize)) / sectorSize);
+        int x = (loc - (loc / gridSize * gridSize)) / sectorSize;
+        int size = gridSize / sectorSize;
+        int y = loc / gridSize / sectorSize;
         return x + (y * size);
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class UPath
 {
     public int[] list = new int[0];
@@ -1095,7 +1004,7 @@ public class UPath
 }
 
 
-[System.Serializable]
+[Serializable]
 public class UnitType
 {
     public string name = "Name";
@@ -1103,7 +1012,7 @@ public class UnitType
     public Ratio[] weaknesses = new Ratio[0];
 }
 
-[System.Serializable]
+[Serializable]
 public class Ratio
 {
     public string name = "Name";
@@ -1112,7 +1021,7 @@ public class Ratio
     public float amount = 1;
 }
 
-[System.Serializable]
+[Serializable]
 public class GUIElement
 {
     public Rect loc;
@@ -1127,18 +1036,15 @@ public class GUIElement
 
     public void Display(Vector2 ratio)
     {
-        if (type == Type.Texture)
+        if (type == Type.Texture && texture)
         {
-            if (texture)
-            {
-                GUI.DrawTexture(new Rect(loc.x * ratio.x, loc.y * ratio.y, loc.width * ratio.x, loc.height * ratio.y),
-                    texture);
-            }
+            GUI.DrawTexture(new Rect(loc.x * ratio.x, loc.y * ratio.y, loc.width * ratio.x, loc.height * ratio.y),
+                texture);
         }
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class MiniMapElement
 {
     public Vector2 size;
@@ -1152,7 +1058,7 @@ public class MiniMapElement
     [HideInInspector] public List<MiniMapSignal> elementMap;
     [HideInInspector] public List<Vector2> elementLoc;
     [HideInInspector] public List<int> elementGroup;
-    [HideInInspector] public int objAmount = 0;
+    [HideInInspector] public int objAmount;
 
     public void AddElement(GameObject obj, string tag, MiniMapSignal map, int group, Vector2 loc)
     {
@@ -1171,12 +1077,12 @@ public class MiniMapElement
 }
 
 
-[System.Serializable]
+[Serializable]
 public class ResourceG
 {
     public int amount = 0;
     public float rate = 0;
-    public int index = 0;
+    public int index;
     ResourceManager rm;
 
     public void Start(int i, ResourceManager r)
@@ -1195,7 +1101,7 @@ public class ResourceG
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class ResourceType
 {
     public string name;
@@ -1203,7 +1109,7 @@ public class ResourceType
     public Texture texture;
 }
 
-[System.Serializable]
+[Serializable]
 public class CursorType
 {
     public Texture2D texture;
@@ -1211,19 +1117,19 @@ public class CursorType
     public bool moveUp;
 }
 
-[System.Serializable]
+[Serializable]
 public class Relation
 {
     public int state = 3;
 }
 
-[System.Serializable]
+[Serializable]
 public class FGUI
 {
     Texture2D factionIcon;
 }
 
-[System.Serializable]
+[Serializable]
 public class Unit
 {
     public GameObject obj;
@@ -1233,7 +1139,7 @@ public class Unit
     public bool available = false;
 }
 
-[System.Serializable]
+[Serializable]
 public class Building
 {
     public bool autoBuild = false;
@@ -1298,23 +1204,23 @@ public class Building
     int DetermineSector(int loc, int gridSize, int sectorSize)
     {
         gridSize = (int) Mathf.Sqrt(gridSize);
-        int x = (int) (loc - (((int) (loc / gridSize)) * gridSize)) / sectorSize;
-        int size = (int) gridSize / sectorSize;
-        int y = ((int) ((int) (loc / gridSize)) / sectorSize);
+        int x = (loc - (loc / gridSize * gridSize)) / sectorSize;
+        int size = gridSize / sectorSize;
+        int y = loc / gridSize / sectorSize;
         return x + (y * size);
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class Technology
 {
     public string name = "";
     public Texture texture;
-    public bool active = false;
-    public bool beingProduced = false;
+    public bool active;
+    public bool beingProduced;
     public bool backTrackUpdate = true;
     List<GameObject> childListeners = new List<GameObject>(0);
-    int childListenersLength = 0;
+    int childListenersLength;
 
     public void Researched()
     {
@@ -1334,7 +1240,7 @@ public class Technology
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class TechEffect
 {
     public string name;
@@ -1348,85 +1254,94 @@ public class TechEffect
         {
             UnitController script = obj.GetComponent<UnitController>();
             GameObject rObj =
-                GameObject.Instantiate(replacementObject, obj.transform.position, obj.transform.rotation) as GameObject;
+                Object.Instantiate(replacementObject, obj.transform.position, obj.transform.rotation) as GameObject;
             UnitController rScript = rObj.GetComponent<UnitController>();
             if (rScript)
+            {
                 rScript.group = script.group;
-            GameObject.Destroy(obj);
+            }
+            Object.Destroy(obj);
         }
         else
         {
-            for (int x = 0; x < effects.Length; x++)
+            foreach (Effects eff in effects)
             {
                 //Units
                 if (obj.GetComponent<UnitController>() != null)
                 {
-                    // String
-                    if (effects[x].effectName == 0 || effects[x].effectName == 21)
+                    switch (eff.effectName)
                     {
-                        obj.SendMessage(effects[x].funcName, effects[x].text);
-                    }
-                    // Boolean
-                    else if (effects[x].effectName == 4 || effects[x].effectName == 11 || effects[x].effectName == 15)
-                    {
-                        obj.SendMessage(effects[x].funcName, effects[x].toggle);
-                    }
-                    // Boolean Index
-                    else if (effects[x].effectName == 12 || effects[x].effectName == 16)
-                    {
-                        obj.SendMessage("SetIndex", effects[x].index);
-                        obj.SendMessage(effects[x].funcName, effects[x].toggle);
-                    }
-                    // Int Index
-                    else if (effects[x].effectName == 13 || effects[x].effectName == 14 ||
-                             effects[x].effectName == 17 || effects[x].effectName == 18 || effects[x].effectName == 23)
-                    {
-                        obj.SendMessage("SetIndex", effects[x].index);
-                        obj.SendMessage(effects[x].funcName, effects[x].amount);
-                    }
-                    // Int
-                    else
-                    {
-                        obj.SendMessage(effects[x].funcName, effects[x].amount);
+                        // String
+                        case 0:
+                        case 21:
+                            obj.SendMessage(eff.funcName, eff.text);
+                            break;
+                        // Boolean
+                        case 4:
+                        case 11:
+                        case 15:
+                            obj.SendMessage(eff.funcName, eff.toggle);
+                            break;
+                        // Boolean Index
+                        case 12:
+                        case 16:
+                            obj.SendMessage("SetIndex", eff.index);
+                            obj.SendMessage(eff.funcName, eff.toggle);
+                            break;
+                        // Int Index
+                        case 13:
+                        case 14:
+                        case 17:
+                        case 18:
+                        case 23:
+                            obj.SendMessage("SetIndex", eff.index);
+                            obj.SendMessage(eff.funcName, eff.amount);
+                            break;
+                        // Int
+                        default:
+                            obj.SendMessage(eff.funcName, eff.amount);
+                            break;
                     }
                 }
                 //Buildings
                 else
                 {
-                    // String
-                    if (effects[x].effectName == 0)
+                    switch (eff.effectName)
                     {
-                        obj.SendMessage(effects[x].funcName, effects[x].text);
-                    }
-                    // Boolean
-                    else if (effects[x].effectName == 4 || effects[x].effectName == 11)
-                    {
-                        obj.SendMessage(effects[x].funcName, effects[x].toggle);
-                    }
-                    // Boolean Index
-                    else if (effects[x].effectName == 5 || effects[x].effectName == 13)
-                    {
-                        obj.SendMessage("SetIndex", effects[x].index);
-                        obj.SendMessage(effects[x].funcName, effects[x].toggle);
-                    }
-                    // Int Index
-                    else if (effects[x].effectName == 7 || effects[x].effectName == 8 || effects[x].effectName == 14 ||
-                             effects[x].effectName == 15)
-                    {
-                        obj.SendMessage("SetIndex", effects[x].index);
-                        obj.SendMessage(effects[x].funcName, effects[x].amount);
-                    }
-                    // Int Index Index1
-                    else if (effects[x].effectName == 6 || effects[x].effectName == 12)
-                    {
-                        obj.SendMessage("SetIndex", effects[x].index);
-                        obj.SendMessage("SetIndex1", effects[x].index1);
-                        obj.SendMessage(effects[x].funcName, effects[x].amount);
-                    }
-                    // Int
-                    else
-                    {
-                        obj.SendMessage(effects[x].funcName, effects[x].amount);
+                        // String
+                        case 0:
+                            obj.SendMessage(eff.funcName, eff.text);
+                            break;
+                        // Boolean
+                        case 4:
+                        case 11:
+                            obj.SendMessage(eff.funcName, eff.toggle);
+                            break;
+                        // Boolean Index
+                        case 5:
+                        case 13:
+                            obj.SendMessage("SetIndex", eff.index);
+                            obj.SendMessage(eff.funcName, eff.toggle);
+                            break;
+                        // Int Index
+                        case 7:
+                        case 8:
+                        case 14:
+                        case 15:
+                            obj.SendMessage("SetIndex", eff.index);
+                            obj.SendMessage(eff.funcName, eff.amount);
+                            break;
+                        // Int Index Index1
+                        case 6:
+                        case 12:
+                            obj.SendMessage("SetIndex", eff.index);
+                            obj.SendMessage("SetIndex1", eff.index1);
+                            obj.SendMessage(eff.funcName, eff.amount);
+                            break;
+                        // Int
+                        default:
+                            obj.SendMessage(eff.funcName, eff.amount);
+                            break;
                     }
                 }
             }
@@ -1434,7 +1349,7 @@ public class TechEffect
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class Effects
 {
     public int effectName = 0;
@@ -1448,13 +1363,13 @@ public class Effects
     public string text = "";
 }
 
-[System.Serializable]
+[Serializable]
 public class SUnitBuilding
 {
     public bool canProduce = false;
     public ProduceUnit[] units = new ProduceUnit[0];
     public List<ProduceUnit> jobs = new List<ProduceUnit>(0);
-    public int jobsAmount = 0;
+    public int jobsAmount;
     public int canBuildAtOnce = 1;
     public int maxAmount = 10;
     public GameObject buildLoc;
@@ -1480,50 +1395,51 @@ public class SUnitBuilding
     {
         for (int x = 0; x < canBuildAtOnce; x++)
         {
-            if (x < jobsAmount)
+            if (x >= jobsAmount)
             {
-                if (jobs[x].Produce())
-                {
-                    Vector3 loc =
-                        grid.DetermineNearestPoint(buildLoc.transform.position, buildLoc.transform.position, gridI);
-                    GameObject obj = GameObject.Instantiate(g.UnitList[jobs[x].groupIndex].obj, loc,
-                        Quaternion.identity) as GameObject;
-                    UnitController script = obj.GetComponent<UnitController>();
-                    if (script)
-                        script.group = group;
-                    jobs.RemoveAt(x);
-                    x--;
-                    jobsAmount--;
-                }
+                continue;
             }
+            if (!jobs[x].Produce())
+            {
+                continue;
+            }
+            Vector3 loc = grid.DetermineNearestPoint(buildLoc.transform.position, buildLoc.transform.position, gridI);
+            GameObject obj =
+                Object.Instantiate(g.UnitList[jobs[x].groupIndex].obj, loc, Quaternion.identity) as GameObject;
+            UnitController script = obj.GetComponent<UnitController>();
+            if (script)
+                script.group = group;
+            jobs.RemoveAt(x);
+            x--;
+            jobsAmount--;
         }
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class HeapElement
 {
-    public int index = 0;
-    public int cost = 0;
+    public int index;
+    public int cost;
 
     public static bool operator <(HeapElement arg1, HeapElement arg2)
     {
-        return (arg1.cost < arg2.cost);
+        return arg1.cost < arg2.cost;
     }
 
     public static bool operator >(HeapElement arg1, HeapElement arg2)
     {
-        return (arg1.cost > arg2.cost);
+        return arg1.cost > arg2.cost;
     }
 
     public static bool operator >=(HeapElement arg1, HeapElement arg2)
     {
-        return (arg1.cost >= arg2.cost);
+        return arg1.cost >= arg2.cost;
     }
 
     public static bool operator <=(HeapElement arg1, HeapElement arg2)
     {
-        return (arg1.cost <= arg2.cost);
+        return arg1.cost <= arg2.cost;
     }
 
     public void Equals(HeapElement arg1)
@@ -1533,11 +1449,11 @@ public class HeapElement
     }
 }
 
-[System.Serializable]
+[Serializable]
 public class BinaryHeap
 {
     public List<HeapElement> binaryHeap = new List<HeapElement>(0);
-    public int numberOfItems = 0;
+    public int numberOfItems;
 
     public void Add(int index, int fCost)
     {
@@ -1594,11 +1510,11 @@ public class BinaryHeap
         binaryHeap[0].Equals(binaryHeap[numberOfItems]);
 
         int swap = 0;
-        int parent = 0;
+        int parent;
         do
         {
             parent = swap;
-            if ((2 * parent + 2) <= numberOfItems)
+            if (2 * parent + 2 <= numberOfItems)
             {
                 if (binaryHeap[parent] >= binaryHeap[2 * parent + 1])
                 {
@@ -1609,7 +1525,7 @@ public class BinaryHeap
                     swap = 2 * parent + 2;
                 }
             }
-            else if ((2 * parent + 1) <= numberOfItems)
+            else if (2 * parent + 1 <= numberOfItems)
             {
                 // Only one child exists
                 if (binaryHeap[parent] >= binaryHeap[2 * parent + 1])

@@ -35,13 +35,19 @@ public class UGrid : MonoBehaviour
             for (int x = 0; x < grids[i].size; x++)
             {
                 grids[i].grid[x + (y * grids[i].size)] =
-                    new GridPoint(new Vector3(grids[i].startLoc.x + x * grids[i].nodeDist, grids[i].startLoc.y,
-                        grids[i].startLoc.z + y * grids[i].nodeDist));
-                grids[i].grid[x + (y * grids[i].size)].index = x + (y * grids[i].size);
+                    new GridPoint(new Vector3(
+                        grids[i].startLoc.x + x * grids[i].nodeDist,
+                        grids[i].startLoc.y,
+                        grids[i].startLoc.z + y * grids[i].nodeDist))
+                    {
+                        index = x + (y * grids[i].size)
+                    };
             }
         }
         if (grids[i].displaceDown)
+        {
             DisplacePoints(i);
+        }
 
         AssignChildren(i);
 
@@ -54,6 +60,7 @@ public class UGrid : MonoBehaviour
     {
         for (int x = 0; x < grids[i].grid.Length; x++)
         {
+            GridPoint point = grids[i].grid[x];
             int childAmount = 0;
             bool[] child = new bool[8];
             // We First determine the amount of children necessary
@@ -61,15 +68,13 @@ public class UGrid : MonoBehaviour
             {
                 child[0] = true;
                 childAmount++;
-                if (grids[i].checkSlope)
+                if (grids[i].checkSlope
+                    && Mathf.Abs(point.loc.y - grids[i].grid[x - 1].loc.y) > grids[i].slopeMax)
                 {
-                    if (Mathf.Abs(grids[i].grid[x].loc.y - grids[i].grid[x - 1].loc.y) > grids[i].slopeMax)
+                    for (int z = 0; z < child.Length; z++)
                     {
-                        for (int z = 0; z < child.Length; z++)
-                        {
-                            child[z] = false;
-                            childAmount--;
-                        }
+                        child[z] = false;
+                        childAmount--;
                     }
                 }
             }
@@ -77,15 +82,13 @@ public class UGrid : MonoBehaviour
             {
                 child[1] = true;
                 childAmount++;
-                if (grids[i].checkSlope)
+                if (grids[i].checkSlope
+                    && Mathf.Abs(point.loc.y - grids[i].grid[x + 1].loc.y) > grids[i].slopeMax)
                 {
-                    if (Mathf.Abs(grids[i].grid[x].loc.y - grids[i].grid[x + 1].loc.y) > grids[i].slopeMax)
+                    for (int z = 0; z < child.Length; z++)
                     {
-                        for (int z = 0; z < child.Length; z++)
-                        {
-                            child[z] = false;
-                            childAmount--;
-                        }
+                        child[z] = false;
+                        childAmount--;
                     }
                 }
             }
@@ -93,15 +96,13 @@ public class UGrid : MonoBehaviour
             {
                 child[2] = true;
                 childAmount++;
-                if (grids[i].checkSlope)
+                if (grids[i].checkSlope
+                    && Mathf.Abs(point.loc.y - grids[i].grid[x - grids[i].size].loc.y) > grids[i].slopeMax)
                 {
-                    if (Mathf.Abs(grids[i].grid[x].loc.y - grids[i].grid[x - grids[i].size].loc.y) > grids[i].slopeMax)
+                    for (int z = 0; z < child.Length; z++)
                     {
-                        for (int z = 0; z < child.Length; z++)
-                        {
-                            child[z] = false;
-                            childAmount--;
-                        }
+                        child[z] = false;
+                        childAmount--;
                     }
                 }
             }
@@ -109,15 +110,13 @@ public class UGrid : MonoBehaviour
             {
                 child[3] = true;
                 childAmount++;
-                if (grids[i].checkSlope)
+                if (grids[i].checkSlope
+                    && Mathf.Abs(point.loc.y - grids[i].grid[x + grids[i].size].loc.y) > grids[i].slopeMax)
                 {
-                    if (Mathf.Abs(grids[i].grid[x].loc.y - grids[i].grid[x + grids[i].size].loc.y) > grids[i].slopeMax)
+                    for (int z = 0; z < child.Length; z++)
                     {
-                        for (int z = 0; z < child.Length; z++)
-                        {
-                            child[z] = false;
-                            childAmount--;
-                        }
+                        child[z] = false;
+                        childAmount--;
                     }
                 }
             }
@@ -127,16 +126,13 @@ public class UGrid : MonoBehaviour
                 {
                     child[4] = true;
                     childAmount++;
-                    if (grids[i].checkSlope)
+                    if (grids[i].checkSlope
+                        && Mathf.Abs(point.loc.y - grids[i].grid[x - grids[i].size - 1].loc.y) > grids[i].slopeMax)
                     {
-                        if (Mathf.Abs(grids[i].grid[x].loc.y - grids[i].grid[x - grids[i].size - 1].loc.y) >
-                            grids[i].slopeMax)
+                        for (int z = 0; z < child.Length; z++)
                         {
-                            for (int z = 0; z < child.Length; z++)
-                            {
-                                child[z] = false;
-                                childAmount--;
-                            }
+                            child[z] = false;
+                            childAmount--;
                         }
                     }
                 }
@@ -144,16 +140,13 @@ public class UGrid : MonoBehaviour
                 {
                     child[5] = true;
                     childAmount++;
-                    if (grids[i].checkSlope)
+                    if (grids[i].checkSlope
+                        && Mathf.Abs(point.loc.y - grids[i].grid[x - grids[i].size + 1].loc.y) > grids[i].slopeMax)
                     {
-                        if (Mathf.Abs(grids[i].grid[x].loc.y - grids[i].grid[x - grids[i].size + 1].loc.y) >
-                            grids[i].slopeMax)
+                        for (int z = 0; z < child.Length; z++)
                         {
-                            for (int z = 0; z < child.Length; z++)
-                            {
-                                child[z] = false;
-                                childAmount--;
-                            }
+                            child[z] = false;
+                            childAmount--;
                         }
                     }
                 }
@@ -161,16 +154,13 @@ public class UGrid : MonoBehaviour
                 {
                     child[6] = true;
                     childAmount++;
-                    if (grids[i].checkSlope)
+                    if (grids[i].checkSlope
+                        && Mathf.Abs(point.loc.y - grids[i].grid[x - 1 + grids[i].size].loc.y) > grids[i].slopeMax)
                     {
-                        if (Mathf.Abs(grids[i].grid[x].loc.y - grids[i].grid[x - 1 + grids[i].size].loc.y) >
-                            grids[i].slopeMax)
+                        for (int z = 0; z < child.Length; z++)
                         {
-                            for (int z = 0; z < child.Length; z++)
-                            {
-                                child[z] = false;
-                                childAmount--;
-                            }
+                            child[z] = false;
+                            childAmount--;
                         }
                     }
                 }
@@ -178,16 +168,13 @@ public class UGrid : MonoBehaviour
                 {
                     child[7] = true;
                     childAmount++;
-                    if (grids[i].checkSlope)
+                    if (grids[i].checkSlope
+                        && Mathf.Abs(point.loc.y - grids[i].grid[x + grids[i].size + 1].loc.y) > grids[i].slopeMax)
                     {
-                        if (Mathf.Abs(grids[i].grid[x].loc.y - grids[i].grid[x + grids[i].size + 1].loc.y) >
-                            grids[i].slopeMax)
+                        for (int z = 0; z < child.Length; z++)
                         {
-                            for (int z = 0; z < child.Length; z++)
-                            {
-                                child[z] = false;
-                                childAmount--;
-                            }
+                            child[z] = false;
+                            childAmount--;
                         }
                     }
                 }
@@ -196,55 +183,55 @@ public class UGrid : MonoBehaviour
             // Then we add those children to the point
             if (childAmount > 0)
             {
-                grids[i].grid[x].children = new int[childAmount];
+                point.children = new int[childAmount];
                 if (child[0])
                 {
-                    grids[i].grid[x].children[y] = x - 1;
+                    point.children[y] = x - 1;
                     y++;
                 }
                 if (child[1])
                 {
-                    grids[i].grid[x].children[y] = x + 1;
+                    point.children[y] = x + 1;
                     y++;
                 }
                 if (child[2])
                 {
-                    grids[i].grid[x].children[y] = x - grids[i].size;
+                    point.children[y] = x - grids[i].size;
                     y++;
                 }
                 if (child[3])
                 {
-                    grids[i].grid[x].children[y] = x + grids[i].size;
+                    point.children[y] = x + grids[i].size;
                     y++;
                 }
                 // Octile Generation
-                if (grids[i].octileConnection)
+                if (!grids[i].octileConnection)
                 {
-                    if (child[4])
-                    {
-                        grids[i].grid[x].children[y] = x - grids[i].size - 1;
-                        y++;
-                    }
-                    if (child[5])
-                    {
-                        grids[i].grid[x].children[y] = x - grids[i].size + 1;
-                        y++;
-                    }
-                    if (child[6])
-                    {
-                        grids[i].grid[x].children[y] = x - 1 + grids[i].size;
-                        y++;
-                    }
-                    if (child[7])
-                    {
-                        grids[i].grid[x].children[y] = x + grids[i].size + 1;
-                        y++;
-                    }
+                    continue;
+                }
+                if (child[4])
+                {
+                    point.children[y] = x - grids[i].size - 1;
+                    y++;
+                }
+                if (child[5])
+                {
+                    point.children[y] = x - grids[i].size + 1;
+                    y++;
+                }
+                if (child[6])
+                {
+                    point.children[y] = x - 1 + grids[i].size;
+                    y++;
+                }
+                if (child[7])
+                {
+                    point.children[y] = x + grids[i].size + 1;
                 }
             }
             else
             {
-                grids[i].grid[x].children = new int[0];
+                point.children = new int[0];
             }
         }
     }
@@ -252,45 +239,55 @@ public class UGrid : MonoBehaviour
     // Sets gridpoints y location for grid[i] equal to closest downward collision point within the proper layer
     public void DisplacePoints(int i)
     {
-        for (int x = 0; x < grids[i].grid.Length; x++)
+        for (var x = 0; x < grids[i].grid.Length; x++)
         {
-            RaycastHit hit = new RaycastHit();
-            Physics.Raycast(grids[i].grid[x].loc, Vector3.down, out hit, 10000, grids[i].displaceLayer);
+            GridPoint point = grids[i].grid[x];
+            RaycastHit hit;
+            Physics.Raycast(point.loc, Vector3.down, out hit, 10000, grids[i].displaceLayer);
             if (hit.collider)
-                grids[i].grid[x].loc = new Vector3(grids[i].grid[x].loc.x, hit.point.y, grids[i].grid[x].loc.z);
+            {
+                point.loc = new Vector3(point.loc.x, hit.point.y, point.loc.z);
+            }
         }
     }
 
     public void CheckState(int i)
     {
         // TODO have grid automate open/closed state
-        for (int x = 0; x < grids[i].grid.Length; x++)
+        for (var x = 0; x < grids[i].grid.Length; x++)
         {
-            Collider[] coll = Physics.OverlapSphere(grids[i].grid[x].loc, grids[i].nodeDist / 2.25f,
-                grids[i].checkLayer);
+            GridPoint point = grids[i].grid[x];
+            Collider[] coll = Physics.OverlapSphere(point.loc, grids[i].nodeDist / 2.25f, grids[i].checkLayer);
             if (coll.Length > 1)
-                grids[i].grid[x].state = 2;
+            {
+                point.state = 2;
+            }
         }
-        for (int x = 0; x < grids[i].grid.Length; x++)
+        for (var x = 0; x < grids[i].grid.Length; x++)
         {
+            GridPoint point = grids[i].grid[x];
             RaycastHit hit;
-            hit = new RaycastHit();
-            Physics.Raycast(new Vector3(grids[i].grid[x].loc.x, grids[i].grid[x].loc.y + 100, grids[i].grid[x].loc.z),
-                Vector3.down, out hit, 10000, grids[i].checkLayer);
+            Physics.Raycast(
+                new Vector3(point.loc.x, point.loc.y + 100, point.loc.z),
+                Vector3.down,
+                out hit,
+                10000,
+                grids[i].checkLayer);
             if (hit.collider)
-                grids[i].grid[x].state = 2;
+            {
+                point.state = 2;
+            }
         }
     }
 
 
     public int DetermineLoc(Vector3 loc, int gridI)
     {
-        float xLoc = (loc.x - grids[gridI].startLoc.x);
-        float yLoc = (loc.z - grids[gridI].startLoc.z);
+        float xLoc = loc.x - grids[gridI].startLoc.x;
+        float yLoc = loc.z - grids[gridI].startLoc.z;
         int x = Mathf.RoundToInt(xLoc / grids[gridI].nodeDist);
         int y = Mathf.RoundToInt(yLoc / grids[gridI].nodeDist);
-        int nLoc = x + (y * grids[gridI].size);
-        return nLoc;
+        return x + (y * grids[gridI].size);
     }
 
     public Vector3 DetermineNearestPoint(Vector3 startPoint, Vector3 point, int i)
@@ -300,11 +297,7 @@ public class UGrid : MonoBehaviour
         {
             return grids[i].grid[loc].loc;
         }
-        else
-        {
-            Vector3 nLoc = FindNearestPoint(startPoint, loc, i, Mathf.Infinity);
-            return nLoc;
-        }
+        return FindNearestPoint(startPoint, loc, i, Mathf.Infinity);
     }
 
     public Vector3 FindNearestPoint(Vector3 startPoint, int point, int i, float dist)
@@ -321,13 +314,14 @@ public class UGrid : MonoBehaviour
         {
             for (int x = 0; x < grids[i].grid[children[0]].children.Length; x++)
             {
+                int child = grids[i].grid[children[0]].children[x];
                 z++;
-                if (grids[i].grid[grids[i].grid[children[0]].children[x]].state != 2)
+                if (grids[i].grid[child].state != 2)
                 {
                     if (!found)
                     {
                         found = true;
-                        Vector3 nLoc = grids[i].grid[grids[i].grid[children[0]].children[x]].loc;
+                        Vector3 nLoc = grids[i].grid[child].loc;
                         float curDist = (startPoint - nLoc).sqrMagnitude;
                         dist = curDist;
                         finalLoc = nLoc;
@@ -335,24 +329,26 @@ public class UGrid : MonoBehaviour
                     }
                     else
                     {
-                        Vector3 nLoc = grids[i].grid[grids[i].grid[children[0]].children[x]].loc;
+                        Vector3 nLoc = grids[i].grid[child].loc;
                         float curDist = (startPoint - nLoc).sqrMagnitude;
-                        if (curDist < dist)
+                        if (!(curDist < dist))
                         {
-                            dist = curDist;
-                            //finalIndex = grids[i].grid[children[0]].children[x];
-                            finalLoc = nLoc;
+                            continue;
                         }
+                        dist = curDist;
+                        //finalIndex = grids[i].grid[children[0]].children[x];
+                        finalLoc = nLoc;
                     }
                 }
                 else
                 {
-                    if (!found && !checkList[grids[i].grid[children[0]].children[x]])
+                    if (found || checkList[child])
                     {
-                        children.Add(grids[i].grid[children[0]].children[x]);
-                        checkList[grids[i].grid[children[0]].children[x]] = true;
-                        childAmount++;
+                        continue;
                     }
+                    children.Add(child);
+                    checkList[child] = true;
+                    childAmount++;
                 }
             }
             children.RemoveAt(0);
@@ -389,31 +385,35 @@ public class Grid
         {
             for (int x = 1; x < grid.Length; x++)
             {
-                if (grid[x].state == 2)
-                    Gizmos.color = Color.red;
-                else
-                    Gizmos.color = Color.green;
-                Gizmos.DrawCube(new Vector3(grid[x].loc.x, grid[x].loc.y, grid[x].loc.z),
+                Gizmos.color = grid[x].state == 2
+                    ? Color.red
+                    : Color.green;
+                Gizmos.DrawCube(
+                    new Vector3(grid[x].loc.x, grid[x].loc.y, grid[x].loc.z),
                     new Vector3(nodeDist, nodeDist, nodeDist));
             }
         }
-        if (displayLines)
+        if (!displayLines)
         {
-            for (int x = 0; x < grid.Length; x++)
+            return;
+        }
+
+        for (int x = 0; x < grid.Length; x++)
+        {
+            GridPoint point = grid[x];
+            for (int y = 0; y < point.children.Length; y++)
             {
-                for (int y = 0; y < grid[x].children.Length; y++)
+                int child = point.children[y];
+                if (point.state == 2)
                 {
-                    if (grid[x].state == 2)
-                    {
-                        Gizmos.color = Color.red;
-                    }
-                    else
-                    {
-                        Gizmos.color = Color.green;
-                        Gizmos.DrawLine(new Vector3(grid[x].loc.x, grid[x].loc.y, grid[x].loc.z),
-                            new Vector3(grid[grid[x].children[y]].loc.x, grid[grid[x].children[y]].loc.y,
-                                grid[grid[x].children[y]].loc.z));
-                    }
+                    Gizmos.color = Color.red;
+                }
+                else
+                {
+                    Gizmos.color = Color.green;
+                    Gizmos.DrawLine(
+                        new Vector3(point.loc.x, point.loc.y, point.loc.z),
+                        new Vector3(grid[child].loc.x, grid[child].loc.y, grid[child].loc.z));
                 }
             }
         }

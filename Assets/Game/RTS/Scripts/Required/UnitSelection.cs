@@ -65,14 +65,20 @@ public class UnitSelection : MonoBehaviour
         FactionM = GameObject.Find("Faction Manager").GetComponent<FactionManager>();
         placement = gameObject.GetComponent<BuildingPlacement>();
         if (placement)
+        {
             placement.SetGroup(group);
+        }
         GUIManager manager = gameObject.GetComponent<GUIManager>();
         if (manager)
+        {
             manager.group = FactionM.FactionList[group].GetComponent<Faction>();
+        }
         guiManager = gameObject.GetComponent<GUIManager>();
         GameObject obj = GameObject.Find("MiniMap");
         if (obj)
+        {
             map = obj.GetComponent<MiniMap>();
+        }
         //test = Camera.main.GetComponent<GUILayer>();
     }
 
@@ -82,8 +88,7 @@ public class UnitSelection : MonoBehaviour
         {
             if (
                 !map.localBounds.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y))
-                &&
-                Input.GetButton("LMB")
+                && Input.GetButton("LMB")
             )
             {
                 if (!mouseDown)
@@ -181,16 +186,16 @@ public class UnitSelection : MonoBehaviour
 
     public void SetTarget(GameObject obj, Vector3 loc)
     {
-        string type = "None";
-        if (obj.tag == "Unit")
+        string type; // = "None";
+        if (obj.CompareTag("Unit"))
         {
             type = "Unit";
         }
-        else if (obj.tag == "Resource")
+        else if (obj.CompareTag("Resource"))
         {
             type = "Resource";
         }
-        else if (obj.tag == "Building")
+        else if (obj.CompareTag("Building"))
         {
             type = "Building";
         }
@@ -242,22 +247,12 @@ public class UnitSelection : MonoBehaviour
         {
             endLocV3 = hit.point;
         }
-        if (startLocV3.x > endLocV3.x)
-        {
-            selectionRect = new Rect(endLocV3.x, selectionRect.y, startLocV3.x, selectionRect.height);
-        }
-        else
-        {
-            selectionRect = new Rect(startLocV3.x, selectionRect.y, endLocV3.x, selectionRect.height);
-        }
-        if (startLocV3.z > endLocV3.z)
-        {
-            selectionRect = new Rect(selectionRect.x, endLocV3.z, selectionRect.width, startLocV3.z);
-        }
-        else
-        {
-            selectionRect = new Rect(selectionRect.x, startLocV3.z, selectionRect.width, endLocV3.z);
-        }
+        selectionRect = startLocV3.x > endLocV3.x
+            ? new Rect(endLocV3.x, selectionRect.y, startLocV3.x, selectionRect.height)
+            : new Rect(startLocV3.x, selectionRect.y, endLocV3.x, selectionRect.height);
+        selectionRect = startLocV3.z > endLocV3.z
+            ? new Rect(selectionRect.x, endLocV3.z, selectionRect.width, startLocV3.z)
+            : new Rect(selectionRect.x, startLocV3.z, selectionRect.width, endLocV3.z);
         SelectionArea();
     }
 
@@ -305,43 +300,37 @@ public class UnitSelection : MonoBehaviour
                 unitListLength--;
                 continue;
             }
-            if (unitList[x].transform.position.x > selectionRect.x &&
-                unitList[x].transform.position.x < selectionRect.width)
+            if (!(unitList[x].transform.position.x > selectionRect.x)
+                || !(unitList[x].transform.position.x < selectionRect.width)
+                || !(unitList[x].transform.position.z > selectionRect.y)
+                || !(unitList[x].transform.position.z < selectionRect.height)
+                || curSelectedAmount >= maxUnitSelect)
             {
-                if (unitList[x].transform.position.z > selectionRect.y &&
-                    unitList[x].transform.position.z < selectionRect.height)
-                {
-                    if (curSelectedAmount < maxUnitSelect)
-                    {
-                        curSelectedAmount++;
-                        curSelected.Add(unitList[x]);
-                        curSelectedS.Add(unitList[x].GetComponent<UnitController>());
-                        curSelectedLength++;
-                        curSelectedS[curSelectedLength - 1].Select(true);
-                    }
-                }
+                continue;
             }
+            curSelectedAmount++;
+            curSelected.Add(unitList[x]);
+            curSelectedS.Add(unitList[x].GetComponent<UnitController>());
+            curSelectedLength++;
+            curSelectedS[curSelectedLength - 1].Select(true);
         }
         int curSelectedBuild = 0;
         for (int x = 0; x < buildingListLength; x++)
         {
-            if (buildingList[x].transform.position.x > selectionRect.x &&
-                buildingList[x].transform.position.x < selectionRect.width)
+            if (!(buildingList[x].transform.position.x > selectionRect.x)
+                || !(buildingList[x].transform.position.x < selectionRect.width)
+                || !(buildingList[x].transform.position.z > selectionRect.y)
+                || !(buildingList[x].transform.position.z < selectionRect.height)
+                || curSelectedAmount >= maxBuildingSelect)
             {
-                if (buildingList[x].transform.position.z > selectionRect.y &&
-                    buildingList[x].transform.position.z < selectionRect.height)
-                {
-                    if (curSelectedAmount < maxBuildingSelect)
-                    {
-                        curSelectedAmount++;
-                        curBuildSelected.Add(buildingList[x]);
-                        curBuildSelectedS.Add(buildingList[x].GetComponent<BuildingController>());
-                        curBuildSelectedLength++;
-                        buildingList[x].GetComponent<BuildingController>().Select(true, curSelectedBuild);
-                        curSelectedBuild++;
-                    }
-                }
+                continue;
             }
+            curSelectedAmount++;
+            curBuildSelected.Add(buildingList[x]);
+            curBuildSelectedS.Add(buildingList[x].GetComponent<BuildingController>());
+            curBuildSelectedLength++;
+            buildingList[x].GetComponent<BuildingController>().Select(true, curSelectedBuild);
+            curSelectedBuild++;
         }
     }
 
@@ -368,39 +357,33 @@ public class UnitSelection : MonoBehaviour
 
     public void OnGUI()
     {
-        if (largeSelect)
+        if (!largeSelect)
         {
-            Rect myRect = new Rect(0, 0, 0, 0);
-            if (startLoc.x > endLoc.x)
-            {
-                myRect = new Rect(endLoc.x, myRect.y, startLoc.x - endLoc.x, myRect.height);
-            }
-            else
-            {
-                myRect = new Rect(startLoc.x, myRect.y, endLoc.x - startLoc.x, myRect.height);
-            }
-            if (startLoc.y > endLoc.y)
-            {
-                myRect = new Rect(myRect.x, Screen.height - startLoc.y, myRect.width, startLoc.y - endLoc.y);
-            }
-            else
-            {
-                myRect = new Rect(myRect.x, Screen.height - endLoc.y, myRect.width, endLoc.y - startLoc.y);
-            }
-            if (selectTexture)
-            {
-                GUI.DrawTexture(myRect, selectTexture);
-            }
-            if (borderTexture)
-            {
-                GUI.DrawTexture(new Rect(myRect.x, myRect.y, myRect.width, borderSize), borderTexture);
-                GUI.DrawTexture(new Rect(myRect.x, myRect.y + myRect.height - borderSize, myRect.width, borderSize),
-                    borderTexture);
-                GUI.DrawTexture(new Rect(myRect.x, myRect.y, borderSize, myRect.height), borderTexture);
-                GUI.DrawTexture(new Rect(myRect.x + myRect.width - borderSize, myRect.y, borderSize, myRect.height),
-                    borderTexture);
-            }
+            return;
         }
+        Rect myRect = new Rect(0, 0, 0, 0);
+        myRect = startLoc.x > endLoc.x
+            ? new Rect(endLoc.x, myRect.y, startLoc.x - endLoc.x, myRect.height)
+            : new Rect(startLoc.x, myRect.y, endLoc.x - startLoc.x, myRect.height);
+        myRect = startLoc.y > endLoc.y
+            ? new Rect(myRect.x, Screen.height - startLoc.y, myRect.width, startLoc.y - endLoc.y)
+            : new Rect(myRect.x, Screen.height - endLoc.y, myRect.width, endLoc.y - startLoc.y);
+        if (selectTexture)
+        {
+            GUI.DrawTexture(myRect, selectTexture);
+        }
+        if (!borderTexture)
+        {
+            return;
+        }
+        GUI.DrawTexture(new Rect(myRect.x, myRect.y, myRect.width, borderSize), borderTexture);
+        GUI.DrawTexture(
+            new Rect(myRect.x, myRect.y + myRect.height - borderSize, myRect.width, borderSize),
+            borderTexture);
+        GUI.DrawTexture(new Rect(myRect.x, myRect.y, borderSize, myRect.height), borderTexture);
+        GUI.DrawTexture(
+            new Rect(myRect.x + myRect.width - borderSize, myRect.y, borderSize, myRect.height),
+            borderTexture);
     }
 
     public void Select(int i, string type)

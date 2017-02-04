@@ -1,6 +1,5 @@
-using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class GUIManager : MonoBehaviour
 {
@@ -11,7 +10,7 @@ public class GUIManager : MonoBehaviour
     public Vector2 UColumnsXRows = new Vector2(10, 5);
     public Vector2 unitBDisp = new Vector2(5, 10);
 
-    public bool universalBuild = false;
+    public bool universalBuild;
     public Rect buildButtonSize = new Rect(50, 900, 75, 75);
     public Vector2 BColumnsXRows = new Vector2(10, 5);
     public Vector2 buildingBDisp = new Vector2(80, 100);
@@ -32,16 +31,17 @@ public class GUIManager : MonoBehaviour
     ResourceManager resourceManager;
     Vector2 ratio;
     Vector2 lastWindowSize = Vector2.zero;
-    public bool mouseOverGUI = false;
-    [HideInInspector] public bool mouseOverUnitProduction = false;
-    [HideInInspector] public int unitProductionIndex = 0;
-    [HideInInspector] public bool mouseOverTechProduction = false;
-    [HideInInspector] public int techProductionIndex = 0;
-    [HideInInspector] public bool mouseOverBuildingProduction = false;
-    [HideInInspector] public int buildingProductionIndex = 0;
-    public bool lastState = false;
-    int progressAmount = 0;
+    public bool mouseOverGUI;
+    [HideInInspector] public bool mouseOverUnitProduction;
+    [HideInInspector] public int unitProductionIndex;
+    [HideInInspector] public bool mouseOverTechProduction;
+    [HideInInspector] public int techProductionIndex;
+    [HideInInspector] public bool mouseOverBuildingProduction;
+    [HideInInspector] public int buildingProductionIndex;
+    public bool lastState;
+    int progressAmount;
     List<Progress> progressList = new List<Progress>(0);
+    MiniMap miniMap;
 
     void OnDrawGizmos()
     {
@@ -65,15 +65,22 @@ public class GUIManager : MonoBehaviour
         {
             resourceManager = gameObject.GetComponent<ResourceManager>();
         }
+        if (miniMap == null)
+        {
+            miniMap = GameObject.Find("MiniMap").GetComponent<MiniMap>();
+        }
         ReconfigureWindows();
     }
 
     void ReconfigureWindows()
     {
         ratio = new Vector2(Screen.width / standardSize.x, Screen.height / standardSize.y);
-        GameObject.Find("MiniMap").GetComponent<MiniMap>().localBounds = new Rect(ratio.x * miniMapSize.x,
-            ratio.y * miniMapSize.y, ratio.x * miniMapSize.width, ratio.y * miniMapSize.height);
-        GameObject.Find("MiniMap").GetComponent<MiniMap>().SetSize();
+        miniMap.localBounds = new Rect(
+            ratio.x * miniMapSize.x,
+            ratio.y * miniMapSize.y,
+            ratio.x * miniMapSize.width,
+            ratio.y * miniMapSize.height);
+        miniMap.SetSize();
         select.ResizeSelectionWindow(ratio);
         lastWindowSize = new Vector2(Screen.width, Screen.height);
         Debug.Log("Reconfiguring Windows");
@@ -116,15 +123,16 @@ public class GUIManager : MonoBehaviour
         {
             select.curBuildSelectedS[x].DisplayHealth();
         }
-        for (int x = 0; x < elements.Length; x++)
+        foreach (GUIElement element in elements)
         {
-            elements[x].Display(ratio);
-            if (!elements[x].allowClickThrough)
+            element.Display(ratio);
+            if (element.allowClickThrough)
             {
-                if (elements[x].loc.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)))
-                {
-                    mouseOverGUI = true;
-                }
+                continue;
+            }
+            if (element.loc.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)))
+            {
+                mouseOverGUI = true;
             }
         }
         // Create Building
@@ -139,20 +147,22 @@ public class GUIManager : MonoBehaviour
             for (int x = 0; x < select.curSelectedLength; x++)
             {
                 UnitController cont = select.curSelectedS[x];
-                if (cont.build.builderUnit)
+                if (!cont.build.builderUnit)
                 {
-                    for (int a = 0; a < cont.build.build.Length; a++)
-                    {
-                        if (!buildingCanBuild[a])
-                        {
-                            if (cont.build.build[a].canBuild)
-                            {
-                                buildingCanBuild[a] = true;
-                            }
-                        }
-                    }
-                    canBuild = true;
+                    continue;
                 }
+                for (int a = 0; a < cont.build.build.Length; a++)
+                {
+                    if (buildingCanBuild[a])
+                    {
+                        continue;
+                    }
+                    if (cont.build.build[a].canBuild)
+                    {
+                        buildingCanBuild[a] = true;
+                    }
+                }
+                canBuild = true;
             }
             if (canBuild)
             {
@@ -160,26 +170,29 @@ public class GUIManager : MonoBehaviour
             }
         }
 
-        // Resource 
+        // Resource
 
         int y = 0;
         int z = 0;
         for (int x = 0; x < resourceManager.resourceTypes.Length; x++)
         {
             // Displays the Resource and the Amount
-            GUI.Box(new Rect((resourceSize.x + y * resourceBDisp.x) * ratio.x,
+            GUI.Box(new Rect(
+                    (resourceSize.x + y * resourceBDisp.x) * ratio.x,
                     (resourceSize.y + z * resourceBDisp.y) * ratio.y,
-                    (resourceSize.width) * ratio.x, (resourceSize.height) * ratio.y),
+                    resourceSize.width * ratio.x,
+                    resourceSize.height * ratio.y),
                 resourceManager.resourceTypes[x].name + " : " + resourceManager.resourceTypes[x].amount);
             y = y + 1;
-            if (y >= RColumnsXRows.x)
+            if (!(y >= RColumnsXRows.x))
             {
-                y = 0;
-                z++;
-                if (z >= RColumnsXRows.y)
-                {
-                    break;
-                }
+                continue;
+            }
+            y = 0;
+            z++;
+            if (z >= RColumnsXRows.y)
+            {
+                break;
             }
         }
 
@@ -189,8 +202,10 @@ public class GUIManager : MonoBehaviour
         // UnitController
         for (int x = 0; x < select.curSelectedLength; x++)
         {
-            Rect rectLoc = new Rect((unitGraphic.x + (y * unitBDisp.x)) * ratio.x,
-                (unitGraphic.y + (z * unitBDisp.y)) * ratio.y, unitGraphic.width * ratio.x,
+            Rect rectLoc = new Rect(
+                (unitGraphic.x + (y * unitBDisp.x)) * ratio.x,
+                (unitGraphic.y + (z * unitBDisp.y)) * ratio.y,
+                unitGraphic.width * ratio.x,
                 unitGraphic.height * ratio.y);
             if (GUI.Button(rectLoc, ""))
             {
@@ -206,22 +221,25 @@ public class GUIManager : MonoBehaviour
                 GUI.DrawTexture(rectLoc, select.curSelectedS[x].gui.image);
             }
             y++;
-            if (y >= UColumnsXRows.x)
+            if (!(y >= UColumnsXRows.x))
             {
-                y = 0;
-                z++;
-                if (z >= UColumnsXRows.y)
-                {
-                    break;
-                }
+                continue;
+            }
+            y = 0;
+            z++;
+            if (z >= UColumnsXRows.y)
+            {
+                break;
             }
         }
 
         // Building Controller
         for (int x = 0; x < select.curBuildSelectedLength; x++)
         {
-            Rect rectLoc = new Rect((unitGraphic.x + (y * unitBDisp.x)) * ratio.x,
-                (unitGraphic.y + (z * unitBDisp.y)) * ratio.y, unitGraphic.width * ratio.x,
+            Rect rectLoc = new Rect(
+                (unitGraphic.x + (y * unitBDisp.x)) * ratio.x,
+                (unitGraphic.y + (z * unitBDisp.y)) * ratio.y,
+                unitGraphic.width * ratio.x,
                 unitGraphic.height * ratio.y);
             if (GUI.Button(rectLoc, ""))
             {
@@ -236,14 +254,15 @@ public class GUIManager : MonoBehaviour
                 GUI.DrawTexture(rectLoc, select.curBuildSelectedS[x].gui.image);
             }
             y++;
-            if (y >= UColumnsXRows.x)
+            if (!(y >= UColumnsXRows.x))
             {
-                y = 0;
-                z++;
-                if (z >= UColumnsXRows.y)
-                {
-                    break;
-                }
+                continue;
+            }
+            y = 0;
+            z++;
+            if (z >= UColumnsXRows.y)
+            {
+                break;
             }
         }
 
@@ -254,20 +273,21 @@ public class GUIManager : MonoBehaviour
             select.curBuildSelectedS[0].DisplayGUI(ratio.x, ratio.y);
         }
         GUI.skin.box.wordWrap = true;
-        if (mouseOverGUI)
+        if (!mouseOverGUI)
         {
-            if (mouseOverUnitProduction)
-            {
-                DisplayUnitProductionDescription();
-            }
-            else if (mouseOverTechProduction)
-            {
-                DisplayTechProductionDescription();
-            }
-            else if (mouseOverBuildingProduction)
-            {
-                DisplayBuildingProductionDescription();
-            }
+            return;
+        }
+        if (mouseOverUnitProduction)
+        {
+            DisplayUnitProductionDescription();
+        }
+        else if (mouseOverTechProduction)
+        {
+            DisplayTechProductionDescription();
+        }
+        else if (mouseOverBuildingProduction)
+        {
+            DisplayBuildingProductionDescription();
         }
     }
 
@@ -278,32 +298,36 @@ public class GUIManager : MonoBehaviour
         int z = 0;
         for (int x = 0; x < group.BuildingList.Length; x++)
         {
-            if (group.BuildingList[x].obj)
+            if (!group.BuildingList[x].obj)
             {
-                // Displays the Building Name
-                Rect rectLoc = new Rect((buildButtonSize.x + y * buildingBDisp.x) * ratio.x,
-                    (buildButtonSize.y + z * buildingBDisp.y) * ratio.y,
-                    buildButtonSize.width * ratio.x, buildButtonSize.height * ratio.y);
-                if (GUI.Button(rectLoc, group.BuildingList[x].obj.GetComponent<BuildingController>().name))
-                {
-                    place.BeginPlace(group.BuildingList[x]);
-                }
-                if (rectLoc.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)))
-                {
-                    mouseOverGUI = true;
-                    mouseOverBuildingProduction = true;
-                    buildingProductionIndex = x;
-                }
-                y = y + 1;
-                if (y >= BColumnsXRows.x)
-                {
-                    y = 0;
-                    z++;
-                    if (z >= BColumnsXRows.y)
-                    {
-                        break;
-                    }
-                }
+                continue;
+            }
+            // Displays the Building Name
+            Rect rectLoc = new Rect(
+                (buildButtonSize.x + y * buildingBDisp.x) * ratio.x,
+                (buildButtonSize.y + z * buildingBDisp.y) * ratio.y,
+                buildButtonSize.width * ratio.x,
+                buildButtonSize.height * ratio.y);
+            if (GUI.Button(rectLoc, group.BuildingList[x].obj.GetComponent<BuildingController>().name))
+            {
+                place.BeginPlace(group.BuildingList[x]);
+            }
+            if (rectLoc.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)))
+            {
+                mouseOverGUI = true;
+                mouseOverBuildingProduction = true;
+                buildingProductionIndex = x;
+            }
+            y = y + 1;
+            if (!(y >= BColumnsXRows.x))
+            {
+                continue;
+            }
+            y = 0;
+            z++;
+            if (z >= BColumnsXRows.y)
+            {
+                break;
             }
         }
     }
@@ -315,56 +339,66 @@ public class GUIManager : MonoBehaviour
         int z = 0;
         for (int x = 0; x < group.BuildingList.Length; x++)
         {
-            if (group.BuildingList[x].obj && canBuild[x])
+            if (!group.BuildingList[x].obj || !canBuild[x]) continue;
+            // Displays the Building Name
+            Rect rectLoc = new Rect(
+                (buildButtonSize.x + y * buildingBDisp.x) * ratio.x,
+                (buildButtonSize.y + z * buildingBDisp.y) * ratio.y,
+                buildButtonSize.width * ratio.x,
+                buildButtonSize.height * ratio.y);
+            if (GUI.Button(rectLoc, group.BuildingList[x].obj.GetComponent<BuildingController>().name))
             {
-                // Displays the Building Name
-                Rect rectLoc = new Rect((buildButtonSize.x + y * buildingBDisp.x) * ratio.x,
-                    (buildButtonSize.y + z * buildingBDisp.y) * ratio.y,
-                    buildButtonSize.width * ratio.x, buildButtonSize.height * ratio.y);
-                if (GUI.Button(rectLoc, group.BuildingList[x].obj.GetComponent<BuildingController>().name))
-                {
-                    place.BeginPlace(group.BuildingList[x]);
-                }
-                if (rectLoc.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)))
-                {
-                    mouseOverGUI = true;
-                    mouseOverBuildingProduction = true;
-                    buildingProductionIndex = x;
-                }
-                y = y + 1;
-                if (y >= BColumnsXRows.x)
-                {
-                    y = 0;
-                    z++;
-                    if (z >= BColumnsXRows.y)
-                    {
-                        break;
-                    }
-                }
+                place.BeginPlace(group.BuildingList[x]);
+            }
+            if (rectLoc.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)))
+            {
+                mouseOverGUI = true;
+                mouseOverBuildingProduction = true;
+                buildingProductionIndex = x;
+            }
+            y = y + 1;
+            if (!(y >= BColumnsXRows.x))
+            {
+                continue;
+            }
+            y = 0;
+            z++;
+            if (z >= BColumnsXRows.y)
+            {
+                break;
             }
         }
     }
 
     public void DisplayUnitProductionDescription()
     {
-        Rect rectLoc = new Rect(unitDescriptionLocation.x * ratio.x, unitDescriptionLocation.y * ratio.y,
-            unitDescriptionLocation.width * ratio.x, unitDescriptionLocation.height * ratio.y);
+        Rect rectLoc = new Rect(
+            unitDescriptionLocation.x * ratio.x,
+            unitDescriptionLocation.y * ratio.y,
+            unitDescriptionLocation.width * ratio.x,
+            unitDescriptionLocation.height * ratio.y);
         BuildingController sc = select.curBuildSelectedS[0].GetComponent<BuildingController>();
         GUI.Box(rectLoc, sc.unitProduction.units[unitProductionIndex].description);
     }
 
     public void DisplayTechProductionDescription()
     {
-        Rect rectLoc = new Rect(techDescriptionLocation.x * ratio.x, techDescriptionLocation.y * ratio.y,
-            techDescriptionLocation.width * ratio.x, techDescriptionLocation.height * ratio.y);
+        Rect rectLoc = new Rect(
+            techDescriptionLocation.x * ratio.x,
+            techDescriptionLocation.y * ratio.y,
+            techDescriptionLocation.width * ratio.x,
+            techDescriptionLocation.height * ratio.y);
         BuildingController sc = select.curBuildSelectedS[0].GetComponent<BuildingController>();
         GUI.Box(rectLoc, sc.techProduction.techs[techProductionIndex].description);
     }
 
     public void DisplayBuildingProductionDescription()
     {
-        Rect rectLoc = new Rect(buildingDescriptionLocation.x * ratio.x, buildingDescriptionLocation.y * ratio.y,
-            buildingDescriptionLocation.width * ratio.x, buildingDescriptionLocation.height * ratio.y);
+        Rect rectLoc = new Rect(
+            buildingDescriptionLocation.x * ratio.x,
+            buildingDescriptionLocation.y * ratio.y,
+            buildingDescriptionLocation.width * ratio.x,
+            buildingDescriptionLocation.height * ratio.y);
         GUI.Box(rectLoc, group.BuildingList[buildingProductionIndex].description);
     }
 

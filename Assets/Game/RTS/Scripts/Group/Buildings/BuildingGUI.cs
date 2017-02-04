@@ -10,13 +10,13 @@ public class BuildingGUI : MonoBehaviour
     {
         int y = 0;
         int z = 0;
-        for (int x = 0; x < groupManager.BuildingList.Length; x++)
+        foreach (Building building in groupManager.BuildingList)
         {
             if (GUI.Button(
                 new Rect(guiSize.x + z * guiSize.width, guiSize.y + y * guiSize.height, guiSize.width, guiSize.height),
-                groupManager.BuildingList[x].obj.GetComponent<BuildingController>().name))
+                building.obj.GetComponent<BuildingController>().name))
             {
-                place.BeginPlace(groupManager.BuildingList[x]);
+                place.BeginPlace(building);
             }
             z = z + 1;
             if (z == y)

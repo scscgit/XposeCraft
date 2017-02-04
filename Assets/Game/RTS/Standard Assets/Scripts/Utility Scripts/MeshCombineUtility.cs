@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class MeshCombineUtility
 {
@@ -17,30 +16,29 @@ public class MeshCombineUtility
         int stripCount = 0;
         foreach (MeshInstance combine in combines)
         {
-            if (combine.mesh)
+            if (!combine.mesh)
             {
-                vertexCount += combine.mesh.vertexCount;
+                continue;
+            }
+            vertexCount += combine.mesh.vertexCount;
 
-                if (generateStrips)
+            if (!generateStrips)
+            {
+                continue;
+            }
+            // SUBOPTIMAL FOR PERFORMANCE
+            int curStripCount = combine.mesh.GetTriangles(combine.subMeshIndex).Length;
+            if (curStripCount != 0)
+            {
+                if (stripCount != 0)
                 {
-                    // SUBOPTIMAL FOR PERFORMANCE
-                    int curStripCount = combine.mesh.GetTriangles(combine.subMeshIndex).Length;
-                    if (curStripCount != 0)
-                    {
-                        if (stripCount != 0)
-                        {
-                            if ((stripCount & 1) == 1)
-                                stripCount += 3;
-                            else
-                                stripCount += 2;
-                        }
-                        stripCount += curStripCount;
-                    }
-                    else
-                    {
-                        generateStrips = false;
-                    }
+                    stripCount += (stripCount & 1) == 1 ? 3 : 2;
                 }
+                stripCount += curStripCount;
+            }
+            else
+            {
+                generateStrips = false;
             }
         }
 
@@ -66,13 +64,13 @@ public class MeshCombineUtility
         int[] triangles = new int[triangleCount];
         int[] strip = new int[stripCount];
 
-        int offset;
-
-        offset = 0;
+        var offset = 0;
         foreach (MeshInstance combine in combines)
         {
             if (combine.mesh)
+            {
                 Copy(combine.mesh.vertexCount, combine.mesh.vertices, vertices, ref offset, combine.transform);
+            }
         }
 
         offset = 0;
@@ -99,21 +97,27 @@ public class MeshCombineUtility
         foreach (MeshInstance combine in combines)
         {
             if (combine.mesh)
+            {
                 Copy(combine.mesh.vertexCount, combine.mesh.uv, uv, ref offset);
+            }
         }
 
         offset = 0;
         foreach (MeshInstance combine in combines)
         {
             if (combine.mesh)
+            {
                 Copy(combine.mesh.vertexCount, combine.mesh.uv2, uv1, ref offset);
+            }
         }
 
         offset = 0;
         foreach (MeshInstance combine in combines)
         {
             if (combine.mesh)
+            {
                 CopyColors(combine.mesh.vertexCount, combine.mesh.colors, colors, ref offset);
+            }
         }
 
         int triangleOffset = 0;
@@ -121,60 +125,67 @@ public class MeshCombineUtility
         int vertexOffset = 0;
         foreach (MeshInstance combine in combines)
         {
-            if (combine.mesh)
+            if (!combine.mesh)
             {
-                if (generateStrips)
-                {
-                    int[] inputstrip = combine.mesh.GetTriangles(combine.subMeshIndex);
-                    if (stripOffset != 0)
-                    {
-                        if ((stripOffset & 1) == 1)
-                        {
-                            strip[stripOffset + 0] = strip[stripOffset - 1];
-                            strip[stripOffset + 1] = inputstrip[0] + vertexOffset;
-                            strip[stripOffset + 2] = inputstrip[0] + vertexOffset;
-                            stripOffset += 3;
-                        }
-                        else
-                        {
-                            strip[stripOffset + 0] = strip[stripOffset - 1];
-                            strip[stripOffset + 1] = inputstrip[0] + vertexOffset;
-                            stripOffset += 2;
-                        }
-                    }
-
-                    for (int i = 0; i < inputstrip.Length; i++)
-                    {
-                        strip[i + stripOffset] = inputstrip[i] + vertexOffset;
-                    }
-                    stripOffset += inputstrip.Length;
-                }
-                else
-                {
-                    int[] inputtriangles = combine.mesh.GetTriangles(combine.subMeshIndex);
-                    for (int i = 0; i < inputtriangles.Length; i++)
-                    {
-                        triangles[i + triangleOffset] = inputtriangles[i] + vertexOffset;
-                    }
-                    triangleOffset += inputtriangles.Length;
-                }
-
-                vertexOffset += combine.mesh.vertexCount;
+                continue;
             }
+            if (generateStrips)
+            {
+                int[] inputstrip = combine.mesh.GetTriangles(combine.subMeshIndex);
+                if (stripOffset != 0)
+                {
+                    if ((stripOffset & 1) == 1)
+                    {
+                        strip[stripOffset + 0] = strip[stripOffset - 1];
+                        strip[stripOffset + 1] = inputstrip[0] + vertexOffset;
+                        strip[stripOffset + 2] = inputstrip[0] + vertexOffset;
+                        stripOffset += 3;
+                    }
+                    else
+                    {
+                        strip[stripOffset + 0] = strip[stripOffset - 1];
+                        strip[stripOffset + 1] = inputstrip[0] + vertexOffset;
+                        stripOffset += 2;
+                    }
+                }
+
+                for (int i = 0; i < inputstrip.Length; i++)
+                {
+                    strip[i + stripOffset] = inputstrip[i] + vertexOffset;
+                }
+                stripOffset += inputstrip.Length;
+            }
+            else
+            {
+                int[] inputtriangles = combine.mesh.GetTriangles(combine.subMeshIndex);
+                for (int i = 0; i < inputtriangles.Length; i++)
+                {
+                    triangles[i + triangleOffset] = inputtriangles[i] + vertexOffset;
+                }
+                triangleOffset += inputtriangles.Length;
+            }
+
+            vertexOffset += combine.mesh.vertexCount;
         }
 
-        Mesh mesh = new Mesh();
-        mesh.name = "Combined Mesh";
-        mesh.vertices = vertices;
-        mesh.normals = normals;
-        mesh.colors = colors;
-        mesh.uv = uv;
-        mesh.uv2 = uv1;
-        mesh.tangents = tangents;
+        Mesh mesh = new Mesh
+        {
+            name = "Combined Mesh",
+            vertices = vertices,
+            normals = normals,
+            colors = colors,
+            uv = uv,
+            uv2 = uv1,
+            tangents = tangents
+        };
         if (generateStrips)
+        {
             mesh.SetTriangles(strip, 0);
+        }
         else
+        {
             mesh.triangles = triangles;
+        }
 
         return mesh;
     }
@@ -182,28 +193,36 @@ public class MeshCombineUtility
     static void Copy(int vertexcount, Vector3[] src, Vector3[] dst, ref int offset, Matrix4x4 transform)
     {
         for (int i = 0; i < src.Length; i++)
+        {
             dst[i + offset] = transform.MultiplyPoint(src[i]);
+        }
         offset += vertexcount;
     }
 
     static void CopyNormal(int vertexcount, Vector3[] src, Vector3[] dst, ref int offset, Matrix4x4 transform)
     {
         for (int i = 0; i < src.Length; i++)
+        {
             dst[i + offset] = transform.MultiplyVector(src[i]).normalized;
+        }
         offset += vertexcount;
     }
 
     static void Copy(int vertexcount, Vector2[] src, Vector2[] dst, ref int offset)
     {
         for (int i = 0; i < src.Length; i++)
+        {
             dst[i + offset] = src[i];
+        }
         offset += vertexcount;
     }
 
     static void CopyColors(int vertexcount, Color[] src, Color[] dst, ref int offset)
     {
         for (int i = 0; i < src.Length; i++)
+        {
             dst[i + offset] = src[i];
+        }
         offset += vertexcount;
     }
 
