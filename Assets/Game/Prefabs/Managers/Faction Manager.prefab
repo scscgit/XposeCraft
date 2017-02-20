@@ -98,7 +98,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Relations:
   - state: 3
-  UnitList: []
+  UnitList:
+  - obj: {fileID: 1000012727340272, guid: 2b19777a5a42be44e903619f45f1a941, type: 2}
+    cost: 
+    technologyEffect: 
+    technologyUpgrade: []
+    available: 0
   BuildingList: []
   Tech: []
   Color: {r: 0, g: 0, b: 0, a: 0}

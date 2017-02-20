@@ -2062,9 +2062,13 @@ GameObject:
   - 95: {fileID: 95000012441679826}
   - 54: {fileID: 54000010769329186}
   - 65: {fileID: 65000012495510420}
-  m_Layer: 0
+  - 114: {fileID: 114000011998692552}
+  - 82: {fileID: 82000010559592710}
+  - 114: {fileID: 114000013558981164}
+  - 114: {fileID: 114000013147277468}
+  m_Layer: 9
   m_Name: DonkeyGun
-  m_TagString: Untagged
+  m_TagString: Unit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10197,7 +10201,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!65 &65000012495510420
 BoxCollider:
@@ -10211,6 +10215,80 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3, y: 5.5, z: 3}
   m_Center: {x: 0, y: 3, z: 0}
+--- !u!82 &82000010559592710
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012727340272}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
 --- !u!95 &95000012441679826
 Animator:
   serializedVersion: 3
@@ -10228,3 +10306,111 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114000011998692552
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012727340272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 907c1687b5023ca4a8ae5376bcb0dbbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 5
+  rotateSpeed: 5
+  target: {x: 0, y: 0, z: 0}
+  gridScript: {fileID: 0}
+  gridI: 0
+  myPath:
+    list: 
+    cost: 0
+    color: {r: 1, g: 1, b: 1, a: 1}
+    displayPath: 0
+  depth: 0
+  pathComplete: 0
+  pathing: {fileID: 0}
+  checkDist: 1
+  layer: 0
+--- !u!114 &114000013147277468
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012727340272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ff9a4ee649c18e49a910cf93390c21e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 20
+  upwardSightHeight: 10
+  downwardSightHeight: 10
+--- !u!114 &114000013558981164
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012727340272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c7ac92649f1b20429617ab213b6a770, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  name: DonkeyGun
+  maxHealth: 100
+  health: 100
+  group: 0
+  type:
+    name: Name
+    strengths: []
+    weaknesses: []
+  weapon:
+    fighterUnit: 0
+    attackRate: 0
+    attackRange: 0
+    attackDamage: 0
+    lookRange: 0
+    attackObj: {fileID: 0}
+    attackSphere: {fileID: 0}
+    lookSphere: {fileID: 0}
+  build:
+    builderUnit: 0
+    buildDist: 3
+    build: []
+    source: {fileID: 0}
+  anim:
+    manager: {fileID: 95000012441679826}
+    state: 
+    idleAudio: {fileID: 0}
+    moveAudio: {fileID: 0}
+    gatherAudio: {fileID: 0}
+    buildAudio: {fileID: 0}
+    attackAudio: {fileID: 0}
+    source: {fileID: 0}
+    deathObject: {fileID: 0}
+  resource:
+    resourceUnit: 0
+    behaviour: []
+    source: {fileID: 0}
+    sourceIndex: 0
+    target: {fileID: 0}
+    manager: {fileID: 0}
+    nearestDropOff: {fileID: 0}
+  gui:
+    selectObjs: []
+    image: {fileID: 0}
+    type: Unit
+    select: {fileID: 0}
+    display: 0
+    onlyDisplayed: 0
+  ratio: []
+  techEffect: []
+  vision: {fileID: 0}
+  miniMap: {fileID: 0}
+  movement: {fileID: 0}
+  target: {fileID: 0}
+  targetPoint: {x: 0, y: 0, z: 0}
+  size: 1
+  targetType: 5
+  tState: 4

@@ -108,13 +108,18 @@ public class SAnimSounds
         {
             return;
         }
+        var setAnimationState = new Action<int>(value =>
+        {
+            if (manager && manager.runtimeAnimatorController != null)
+            {
+                Debug.Log(manager.runtimeAnimatorController);
+                manager.SetInteger("State", value);
+            }
+        });
         switch (state)
         {
             case "Gather":
-                if (manager)
-                {
-                    manager.SetInteger("State", 2);
-                }
+                setAnimationState(2);
                 if (gatherAudio)
                 {
                     source.clip = gatherAudio;
@@ -122,10 +127,7 @@ public class SAnimSounds
                 }
                 break;
             case "Attack":
-                if (manager)
-                {
-                    manager.SetInteger("State", 3);
-                }
+                setAnimationState(3);
                 if (attackAudio)
                 {
                     source.clip = attackAudio;
@@ -133,10 +135,7 @@ public class SAnimSounds
                 }
                 break;
             case "Move":
-                if (manager)
-                {
-                    manager.SetInteger("State", 1);
-                }
+                setAnimationState(1);
                 if (moveAudio)
                 {
                     source.clip = moveAudio;
@@ -144,10 +143,7 @@ public class SAnimSounds
                 }
                 break;
             case "Build":
-                if (manager)
-                {
-                    manager.SetInteger("State", 4);
-                }
+                setAnimationState(4);
                 if (buildAudio)
                 {
                     source.clip = buildAudio;
@@ -155,10 +151,7 @@ public class SAnimSounds
                 }
                 break;
             case "Idle":
-                if (manager)
-                {
-                    manager.SetInteger("State", 0);
-                }
+                setAnimationState(0);
                 if (idleAudio)
                 {
                     source.clip = idleAudio;

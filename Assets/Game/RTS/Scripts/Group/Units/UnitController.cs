@@ -86,6 +86,7 @@ public class UnitController : MonoBehaviour
         selection = GameObject.Find("Player Manager").GetComponent<UnitSelection>();
         vision = gameObject.GetComponent<VisionSignal>();
         miniMap = gameObject.GetComponent<MiniMapSignal>();
+        movement = gameObject.GetComponent<UnitMovement>();
         gui.type = "Unit";
         mGroup = GameObject.Find("Faction Manager")
             .GetComponent<FactionManager>()
