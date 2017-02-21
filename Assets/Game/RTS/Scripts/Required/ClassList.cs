@@ -643,30 +643,42 @@ public class APath
     // The Interior Implementation
     public void FindMTPath(object x)
     {
-        if (mGrid == null)
+        try
         {
-            int l = gridScript.grids[gridI].grid.Length;
-            mGrid = new GridPoint[l];
-            for (int z = 0; z < mGrid.Length; z++)
+            if (mGrid == null)
             {
-                mGrid[z] = new GridPoint(gridScript.grids[gridI].grid[z]);
+                int l = gridScript.grids[gridI].grid.Length;
+                mGrid = new GridPoint[l];
+                for (int z = 0; z < mGrid.Length; z++)
+                {
+                    mGrid[z] = new GridPoint(gridScript.grids[gridI].grid[z]);
+                }
             }
-        }
-        else if (mGrid.Length == 0)
-        {
-            int l = gridScript.grids[gridI].grid.Length;
-            mGrid = new GridPoint[l];
-            for (int z = 0; z < mGrid.Length; z++)
+            else if (mGrid.Length == 0)
             {
-                mGrid[z] = new GridPoint(gridScript.grids[gridI].grid[z]);
+                int l = gridScript.grids[gridI].grid.Length;
+                mGrid = new GridPoint[l];
+                for (int z = 0; z < mGrid.Length; z++)
+                {
+                    mGrid[z] = new GridPoint(gridScript.grids[gridI].grid[z]);
+                }
             }
+            if (!generate)
+            {
+                return;
+            }
+            myPath = FindPath(end, start);
         }
-        if (!generate)
+        catch (Exception e)
         {
-            return;
+            // Unity does not catch exceptions that occur in threads other than the main thread
+            Debug.LogError(e);
+            throw;
         }
-        myPath = FindPath(end, start);
-        generate = false;
+        finally
+        {
+            generate = false;
+        }
     }
 
     // The Vector3 based implementation

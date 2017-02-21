@@ -354,9 +354,10 @@ public class FactionEditor : EditorWindow
                         }
                     }
                 }
-                else if (GUI.Button(new Rect(200 * rect.x, 0 * rect.y, 200 * rect.x, 750 * rect.y), "+"))
+                else if (GUI.Button(new Rect(200 * rect.x, 0 * rect.y, 1300 * rect.x, 750 * rect.y), "+"))
                 {
                     target.FactionList[groupId].AddComponent<Faction>();
+                    //InitializeFactionRelations();
                 }
             }
         }
@@ -422,6 +423,11 @@ public class FactionEditor : EditorWindow
         {
             groupId = 0;
         }
+        // Prevent value getting out of sync when Factions get externally modified
+        if (groupId >= target.FactionList.Length)
+        {
+            groupId = target.FactionList.Length - 1;
+        }
         if (target.FactionList.Length > 0)
         {
             if (target.FactionList[groupId] != null)
@@ -440,53 +446,94 @@ public class FactionEditor : EditorWindow
 
     private void DrawFactionGuiRelations(Vector2 rect)
     {
+        if (nTarget == null)
+        {
+            return;
+        }
         GUI.DrawTexture(
             new Rect(525 * rect.x, 0, 325 * rect.x, 25 * rect.y),
             selectionTexture,
             ScaleMode.StretchToFill);
-        if (nTarget.Relations.Length != target.FactionList.Length)
+        InitializeFactionRelations();
+        if (target.FactionList.Length == 1)
         {
-            ModifyGR(target.FactionList.Length, nTarget.Relations.Length);
+            helpState = 1;
+            return;
+        }
+        string[] groupNames = new string[target.FactionList.Length];
+        int selfLocation = groupId;
+        for (int x = 0; x < target.FactionList.Length; x++)
+        {
+            if (target.FactionList[x] != null)
+            {
+                groupNames[x] = (x + 1) + ". " + target.FactionList[x].name;
+            }
+        }
+        arraySelect = EditorGUI.Popup(
+            new Rect(200 * rect.x, 95 * rect.y, 1300 * rect.x, 25 * rect.y),
+            "Faction : ",
+            arraySelect,
+            groupNames);
+        // Preventing occassional illegal selection that occurred when Factions got removed
+        if (arraySelect >= nTarget.Relations.Length)
+        {
+            arraySelect = nTarget.Relations.Length - 1;
+        }
+        if (arraySelect != selfLocation)
+        {
+            string[] options = {"Ally", "Neutral", "Enemy"};
+            nTarget.Relations[arraySelect].state = EditorGUI.Popup(
+                new Rect(200 * rect.x, 120 * rect.y, 1300 * rect.x, 25 * rect.y),
+                "Relation : ",
+                nTarget.Relations[arraySelect].state,
+                options);
         }
         else
         {
-            if (target.FactionList.Length == 1)
+            helpState = 2;
+        }
+    }
+
+    /// <summary>
+    /// Adds or removes Relations of Factions when their number changes.
+    /// Instead of updating only a current Faction, iterates through them all to prevent arrays getting out of bounds.
+    /// </summary>
+    private void InitializeFactionRelations()
+    {
+        var previous = nTarget;
+        foreach (GameObject factionObject in target.FactionList)
+        {
+            if (factionObject == null)
             {
-                helpState = 1;
-                return;
+                continue;
             }
-            string[] groupNames = new string[target.FactionList.Length];
-            int selfLocation = groupId;
-            for (int x = 0; x < target.FactionList.Length; x++)
+            nTarget = factionObject.GetComponent<Faction>();
+            if (nTarget == null)
             {
-                if (target.FactionList[x] != null)
+                continue;
+            }
+            if (nTarget.Relations.Length != target.FactionList.Length)
+            {
+                ModifyGR(target.FactionList.Length, nTarget.Relations.Length);
+            }
+            // Hotfix for Relations not getting initialized soon enough
+            for (var index = 0; index < nTarget.Relations.Length; index++)
+            {
+                if (nTarget.Relations[index] == null)
                 {
-                    groupNames[x] = (x + 1) + ". " + target.FactionList[x].name;
+                    nTarget.Relations[index] = new Relation();
                 }
             }
-            arraySelect = EditorGUI.Popup(
-                new Rect(200 * rect.x, 95 * rect.y, 1300 * rect.x, 25 * rect.y),
-                "Faction : ",
-                arraySelect,
-                groupNames);
-            if (arraySelect != selfLocation)
-            {
-                string[] options = {"Ally", "Neutral", "Enemy"};
-                nTarget.Relations[arraySelect].state = EditorGUI.Popup(
-                    new Rect(200 * rect.x, 120 * rect.y, 1300 * rect.x, 25 * rect.y),
-                    "Relation : ",
-                    nTarget.Relations[arraySelect].state,
-                    options);
-            }
-            else
-            {
-                helpState = 2;
-            }
         }
+        nTarget = previous;
     }
 
     private void DrawFactionGuiTechs(Vector2 rect)
     {
+        if (nTarget == null)
+        {
+            return;
+        }
         GUI.DrawTexture(
             new Rect(850 * rect.x, 0, 325 * rect.x, 25 * rect.y),
             selectionTexture,
@@ -3480,7 +3527,7 @@ public class FactionEditor : EditorWindow
 
     // Functions for Modifying custom class arrays
 
-    // Group
+    // Faction
     void ModifyG(int nl, int ol, int curLoc)
     {
         GameObject[] copyArr = new GameObject[ol];
@@ -3523,6 +3570,8 @@ public class FactionEditor : EditorWindow
                 y++;
             }
         }
+        // After a Faction gets added or removed, relations need to be updated
+        InitializeFactionRelations();
     }
 
     // Modify Techs
@@ -4074,7 +4123,7 @@ public class FactionEditor : EditorWindow
         }
     }
 
-
+    // Faction Relations
     void ModifyGR(int nl, int ol)
     {
         Relation[] copyArr = new Relation[ol];

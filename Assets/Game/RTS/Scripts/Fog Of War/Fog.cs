@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Threading;
@@ -152,7 +153,7 @@ public class Fog : MonoBehaviour
             locH[x] = hiddenAgentT[x].position;
         }
         // MultiThreaded request. This keeps the many processes off the main thread and runs them in the background
-        ThreadPool.QueueUserWorkItem(new WaitCallback(ModifyFog));
+        ThreadPool.QueueUserWorkItem(ModifyFog);
         // Finally, we set and apply the new colors to the fog texture
         fog.SetPixels32(fogColor);
         fog.Apply(false);
@@ -223,8 +224,20 @@ public class Fog : MonoBehaviour
             }
         }
         fogColor = fColor;
-        CheckRenderer(fogVision);
-        funActive = false;
+        try
+        {
+            CheckRenderer(fogVision);
+        }
+        catch (Exception e)
+        {
+            // Unity does not catch exceptions that occur in threads other than the main thread
+            Debug.LogError(e);
+            throw;
+        }
+        finally
+        {
+            funActive = false;
+        }
     }
 
     // Bresenham's Line Algorithm at work for shadow casting

@@ -35,7 +35,7 @@ public class UGridEditor : Editor
             starget.index = 0;
             return;
         }
-        EditorGUILayout.BeginHorizontal("");
+        EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Settings"))
         {
             menuSetting = 0;
@@ -81,6 +81,8 @@ public class UGridEditor : Editor
         if (GUILayout.Button("Generate Grid"))
         {
             starget.GenerateGrid(starget.index);
+            // Immediate effect instead of waiting for the camera to move
+            SceneView.RepaintAll();
         }
     }
 
