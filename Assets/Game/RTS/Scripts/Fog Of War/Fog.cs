@@ -58,18 +58,33 @@ public class Fog : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        // This is required so that the terrain's mat will be reset after the game ends. This is only for Unity testing issues
-        if (!Application.isPlaying)
+        if (Application.isPlaying)
         {
-            if (terrainMat != null)
-            {
-                terrainMat.SetTexture("_FOWTex", transparentTexture);
-            }
+            return;
         }
+        // This is required so that the terrain's mat will be reset after the game ends
+        ResetTransparentTerrain();
 
         if (gameObject.name != "Fog")
         {
             gameObject.name = "Fog";
+        }
+    }
+
+    void OnDestroy()
+    {
+        // Unity Editor sometimes does not rollback the Texture change when the game is stopped, this is a failsafe
+        ResetTransparentTerrain();
+    }
+
+    /// <summary>
+    /// This is only for Unity testing issues
+    /// </summary>
+    void ResetTransparentTerrain()
+    {
+        if (terrainMat != null)
+        {
+            terrainMat.SetTexture("_FOWTex", transparentTexture);
         }
     }
 
@@ -137,7 +152,10 @@ public class Fog : MonoBehaviour
                 agentsAmount--;
                 x--;
             }
-            locA[x] = agentsT[x].position;
+            else
+            {
+                locA[x] = agentsT[x].position;
+            }
         }
         locH = new Vector3[hideAmount];
         for (int x = 0; x < hideAmount; x++)
@@ -150,7 +168,10 @@ public class Fog : MonoBehaviour
                 hideAmount--;
                 x--;
             }
-            locH[x] = hiddenAgentT[x].position;
+            else
+            {
+                locH[x] = hiddenAgentT[x].position;
+            }
         }
         // MultiThreaded request. This keeps the many processes off the main thread and runs them in the background
         ThreadPool.QueueUserWorkItem(ModifyFog);
@@ -335,7 +356,7 @@ public class Fog : MonoBehaviour
     Color32 LerpColor(Color32 curColor)
     {
         Color tColor = curColor;
-        tColor[3] -= (0.003921568627451f) * blendRate;
+        tColor[3] -= 0.003921568627451f * blendRate;
         Color32 rColor = tColor;
         Color visitedColor = revealed;
         if (tColor[3] < visitedColor[3])
@@ -382,6 +403,11 @@ public class Fog : MonoBehaviour
         agentsDSlope.Add(dslope);
         agentsT.Add(obj.GetComponent<Transform>());
         agentsAmount++;
+    }
+
+    public void RemoveAgent(GameObject obj)
+    {
+        agents[agents.IndexOf(obj)] = null;
     }
 
     public void ClosePoints(int range, Vector3 loc3d, int height)

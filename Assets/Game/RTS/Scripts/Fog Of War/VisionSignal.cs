@@ -9,11 +9,26 @@ public class VisionSignal : MonoBehaviour
     public int radius = 5;
     public int upwardSightHeight = 1;
     public int downwardSightHeight = 1;
+    bool quitting;
 
-    void Start()
+    void OnEnable()
     {
         GameObject.Find("Fog")
             .GetComponent<Fog>()
             .AddAgent(gameObject, radius, upwardSightHeight, downwardSightHeight, this);
+    }
+
+    private void OnApplicationQuit()
+    {
+        quitting = true;
+    }
+
+    private void OnDisable()
+    {
+        if (quitting)
+        {
+            return;
+        }
+        GameObject.Find("Fog").GetComponent<Fog>().RemoveAgent(gameObject);
     }
 }

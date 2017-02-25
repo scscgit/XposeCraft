@@ -53,7 +53,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grids:
   - size: 200
-    grid: []
     startLoc: {x: -200, y: 100, z: -200}
     octileConnection: 0
     nodeDist: 2
@@ -61,7 +60,7 @@ MonoBehaviour:
     displayLines: 0
     displaceDown: 1
     checkSlope: 1
-    slopeMax: 2
+    slopeMax: 1
     checkLayer:
       serializedVersion: 2
       m_Bits: 0
@@ -80,7 +79,6 @@ MonoBehaviour:
       cost: 0
       color: {r: 1, g: 1, b: 1, a: 1}
       displayPath: 0
-    mGrid: []
     index: 
     generate: 0
   selectionTexture: {fileID: 2800000, guid: 349e81cd9cb2b524f87ae272c078acc5, type: 3}
