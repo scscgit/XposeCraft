@@ -269,7 +269,8 @@ public class UGrid : MonoBehaviour
         {
             GridPoint point = grids[i].grid[x];
             Collider[] coll = Physics.OverlapSphere(point.loc, grids[i].nodeDist / 2.25f, grids[i].checkLayer);
-            if (coll.Length > 1)
+            // Changed the requirement to just one collision
+            if (coll.Length >= 1)
             {
                 point.state = 2;
             }
@@ -414,18 +415,10 @@ public class Grid
             GridPoint point = grid[x];
             for (int y = 0; y < point.children.Length; y++)
             {
-                int child = point.children[y];
-                if (point.state == 2)
-                {
-                    Gizmos.color = Color.red;
-                }
-                else
-                {
-                    Gizmos.color = Color.green;
-                    Gizmos.DrawLine(
-                        new Vector3(point.loc.x, point.loc.y, point.loc.z),
-                        new Vector3(grid[child].loc.x, grid[child].loc.y, grid[child].loc.z));
-                }
+                var childPosition = grid[point.children[y]].loc;
+                var currentPosition = new Vector3(point.loc.x, point.loc.y, point.loc.z);
+                Gizmos.color = point.state == 2 ? Color.red : Color.green;
+                Gizmos.DrawLine(currentPosition, (childPosition - currentPosition) / 2 + currentPosition);
             }
         }
     }

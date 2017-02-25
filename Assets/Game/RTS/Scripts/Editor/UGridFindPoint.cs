@@ -27,20 +27,17 @@ public class UGridFindPoint : EditorWindow
             grid = GameObject.Find("UGrid").GetComponent<UGrid>();
         }
         index = EditorGUILayout.IntField("Grid : ", index);
-        if (index < grid.grids.Length)
+        if (index < grid.grids.Length && index >= 0)
         {
             loc = EditorGUILayout.IntField("Index : ", loc);
-            if (loc < grid.grids[index].grid.Length)
+            if (loc < grid.grids[index].grid.Length && loc >= 0)
             {
                 GUILayout.Label("X : " + grid.grids[index].grid[loc].loc.x +
                                 ", Y : " + grid.grids[index].grid[loc].loc.y +
                                 ", Z : " + grid.grids[index].grid[loc].loc.z);
+                findPoint.transform.position = grid.grids[index].grid[loc].loc;
+                pointCube.index = index;
             }
-        }
-        if (index < grid.grids.Length && loc < grid.grids[index].grid.Length)
-        {
-            findPoint.transform.position = grid.grids[index].grid[loc].loc;
-            pointCube.index = index;
         }
     }
 }
