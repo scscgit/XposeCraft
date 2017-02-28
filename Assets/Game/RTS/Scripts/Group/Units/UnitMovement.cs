@@ -39,7 +39,7 @@ public class UnitMovement : MonoBehaviour
             {
                 continue;
             }
-            GetPath(target);
+            RequestPath(target);
             skip = true;
             break;
         }
@@ -75,12 +75,17 @@ public class UnitMovement : MonoBehaviour
         }
     }
 
-    public void GetPath(Vector3 target)
+    public void RequestPath(Vector3 target)
     {
         myPath = null;
         pathing.RequestPath(myTransform.position, target, gameObject, gridI);
-        curPoint = 0;
         pathComplete = false;
+    }
+
+    public void SetPath(UPath path)
+    {
+        myPath = path;
+        curPoint = 0;
     }
 
     void OnDrawGizmosSelected()

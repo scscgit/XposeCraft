@@ -74,7 +74,7 @@ public class AStarManager : MonoBehaviour
             {
                 if (x < startListAmount)
                 {
-                    returnList[y].GetComponent<UnitMovement>().myPath = apath[x].myPath;
+                    returnList[y].GetComponent<UnitMovement>().SetPath(apath[x].myPath);
                     returnList.RemoveAt(y);
                     targetList.RemoveAt(y);
                     indexList.RemoveAt(y);
@@ -91,6 +91,19 @@ public class AStarManager : MonoBehaviour
 
     public void RequestPath(Vector3 loc, Vector3 loc1, GameObject obj, int index)
     {
+        // If there was an old request for the same object, that is not yet being processed
+        // (based on the maximum amount of active parallel threads), invalidate it to prevent duplicate pending
+        // requests. This will both improve performance and prevent the need for synchronization.
+        int previousRequestIndex = returnList.IndexOf(obj);
+        if (previousRequestIndex > amountOfThreads)
+        {
+            returnList.RemoveAt(previousRequestIndex);
+            targetList.RemoveAt(previousRequestIndex);
+            indexList.RemoveAt(previousRequestIndex);
+            startList.RemoveAt(previousRequestIndex);
+            listAmount--;
+        }
+
         startList.Add(loc);
         indexList.Add(index);
         targetList.Add(loc1);

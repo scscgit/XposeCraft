@@ -179,7 +179,7 @@ public class UnitController : MonoBehaviour
                             anim.Animate();
                         }
                         movement.target = target.transform.position;
-                        movement.GetPath(target.transform.position);
+                        movement.RequestPath(target.transform.position);
                         //lastTargetPoint = target.transform.position;
                     }
                     switch (tState)
@@ -406,7 +406,7 @@ public class UnitController : MonoBehaviour
                 break;
         }
         movement.target = nTargetPoint;
-        movement.GetPath(targetPoint);
+        movement.RequestPath(targetPoint);
     }
 
     void ResetTarget()
