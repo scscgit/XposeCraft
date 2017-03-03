@@ -102,61 +102,50 @@ public class SAnimSounds
     public AudioSource source;
     public GameObject deathObject;
 
+    private void SetAnimationState(int value)
+    {
+        if (manager && manager.runtimeAnimatorController != null)
+        {
+            manager.SetInteger("State", value);
+        }
+    }
+
+    private void PlayAudio(AudioClip value)
+    {
+        if (gatherAudio)
+        {
+            source.clip = value;
+            source.Play();
+        }
+    }
+
     public void Animate()
     {
         if (lastState == state)
         {
             return;
         }
-        var setAnimationState = new Action<int>(value =>
-        {
-            if (manager && manager.runtimeAnimatorController != null)
-            {
-                Debug.Log(manager.runtimeAnimatorController);
-                manager.SetInteger("State", value);
-            }
-        });
         switch (state)
         {
             case "Gather":
-                setAnimationState(2);
-                if (gatherAudio)
-                {
-                    source.clip = gatherAudio;
-                    source.Play();
-                }
+                SetAnimationState(2);
+                PlayAudio(gatherAudio);
                 break;
             case "Attack":
-                setAnimationState(3);
-                if (attackAudio)
-                {
-                    source.clip = attackAudio;
-                    source.Play();
-                }
+                SetAnimationState(3);
+                PlayAudio(attackAudio);
                 break;
             case "Move":
-                setAnimationState(1);
-                if (moveAudio)
-                {
-                    source.clip = moveAudio;
-                    source.Play();
-                }
+                SetAnimationState(1);
+                PlayAudio(moveAudio);
                 break;
             case "Build":
-                setAnimationState(4);
-                if (buildAudio)
-                {
-                    source.clip = buildAudio;
-                    source.Play();
-                }
+                SetAnimationState(4);
+                PlayAudio(buildAudio);
                 break;
             case "Idle":
-                setAnimationState(0);
-                if (idleAudio)
-                {
-                    source.clip = idleAudio;
-                    source.Play();
-                }
+                SetAnimationState(0);
+                PlayAudio(idleAudio);
                 break;
         }
         lastState = state;

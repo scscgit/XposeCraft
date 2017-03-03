@@ -104,6 +104,11 @@ MonoBehaviour:
     technologyEffect: 
     technologyUpgrade: []
     available: 0
+  - obj: {fileID: 1000013194072380, guid: 7f050e5e6d3f94e42bd1ede82fa86849, type: 2}
+    cost: 
+    technologyEffect: 
+    technologyUpgrade: []
+    available: 0
   BuildingList: []
   Tech: []
   Color: {r: 0, g: 0, b: 0, a: 0}

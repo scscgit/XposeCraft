@@ -3903,15 +3903,18 @@ public class FactionEditor : EditorWindow
         targ.resource.behaviour = new ResourceBehaviour[nl];
         if (nl > ol)
         {
-            for (int x = 0; x < copyArr.Length; x++)
+            for (int x = 0; x < ol; x++)
             {
                 targ.resource.behaviour[x] = copyArr[x];
             }
-            targ.resource.behaviour[nl - 1] = new ResourceBehaviour();
+            for (int x = ol; x < nl; x++)
+            {
+                targ.resource.behaviour[x] = new ResourceBehaviour();
+            }
         }
         else
         {
-            for (int x = 0; x < targ.resource.behaviour.Length; x++)
+            for (int x = 0; x < nl; x++)
             {
                 targ.resource.behaviour[x] = copyArr[x];
             }
