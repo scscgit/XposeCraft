@@ -45,7 +45,7 @@ public class Fog : MonoBehaviour
     float[] fogHeight;
     Vector3[] locA;
     Vector3[] locH;
-    [HideInInspector] public MiniMap map;
+    public MiniMap map { get; set; }
     public Color revealed;
     public Color visited;
     public Color hidden;

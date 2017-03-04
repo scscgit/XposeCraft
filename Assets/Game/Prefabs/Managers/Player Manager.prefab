@@ -51,6 +51,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1000013445964246
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 4000010646430844}
+  - 114: {fileID: 114000010438468564}
+  m_Layer: 0
+  m_Name: MiniMap
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &4000010171155422
 Transform:
   m_ObjectHideFlags: 1
@@ -63,8 +79,22 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 4000011854467232}
+  - {fileID: 4000010646430844}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!4 &4000010646430844
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013445964246}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 4000010171155422}
+  m_RootOrder: 1
 --- !u!4 &4000011854467232
 Transform:
   m_ObjectHideFlags: 1
@@ -126,6 +156,45 @@ Behaviour:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011812799752}
   m_Enabled: 1
+--- !u!114 &114000010438468564
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013445964246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f20bbdafcca985147b2f259c972fd634, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  elements: []
+  cameraElement:
+    size: {x: 0, y: 0}
+    image: {fileID: 2800000, guid: bdd090e2d1acd0340aa0578aade8b386, type: 3}
+    tag: 
+    tints:
+    - {r: 1, g: 1, b: 1, a: 1}
+    factionElement: 0
+    moveUp: 0
+    elementObj: []
+    elementTransform: []
+    elementMap: []
+    elementLoc: []
+    elementGroup: 
+    objAmount: 0
+  cam: {fileID: 20000013609079512}
+  cameraController: {fileID: 1000013047492278}
+  camZoomLayer:
+    serializedVersion: 2
+    m_Bits: 272
+  background: {fileID: 2800000, guid: d975ac5879440f14d892bef58d4a7962, type: 3}
+  realWorldBounds:
+    serializedVersion: 2
+    x: -250
+    y: -250
+    width: 500
+    height: 500
+  fogColor: {r: 0, g: 0, b: 0, a: 0.78431374}
 --- !u!114 &114000011157487732
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -238,8 +307,7 @@ MonoBehaviour:
   modifier: 2
   scrollMinMax: {x: -120, y: 70}
   scrollSpeed: 0.9
-  cam: {fileID: 4000011854467232}
-  scrollCur: 0
+  cam: {fileID: 20000013609079512}
   movementBorders:
     serializedVersion: 2
     x: -200
@@ -248,10 +316,10 @@ MonoBehaviour:
     height: 200
   mouseBorders:
     serializedVersion: 2
-    x: 0
-    y: 0
-    width: 0
-    height: 0
+    x: 20
+    y: 20
+    width: 20
+    height: 20
 --- !u!114 &114000013035803882
 MonoBehaviour:
   m_ObjectHideFlags: 1

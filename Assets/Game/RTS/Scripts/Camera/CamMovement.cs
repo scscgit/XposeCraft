@@ -7,15 +7,14 @@ public class CamMovement : MonoBehaviour
     public int modifier;
     public Vector2 scrollMinMax;
     public float scrollSpeed;
-    public Transform cam;
-    [HideInInspector] public float scrollCur;
+    public Camera cam;
+    public float scrollCur { get; set; }
     public Rect movementBorders;
-    float amount;
-
     public Rect mouseBorders;
 
     void FixedUpdate()
     {
+        moveSpeedCur = new Vector2();
         MouseBorderMovement();
         KeyMovement();
         ScrollWheel();
@@ -45,38 +44,38 @@ public class CamMovement : MonoBehaviour
     // Movement For if the Mouse Goes to a certain area oncreen
     void MouseBorderMovement()
     {
-        if (Input.mousePosition.x < mouseBorders.x)
+        if (Input.mousePosition.x >= 0 && Input.mousePosition.x < mouseBorders.x)
         {
-            moveSpeedCur = new Vector2(-moveSpeed.x, moveSpeedCur.y);
+            moveSpeedCur += new Vector2(-moveSpeed.x, 0);
         }
-        else if (Input.mousePosition.x > mouseBorders.width)
+        else if (Input.mousePosition.x <= Screen.width && Input.mousePosition.x - Screen.width > -mouseBorders.width)
         {
-            moveSpeedCur = new Vector2(moveSpeed.x, moveSpeedCur.y);
+            moveSpeedCur += new Vector2(moveSpeed.x, 0);
         }
-        if (Input.mousePosition.y < mouseBorders.y)
+        if (Input.mousePosition.y >= 0 && Input.mousePosition.y < mouseBorders.y)
         {
-            moveSpeedCur = new Vector2(moveSpeedCur.x, -moveSpeed.y);
+            moveSpeedCur += new Vector2(0, -moveSpeed.y);
         }
-        else if (Input.mousePosition.y > mouseBorders.height)
+        else if (Input.mousePosition.y <= Screen.height && Input.mousePosition.y - Screen.height > -mouseBorders.height)
         {
-            moveSpeedCur = new Vector2(moveSpeedCur.x, moveSpeed.y);
+            moveSpeedCur += new Vector2(0, moveSpeed.y);
         }
     }
 
     // Keyboard based movement
     void KeyMovement()
     {
-        moveSpeedCur = new Vector2(Input.GetAxis("Horizontal") * moveSpeed.x, moveSpeedCur.y);
-        moveSpeedCur = new Vector2(moveSpeedCur.x, Input.GetAxis("Vertical") * moveSpeed.y);
+        moveSpeedCur += new Vector2(Input.GetAxis("Horizontal") * moveSpeed.x, Input.GetAxis("Vertical") * moveSpeed.y);
         if (Input.GetButton("IncreaseMoveSpeed"))
         {
-            moveSpeedCur = moveSpeedCur * modifier;
+            moveSpeedCur *= modifier;
         }
     }
 
     // Used for Scrollwheel functionality
     void ScrollWheel()
     {
+        float amount;
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (scroll * scrollSpeed + scrollCur > scrollMinMax.y)
         {

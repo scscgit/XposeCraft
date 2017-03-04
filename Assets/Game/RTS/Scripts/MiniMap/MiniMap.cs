@@ -4,15 +4,13 @@ public class MiniMap : MonoBehaviour
 {
     public MiniMapElement[] elements = new MiniMapElement[0];
     public MiniMapElement cameraElement;
-    public GameObject cam;
+    public Camera cam;
     public GameObject cameraController;
     public LayerMask camZoomLayer;
     public Texture background;
-    public Rect localBounds;
+    public Rect localBounds { get; set; }
     public Rect realWorldBounds;
-    [HideInInspector] public Texture fogTexture;
-    Vector2 lastPoint1;
-    Vector2 lastPoint2;
+    public Texture fogTexture { get; set; }
     public Color fogColor = Color.clear;
     Rect size;
     Rect cameraLoc = new Rect(0, 0, 0, 0);
@@ -110,46 +108,47 @@ public class MiniMap : MonoBehaviour
         }
 
         //Vector2 loc = Determine2dLoc(cam.transform.position);
-        MiniMapElement details = cameraElement;
-        if (!details.image)
-        {
-            return;
-        }
 
-        GUI.color = details.tints[0];
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(new Vector2(0, Screen.height));
-        Physics.Raycast(ray, out hit, 1000, camZoomLayer);
-        bool check = hit.collider != null;
-        RaycastHit hit2;
-        ray = Camera.main.ScreenPointToRay(new Vector2(Screen.width, 0));
-        Physics.Raycast(ray, out hit2, 1000, camZoomLayer);
-        if (hit2.collider == null)
+        RaycastHit hitTopLeft;
+        Ray ray = cam.ScreenPointToRay(new Vector2(0, Screen.height));
+        Physics.Raycast(ray, out hitTopLeft, 1000, camZoomLayer);
+        RaycastHit hitTopRight;
+        ray = cam.ScreenPointToRay(new Vector2(Screen.width, Screen.height));
+        Physics.Raycast(ray, out hitTopRight, 1000, camZoomLayer);
+        RaycastHit hitBottomRight;
+        ray = cam.ScreenPointToRay(new Vector2(Screen.width, 0));
+        Physics.Raycast(ray, out hitBottomRight, 1000, camZoomLayer);
+        if (hitTopLeft.collider != null && hitTopRight.collider != null && hitBottomRight.collider != null)
         {
-            check = false;
+            var topLeft = Determine2dLoc(hitTopLeft.point);
+            var topRight = Determine2dLoc(hitTopRight.point);
+            var bottomRight = Determine2dLoc(hitBottomRight.point);
+            cameraLoc = new Rect(topLeft.x, topLeft.y, topRight.x - topLeft.x, bottomRight.y - topLeft.y);
         }
-        if (check)
+        else
         {
-            lastPoint1 = Determine2dLoc(hit.point);
-            lastPoint2 = Determine2dLoc(hit2.point);
+            Debug.LogWarning("Minimap could not detect its camera location, check your Cam Zoom Layer");
         }
-        cameraLoc = new Rect(lastPoint1.x, lastPoint1.y, lastPoint2.x - lastPoint1.x, lastPoint2.y - lastPoint1.y);
         if (!moveCamera)
         {
             return;
         }
-
-        Vector3 pos = Determine3dLoc(new Vector2(
-            Input.mousePosition.x + cameraLoc.width / 4,
-            Screen.height - Input.mousePosition.y + cameraLoc.height / 2));
-        cameraController.transform.position = new Vector3(pos.x, cameraController.transform.position.y, pos.z);
+        cameraController.transform.position = Determine3dLoc(
+            cameraController.transform.position.y,
+            new Vector2(
+                Input.mousePosition.x,
+                Screen.height - Input.mousePosition.y + cameraLoc.height / 2));
     }
 
     void OnGUI()
     {
         // Saves a lot of processing
+#if !UNITY_EDITOR
         useGUILayout = false;
+#endif
+        // The useGUILayout = false does not honor GUI.depth, this usually breaks when Editor hotswaps the script
         GUI.depth = 0;
+
         // For Moving around the Camera
         moveCamera = GUI.RepeatButton(localBounds, "") && Input.GetButton("LMB");
 
@@ -183,6 +182,7 @@ public class MiniMap : MonoBehaviour
         if (cameraElement.image)
         {
             // Draw the Camera
+            GUI.color = cameraElement.tints[0];
             GUI.DrawTexture(cameraLoc, cameraElement.image, ScaleMode.StretchToFill);
         }
     }
@@ -195,7 +195,7 @@ public class MiniMap : MonoBehaviour
             localBounds.y + localBounds.height - (loc.z - realWorldBounds.y) * size.height);
     }
 
-    Vector3 Determine3dLoc(Vector2 loc)
+    Vector3 Determine3dLoc(float cameraHeight, Vector2 loc)
     {
         Rect size = new Rect(
             realWorldBounds.x / localBounds.x,
@@ -203,8 +203,8 @@ public class MiniMap : MonoBehaviour
             realWorldBounds.width / localBounds.width,
             realWorldBounds.height / localBounds.height);
         return new Vector3(
-            (loc.x - localBounds.x) * size.width,
-            100,
+            realWorldBounds.x + (loc.x - localBounds.x) * size.width,
+            cameraHeight,
             realWorldBounds.y + realWorldBounds.height - (loc.y - localBounds.y) * size.height);
     }
 }
