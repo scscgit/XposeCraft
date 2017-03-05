@@ -55,7 +55,7 @@ public class MiniMap : MonoBehaviour
         }
     }
 
-    public bool AddElement(GameObject obj, string tag, MiniMapSignal map, int group)
+    public bool AddElement(GameObject obj, string tag, MiniMapSignal map, int factionIndex)
     {
         bool found = false;
         int index = 0;
@@ -70,7 +70,7 @@ public class MiniMap : MonoBehaviour
         }
         if (found)
         {
-            elements[index].AddElement(obj, tag, map, group, Determine2dLoc(obj.transform.position));
+            elements[index].AddElement(obj, tag, map, factionIndex, Determine2dLoc(obj.transform.position));
         }
         return found;
     }
@@ -88,7 +88,7 @@ public class MiniMap : MonoBehaviour
                     element.elementMap.RemoveAt(y);
                     element.elementTransform.RemoveAt(y);
                     element.elementLoc.RemoveAt(y);
-                    element.elementGroup.RemoveAt(y);
+                    element.elementFaction.RemoveAt(y);
                     element.objAmount--;
                     y--;
                 }
@@ -159,7 +159,7 @@ public class MiniMap : MonoBehaviour
         }
 
         // Draw the Elements on the Map
-        for (var x = 0; x < elements.Length; x++)
+        for (int x = 0; x < elements.Length; x++)
         {
             MiniMapElement element = elements[x];
             Vector2 halfSize = new Vector2(element.size.x / 2, element.size.y / 2);
@@ -168,7 +168,7 @@ public class MiniMap : MonoBehaviour
                 Vector2 loc = element.elementLoc[y];
                 if (element.elementMap[y].display)
                 {
-                    GUI.color = element.tints[element.elementGroup[y]];
+                    GUI.color = element.tints[element.elementFaction[y]];
                     GUI.DrawTexture(
                         new Rect(loc.x - halfSize.x, loc.y - halfSize.y, element.size.x, element.size.y),
                         element.image);

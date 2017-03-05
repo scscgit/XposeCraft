@@ -5,15 +5,15 @@ public class BuildingPlacement : MonoBehaviour
     ResourceManager resourceManager;
     UnitSelection unitSelect;
     Fog fog;
-    [HideInInspector] public bool place;
+    public bool place { get; set; }
     Building build;
     GameObject obj;
-    UGrid grid;
+    UGrid uGrid;
     public int gridI;
     int loc;
-    int group;
+    int factionIndex;
     bool aStar = false;
-    [HideInInspector] public bool placed;
+    public bool placed { get; set; }
 
     public void Start()
     {
@@ -33,12 +33,12 @@ public class BuildingPlacement : MonoBehaviour
         {
             unitSelect = gameObject.GetComponent<UnitSelection>();
         }
-        if (grid == null)
+        if (uGrid == null)
         {
             GameObject gridObj = GameObject.Find("UGrid");
             if (gridObj)
             {
-                grid = gridObj.GetComponent<UGrid>();
+                uGrid = gridObj.GetComponent<UGrid>();
             }
         }
     }
@@ -76,9 +76,9 @@ public class BuildingPlacement : MonoBehaviour
         obj = Instantiate(nBuild.tempObj, Vector3.zero, Quaternion.identity) as GameObject;
     }
 
-    public void SetGroup(int id)
+    public void SetFaction(int id)
     {
-        group = id;
+        factionIndex = id;
     }
 
     public void OnDrawGizmos()
@@ -104,7 +104,7 @@ public class BuildingPlacement : MonoBehaviour
                         Gizmos.color = Color.red;
                         break;
                 }
-                float nodeSize = grid.grids[gridI].nodeDist;
+                float nodeSize = uGrid.grids[gridI].nodeDist;
                 Gizmos.DrawCube(
                     new Vector3(
                         obj.transform.position.x + x * nodeSize,
@@ -138,19 +138,19 @@ public class BuildingPlacement : MonoBehaviour
         {
             return;
         }
-        int i = grid.DetermineLoc(hit.point, gridI);
-        if (grid.grids[gridI].grid[i].state != 2)
+        int i = uGrid.DetermineLoc(hit.point, gridI);
+        if (uGrid.grids[gridI].points[i].state != 2)
         {
             loc = i;
-            obj.transform.position = grid.grids[gridI].grid[i].loc;
+            obj.transform.position = uGrid.grids[gridI].points[i].loc;
         }
-        bool canPlace = build.CheckPoints(grid, gridI, loc) && fog.CheckLocation(obj.transform.position);
+        bool canPlace = build.CheckPoints(uGrid, gridI, loc) && fog.CheckLocation(obj.transform.position);
         if (!canPlace || !Input.GetButtonDown("LMB"))
         {
             return;
         }
         GameObject tempObj;
-        build.ClosePoints(grid, gridI, loc, aStar);
+        build.ClosePoints(uGrid, gridI, loc, aStar);
 
         if (build.autoBuild)
         {
@@ -174,6 +174,6 @@ public class BuildingPlacement : MonoBehaviour
         BuildingController script = tempObj.GetComponent<BuildingController>();
         script.building = build;
         script.loc = loc;
-        script.group = group;
+        script.FactionIndex = factionIndex;
     }
 }

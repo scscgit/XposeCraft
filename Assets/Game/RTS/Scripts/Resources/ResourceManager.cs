@@ -24,7 +24,7 @@ public class ResourceManager : MonoBehaviour
                 dropOffPoints.RemoveAt(x);
                 dropOffTypes.RemoveAt(x);
                 dropOffAmount--;
-                x--;
+                //x--;
                 break;
             }
         }

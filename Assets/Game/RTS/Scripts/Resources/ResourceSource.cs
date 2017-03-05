@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[SelectionBase]
 public class ResourceSource : MonoBehaviour
 {
     public int resourceIndex;
@@ -29,41 +30,43 @@ public class ResourceSource : MonoBehaviour
 
     public void OpenPoints()
     {
-        UGrid grid = GameObject.Find("UGrid").GetComponent<UGrid>();
-        int index = DetermineLoc(transform.position, grid);
-        grid.grids[gridI].grid[index].state = 0;
+        UGrid uGrid = GameObject.Find("UGrid").GetComponent<UGrid>();
+        int index = DetermineLoc(transform.position, uGrid);
+        Grid grid = uGrid.grids[gridI];
+        grid.points[index].state = 0;
         for (int x = -closeSize; x <= closeSize; x++)
         {
             for (int y = -closeSize; y <= closeSize; y++)
             {
-                int i = x + y * grid.grids[gridI].size;
-                grid.grids[gridI].grid[index + i].state = 0;
+                int i = x + y * grid.size;
+                grid.points[index + i].state = 0;
             }
         }
     }
 
     public void ClosePoints()
     {
-        UGrid grid = GameObject.Find("UGrid").GetComponent<UGrid>();
-        int index = DetermineLoc(transform.position, grid);
-        grid.grids[gridI].grid[index].state = 2;
+        UGrid uGrid = GameObject.Find("UGrid").GetComponent<UGrid>();
+        int index = DetermineLoc(transform.position, uGrid);
+        Grid grid = uGrid.grids[gridI];
+        grid.points[index].state = 2;
         for (int x = -closeSize; x <= closeSize; x++)
         {
             for (int y = -closeSize; y <= closeSize; y++)
             {
-                int i = x + y * grid.grids[gridI].size;
-                grid.grids[gridI].grid[index + i].state = 2;
+                int i = x + y * grid.size;
+                grid.points[index + i].state = 2;
             }
         }
     }
 
     int DetermineLoc(Vector3 loc, UGrid gridScript)
     {
-        float xLoc = (loc.x - gridScript.grids[gridI].startLoc.x);
-        float yLoc = (loc.z - gridScript.grids[gridI].startLoc.z);
-        int x = Mathf.RoundToInt(xLoc / gridScript.grids[gridI].nodeDist);
-        int y = Mathf.RoundToInt(yLoc / gridScript.grids[gridI].nodeDist);
-        int nLoc = x + (y * gridScript.grids[gridI].size);
-        return nLoc;
+        Grid grid = gridScript.grids[gridI];
+        float xLoc = loc.x - grid.startLoc.x;
+        float yLoc = loc.z - grid.startLoc.z;
+        int x = Mathf.RoundToInt(xLoc / grid.nodeDist);
+        int y = Mathf.RoundToInt(yLoc / grid.nodeDist);
+        return x + y * grid.size;
     }
 }

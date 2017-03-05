@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public enum BuildingType
 {
@@ -7,6 +8,7 @@ public enum BuildingType
     CompleteBuilding
 }
 
+[SelectionBase]
 public class BuildingController : MonoBehaviour
 {
     public UnitType type;
@@ -15,7 +17,7 @@ public class BuildingController : MonoBehaviour
     public new string name = "Building";
     public int maxHealth = 100;
     public int health = 100;
-    public int group;
+    [FormerlySerializedAs("group")] public int FactionIndex;
     public SUnitBuilding unitProduction = new SUnitBuilding();
     public STechBuilding techProduction = new STechBuilding();
     public SBuildingGUI bGUI = new SBuildingGUI();
@@ -32,44 +34,39 @@ public class BuildingController : MonoBehaviour
     public GameObject nextBuild;
     public int size = 1;
     public int gridI;
-    [HideInInspector] public int index;
-    [HideInInspector] public int index1;
-    [HideInInspector] public GUIManager manager;
+    public int index { get; set; }
+    public int index1 { get; set; }
+    public GUIManager manager { get; set; }
     bool selected;
-
     int[] nodeLoc;
+    Faction faction;
+    Health healthObj;
+    UGrid grid;
+    UnitSelection selection;
 
     //bool displayGUI = false;
-    Faction g;
-
-    Health healthObj;
-
     //Progress progressObj;
-    UGrid grid;
-
-    UnitSelection selection;
 
     void Start()
     {
         selection = GameObject.Find("Player Manager").GetComponent<UnitSelection>();
         manager = GameObject.Find("Player Manager").GetComponent<GUIManager>();
         gui.type = "Building";
-        g = GameObject.Find("Player Manager").GetComponent<GUIManager>().group;
+        faction = GameObject.Find("Player Manager").GetComponent<GUIManager>().faction;
         if (buildingType == BuildingType.ProgressBuilding)
         {
             InvokeRepeating("Progress", 0, progressRate);
         }
-
         else if (buildingType == BuildingType.CompleteBuilding)
         {
             gameObject.name = name;
             gui.Start(gameObject);
             for (int x = 0; x < techEffect.Length; x++)
             {
-                g.Tech[techEffect[x].index].AddListener(gameObject);
-                if (g.Tech[techEffect[x].index].active)
+                faction.Tech[techEffect[x].index].AddListener(gameObject);
+                if (faction.Tech[techEffect[x].index].active)
                 {
-                    Upgraded(g.Tech[techEffect[x].index].name);
+                    Upgraded(faction.Tech[techEffect[x].index].name);
                 }
             }
         }
@@ -102,11 +99,11 @@ public class BuildingController : MonoBehaviour
         }
         if (unitProduction.canProduce)
         {
-            unitProduction.Produce(g, group, grid, gridI);
+            unitProduction.Produce(faction, FactionIndex, grid, gridI);
         }
         if (techProduction.canProduce)
         {
-            techProduction.Produce(g);
+            techProduction.Produce(faction);
         }
     }
 
@@ -191,7 +188,7 @@ public class BuildingController : MonoBehaviour
         y1 = 0;
         for (int x = 0; x < techProduction.techs.Length; x++)
         {
-            if (!techProduction.techs[x].canProduce || g.Tech[techProduction.techs[x].index].beingProduced)
+            if (!techProduction.techs[x].canProduce || faction.Tech[techProduction.techs[x].index].beingProduced)
             {
                 continue;
             }
@@ -219,9 +216,8 @@ public class BuildingController : MonoBehaviour
         y1 = 0;
         for (int x = 0; x < unitProduction.jobsAmount; x++)
         {
-            if (bGUI.jobsGUI.Display(x1, y1, unitProduction.jobs[x].customName, unitProduction.jobs[x].customTexture,
-                ratioX,
-                ratioY))
+            if (bGUI.jobsGUI.Display(
+                x1, y1, unitProduction.jobs[x].customName, unitProduction.jobs[x].customTexture, ratioX, ratioY))
             {
                 unitProduction.CancelProduction(x);
             }
@@ -239,11 +235,10 @@ public class BuildingController : MonoBehaviour
         }
         for (int x = 0; x < techProduction.jobsAmount; x++)
         {
-            if (bGUI.jobsGUI.Display(x1, y1, techProduction.jobs[x].customName, techProduction.jobs[x].customTexture,
-                ratioX,
-                ratioY))
+            if (bGUI.jobsGUI.Display(
+                x1, y1, techProduction.jobs[x].customName, techProduction.jobs[x].customTexture, ratioX, ratioY))
             {
-                techProduction.CancelProduction(x, g);
+                techProduction.CancelProduction(x, faction);
             }
             if (bGUI.jobsGUI.contains)
             {
@@ -332,16 +327,16 @@ public class BuildingController : MonoBehaviour
         health -= nVal;
     }
 
-    // Group
+    // Faction
 
-    public int GetGroup()
+    public int GetFaction()
     {
-        return group;
+        return FactionIndex;
     }
 
-    public void SetGroup(int nVal)
+    public void SetFaction(int factionIndex)
     {
-        group = nVal;
+        FactionIndex = factionIndex;
     }
 
     // Unit Can Produce

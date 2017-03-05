@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 public class BuildingGUI : MonoBehaviour
 {
-    public Faction groupManager;
+    [FormerlySerializedAs("groupManager")] public Faction Faction;
     public Rect guiSize;
     public BuildingPlacement place;
 
@@ -10,7 +11,7 @@ public class BuildingGUI : MonoBehaviour
     {
         int y = 0;
         int z = 0;
-        foreach (Building building in groupManager.BuildingList)
+        foreach (Building building in Faction.BuildingList)
         {
             if (GUI.Button(
                 new Rect(guiSize.x + z * guiSize.width, guiSize.y + y * guiSize.height, guiSize.width, guiSize.height),

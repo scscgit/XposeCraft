@@ -233,7 +233,7 @@ Animator:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012727340272}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: ec5e7fa8174af124d900bb3e6042eb3e, type: 3}
+  m_Avatar: {fileID: 0}
   m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -256,7 +256,6 @@ MonoBehaviour:
   speed: 5
   rotateSpeed: 5
   target: {x: 0, y: 0, z: 0}
-  gridScript: {fileID: 0}
   gridI: 0
   myPath:
     list: 
@@ -265,7 +264,6 @@ MonoBehaviour:
     displayPath: 0
   depth: 0
   pathComplete: 0
-  pathing: {fileID: 0}
   checkDist: 1
   layer: 0
 --- !u!114 &114000013147277468
@@ -296,7 +294,7 @@ MonoBehaviour:
   name: DonkeyGun
   maxHealth: 100
   health: 100
-  group: 0
+  FactionIndex: 0
   type:
     name: Name
     strengths: []

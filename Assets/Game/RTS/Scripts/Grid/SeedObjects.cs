@@ -13,11 +13,11 @@ public class SeedObjects : MonoBehaviour
         {
             grid = GameObject.Find("UGrid").GetComponent<UGrid>();
         }
-
         if (!generate)
         {
             return;
         }
+        GridPoint[] points = grid.grids[gridI].points;
         foreach (Seed seed in obj)
         {
             GameObject folder = new GameObject {name = "Folder"};
@@ -27,25 +27,21 @@ public class SeedObjects : MonoBehaviour
                 bool viable = false;
                 while (viable == false)
                 {
-                    loc = Random.Range(0, grid.grids[gridI].grid.Length);
-                    Vector3 point = grid.grids[gridI].grid[loc].loc;
+                    loc = Random.Range(0, points.Length);
+                    Vector3 point = points[loc].loc;
                     if (point.x >= seed.area.x
                         && point.x <= seed.area.width
                         && point.z >= seed.area.y
-                        && point.z <= seed.area.height)
+                        && point.z <= seed.area.height
+                        && points[loc].state != 2)
                     {
                         viable = true;
                     }
-                    if (grid.grids[gridI].grid[loc].state == 2)
-                    {
-                        viable = false;
-                    }
                 }
-                GameObject clone =
-                    Instantiate(seed.obj, grid.grids[gridI].grid[loc].loc, Quaternion.identity) as GameObject;
+                GameObject clone = Instantiate(seed.obj, points[loc].loc, Quaternion.identity) as GameObject;
                 clone.transform.parent = folder.transform;
                 clone.name = seed.obj.name;
-                grid.grids[gridI].grid[loc].state = 2;
+                points[loc].state = 2;
             }
         }
         generate = false;

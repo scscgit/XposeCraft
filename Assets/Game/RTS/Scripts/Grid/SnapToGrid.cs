@@ -15,7 +15,7 @@ public class SnapToGrid : MonoBehaviour
         }
         int loc = ConvertLoc(transform.position);
         gridLoc = loc;
-        transform.position = myGrid.grids[gridI].grid[loc].loc;
+        transform.position = myGrid.grids[gridI].points[loc].loc;
     }
 
     public int ConvertLoc(Vector3 point)

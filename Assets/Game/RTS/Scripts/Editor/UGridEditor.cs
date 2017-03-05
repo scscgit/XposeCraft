@@ -54,29 +54,28 @@ public class UGridEditor : Editor
         }
         EditorGUILayout.EndHorizontal();
         int i = starget.index;
+        Grid grid = starget.grids[i];
         if (menuSetting == 0)
         {
-            starget.grids[i].size = EditorGUILayout.IntField("Grid Size : ", starget.grids[i].size);
-            starget.grids[i].nodeDist = EditorGUILayout.FloatField("Node Size : ", starget.grids[i].nodeDist);
+            grid.size = EditorGUILayout.IntField("Grid Size : ", grid.size);
+            grid.nodeDist = EditorGUILayout.FloatField("Node Size : ", grid.nodeDist);
             EditorGUILayout.Space();
-            starget.grids[i].startLoc = EditorGUILayout.Vector3Field("Start Loc : ", starget.grids[i].startLoc);
-            starget.grids[i].octileConnection = EditorGUILayout.Toggle(
-                "Octile Connection : ",
-                starget.grids[i].octileConnection);
-            starget.grids[i].displaceDown = EditorGUILayout.Toggle("Displace Down : ", starget.grids[i].displaceDown);
-            starget.grids[i].checkSlope = EditorGUILayout.Toggle("Check Slope : ", starget.grids[i].checkSlope);
-            if (starget.grids[i].checkSlope)
+            grid.startLoc = EditorGUILayout.Vector3Field("Start Loc : ", grid.startLoc);
+            grid.octileConnection = EditorGUILayout.Toggle("Octile Connection : ", grid.octileConnection);
+            grid.displaceDown = EditorGUILayout.Toggle("Displace Down : ", grid.displaceDown);
+            grid.checkSlope = EditorGUILayout.Toggle("Check Slope : ", grid.checkSlope);
+            if (grid.checkSlope)
             {
-                starget.grids[i].slopeMax = EditorGUILayout.FloatField("Slope Max : ", starget.grids[i].slopeMax);
+                grid.slopeMax = EditorGUILayout.FloatField("Slope Max : ", grid.slopeMax);
             }
             EditorGUILayout.Space();
-            starget.grids[i].checkLayer = LayerMaskField("State Check Layers : ", starget.grids[i].checkLayer, true);
-            starget.grids[i].displaceLayer = LayerMaskField("Displace Layer : ", starget.grids[i].displaceLayer, true);
+            grid.checkLayer = LayerMaskField("State Check Layers : ", grid.checkLayer, true);
+            grid.displaceLayer = LayerMaskField("Displace Layer : ", grid.displaceLayer, true);
         }
         else if (menuSetting == 1)
         {
-            starget.grids[i].displayGrid = EditorGUILayout.Toggle("Display Cubes : ", starget.grids[i].displayGrid);
-            starget.grids[i].displayLines = EditorGUILayout.Toggle("Display Lines : ", starget.grids[i].displayLines);
+            grid.displayGrid = EditorGUILayout.Toggle("Display Cubes : ", grid.displayGrid);
+            grid.displayLines = EditorGUILayout.Toggle("Display Lines : ", grid.displayLines);
         }
         if (GUILayout.Button("Generate Grid"))
         {

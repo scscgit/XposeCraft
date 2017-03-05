@@ -1,53 +1,51 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 public class UnitSelection : MonoBehaviour
 {
-    public int group;
-    List<GameObject> unitList = new List<GameObject>();
-    List<GameObject> buildingList = new List<GameObject>();
-    int unitListLength;
-    int buildingListLength;
+    [FormerlySerializedAs("group")] public int FactionIndex;
     public int maxUnitSelect = 50;
     public int maxBuildingSelect = 50;
     public int maxTotalSelect = 100;
     public Texture selectTexture;
     public Texture borderTexture;
     public int borderSize = 3;
+    public Rect windowRect;
+    public LayerMask layer;
+    public LayerMask selection;
+    List<GameObject> unitList = new List<GameObject>();
+    List<GameObject> buildingList = new List<GameObject>();
+    int unitListLength;
+    int buildingListLength;
     Vector2 startLoc;
     Vector3 startLocV3;
     Vector2 endLoc;
     Vector3 endLocV3;
-
     bool deselected;
-    public Rect windowRect;
     Vector3 movePoint;
 
     // Hidden Info
     //{
-    bool mouseDown;
 
+    bool mouseDown;
     bool largeSelect;
     float disp = 0.5f;
-    [HideInInspector] public Rect selectionRect;
-    Rect localWindow;
-    [HideInInspector] public UGrid gridScript;
-    [HideInInspector] public MiniMap map;
-    [HideInInspector] public FactionManager FactionM;
-    [HideInInspector] public List<GameObject> curSelected;
-    [HideInInspector] public List<UnitController> curSelectedS;
-    [HideInInspector] public List<GameObject> curBuildSelected;
-    [HideInInspector] public List<BuildingController> curBuildSelectedS;
-    [HideInInspector] public int curSelectedLength;
-    [HideInInspector] public int curBuildSelectedLength;
-    [HideInInspector] public GUIManager guiManager;
-
-    [HideInInspector] public BuildingPlacement placement;
+    public Rect selectionRect { get; set; }
+    Rect localWindow { get; set; }
+    public UGrid gridScript { get; set; }
+    public MiniMap map { get; set; }
+    public FactionManager FactionM { get; set; }
+    public List<GameObject> curSelected { get; set; }
+    public List<UnitController> curSelectedS { get; set; }
+    public List<GameObject> curBuildSelected { get; set; }
+    public List<BuildingController> curBuildSelectedS { get; set; }
+    public int curSelectedLength { get; set; }
+    public int curBuildSelectedLength { get; set; }
+    public GUIManager guiManager { get; set; }
+    public BuildingPlacement placement { get; set; }
 
     //}
-    public LayerMask layer;
-
-    public LayerMask selection;
 
     public void ResizeSelectionWindow(Vector2 ratio)
     {
@@ -66,12 +64,12 @@ public class UnitSelection : MonoBehaviour
         placement = gameObject.GetComponent<BuildingPlacement>();
         if (placement)
         {
-            placement.SetGroup(group);
+            placement.SetFaction(FactionIndex);
         }
         GUIManager manager = gameObject.GetComponent<GUIManager>();
         if (manager)
         {
-            manager.group = FactionM.FactionList[group].GetComponent<Faction>();
+            manager.faction = FactionM.FactionList[FactionIndex].GetComponent<Faction>();
         }
         guiManager = gameObject.GetComponent<GUIManager>();
         GameObject obj = GameObject.Find("MiniMap");
@@ -115,31 +113,28 @@ public class UnitSelection : MonoBehaviour
                 }
             }
         }
-        else
+        else if (Input.GetButton("LMB"))
         {
-            if (Input.GetButton("LMB"))
+            if (!mouseDown)
             {
-                if (!mouseDown)
+                if (!guiManager.mouseOverGUI && !placement.place && !placement.placed)
                 {
-                    if (!guiManager.mouseOverGUI && !placement.place && !placement.placed)
+                    mouseDown = true;
+                    startLoc = Input.mousePosition;
+                    startLoc = WithinScreen(startLoc);
+                    if (!deselected)
                     {
-                        mouseDown = true;
-                        startLoc = Input.mousePosition;
-                        startLoc = WithinScreen(startLoc);
-                        if (!deselected)
-                        {
-                            Deselect();
-                        }
+                        Deselect();
                     }
                 }
-                else
+            }
+            else
+            {
+                endLoc = Input.mousePosition;
+                endLoc = WithinScreen(endLoc);
+                if ((endLoc - startLoc).magnitude > disp)
                 {
-                    endLoc = Input.mousePosition;
-                    endLoc = WithinScreen(endLoc);
-                    if ((endLoc - startLoc).magnitude > disp)
-                    {
-                        largeSelect = true;
-                    }
+                    largeSelect = true;
                 }
             }
         }
@@ -161,8 +156,9 @@ public class UnitSelection : MonoBehaviour
             {
                 if (map.localBounds.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)))
                 {
-                    Vector3 point = Determine3DLoc(
-                        new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y));
+                    Vector3 point = Determine3DLoc(new Vector2(
+                        Input.mousePosition.x,
+                        Screen.height - Input.mousePosition.y));
                     Physics.Raycast(point, Vector3.down, out hit, 10000);
                 }
                 else
@@ -225,11 +221,15 @@ public class UnitSelection : MonoBehaviour
 
     Vector3 Determine3DLoc(Vector2 loc)
     {
-        Rect size = new Rect(map.realWorldBounds.x / map.localBounds.x, map.realWorldBounds.y / map.localBounds.y,
-            map.realWorldBounds.width / map.localBounds.width, map.realWorldBounds.height / map.localBounds.height);
-        Vector3 lLoc = new Vector3((loc.x - map.localBounds.x) * size.width, 100,
+        Rect size = new Rect(
+            map.realWorldBounds.x / map.localBounds.x,
+            map.realWorldBounds.y / map.localBounds.y,
+            map.realWorldBounds.width / map.localBounds.width,
+            map.realWorldBounds.height / map.localBounds.height);
+        return new Vector3(
+            (loc.x - map.localBounds.x) * size.width,
+            100,
             map.realWorldBounds.y + map.realWorldBounds.height - (loc.y - map.localBounds.y) * size.height);
-        return lLoc;
     }
 
     public void Select()
@@ -436,7 +436,7 @@ public class UnitSelection : MonoBehaviour
 
     public void AddUnit(GameObject obj)
     {
-        if (obj.GetComponent<UnitController>().group == group)
+        if (obj.GetComponent<UnitController>().FactionIndex == FactionIndex)
         {
             unitList.Add(obj);
             unitListLength++;

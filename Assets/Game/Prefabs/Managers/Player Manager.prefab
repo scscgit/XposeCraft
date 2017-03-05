@@ -176,12 +176,6 @@ MonoBehaviour:
     - {r: 1, g: 1, b: 1, a: 1}
     factionElement: 0
     moveUp: 0
-    elementObj: []
-    elementTransform: []
-    elementMap: []
-    elementLoc: []
-    elementGroup: 
-    objAmount: 0
   cam: {fileID: 20000013609079512}
   cameraController: {fileID: 1000013047492278}
   camZoomLayer:
@@ -206,7 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dbb6762643027d4d940bb8bcf12599f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  group: 0
+  FactionIndex: 0
   maxUnitSelect: 50
   maxBuildingSelect: 50
   maxTotalSelect: 100
@@ -219,23 +213,6 @@ MonoBehaviour:
     y: 0
     width: 1720
     height: 880
-  selectionRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 0
-    height: 0
-  gridScript: {fileID: 0}
-  map: {fileID: 0}
-  FactionM: {fileID: 0}
-  curSelected: []
-  curSelectedS: []
-  curBuildSelected: []
-  curBuildSelectedS: []
-  curSelectedLength: 0
-  curBuildSelectedLength: 0
-  guiManager: {fileID: 0}
-  placement: {fileID: 0}
   layer:
     serializedVersion: 2
     m_Bits: 4294967291
@@ -253,9 +230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66f9aa3eac4b752428431dc799f356f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  place: 0
   gridI: 0
-  placed: 0
 --- !u!114 &114000011972735642
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -419,14 +394,7 @@ MonoBehaviour:
     width: 400
     height: 200
   skin: {fileID: 0}
-  group: {fileID: 0}
   mouseOverGUI: 0
-  mouseOverUnitProduction: 0
-  unitProductionIndex: 0
-  mouseOverTechProduction: 0
-  techProductionIndex: 0
-  mouseOverBuildingProduction: 0
-  buildingProductionIndex: 0
   lastState: 0
 --- !u!124 &124000013910573518
 Behaviour:

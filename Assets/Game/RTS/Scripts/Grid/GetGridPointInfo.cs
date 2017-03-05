@@ -16,16 +16,17 @@ public class GetGridPointInfo : MonoBehaviour
         }
         int loc = ConvertLoc(transform.position);
         gridLoc = loc;
-        transform.position = myGrid.grids[gridI].grid[loc].loc;
-        point = myGrid.grids[gridI].grid[loc];
+        point = myGrid.grids[gridI].points[loc];
+        transform.position = point.loc;
     }
 
     public int ConvertLoc(Vector3 point)
     {
-        float xLoc = point.x - myGrid.grids[gridI].startLoc.x;
-        float zLoc = point.z - myGrid.grids[gridI].startLoc.z;
-        int x = Mathf.RoundToInt(xLoc / myGrid.grids[gridI].nodeDist);
-        int z = Mathf.RoundToInt(zLoc / myGrid.grids[gridI].nodeDist);
-        return x + (z * myGrid.grids[gridI].size);
+        Grid grid = myGrid.grids[gridI];
+        float xLoc = point.x - grid.startLoc.x;
+        float zLoc = point.z - grid.startLoc.z;
+        int x = Mathf.RoundToInt(xLoc / grid.nodeDist);
+        int z = Mathf.RoundToInt(zLoc / grid.nodeDist);
+        return x + z * grid.size;
     }
 }

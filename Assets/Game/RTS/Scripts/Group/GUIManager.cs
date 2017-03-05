@@ -27,17 +27,17 @@ public class GUIManager : MonoBehaviour
     public GUISkin skin;
     BuildingPlacement place;
     UnitSelection select;
-    [HideInInspector] public Faction group;
+    public Faction faction { get; set; }
     ResourceManager resourceManager;
     Vector2 ratio;
     Vector2 lastWindowSize = Vector2.zero;
     public bool mouseOverGUI;
-    [HideInInspector] public bool mouseOverUnitProduction;
-    [HideInInspector] public int unitProductionIndex;
-    [HideInInspector] public bool mouseOverTechProduction;
-    [HideInInspector] public int techProductionIndex;
-    [HideInInspector] public bool mouseOverBuildingProduction;
-    [HideInInspector] public int buildingProductionIndex;
+    public bool mouseOverUnitProduction { get; set; }
+    public int unitProductionIndex { get; set; }
+    public bool mouseOverTechProduction { get; set; }
+    public int techProductionIndex { get; set; }
+    public bool mouseOverBuildingProduction { get; set; }
+    public int buildingProductionIndex { get; set; }
     public bool lastState;
     int progressAmount;
     List<Progress> progressList = new List<Progress>(0);
@@ -143,7 +143,7 @@ public class GUIManager : MonoBehaviour
         else
         {
             bool canBuild = false;
-            bool[] buildingCanBuild = new bool[group.BuildingList.Length];
+            bool[] buildingCanBuild = new bool[faction.BuildingList.Length];
             for (int x = 0; x < select.curSelectedLength; x++)
             {
                 UnitController cont = select.curSelectedS[x];
@@ -203,8 +203,8 @@ public class GUIManager : MonoBehaviour
         for (int x = 0; x < select.curSelectedLength; x++)
         {
             Rect rectLoc = new Rect(
-                (unitGraphic.x + (y * unitBDisp.x)) * ratio.x,
-                (unitGraphic.y + (z * unitBDisp.y)) * ratio.y,
+                (unitGraphic.x + y * unitBDisp.x) * ratio.x,
+                (unitGraphic.y + z * unitBDisp.y) * ratio.y,
                 unitGraphic.width * ratio.x,
                 unitGraphic.height * ratio.y);
             if (GUI.Button(rectLoc, ""))
@@ -296,9 +296,9 @@ public class GUIManager : MonoBehaviour
         Vector2 ratio = new Vector2(Screen.width / standardSize.x, Screen.height / standardSize.y);
         int y = 0;
         int z = 0;
-        for (int x = 0; x < group.BuildingList.Length; x++)
+        for (int x = 0; x < faction.BuildingList.Length; x++)
         {
-            if (!group.BuildingList[x].obj)
+            if (!faction.BuildingList[x].obj)
             {
                 continue;
             }
@@ -308,9 +308,9 @@ public class GUIManager : MonoBehaviour
                 (buildButtonSize.y + z * buildingBDisp.y) * ratio.y,
                 buildButtonSize.width * ratio.x,
                 buildButtonSize.height * ratio.y);
-            if (GUI.Button(rectLoc, group.BuildingList[x].obj.GetComponent<BuildingController>().name))
+            if (GUI.Button(rectLoc, faction.BuildingList[x].obj.GetComponent<BuildingController>().name))
             {
-                place.BeginPlace(group.BuildingList[x]);
+                place.BeginPlace(faction.BuildingList[x]);
             }
             if (rectLoc.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)))
             {
@@ -337,18 +337,18 @@ public class GUIManager : MonoBehaviour
         Vector2 ratio = new Vector2(Screen.width / standardSize.x, Screen.height / standardSize.y);
         int y = 0;
         int z = 0;
-        for (int x = 0; x < group.BuildingList.Length; x++)
+        for (int x = 0; x < faction.BuildingList.Length; x++)
         {
-            if (!group.BuildingList[x].obj || !canBuild[x]) continue;
+            if (!faction.BuildingList[x].obj || !canBuild[x]) continue;
             // Displays the Building Name
             Rect rectLoc = new Rect(
                 (buildButtonSize.x + y * buildingBDisp.x) * ratio.x,
                 (buildButtonSize.y + z * buildingBDisp.y) * ratio.y,
                 buildButtonSize.width * ratio.x,
                 buildButtonSize.height * ratio.y);
-            if (GUI.Button(rectLoc, group.BuildingList[x].obj.GetComponent<BuildingController>().name))
+            if (GUI.Button(rectLoc, faction.BuildingList[x].obj.GetComponent<BuildingController>().name))
             {
-                place.BeginPlace(group.BuildingList[x]);
+                place.BeginPlace(faction.BuildingList[x]);
             }
             if (rectLoc.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y)))
             {
@@ -399,7 +399,7 @@ public class GUIManager : MonoBehaviour
             buildingDescriptionLocation.y * ratio.y,
             buildingDescriptionLocation.width * ratio.x,
             buildingDescriptionLocation.height * ratio.y);
-        GUI.Box(rectLoc, group.BuildingList[buildingProductionIndex].description);
+        GUI.Box(rectLoc, faction.BuildingList[buildingProductionIndex].description);
     }
 
     public void AddProgress(Progress progress)

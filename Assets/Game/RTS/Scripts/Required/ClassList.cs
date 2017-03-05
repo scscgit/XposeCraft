@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
 
 [Serializable]
@@ -382,7 +383,7 @@ public class Seed
 [Serializable]
 public class ProduceUnit
 {
-    public int groupIndex;
+    [FormerlySerializedAs("groupIndex")] public int FactionIndex;
     public bool canProduce = true;
     public int[] cost = new int[0];
     public Texture customTexture;
@@ -404,7 +405,7 @@ public class ProduceUnit
         rate = unit.rate;
         amount = unit.amount;
         curDur = 0;
-        groupIndex = unit.groupIndex;
+        FactionIndex = unit.FactionIndex;
         lastTime = 0;
     }
 
@@ -491,24 +492,24 @@ public class STechBuilding
         }
     }
 
-    public void CancelProduction(int x, Faction g)
+    public void CancelProduction(int x, Faction faction)
     {
         jobs.RemoveAt(x);
         jobsAmount--;
-        g.Tech[jobs[x].index].beingProduced = false;
+        faction.Tech[jobs[x].index].beingProduced = false;
     }
 
-    public void Produce(Faction g)
+    public void Produce(Faction faction)
     {
         for (int x = 0; x < canBuildAtOnce; x++)
         {
             if (x < jobsAmount)
             {
-                g.Tech[jobs[x].index].beingProduced = true;
+                faction.Tech[jobs[x].index].beingProduced = true;
                 if (jobs[x].Produce())
                 {
-                    g.Tech[jobs[x].index].active = true;
-                    g.Tech[jobs[x].index].Researched();
+                    faction.Tech[jobs[x].index].active = true;
+                    faction.Tech[jobs[x].index].Researched();
                     jobs.RemoveAt(x);
                     x--;
                     jobsAmount--;
@@ -533,7 +534,7 @@ public class BGUISetting
     public Vector2 buttonSize;
     public int buttonPerRow;
     public Vector2 displacement;
-    [HideInInspector] public bool contains;
+    public bool contains { get; set; }
 
     public bool Display(int x, int y, string text, Texture image, float ratioX, float ratioY)
     {
@@ -636,20 +637,20 @@ public class APath
         {
             if (mGrid == null)
             {
-                int l = gridScript.grids[gridI].grid.Length;
+                int l = gridScript.grids[gridI].points.Length;
                 mGrid = new GridPoint[l];
                 for (int z = 0; z < mGrid.Length; z++)
                 {
-                    mGrid[z] = new GridPoint(gridScript.grids[gridI].grid[z]);
+                    mGrid[z] = new GridPoint(gridScript.grids[gridI].points[z]);
                 }
             }
             else if (mGrid.Length == 0)
             {
-                int l = gridScript.grids[gridI].grid.Length;
+                int l = gridScript.grids[gridI].points.Length;
                 mGrid = new GridPoint[l];
                 for (int z = 0; z < mGrid.Length; z++)
                 {
-                    mGrid[z] = new GridPoint(gridScript.grids[gridI].grid[z]);
+                    mGrid[z] = new GridPoint(gridScript.grids[gridI].points[z]);
                 }
             }
             if (!generate)
@@ -689,12 +690,12 @@ public class APath
     // Finds a normal A* Path
     UPath FindNormalPath(int startLoc, int endLoc)
     {
-        int[] gcostList = new int[gridScript.grids[gridI].grid.Length];
-        bool[] checkedList = new bool[gridScript.grids[gridI].grid.Length];
-        bool[] addedList = new bool[gridScript.grids[gridI].grid.Length];
+        int[] gcostList = new int[gridScript.grids[gridI].points.Length];
+        bool[] checkedList = new bool[gridScript.grids[gridI].points.Length];
+        bool[] addedList = new bool[gridScript.grids[gridI].points.Length];
         for (int x = 0; x < mGrid.Length; x++)
         {
-            mGrid[x].state = gridScript.grids[gridI].grid[x].state;
+            mGrid[x].state = gridScript.grids[gridI].points[x].state;
         }
 
         BinaryHeap openList = new BinaryHeap();
@@ -752,15 +753,15 @@ public class APath
     // Finds the first Path
     UPath FindFastPath(int startLoc, int endLoc)
     {
-        float[] fcostList = new float[gridScript.grids[gridI].grid.Length];
-        float[] gcostList = new float[gridScript.grids[gridI].grid.Length];
-        bool[] checkedList = new bool[gridScript.grids[gridI].grid.Length];
-        bool[] addedList = new bool[gridScript.grids[gridI].grid.Length];
-        int l = gridScript.grids[gridI].grid.Length;
+        float[] fcostList = new float[gridScript.grids[gridI].points.Length];
+        float[] gcostList = new float[gridScript.grids[gridI].points.Length];
+        bool[] checkedList = new bool[gridScript.grids[gridI].points.Length];
+        bool[] addedList = new bool[gridScript.grids[gridI].points.Length];
+        int l = gridScript.grids[gridI].points.Length;
         GridPoint[] lGrid = new GridPoint[l];
         for (int x = 0; x < lGrid.Length; x++)
         {
-            lGrid[x] = new GridPoint(gridScript.grids[gridI].grid[x]);
+            lGrid[x] = new GridPoint(gridScript.grids[gridI].points[x]);
         }
         List<int> openList = new List<int> {startLoc};
         int oLLength = 1;
@@ -812,13 +813,13 @@ public class APath
     // Finds the first Path
     UPath FindFastMTPath(int startLoc, int endLoc)
     {
-        float[] fcostList = new float[gridScript.grids[gridI].grid.Length];
-        float[] gcostList = new float[gridScript.grids[gridI].grid.Length];
-        bool[] checkedList = new bool[gridScript.grids[gridI].grid.Length];
-        bool[] addedList = new bool[gridScript.grids[gridI].grid.Length];
+        float[] fcostList = new float[gridScript.grids[gridI].points.Length];
+        float[] gcostList = new float[gridScript.grids[gridI].points.Length];
+        bool[] checkedList = new bool[gridScript.grids[gridI].points.Length];
+        bool[] addedList = new bool[gridScript.grids[gridI].points.Length];
         for (int x = 0; x < mGrid.Length; x++)
         {
-            mGrid[x].state = gridScript.grids[gridI].grid[x].state;
+            mGrid[x].state = gridScript.grids[gridI].points[x].state;
         }
         List<int> openList = new List<int> {startLoc};
         int oLLength = 1;
@@ -927,7 +928,7 @@ public class APath
         int x = (loc - (loc / gridSize * gridSize)) / sectorSize;
         int size = gridSize / sectorSize;
         int y = loc / gridSize / sectorSize;
-        return x + (y * size);
+        return x + y * size;
     }
 }
 
@@ -1032,7 +1033,8 @@ public class GUIElement
     {
         if (type == Type.Texture && texture)
         {
-            GUI.DrawTexture(new Rect(loc.x * ratio.x, loc.y * ratio.y, loc.width * ratio.x, loc.height * ratio.y),
+            GUI.DrawTexture(
+                new Rect(loc.x * ratio.x, loc.y * ratio.y, loc.width * ratio.x, loc.height * ratio.y),
                 texture);
         }
     }
@@ -1047,20 +1049,20 @@ public class MiniMapElement
     public Color[] tints = {Color.white};
     public bool factionElement = false;
     public bool moveUp;
-    [HideInInspector] public List<GameObject> elementObj;
-    [HideInInspector] public List<Transform> elementTransform;
-    [HideInInspector] public List<MiniMapSignal> elementMap;
-    [HideInInspector] public List<Vector2> elementLoc;
-    [HideInInspector] public List<int> elementGroup;
-    [HideInInspector] public int objAmount;
+    public List<GameObject> elementObj { get; set; }
+    public List<Transform> elementTransform { get; set; }
+    public List<MiniMapSignal> elementMap { get; set; }
+    public List<Vector2> elementLoc { get; set; }
+    public List<int> elementFaction { get; set; }
+    public int objAmount { get; set; }
 
-    public void AddElement(GameObject obj, string tag, MiniMapSignal map, int group, Vector2 loc)
+    public void AddElement(GameObject obj, string tag, MiniMapSignal map, int faction, Vector2 loc)
     {
         elementObj.Add(obj);
         elementMap.Add(map);
         elementTransform.Add(obj.transform);
         elementLoc.Add(loc);
-        elementGroup.Add(group);
+        elementFaction.Add(faction);
         objAmount++;
     }
 
@@ -1158,7 +1160,7 @@ public class Building
             for (int y = -closeLength; y <= closeLength; y++)
             {
                 int i = x + y * grid.grids[gridI].size;
-                grid.grids[gridI].grid[index + i].state =
+                grid.grids[gridI].points[index + i].state =
                     closePoints[(x + closeWidth) * (closeLength * 2 + 1) + (y + closeLength)];
             }
         }
@@ -1171,7 +1173,7 @@ public class Building
             for (int y = -closeLength; y <= closeLength; y++)
             {
                 int i = x + y * grid.grids[gridI].size;
-                grid.grids[gridI].grid[index + i].state = 0;
+                grid.grids[gridI].points[index + i].state = 0;
             }
         }
     }
@@ -1185,7 +1187,7 @@ public class Building
             {
                 if (closePoints[(x + closeWidth) * closeLength + (y + closeLength)] != 0)
                 {
-                    if (grid.grids[gridI].grid[index + x + y * grid.grids[gridI].size].state == 2)
+                    if (grid.grids[gridI].points[index + x + y * grid.grids[gridI].size].state == 2)
                     {
                         state = false;
                     }
@@ -1201,7 +1203,7 @@ public class Building
         int x = (loc - (loc / gridSize * gridSize)) / sectorSize;
         int size = gridSize / sectorSize;
         int y = loc / gridSize / sectorSize;
-        return x + (y * size);
+        return x + y * size;
     }
 }
 
@@ -1252,7 +1254,7 @@ public class TechEffect
             UnitController rScript = rObj.GetComponent<UnitController>();
             if (rScript)
             {
-                rScript.group = script.group;
+                rScript.FactionIndex = script.FactionIndex;
             }
             Object.Destroy(obj);
         }
@@ -1385,7 +1387,7 @@ public class SUnitBuilding
         jobsAmount--;
     }
 
-    public void Produce(Faction g, int group, UGrid grid, int gridI)
+    public void Produce(Faction faction, int factionIndex, UGrid grid, int gridI)
     {
         for (int x = 0; x < canBuildAtOnce; x++)
         {
@@ -1399,10 +1401,12 @@ public class SUnitBuilding
             }
             Vector3 loc = grid.DetermineNearestPoint(buildLoc.transform.position, buildLoc.transform.position, gridI);
             GameObject obj =
-                Object.Instantiate(g.UnitList[jobs[x].groupIndex].obj, loc, Quaternion.identity) as GameObject;
+                Object.Instantiate(faction.UnitList[jobs[x].FactionIndex].obj, loc, Quaternion.identity) as GameObject;
             UnitController script = obj.GetComponent<UnitController>();
             if (script)
-                script.group = group;
+            {
+                script.FactionIndex = factionIndex;
+            }
             jobs.RemoveAt(x);
             x--;
             jobsAmount--;

@@ -4,13 +4,13 @@ public class MiniMapSignal : MonoBehaviour
 {
     public string miniMapTag;
     public bool display;
-    [HideInInspector] public int group;
+    public int factionIndex { get; set; }
     public bool isStatic;
     VisionReceiver receiver;
 
     void Awake()
     {
-        if (!GameObject.Find("MiniMap").GetComponent<MiniMap>().AddElement(gameObject, miniMapTag, this, group))
+        if (!GameObject.Find("MiniMap").GetComponent<MiniMap>().AddElement(gameObject, miniMapTag, this, factionIndex))
         {
             Debug.Log("MiniMap : Unit Tag : " + miniMapTag + " Not Found");
         }

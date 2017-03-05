@@ -30,12 +30,12 @@ public class UGridFindPoint : EditorWindow
         if (index < grid.grids.Length && index >= 0)
         {
             loc = EditorGUILayout.IntField("Index : ", loc);
-            if (loc < grid.grids[index].grid.Length && loc >= 0)
+            GridPoint[] points = grid.grids[index].points;
+            if (loc < points.Length && loc >= 0)
             {
-                GUILayout.Label("X : " + grid.grids[index].grid[loc].loc.x +
-                                ", Y : " + grid.grids[index].grid[loc].loc.y +
-                                ", Z : " + grid.grids[index].grid[loc].loc.z);
-                findPoint.transform.position = grid.grids[index].grid[loc].loc;
+                Vector3 pointLoc = points[loc].loc;
+                GUILayout.Label("X : " + pointLoc.x + ", Y : " + pointLoc.y + ", Z : " + pointLoc.z);
+                findPoint.transform.position = pointLoc;
                 pointCube.index = index;
             }
         }

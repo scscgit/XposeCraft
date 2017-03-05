@@ -1,5 +1,7 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
+[SelectionBase]
 [RequireComponent(typeof(UnitMovement))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(AudioSource))]
@@ -9,8 +11,8 @@ public class UnitController : MonoBehaviour
     public new string name = "Unit";
     public int maxHealth = 100;
     public int health = 100;
-    public int group;
-    Faction mGroup;
+    [FormerlySerializedAs("group")] public int FactionIndex;
+    Faction faction;
     int index;
     public UnitType type;
     public SWeapon weapon = new SWeapon();
@@ -88,17 +90,17 @@ public class UnitController : MonoBehaviour
         miniMap = gameObject.GetComponent<MiniMapSignal>();
         movement = gameObject.GetComponent<UnitMovement>();
         gui.type = "Unit";
-        mGroup = GameObject.Find("Faction Manager")
+        faction = GameObject.Find("Faction Manager")
             .GetComponent<FactionManager>()
-            .FactionList[group]
+            .FactionList[FactionIndex]
             .GetComponent<Faction>();
         gui.Start(gameObject);
         for (int x = 0; x < techEffect.Length; x++)
         {
-            mGroup.Tech[techEffect[x].index].AddListener(gameObject);
-            if (mGroup.Tech[techEffect[x].index].active)
+            faction.Tech[techEffect[x].index].AddListener(gameObject);
+            if (faction.Tech[techEffect[x].index].active)
             {
-                Upgraded(mGroup.Tech[techEffect[x].index].name);
+                Upgraded(faction.Tech[techEffect[x].index].name);
             }
         }
         gameObject.name = name;
@@ -186,7 +188,7 @@ public class UnitController : MonoBehaviour
                     {
                         case TargetState.Undecided:
                             UnitController targetController = target.GetComponent<UnitController>();
-                            switch (mGroup.Relations[targetController.group].state)
+                            switch (faction.Relations[targetController.FactionIndex].state)
                             {
                                 case 0:
                                     tState = TargetState.Ally;
@@ -252,7 +254,7 @@ public class UnitController : MonoBehaviour
                     if (tState == TargetState.Undecided)
                     {
                         BuildingController targetController = target.GetComponent<BuildingController>();
-                        switch (mGroup.Relations[targetController.group].state)
+                        switch (faction.Relations[targetController.FactionIndex].state)
                         {
                             case 0:
                                 tState = TargetState.Ally;
@@ -331,14 +333,14 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    public int DetermineRelations(int g)
+    public int DetermineRelations(int factionIndex)
     {
-        if (mGroup == null)
+        if (faction == null)
         {
             return 3;
         }
-        return g != group
-            ? mGroup.Relations[g].state
+        return factionIndex != this.FactionIndex
+            ? faction.Relations[factionIndex].state
             : 3;
     }
 
@@ -491,15 +493,15 @@ public class UnitController : MonoBehaviour
 
     public int GetGroup()
     {
-        return group;
+        return FactionIndex;
     }
 
     public void SetGroup(float nVal)
     {
-        group = (int) nVal;
+        FactionIndex = (int) nVal;
         if (miniMap != null)
         {
-            miniMap.group = (int) nVal;
+            miniMap.factionIndex = (int) nVal;
         }
     }
 

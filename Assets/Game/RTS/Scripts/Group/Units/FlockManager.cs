@@ -10,11 +10,10 @@ public class FlockManager : MonoBehaviour
 public class Formation
 {
     public string name = "Formation";
-
     public FLine[] fLines;
+    public FGrid grid = new FGrid();
 
     //FPoint[] fPoints;
-    public FGrid grid = new FGrid();
 }
 
 [System.Serializable]

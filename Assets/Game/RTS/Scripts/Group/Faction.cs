@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections.Generic;
 using UnityEngine.Serialization;
 
 public class Faction : MonoBehaviour
@@ -10,7 +9,4 @@ public class Faction : MonoBehaviour
     [FormerlySerializedAs("buildingList")] public Building[] BuildingList = new Building[0];
     [FormerlySerializedAs("tech")] public Technology[] Tech = new Technology[0];
     [FormerlySerializedAs("color")] public Color Color;
-    List<List<UnitController>> _units;
-    List<int> _unitsAmount;
-    List<List<BuildingController>> _buildings;
 }

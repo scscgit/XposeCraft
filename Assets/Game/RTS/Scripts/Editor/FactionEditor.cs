@@ -5,11 +5,11 @@ public class FactionEditor : EditorWindow
 {
     FactionManager target;
     Faction nTarget;
-    Vector2 groupPosition;
-    Vector2 groupPosition2;
-    int groupState;
-    int groupId;
-    string groupSearch = "Search";
+    Vector2 factionPosition;
+    Vector2 factionPosition2;
+    int factionState;
+    int factionId;
+    string factionSearch = "Search";
 
     Vector2 unitPosition;
     string unitSearch = "Search";
@@ -101,7 +101,7 @@ public class FactionEditor : EditorWindow
             selectionTexture = target.SelectionTexture;
         }
         helpState = 0;
-        switch (groupState)
+        switch (factionState)
         {
             case 0:
                 DrawFactionGui(rect);
@@ -122,27 +122,27 @@ public class FactionEditor : EditorWindow
 
     void DrawSetup(Vector2 rect)
     {
-        if (groupId < 0)
+        if (factionId < 0)
         {
-            groupId = 0;
+            factionId = 0;
         }
         if (unitId < 0)
         {
             unitId = 0;
         }
         string[] options = {"Faction Data", "Faction Objects"};
-        groupState = EditorGUI.Popup(new Rect(0, 0, 200 * rect.x, 25 * rect.y), groupState, options);
-        groupPosition = GUI.BeginScrollView(
+        factionState = EditorGUI.Popup(new Rect(0, 0, 200 * rect.x, 25 * rect.y), factionState, options);
+        factionPosition = GUI.BeginScrollView(
             new Rect(0, 45 * rect.y, 200 * rect.x, 655 * rect.y),
-            groupPosition,
+            factionPosition,
             target.FactionList.Length * 20 * rect.x < 655 * rect.x
                 ? new Rect(0, 0, 200 * rect.x, 655 * rect.y)
                 : new Rect(0, 0, 200 * rect.x, target.FactionList.Length * 20 * rect.y),
             false,
             true);
-        if (groupId >= target.FactionList.Length)
+        if (factionId >= target.FactionList.Length)
         {
-            groupId = target.FactionList.Length - 1;
+            factionId = target.FactionList.Length - 1;
         }
         for (int x = 0; x < target.FactionList.Length; x++)
         {
@@ -150,7 +150,7 @@ public class FactionEditor : EditorWindow
             {
                 if (isWithin(new Rect(0, x * 20 * rect.y, 200 * rect.x, 20 * rect.y)))
                 {
-                    groupId = x;
+                    factionId = x;
                 }
                 GUI.Label(new Rect(0, x * 20 * rect.y, 200 * rect.x, 20 * rect.y), target.FactionList[x].name);
             }
@@ -158,7 +158,7 @@ public class FactionEditor : EditorWindow
             {
                 if (isWithin(new Rect(0, x * 20 * rect.y, 200 * rect.x, 20 * rect.y)))
                 {
-                    groupId = x;
+                    factionId = x;
                 }
                 target.FactionList[x] = EditorGUI.ObjectField(
                     new Rect(0, x * 20 * rect.y, 200 * rect.x, 20 * rect.y),
@@ -166,7 +166,7 @@ public class FactionEditor : EditorWindow
                     typeof(GameObject),
                     true) as GameObject;
             }
-            if (groupId == x)
+            if (factionId == x)
             {
                 GUI.DrawTexture(
                     new Rect(0, x * 20 * rect.y, 200 * rect.x, 20 * rect.y),
@@ -177,9 +177,9 @@ public class FactionEditor : EditorWindow
         GUI.EndScrollView();
         if (target.FactionList.Length > 0)
         {
-            if (target.FactionList[groupId])
+            if (target.FactionList[factionId])
             {
-                groupSearch = EditorGUI.TextField(new Rect(0, 25 * rect.y, 200 * rect.x, 20 * rect.y), groupSearch);
+                factionSearch = EditorGUI.TextField(new Rect(0, 25 * rect.y, 200 * rect.x, 20 * rect.y), factionSearch);
             }
             else
             {
@@ -188,24 +188,24 @@ public class FactionEditor : EditorWindow
         }
         if (GUI.Button(new Rect(0, 700 * rect.y, 100 * rect.x, 50 * rect.y), "+"))
         {
-            ModifyG(target.FactionList.Length + 1, target.FactionList.Length, groupId);
+            ModifyFactions(target.FactionList.Length + 1, target.FactionList.Length, factionId);
         }
         if (GUI.Button(new Rect(100 * rect.x, 700 * rect.y, 100 * rect.x, 50 * rect.y), "-"))
         {
-            ModifyG(target.FactionList.Length - 1, target.FactionList.Length, groupId);
+            ModifyFactions(target.FactionList.Length - 1, target.FactionList.Length, factionId);
         }
         if (target.FactionList.Length > 0)
         {
-            if (groupId >= target.FactionList.Length)
+            if (factionId >= target.FactionList.Length)
             {
-                groupId = target.FactionList.Length - 1;
+                factionId = target.FactionList.Length - 1;
             }
-            else if (target.FactionList[groupId])
+            else if (target.FactionList[factionId])
             {
-                nTarget = target.FactionList[groupId].GetComponent<Faction>();
+                nTarget = target.FactionList[factionId].GetComponent<Faction>();
                 if (nTarget)
                 {
-                    if (groupState == 1)
+                    if (factionState == 1)
                     {
                         unitSearch = EditorGUI.TextField(
                             new Rect(200 * rect.x, 0, 200 * rect.x, 25 * rect.y),
@@ -331,10 +331,13 @@ public class FactionEditor : EditorWindow
                             switch (unitState)
                             {
                                 case 0:
-                                    ModifyGU(nTarget.UnitList.Length + 1, nTarget.UnitList.Length, unitId);
+                                    ModifyFactionUnits(nTarget.UnitList.Length + 1, nTarget.UnitList.Length, unitId);
                                     break;
                                 case 1:
-                                    ModifyGB(nTarget.BuildingList.Length + 1, nTarget.BuildingList.Length, unitId);
+                                    ModifyFactionBuildings(
+                                        nTarget.BuildingList.Length + 1,
+                                        nTarget.BuildingList.Length,
+                                        unitId);
                                     break;
                             }
                         }
@@ -343,11 +346,14 @@ public class FactionEditor : EditorWindow
                             switch (unitState)
                             {
                                 case 0:
-                                    ModifyGU(nTarget.UnitList.Length - 1, nTarget.UnitList.Length, unitId);
+                                    ModifyFactionUnits(nTarget.UnitList.Length - 1, nTarget.UnitList.Length, unitId);
                                     unitId--;
                                     break;
                                 case 1:
-                                    ModifyGB(nTarget.BuildingList.Length - 1, nTarget.BuildingList.Length, unitId);
+                                    ModifyFactionBuildings(
+                                        nTarget.BuildingList.Length - 1,
+                                        nTarget.BuildingList.Length,
+                                        unitId);
                                     unitId--;
                                     break;
                             }
@@ -356,13 +362,13 @@ public class FactionEditor : EditorWindow
                 }
                 else if (GUI.Button(new Rect(200 * rect.x, 0 * rect.y, 1300 * rect.x, 750 * rect.y), "+"))
                 {
-                    target.FactionList[groupId].AddComponent<Faction>();
+                    target.FactionList[factionId].AddComponent<Faction>();
                     //InitializeFactionRelations();
                 }
             }
         }
         GUI.Box(
-            groupState == 0
+            factionState == 0
                 ? new Rect(200 * rect.x, 700 * rect.y, 1300 * rect.x, 50 * rect.y)
                 : new Rect(400 * rect.x, 700 * rect.y, 1100 * rect.x, 50 * rect.y),
             helpOptions[helpState]);
@@ -419,28 +425,26 @@ public class FactionEditor : EditorWindow
             new Rect(200 * rect.x, 0, 325 * rect.x, 25 * rect.y),
             selectionTexture,
             ScaleMode.StretchToFill);
-        if (groupId < 0)
+        if (factionId < 0)
         {
-            groupId = 0;
+            factionId = 0;
         }
         // Prevent value getting out of sync when Factions get externally modified
-        if (groupId >= target.FactionList.Length)
+        if (factionId >= target.FactionList.Length)
         {
-            groupId = target.FactionList.Length - 1;
+            factionId = target.FactionList.Length - 1;
         }
-        if (target.FactionList.Length > 0)
+        if (target.FactionList.Length <= 0)
         {
-            if (target.FactionList[groupId] != null)
-            {
-                target.FactionList[groupId].name = EditorGUI.TextField(
-                    new Rect(200 * rect.x, 95 * rect.y, 1300 * rect.x, 25 * rect.y),
-                    "Name : ",
-                    target.FactionList[groupId].name);
-            }
+            factionId = 0;
+            return;
         }
-        else
+        if (target.FactionList[factionId] != null)
         {
-            groupId = 0;
+            target.FactionList[factionId].name = EditorGUI.TextField(
+                new Rect(200 * rect.x, 95 * rect.y, 1300 * rect.x, 25 * rect.y),
+                "Name : ",
+                target.FactionList[factionId].name);
         }
     }
 
@@ -460,20 +464,20 @@ public class FactionEditor : EditorWindow
             helpState = 1;
             return;
         }
-        string[] groupNames = new string[target.FactionList.Length];
-        int selfLocation = groupId;
+        string[] factionNames = new string[target.FactionList.Length];
+        int selfLocation = factionId;
         for (int x = 0; x < target.FactionList.Length; x++)
         {
             if (target.FactionList[x] != null)
             {
-                groupNames[x] = (x + 1) + ". " + target.FactionList[x].name;
+                factionNames[x] = (x + 1) + ". " + target.FactionList[x].name;
             }
         }
         arraySelect = EditorGUI.Popup(
             new Rect(200 * rect.x, 95 * rect.y, 1300 * rect.x, 25 * rect.y),
             "Faction : ",
             arraySelect,
-            groupNames);
+            factionNames);
         // Preventing occassional illegal selection that occurred when Factions got removed
         if (arraySelect >= nTarget.Relations.Length)
         {
@@ -514,7 +518,7 @@ public class FactionEditor : EditorWindow
             }
             if (nTarget.Relations.Length != target.FactionList.Length)
             {
-                ModifyGR(target.FactionList.Length, nTarget.Relations.Length);
+                ModifyFactionRelations(target.FactionList.Length, nTarget.Relations.Length);
             }
             // Hotfix for Relations not getting initialized soon enough
             for (var index = 0; index < nTarget.Relations.Length; index++)
@@ -545,24 +549,24 @@ public class FactionEditor : EditorWindow
             //int size = nTarget.tech.Length;
             Technology[] techs = nTarget.Tech;
             //if (maxY <= 620) {
-            groupPosition2 = GUI.BeginScrollView(
+            factionPosition2 = GUI.BeginScrollView(
                 new Rect(200 * rect.x, 80 * rect.y, 1300 * rect.x, 620 * rect.y),
-                groupPosition2,
+                factionPosition2,
                 new Rect(0, 0, 200 * rect.x, 655 * rect.y),
                 false,
                 true);
             //} else {
-            //    groupPosition2 = GUI.BeginScrollView(new Rect(200 * rect.x, 80 * rect.y, 1300 * rect.x, 620 * rect.y),
-            //        groupPosition2, new Rect(0, 0, 200 * rect.x, maxY * rect.y), false, true);
+            //    factionPosition2 = GUI.BeginScrollView(new Rect(200 * rect.x, 80 * rect.y, 1300 * rect.x, 620 * rect.y),
+            //        factionPosition2, new Rect(0, 0, 200 * rect.x, maxY * rect.y), false, true);
             //}
             int curY = 0;
             if (GUI.Button(new Rect(0 * rect.x, curY * rect.y, 650 * rect.x, 20 * rect.y), "Add"))
             {
-                nTarget.Tech = ModifyT(nTarget.Tech.Length + 1, nTarget.Tech.Length, nTarget.Tech);
+                nTarget.Tech = ModifyTechs(nTarget.Tech.Length + 1, nTarget.Tech.Length, nTarget.Tech);
             }
             if (GUI.Button(new Rect(650 * rect.x, curY * rect.y, 650 * rect.x, 20 * rect.y), "Remove"))
             {
-                nTarget.Tech = ModifyT(nTarget.Tech.Length - 1, nTarget.Tech.Length, nTarget.Tech);
+                nTarget.Tech = ModifyTechs(nTarget.Tech.Length - 1, nTarget.Tech.Length, nTarget.Tech);
             }
             curY += 25;
             string[] techName = new string[techs.Length];
@@ -611,11 +615,11 @@ public class FactionEditor : EditorWindow
         {
             if (GUI.Button(new Rect(200 * rect.x, 80 * rect.y, 650 * rect.x, 20 * rect.y), "Add"))
             {
-                nTarget.Tech = ModifyT(nTarget.Tech.Length + 1, nTarget.Tech.Length, nTarget.Tech);
+                nTarget.Tech = ModifyTechs(nTarget.Tech.Length + 1, nTarget.Tech.Length, nTarget.Tech);
             }
             if (GUI.Button(new Rect(850 * rect.x, 80 * rect.y, 650 * rect.x, 20 * rect.y), "Remove"))
             {
-                nTarget.Tech = ModifyT(nTarget.Tech.Length - 1, nTarget.Tech.Length, nTarget.Tech);
+                nTarget.Tech = ModifyTechs(nTarget.Tech.Length - 1, nTarget.Tech.Length, nTarget.Tech);
             }
         }
     }
@@ -637,11 +641,11 @@ public class FactionEditor : EditorWindow
             }
             if (GUI.Button(new Rect(200 * rect.x, curY * rect.y, 650 * rect.x, 15 * rect.y), "Add Type"))
             {
-                ModifyGT(target.UnitTypes.Length + 1, target.UnitTypes.Length, arraySelect);
+                ModifyFactionTypes(target.UnitTypes.Length + 1, target.UnitTypes.Length, arraySelect);
             }
             if (GUI.Button(new Rect(850 * rect.x, curY * rect.y, 650 * rect.x, 15 * rect.y), "Remove Type"))
             {
-                ModifyGT(target.UnitTypes.Length - 1, target.UnitTypes.Length, arraySelect);
+                ModifyFactionTypes(target.UnitTypes.Length - 1, target.UnitTypes.Length, arraySelect);
             }
             curY += 20;
             arraySelect = EditorGUI.Popup(
@@ -673,7 +677,7 @@ public class FactionEditor : EditorWindow
                 GUI.Box(new Rect(200 * rect.x, curY * rect.y - 3, 1300 * rect.x, 130 * rect.y), "");
                 if (GUI.Button(new Rect(200 * rect.x, curY * rect.y, 650 * rect.x, 15 * rect.y), "Add Strength"))
                 {
-                    ModifyGTS(
+                    ModifyFactionTypesStrengths(
                         target.UnitTypes[arraySelect].strengths.Length + 1,
                         target.UnitTypes[arraySelect].strengths.Length,
                         arraySelect1,
@@ -681,7 +685,7 @@ public class FactionEditor : EditorWindow
                 }
                 if (GUI.Button(new Rect(850 * rect.x, curY * rect.y, 650 * rect.x, 15 * rect.y), "Remove Strength"))
                 {
-                    ModifyGTS(
+                    ModifyFactionTypesStrengths(
                         target.UnitTypes[arraySelect].strengths.Length - 1,
                         target.UnitTypes[arraySelect].strengths.Length,
                         arraySelect1,
@@ -725,7 +729,7 @@ public class FactionEditor : EditorWindow
                 GUI.Box(new Rect(200 * rect.x, curY * rect.y - 3, 1300 * rect.x, 26 * rect.y), "");
                 if (GUI.Button(new Rect(200 * rect.x, curY * rect.y, 1300 * rect.x, 15 * rect.y), "Add Strength"))
                 {
-                    ModifyGTS(
+                    ModifyFactionTypesStrengths(
                         target.UnitTypes[arraySelect].strengths.Length + 1,
                         target.UnitTypes[arraySelect].strengths.Length,
                         arraySelect1,
@@ -748,7 +752,7 @@ public class FactionEditor : EditorWindow
                 GUI.Box(new Rect(200 * rect.x, curY * rect.y - 3, 1300 * rect.x, 130 * rect.y), "");
                 if (GUI.Button(new Rect(200 * rect.x, curY * rect.y, 650 * rect.x, 15 * rect.y), "Add Weakness"))
                 {
-                    ModifyGTW(
+                    ModifyFactionTypesWeaknesses(
                         target.UnitTypes[arraySelect].weaknesses.Length + 1,
                         target.UnitTypes[arraySelect].weaknesses.Length,
                         arraySelect2,
@@ -756,7 +760,7 @@ public class FactionEditor : EditorWindow
                 }
                 if (GUI.Button(new Rect(850 * rect.x, curY * rect.y, 650 * rect.x, 15 * rect.y), "Remove Weakness"))
                 {
-                    ModifyGTW(
+                    ModifyFactionTypesWeaknesses(
                         target.UnitTypes[arraySelect].weaknesses.Length - 1,
                         target.UnitTypes[arraySelect].weaknesses.Length,
                         arraySelect2,
@@ -791,7 +795,7 @@ public class FactionEditor : EditorWindow
                 GUI.Box(new Rect(200 * rect.x, curY * rect.y - 3, 1300 * rect.x, 26 * rect.y), "");
                 if (GUI.Button(new Rect(200 * rect.x, curY * rect.y, 1300 * rect.x, 15 * rect.y), "Add Weakness"))
                 {
-                    ModifyGTW(
+                    ModifyFactionTypesWeaknesses(
                         target.UnitTypes[arraySelect].weaknesses.Length + 1,
                         target.UnitTypes[arraySelect].weaknesses.Length,
                         arraySelect2,
@@ -802,7 +806,7 @@ public class FactionEditor : EditorWindow
         }
         else if (GUI.Button(new Rect(200 * rect.x, curY * rect.y, 1300 * rect.x, 25 * rect.y), "+"))
         {
-            ModifyGT(target.UnitTypes.Length + 1, target.UnitTypes.Length, arraySelect);
+            ModifyFactionTypes(target.UnitTypes.Length + 1, target.UnitTypes.Length, arraySelect);
         }
     }
 
@@ -815,820 +819,926 @@ public class FactionEditor : EditorWindow
         if (unitId >= nTarget.UnitList.Length || unitId < 0)
         {
             unitId = 0;
+            return;
         }
-        else if (nTarget.UnitList.Length > 0 && nTarget.UnitList[unitId].obj)
+        if (nTarget.UnitList.Length <= 0 || !nTarget.UnitList[unitId].obj)
         {
-            MiniMapSignal myTargetMap = nTarget.UnitList[unitId].obj.GetComponent<MiniMapSignal>();
-            VisionSignal myTargetVision = nTarget.UnitList[unitId].obj.GetComponent<VisionSignal>();
-            UnitController myTarget = nTarget.UnitList[unitId].obj.GetComponent<UnitController>();
-            UnitMovement moveTarget = nTarget.UnitList[unitId].obj.GetComponent<UnitMovement>();
-            // If the Unit does not have the base unit scripts, give the user the option to add them
-            if (!myTarget)
+            return;
+        }
+        Unit targetUnit = nTarget.UnitList[unitId];
+        MiniMapSignal myTargetMap = targetUnit.obj.GetComponent<MiniMapSignal>();
+        VisionSignal myTargetVision = targetUnit.obj.GetComponent<VisionSignal>();
+        UnitController myTarget = targetUnit.obj.GetComponent<UnitController>();
+        UnitMovement moveTarget = targetUnit.obj.GetComponent<UnitMovement>();
+        // If the Unit does not have the base unit scripts, give the user the option to add them
+        if (!myTarget)
+        {
+            if (GUI.Button(new Rect(400 * rect.x, 0, 1100 * rect.x, 750 * rect.y), "Add Unit Controller Components"))
             {
-                if (GUI.Button(
-                    new Rect(400 * rect.x, 0, 1100 * rect.x, 750 * rect.y),
-                    "Add Unit Controller Components"))
-                {
-                    myTarget = nTarget.UnitList[unitId].obj.AddComponent<UnitController>();
-                    myTarget.gui.SetType("Unit");
-                    // Add More Components
-                }
-                return;
+                myTarget = targetUnit.obj.AddComponent<UnitController>();
+                myTarget.gui.SetType("Unit");
+                // Add More Components
             }
-            if (nTarget.UnitList[unitId].obj != lastObj)
-            {
-                objEditor = Editor.CreateEditor(nTarget.UnitList[unitId].obj);
-                lastObj = nTarget.UnitList[unitId].obj;
-            }
-            objEditor.OnInteractivePreviewGUI(new Rect(945 * rect.x, 50 * rect.y, 555 * rect.x, 650 * rect.y),
-                EditorStyles.toolbarButton);
+            return;
+        }
+        if (targetUnit.obj != lastObj)
+        {
+            objEditor = Editor.CreateEditor(targetUnit.obj);
+            lastObj = targetUnit.obj;
+        }
+        objEditor.OnInteractivePreviewGUI(
+            new Rect(945 * rect.x, 50 * rect.y, 555 * rect.x, 650 * rect.y),
+            EditorStyles.toolbarButton);
 
-            // Button Display Area
+        // Button Display Area
 
-            if (GUI.Button(new Rect(400 * rect.x, 0, 275 * rect.x, 25 * rect.y), "Stats"))
-            {
-                menuState = 0;
-                subMenuState = 0;
-            }
-            if (GUI.Button(new Rect(675 * rect.x, 0, 275 * rect.x, 25 * rect.y), "Visuals"))
-            {
-                menuState = 1;
-                subMenuState = 0;
-            }
-            if (GUI.Button(new Rect(950 * rect.x, 0, 275 * rect.x, 25 * rect.y), "Techs"))
-            {
-                menuState = 2;
-                subMenuState = 0;
-            }
-            if (GUI.Button(new Rect(1225 * rect.x, 0, 275 * rect.x, 25 * rect.y), "Anim/Sounds"))
-            {
-                menuState = 3;
-                subMenuState = 0;
-            }
+        if (GUI.Button(new Rect(400 * rect.x, 0, 275 * rect.x, 25 * rect.y), "Stats"))
+        {
+            menuState = 0;
+            subMenuState = 0;
+        }
+        if (GUI.Button(new Rect(675 * rect.x, 0, 275 * rect.x, 25 * rect.y), "Visuals"))
+        {
+            menuState = 1;
+            subMenuState = 0;
+        }
+        if (GUI.Button(new Rect(950 * rect.x, 0, 275 * rect.x, 25 * rect.y), "Techs"))
+        {
+            menuState = 2;
+            subMenuState = 0;
+        }
+        if (GUI.Button(new Rect(1225 * rect.x, 0, 275 * rect.x, 25 * rect.y), "Anim/Sounds"))
+        {
+            menuState = 3;
+            subMenuState = 0;
+        }
 
-            // Menu Area
+        // Menu Area
 
-            // The Stats Area
-            if (menuState == 0)
+        // The Stats Area
+        if (menuState == 0)
+        {
+            GUI.DrawTexture(
+                new Rect(400 * rect.x, 0, 275 * rect.x, 25 * rect.y),
+                selectionTexture,
+                ScaleMode.StretchToFill);
+            if (GUI.Button(new Rect(400 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y), "Global"))
             {
+                subMenuState = 0;
+                arraySelect = 0;
+            }
+            if (GUI.Button(new Rect(620 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y), "Weapon"))
+            {
+                subMenuState = 1;
+                arraySelect = 0;
+            }
+            if (GUI.Button(new Rect(840 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y), "Build"))
+            {
+                subMenuState = 2;
+                arraySelect = 0;
+            }
+            if (GUI.Button(new Rect(1060 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y), "Gather"))
+            {
+                subMenuState = 3;
+                arraySelect = 0;
+            }
+            if (GUI.Button(new Rect(1280 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y), "Ratios"))
+            {
+                subMenuState = 4;
+                arraySelect = 0;
+            }
+            // Global
+            if (subMenuState == 0)
+            {
+                helpState = 5;
                 GUI.DrawTexture(
-                    new Rect(400 * rect.x, 0, 275 * rect.x, 25 * rect.y),
+                    new Rect(400 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y),
                     selectionTexture,
                     ScaleMode.StretchToFill);
-                if (GUI.Button(new Rect(400 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y), "Global"))
+                myTarget.name = EditorGUI.TextField(
+                    new Rect(400 * rect.x, 70 * rect.y, 540 * rect.x, 25 * rect.y),
+                    "Name : ",
+                    myTarget.name);
+                myTarget.maxHealth = EditorGUI.IntField(
+                    new Rect(400 * rect.x, 100 * rect.y, 540 * rect.x, 25 * rect.y),
+                    "Max Health : ",
+                    myTarget.maxHealth);
+                myTarget.health = EditorGUI.IntField(
+                    new Rect(400 * rect.x, 130 * rect.y, 540 * rect.x, 25 * rect.y),
+                    "Health : ",
+                    myTarget.health);
+                moveTarget.speed = EditorGUI.IntField(
+                    new Rect(400 * rect.x, 160 * rect.y, 540 * rect.x, 25 * rect.y),
+                    "Speed : ",
+                    moveTarget.speed);
+                moveTarget.rotateSpeed = EditorGUI.IntField(
+                    new Rect(400 * rect.x, 190 * rect.y, 540 * rect.x, 25 * rect.y),
+                    "Rotate Speed : ",
+                    moveTarget.rotateSpeed);
+                if (target.UnitTypes.Length > 0)
                 {
-                    subMenuState = 0;
-                    arraySelect = 0;
-                }
-                if (GUI.Button(new Rect(620 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y), "Weapon"))
-                {
-                    subMenuState = 1;
-                    arraySelect = 0;
-                }
-                if (GUI.Button(new Rect(840 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y), "Build"))
-                {
-                    subMenuState = 2;
-                    arraySelect = 0;
-                }
-                if (GUI.Button(new Rect(1060 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y), "Gather"))
-                {
-                    subMenuState = 3;
-                    arraySelect = 0;
-                }
-                if (GUI.Button(new Rect(1280 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y), "Ratios"))
-                {
-                    subMenuState = 4;
-                    arraySelect = 0;
-                }
-                // Global
-                if (subMenuState == 0)
-                {
-                    helpState = 5;
-                    GUI.DrawTexture(
-                        new Rect(400 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y),
-                        selectionTexture,
-                        ScaleMode.StretchToFill);
-                    myTarget.name = EditorGUI.TextField(
-                        new Rect(400 * rect.x, 70 * rect.y, 540 * rect.x, 25 * rect.y),
-                        "Name : ",
-                        myTarget.name);
-                    myTarget.maxHealth = EditorGUI.IntField(
-                        new Rect(400 * rect.x, 100 * rect.y, 540 * rect.x, 25 * rect.y),
-                        "Max Health : ",
-                        myTarget.maxHealth);
-                    myTarget.health = EditorGUI.IntField(
-                        new Rect(400 * rect.x, 130 * rect.y, 540 * rect.x, 25 * rect.y),
-                        "Health : ",
-                        myTarget.health);
-                    moveTarget.speed = EditorGUI.IntField(
-                        new Rect(400 * rect.x, 160 * rect.y, 540 * rect.x, 25 * rect.y),
-                        "Speed : ",
-                        moveTarget.speed);
-                    moveTarget.rotateSpeed = EditorGUI.IntField(
-                        new Rect(400 * rect.x, 190 * rect.y, 540 * rect.x, 25 * rect.y),
-                        "Rotate Speed : ",
-                        moveTarget.rotateSpeed);
-                    if (target.UnitTypes.Length > 0)
+                    string[] typeNames = new string[target.UnitTypes.Length];
+                    for (int x = 0; x < target.UnitTypes.Length; x++)
                     {
-                        string[] typeNames = new string[target.UnitTypes.Length];
-                        for (int x = 0; x < target.UnitTypes.Length; x++)
+                        typeNames[x] = (x + 1) + ". " + target.UnitTypes[x].name;
+                        if (target.UnitTypes[x] == myTarget.type)
                         {
-                            typeNames[x] = (x + 1) + ". " + target.UnitTypes[x].name;
-                            if (target.UnitTypes[x] == myTarget.type)
-                            {
-                                arraySelect = x;
-                            }
-                        }
-                        arraySelect = EditorGUI.Popup(
-                            new Rect(400 * rect.x, 220 * rect.y, 545 * rect.x, 25 * rect.y),
-                            "Type : ",
-                            arraySelect,
-                            typeNames);
-                        myTarget.type = target.UnitTypes[arraySelect];
-                    }
-                    nTarget.UnitList[unitId].obj = EditorGUI.ObjectField(
-                        new Rect(400 * rect.x, 250 * rect.y, 540 * rect.x, 25 * rect.y),
-                        "Object : ",
-                        nTarget.UnitList[unitId].obj,
-                        typeof(GameObject),
-                        true) as GameObject;
-
-                    //Add In Unit Movement Stats
-                }
-                // Weapon
-                else if (subMenuState == 1)
-                {
-                    helpState = 6;
-                    GUI.DrawTexture(
-                        new Rect(620 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y),
-                        selectionTexture,
-                        ScaleMode.StretchToFill);
-                    myTarget.weapon.fighterUnit = EditorGUI.Toggle(
-                        new Rect(400 * rect.x, 70 * rect.y, 540 * rect.x, 25 * rect.y),
-                        "Fighter : ",
-                        myTarget.weapon.fighterUnit);
-                    if (myTarget.weapon.fighterUnit)
-                    {
-                        myTarget.weapon.attackRate = EditorGUI.FloatField(
-                            new Rect(400 * rect.x, 100 * rect.y, 540 * rect.x, 25 * rect.y),
-                            "Attack Rate : ",
-                            myTarget.weapon.attackRate);
-                        myTarget.weapon.attackRange = EditorGUI.FloatField(
-                            new Rect(400 * rect.x, 130 * rect.y, 540 * rect.x, 25 * rect.y),
-                            "Attack Range : ",
-                            myTarget.weapon.attackRange);
-                        myTarget.weapon.attackDamage = EditorGUI.IntField(
-                            new Rect(400 * rect.x, 160 * rect.y, 540 * rect.x, 25 * rect.y),
-                            "Attack Damage : ",
-                            myTarget.weapon.attackDamage);
-                        myTarget.weapon.lookRange = EditorGUI.FloatField(
-                            new Rect(400 * rect.x, 190 * rect.y, 540 * rect.x, 25 * rect.y),
-                            "Look Range : ",
-                            myTarget.weapon.lookRange);
-                        myTarget.weapon.attackObj = EditorGUI.ObjectField(
-                            new Rect(400 * rect.x, 220 * rect.y, 540 * rect.x, 25 * rect.y),
-                            "Attack Object : ",
-                            myTarget.weapon.attackObj,
-                            typeof(GameObject),
-                            true) as GameObject;
-                    }
-                }
-                // Build
-                else if (subMenuState == 2)
-                {
-                    helpState = 7;
-                    GUI.DrawTexture(
-                        new Rect(840 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y),
-                        selectionTexture,
-                        ScaleMode.StretchToFill);
-                    myTarget.build.builderUnit = EditorGUI.Toggle(
-                        new Rect(400 * rect.x, 70 * rect.y, 540 * rect.x, 25 * rect.y),
-                        "Builder : ",
-                        myTarget.build.builderUnit);
-                    if (!myTarget.build.builderUnit)
-                    {
-                        return;
-                    }
-                    if (myTarget.build.build.Length != nTarget.BuildingList.Length)
-                    {
-                        ModifyUB(nTarget.BuildingList.Length, myTarget.build.build.Length, myTarget);
-                    }
-                    else
-                    {
-                        string[] buildNames = new string[nTarget.BuildingList.Length];
-                        for (int x = 0; x < buildNames.Length; x++)
-                        {
-                            if (nTarget.BuildingList[x].obj != null)
-                            {
-                                BuildingController cont =
-                                    nTarget.BuildingList[x].obj.GetComponent<BuildingController>();
-                                if (cont != null)
-                                {
-                                    buildNames[x] = cont.name;
-                                }
-                            }
-                        }
-                        if (arraySelect >= buildNames.Length)
-                        {
-                            arraySelect = 0;
-                        }
-                        else
-                        {
-                            arraySelect =
-                                EditorGUI.Popup(
-                                    new Rect(400 * rect.x, 100 * rect.y, 540 * rect.x, 25 * rect.y),
-                                    arraySelect,
-                                    buildNames);
-                            if (nTarget.BuildingList.Length > 0)
-                            {
-                                GUI.Box(
-                                    myTarget.build.build[arraySelect].canBuild
-                                        ? new Rect(400 * rect.x, 130 * rect.y, 540 * rect.x, 90 * rect.y)
-                                        : new Rect(400 * rect.x, 130 * rect.y, 540 * rect.x, 25 * rect.y),
-                                    "");
-                                myTarget.build.build[arraySelect].canBuild = EditorGUI.Toggle(
-                                    new Rect(400 * rect.x, 130 * rect.y, 540 * rect.x, 25 * rect.y),
-                                    "Can Build : ",
-                                    myTarget.build.build[arraySelect].canBuild);
-                                if (myTarget.build.build[arraySelect].canBuild)
-                                {
-                                    myTarget.build.build[arraySelect].amount = EditorGUI.IntField(
-                                        new Rect(400 * rect.x, 160 * rect.y, 540 * rect.x, 25 * rect.y),
-                                        "Build Amount : ",
-                                        myTarget.build.build[arraySelect].amount);
-                                    myTarget.build.build[arraySelect].rate = EditorGUI.FloatField(
-                                        new Rect(400 * rect.x, 190 * rect.y, 540 * rect.x, 25 * rect.y),
-                                        "Build Rate : ",
-                                        myTarget.build.build[arraySelect].rate);
-                                }
-                            }
-                        }
-                    }
-                }
-                // Gather
-                else if (subMenuState == 3)
-                {
-                    helpState = 8;
-                    GUI.DrawTexture(
-                        new Rect(1060 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y),
-                        selectionTexture,
-                        ScaleMode.StretchToFill);
-                    myTarget.resource.resourceUnit = EditorGUI.Toggle(
-                        new Rect(400 * rect.x, 70 * rect.y, 540 * rect.x, 25 * rect.y),
-                        "Gatherer : ",
-                        myTarget.resource.resourceUnit);
-                    if (!myTarget.resource.resourceUnit)
-                    {
-                        return;
-                    }
-                    GameObject resourceManager = GameObject.Find("Player Manager");
-                    if (resourceManager == null)
-                    {
-                        return;
-                    }
-                    ResourceManager rMScript = resourceManager.GetComponent<ResourceManager>();
-                    if (!rMScript)
-                    {
-                        return;
-                    }
-                    if (myTarget.resource.behaviour.Length != rMScript.resourceTypes.Length)
-                    {
-                        ModifyUR(rMScript.resourceTypes.Length, myTarget.resource.behaviour.Length, myTarget);
-                    }
-                    else
-                    {
-                        string[] resourceNames = new string[rMScript.resourceTypes.Length];
-                        for (int x = 0; x < resourceNames.Length; x++)
-                        {
-                            resourceNames[x] = rMScript.resourceTypes[x].name;
-                        }
-                        if (arraySelect >= resourceNames.Length)
-                        {
-                            arraySelect = 0;
-                        }
-                        else
-                        {
-                            var resourceBehaviour = myTarget.resource.behaviour[arraySelect];
-                            arraySelect = EditorGUI.Popup(
-                                new Rect(400 * rect.x, 100 * rect.y, 540 * rect.x, 25 * rect.y),
-                                arraySelect,
-                                resourceNames);
-                            GUI.Box(
-                                resourceBehaviour.canGather
-                                    ? new Rect(400 * rect.x, 130 * rect.y, 540 * rect.x, 150 * rect.y)
-                                    : new Rect(400 * rect.x, 130 * rect.y, 540 * rect.x, 25 * rect.y),
-                                "");
-                            resourceBehaviour.canGather = EditorGUI.Toggle(
-                                new Rect(400 * rect.x, 130 * rect.y, 540 * rect.x, 25 * rect.y),
-                                "Can Gather : ",
-                                resourceBehaviour.canGather);
-                            if (resourceBehaviour.canGather)
-                            {
-                                resourceBehaviour.amount = EditorGUI.IntField(
-                                    new Rect(400 * rect.x, 160 * rect.y, 540 * rect.x, 25 * rect.y),
-                                    "Gather Amount : ",
-                                    resourceBehaviour.amount);
-                                resourceBehaviour.rate = EditorGUI.FloatField(
-                                    new Rect(400 * rect.x, 190 * rect.y, 540 * rect.x, 25 * rect.y),
-                                    "Gather Rate : ",
-                                    resourceBehaviour.rate);
-                                resourceBehaviour.returnWhenFull = EditorGUI.Toggle(
-                                    new Rect(400 * rect.x, 220 * rect.y, 540 * rect.x, 25 * rect.y),
-                                    "Drop Off Resource : ",
-                                    resourceBehaviour.returnWhenFull);
-                            }
-                            resourceBehaviour.carryCapacity = EditorGUI.IntField(
-                                new Rect(400 * rect.x, 250 * rect.y, 540 * rect.x, 25 * rect.y),
-                                "Carry Capacity : ",
-                                resourceBehaviour.carryCapacity);
-                        }
-                    }
-                }
-                // Ratios
-                else if (subMenuState == 4)
-                {
-                    GUI.DrawTexture(
-                        new Rect(1280 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y),
-                        selectionTexture,
-                        ScaleMode.StretchToFill);
-                    if (GUI.Button(new Rect(400 * rect.x, 50 * rect.y, 273 * rect.x, 20 * rect.y), "Add"))
-                    {
-                        ModifyURA(myTarget.ratio.Length + 1, myTarget.ratio.Length, myTarget);
-                    }
-                    if (GUI.Button(new Rect(673 * rect.x, 50 * rect.y, 272 * rect.x, 20 * rect.y), "Remove"))
-                    {
-                        ModifyURA(myTarget.ratio.Length - 1, myTarget.ratio.Length, myTarget);
-                    }
-                    if (myTarget.ratio.Length > 0)
-                    {
-                        string[] names = new string[myTarget.ratio.Length];
-                        for (int x = 0; x < names.Length; x++)
-                        {
-                            names[x] = "" + (x + 1) + ". " + myTarget.ratio[x].name;
-                        }
-                        if (arraySelect < names.Length)
-                        {
-                            arraySelect = EditorGUI.Popup(
-                                new Rect(400 * rect.x, 75 * rect.y, 545 * rect.x, 20 * rect.y),
-                                "Ratio : ",
-                                arraySelect,
-                                names);
-                            myTarget.ratio[arraySelect].name = EditorGUI.TextField(
-                                new Rect(400 * rect.x, 100 * rect.y, 545 * rect.x, 20 * rect.y),
-                                "Enemy Name : ",
-                                myTarget.ratio[arraySelect].name);
-                            myTarget.ratio[arraySelect].amount = EditorGUI.FloatField(
-                                new Rect(400 * rect.x, 125 * rect.y, 545 * rect.x, 20 * rect.y),
-                                "Amount : ",
-                                myTarget.ratio[arraySelect].amount);
-                        }
-                        else
-                        {
-                            arraySelect = 0;
-                        }
-                    }
-                }
-            }
-            // The Visuals Area
-            else if (menuState == 1)
-            {
-                GUI.DrawTexture(
-                    new Rect(675 * rect.x, 0, 275 * rect.x, 25 * rect.y),
-                    selectionTexture,
-                    ScaleMode.StretchToFill);
-                if (GUI.Button(new Rect(400 * rect.x, 25 * rect.y, 367 * rect.x, 20 * rect.y), "Selected"))
-                {
-                    subMenuState = 0;
-                    arraySelect = 0;
-                }
-                if (GUI.Button(new Rect(767 * rect.x, 25 * rect.y, 367 * rect.x, 20 * rect.y), "MiniMap"))
-                {
-                    subMenuState = 1;
-                    arraySelect = 0;
-                }
-                if (GUI.Button(new Rect(1134 * rect.x, 25 * rect.y, 366 * rect.x, 20 * rect.y), "Vision"))
-                {
-                    subMenuState = 2;
-                    arraySelect = 0;
-                }
-                // Selected
-                if (subMenuState == 0)
-                {
-                    GUI.DrawTexture(
-                        new Rect(400 * rect.x, 25 * rect.y, 367 * rect.x, 20 * rect.y),
-                        selectionTexture,
-                        ScaleMode.StretchToFill);
-                    myTarget.gui.SetType("Unit");
-                    EditorGUI.LabelField(
-                        new Rect(400 * rect.x, 50 * rect.y, 545 * rect.x, 100 * rect.y),
-                        "GUI Image : ");
-                    myTarget.gui.image = EditorGUI.ObjectField(
-                        new Rect(400 * rect.x, 80 * rect.y, 100 * rect.x, 100 * rect.y),
-                        "",
-                        myTarget.gui.image,
-                        typeof(Texture2D),
-                        true) as Texture2D;
-                    //Modify Selected Objects
-                    if (GUI.Button(new Rect(400 * rect.x, 180 * rect.y, 273 * rect.x, 25 * rect.y), "Add"))
-                    {
-                        ModifyUS(myTarget.gui.selectObjs.Length + 1, myTarget.gui.selectObjs.Length, myTarget);
-                    }
-                    if (GUI.Button(new Rect(673 * rect.x, 180 * rect.y, 272 * rect.x, 25 * rect.y), "Remove"))
-                    {
-                        ModifyUS(myTarget.gui.selectObjs.Length - 1, myTarget.gui.selectObjs.Length, myTarget);
-                    }
-                    string[] list = new string[myTarget.gui.selectObjs.Length];
-                    for (int x = 0; x < list.Length; x++)
-                    {
-                        if (myTarget.gui.selectObjs[x])
-                        {
-                            list[x] = (x + 1) + ". " + myTarget.gui.selectObjs[x].name;
-                        }
-                        else
-                        {
-                            list[x] = (x + 1) + ". Empty";
+                            arraySelect = x;
                         }
                     }
                     arraySelect = EditorGUI.Popup(
-                        new Rect(400 * rect.x, 210 * rect.y, 545 * rect.x, 25 * rect.y),
-                        "Objects : ",
+                        new Rect(400 * rect.x, 220 * rect.y, 545 * rect.x, 25 * rect.y),
+                        "Type : ",
                         arraySelect,
-                        list);
-                    if (arraySelect >= myTarget.gui.selectObjs.Length)
+                        typeNames);
+                    myTarget.type = target.UnitTypes[arraySelect];
+                }
+                targetUnit.obj = EditorGUI.ObjectField(
+                    new Rect(400 * rect.x, 250 * rect.y, 540 * rect.x, 25 * rect.y),
+                    "Object : ",
+                    targetUnit.obj,
+                    typeof(GameObject),
+                    true) as GameObject;
+
+                //Add In Unit Movement Stats
+            }
+            // Weapon
+            else if (subMenuState == 1)
+            {
+                helpState = 6;
+                GUI.DrawTexture(
+                    new Rect(620 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y),
+                    selectionTexture,
+                    ScaleMode.StretchToFill);
+                myTarget.weapon.fighterUnit = EditorGUI.Toggle(
+                    new Rect(400 * rect.x, 70 * rect.y, 540 * rect.x, 25 * rect.y),
+                    "Fighter : ",
+                    myTarget.weapon.fighterUnit);
+                if (myTarget.weapon.fighterUnit)
+                {
+                    myTarget.weapon.attackRate = EditorGUI.FloatField(
+                        new Rect(400 * rect.x, 100 * rect.y, 540 * rect.x, 25 * rect.y),
+                        "Attack Rate : ",
+                        myTarget.weapon.attackRate);
+                    myTarget.weapon.attackRange = EditorGUI.FloatField(
+                        new Rect(400 * rect.x, 130 * rect.y, 540 * rect.x, 25 * rect.y),
+                        "Attack Range : ",
+                        myTarget.weapon.attackRange);
+                    myTarget.weapon.attackDamage = EditorGUI.IntField(
+                        new Rect(400 * rect.x, 160 * rect.y, 540 * rect.x, 25 * rect.y),
+                        "Attack Damage : ",
+                        myTarget.weapon.attackDamage);
+                    myTarget.weapon.lookRange = EditorGUI.FloatField(
+                        new Rect(400 * rect.x, 190 * rect.y, 540 * rect.x, 25 * rect.y),
+                        "Look Range : ",
+                        myTarget.weapon.lookRange);
+                    myTarget.weapon.attackObj = EditorGUI.ObjectField(
+                        new Rect(400 * rect.x, 220 * rect.y, 540 * rect.x, 25 * rect.y),
+                        "Attack Object : ",
+                        myTarget.weapon.attackObj,
+                        typeof(GameObject),
+                        true) as GameObject;
+                }
+            }
+            // Build
+            else if (subMenuState == 2)
+            {
+                helpState = 7;
+                GUI.DrawTexture(
+                    new Rect(840 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y),
+                    selectionTexture,
+                    ScaleMode.StretchToFill);
+                myTarget.build.builderUnit = EditorGUI.Toggle(
+                    new Rect(400 * rect.x, 70 * rect.y, 540 * rect.x, 25 * rect.y),
+                    "Builder : ",
+                    myTarget.build.builderUnit);
+                if (!myTarget.build.builderUnit)
+                {
+                    return;
+                }
+                if (myTarget.build.build.Length != nTarget.BuildingList.Length)
+                {
+                    ModifyUnitBuildBehaviour(nTarget.BuildingList.Length, myTarget.build.build.Length, myTarget);
+                }
+                else
+                {
+                    string[] buildNames = new string[nTarget.BuildingList.Length];
+                    for (int x = 0; x < buildNames.Length; x++)
+                    {
+                        if (nTarget.BuildingList[x].obj != null)
+                        {
+                            BuildingController cont = nTarget.BuildingList[x].obj.GetComponent<BuildingController>();
+                            if (cont != null)
+                            {
+                                buildNames[x] = cont.name;
+                            }
+                        }
+                    }
+                    if (arraySelect >= buildNames.Length)
                     {
                         arraySelect = 0;
                     }
                     else
                     {
-                        myTarget.gui.selectObjs[arraySelect] = EditorGUI.ObjectField(
-                            new Rect(400 * rect.x, 240 * rect.y, 545 * rect.x, 25 * rect.y),
-                            "",
-                            myTarget.gui.selectObjs[arraySelect],
-                            typeof(GameObject),
-                            false) as GameObject;
-                    }
-                    Health healthObj = nTarget.UnitList[unitId].obj.GetComponent<Health>();
-                    if (healthObj == null)
-                    {
-                        if (GUI.Button(
-                            new Rect(400 * rect.x, 280 * rect.y, 545 * rect.x, 420 * rect.y),
-                            "Add Health Indicator"))
-                        {
-                            nTarget.UnitList[unitId].obj.AddComponent<Health>();
-                        }
-                    }
-                    else
-                    {
-                        healthObj.backgroundBar = EditorGUI.ObjectField(
-                            new Rect(400 * rect.x, 280 * rect.y, 100 * rect.x, 50 * rect.y),
-                            healthObj.backgroundBar,
-                            typeof(Texture2D),
-                            true) as Texture2D;
-                        healthObj.healthBar = EditorGUI.ObjectField(
-                            new Rect(400 * rect.x, 330 * rect.y, 100 * rect.x, 50 * rect.y),
-                            healthObj.healthBar,
-                            typeof(Texture2D),
-                            true) as Texture2D;
-                        healthObj.yIncrease = EditorGUI.FloatField(
-                            new Rect(400 * rect.x, 390 * rect.y, 545 * rect.x, 30 * rect.y),
-                            "World-Y Increase : ",
-                            healthObj.yIncrease);
-                        healthObj.scale = EditorGUI.IntField(
-                            new Rect(400 * rect.x, 420 * rect.y, 545 * rect.x, 30 * rect.y),
-                            "UI-X Scale : ",
-                            healthObj.scale);
-                        healthObj.yScale = EditorGUI.IntField(
-                            new Rect(400 * rect.x, 450 * rect.y, 545 * rect.x, 30 * rect.y),
-                            "UI-Y Scale : ",
-                            healthObj.yScale);
-                        int healthLength = healthObj.element.Length;
-                        healthLength = EditorGUI.IntField(
-                            new Rect(400 * rect.x, 485 * rect.y, 545 * rect.x, 30 * rect.y),
-                            "Health Elements : ",
-                            healthLength);
-                        if (healthLength != healthObj.element.Length)
-                        {
-                            ModifyHE(healthLength, healthObj.element.Length, healthObj);
-                        }
-                        if (healthLength > 0)
-                        {
-                            string[] elementName = new string[healthLength];
-                            for (int x = 0; x < elementName.Length; x++)
-                            {
-                                elementName[x] = "Element " + (x + 1);
-                            }
-                            arraySelect1 = EditorGUI.Popup(
-                                new Rect(400 * rect.x, 520 * rect.y, 545 * rect.x, 25 * rect.y),
-                                "Element : ",
-                                arraySelect1,
-                                elementName);
-                            healthObj.element[arraySelect1].image = EditorGUI.ObjectField(
-                                new Rect(400 * rect.x, 540 * rect.y, 100 * rect.x, 50 * rect.y),
-                                healthObj.element[arraySelect1].image,
-                                typeof(Texture2D),
-                                true) as Texture2D;
-                            healthObj.element[arraySelect1].loc = EditorGUI.RectField(
-                                new Rect(400 * rect.x, 600 * rect.y, 545 * rect.x, 50 * rect.y),
-                                healthObj.element[arraySelect1].loc);
-                        }
-                        Vector2 point = new Vector2(620 * rect.x, 650 * rect.y);
-                        if (healthObj.backgroundBar != null)
-                        {
-                            GUI.DrawTexture(
-                                new Rect(point.x, point.y, healthObj.scale * ((float) 1), healthObj.yScale),
-                                healthObj.backgroundBar);
-                        }
-                        if (healthObj.healthBar != null)
-                        {
-                            GUI.DrawTexture(
-                                new Rect(point.x, point.y, healthObj.scale * ((float) 50 / 100), healthObj.yScale),
-                                healthObj.healthBar);
-                        }
-                        foreach (HealthElement healthElement in healthObj.element)
-                        {
-                            GUI.DrawTexture(
-                                new Rect(
-                                    point.x + healthElement.loc.x,
-                                    point.y - healthElement.loc.y,
-                                    healthElement.loc.width,
-                                    healthElement.loc.height),
-                                healthElement.image);
-                        }
-                    }
-                    helpState = 9;
-                }
-                // MiniMap
-                else if (subMenuState == 1)
-                {
-                    GUI.DrawTexture(
-                        new Rect(767 * rect.x, 25 * rect.y, 367 * rect.x, 20 * rect.y),
-                        selectionTexture,
-                        ScaleMode.StretchToFill);
-                    if (myTargetMap == null)
-                    {
-                        if (GUI.Button(
-                            new Rect(400 * rect.x, 45 * rect.y, 1100 * rect.x, 705 * rect.y),
-                            "Add MiniMap Components"))
-                        {
-                            nTarget.UnitList[unitId].obj.AddComponent<MiniMapSignal>();
-                        }
-                    }
-                    else
-                    {
-                        myTargetMap.enabled = EditorGUI.Toggle(
-                            new Rect(400 * rect.x, 70 * rect.y, 540 * rect.x, 25 * rect.y),
-                            "MiniMap Signal : ",
-                            myTargetMap.enabled);
-                        if (!myTargetMap.enabled)
-                        {
-                            return;
-                        }
-                        myTargetMap.miniMapTag = EditorGUI.TextField(
+                        arraySelect = EditorGUI.Popup(
                             new Rect(400 * rect.x, 100 * rect.y, 540 * rect.x, 25 * rect.y),
-                            "Tag : ",
-                            "" + myTargetMap.miniMapTag);
-                        GameObject mapObj = GameObject.Find("MiniMap");
-                        Color defaultColor = GUI.color;
-                        if (mapObj == null)
+                            arraySelect,
+                            buildNames);
+                        if (nTarget.BuildingList.Length > 0)
                         {
-                            return;
-                        }
-                        MiniMap map = GameObject.Find("MiniMap").GetComponent<MiniMap>();
-                        if (map != null)
-                        {
-                            helpState = 10;
-                            foreach (MiniMapElement mapElement in map.elements)
+                            GUI.Box(
+                                myTarget.build.build[arraySelect].canBuild
+                                    ? new Rect(400 * rect.x, 130 * rect.y, 540 * rect.x, 90 * rect.y)
+                                    : new Rect(400 * rect.x, 130 * rect.y, 540 * rect.x, 25 * rect.y),
+                                "");
+                            myTarget.build.build[arraySelect].canBuild = EditorGUI.Toggle(
+                                new Rect(400 * rect.x, 130 * rect.y, 540 * rect.x, 25 * rect.y),
+                                "Can Build : ",
+                                myTarget.build.build[arraySelect].canBuild);
+                            if (myTarget.build.build[arraySelect].canBuild)
                             {
-                                if (mapElement.tag == myTargetMap.miniMapTag)
-                                {
-                                    GUI.color = mapElement.tints.Length > miniMapState
-                                        ? mapElement.tints[miniMapState]
-                                        : mapElement.tints[0];
-                                    int size = (int) (50 * rect.x);
-                                    GUI.DrawTexture(
-                                        new Rect(400 * rect.x, 130 * rect.y, size, size),
-                                        mapElement.image);
-                                    GUI.color = defaultColor;
-                                    mapElement.image = EditorGUI.ObjectField(
-                                        new Rect(400 * rect.x, 185 * rect.y, 100, 100),
-                                        mapElement.image,
-                                        typeof(Texture2D),
-                                        true) as Texture2D;
-                                    miniMapState = EditorGUI.IntField(
-                                        new Rect(400 * rect.x, 320 * rect.y, 540 * rect.x, 25 * rect.y),
-                                        "Group : ",
-                                        miniMapState);
-                                }
+                                myTarget.build.build[arraySelect].amount = EditorGUI.IntField(
+                                    new Rect(400 * rect.x, 160 * rect.y, 540 * rect.x, 25 * rect.y),
+                                    "Build Amount : ",
+                                    myTarget.build.build[arraySelect].amount);
+                                myTarget.build.build[arraySelect].rate = EditorGUI.FloatField(
+                                    new Rect(400 * rect.x, 190 * rect.y, 540 * rect.x, 25 * rect.y),
+                                    "Build Rate : ",
+                                    myTarget.build.build[arraySelect].rate);
                             }
                         }
-                        else
-                        {
-                            helpState = 11;
-                        }
-                    }
-                }
-                // Fog Of War
-                else if (subMenuState == 2)
-                {
-                    GUI.DrawTexture(
-                        new Rect(1134 * rect.x, 25 * rect.y, 366 * rect.x, 20 * rect.y),
-                        selectionTexture,
-                        ScaleMode.StretchToFill);
-                    if (myTargetVision == null)
-                    {
-                        if (GUI.Button(
-                            new Rect(400 * rect.x, 45 * rect.y, 1100 * rect.x, 705 * rect.y),
-                            "Add Vision Components"))
-                        {
-                            nTarget.UnitList[unitId].obj.AddComponent<VisionSignal>();
-                            // Add More Components
-                        }
-                    }
-                    else
-                    {
-                        myTargetVision.enabled = EditorGUI.Toggle(
-                            new Rect(400 * rect.x, 70 * rect.y, 540 * rect.x, 25 * rect.y),
-                            "Vision Signal : ",
-                            myTargetVision.enabled);
-                        if (myTargetVision.enabled)
-                        {
-                            myTargetVision.radius = EditorGUI.IntField(
-                                new Rect(400 * rect.x, 100 * rect.y, 540 * rect.x, 25 * rect.y),
-                                "Radius : ",
-                                myTargetVision.radius);
-                            myTargetVision.upwardSightHeight = EditorGUI.IntField(
-                                new Rect(400 * rect.x, 130 * rect.y, 540 * rect.x, 25 * rect.y),
-                                "Upward Sight Height : ",
-                                myTargetVision.upwardSightHeight);
-                            myTargetVision.downwardSightHeight = EditorGUI.IntField(
-                                new Rect(400 * rect.x, 160 * rect.y, 540 * rect.x, 25 * rect.y),
-                                "Downward Sight Height : ",
-                                myTargetVision.downwardSightHeight);
-                        }
-                        helpState = 12;
                     }
                 }
             }
-            // Technology
-            else if (menuState == 2)
+            // Gather
+            else if (subMenuState == 3)
             {
+                helpState = 8;
                 GUI.DrawTexture(
-                    new Rect(950 * rect.x, 0, 275 * rect.x, 25 * rect.y),
+                    new Rect(1060 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y),
                     selectionTexture,
                     ScaleMode.StretchToFill);
-                GUI.Box(new Rect(400 * rect.x, 25 * rect.y, 1100 * rect.x, 20 * rect.y), "");
-                if (GUI.Button(new Rect(400 * rect.x, 50 * rect.y, 273 * rect.x, 20 * rect.y), "Add"))
-                {
-                    ModifyUT(myTarget.techEffect.Length + 1, myTarget.techEffect.Length, myTarget);
-                }
-                if (GUI.Button(new Rect(673 * rect.x, 50 * rect.y, 272 * rect.x, 20 * rect.y), "Remove"))
-                {
-                    ModifyUT(myTarget.techEffect.Length - 1, myTarget.techEffect.Length, myTarget);
-                }
-                if (nTarget.Tech.Length <= 0 || myTarget.techEffect.Length <= 0)
+                myTarget.resource.resourceUnit = EditorGUI.Toggle(
+                    new Rect(400 * rect.x, 70 * rect.y, 540 * rect.x, 25 * rect.y),
+                    "Gatherer : ",
+                    myTarget.resource.resourceUnit);
+                if (!myTarget.resource.resourceUnit)
                 {
                     return;
                 }
-                int size = nTarget.Tech.Length;
-                string[] names = new string[size];
-                string[] nameArray = new string[size];
-                for (int x = 0; x < nameArray.Length; x++)
+                GameObject resourceManager = GameObject.Find("Player Manager");
+                if (resourceManager == null)
                 {
-                    nameArray[x] = (x + 1) + ". " + nTarget.Tech[x].name;
-                    names[x] = nTarget.Tech[x].name;
+                    return;
                 }
-                string[] unitTechs = new string[myTarget.techEffect.Length];
-                for (int x = 0; x < unitTechs.Length; x++)
+                ResourceManager rMScript = resourceManager.GetComponent<ResourceManager>();
+                if (!rMScript)
                 {
-                    unitTechs[x] = (x + 1) + ". " + myTarget.techEffect[x].name;
+                    return;
+                }
+                if (myTarget.resource.behaviour.Length != rMScript.resourceTypes.Length)
+                {
+                    ModifyUnitGathering(rMScript.resourceTypes.Length, myTarget.resource.behaviour.Length, myTarget);
+                }
+                else
+                {
+                    string[] resourceNames = new string[rMScript.resourceTypes.Length];
+                    for (int x = 0; x < resourceNames.Length; x++)
+                    {
+                        resourceNames[x] = rMScript.resourceTypes[x].name;
+                    }
+                    if (arraySelect >= resourceNames.Length)
+                    {
+                        arraySelect = 0;
+                    }
+                    else
+                    {
+                        var resourceBehaviour = myTarget.resource.behaviour[arraySelect];
+                        arraySelect = EditorGUI.Popup(
+                            new Rect(400 * rect.x, 100 * rect.y, 540 * rect.x, 25 * rect.y),
+                            arraySelect,
+                            resourceNames);
+                        GUI.Box(
+                            resourceBehaviour.canGather
+                                ? new Rect(400 * rect.x, 130 * rect.y, 540 * rect.x, 150 * rect.y)
+                                : new Rect(400 * rect.x, 130 * rect.y, 540 * rect.x, 25 * rect.y),
+                            "");
+                        resourceBehaviour.canGather = EditorGUI.Toggle(
+                            new Rect(400 * rect.x, 130 * rect.y, 540 * rect.x, 25 * rect.y),
+                            "Can Gather : ",
+                            resourceBehaviour.canGather);
+                        if (resourceBehaviour.canGather)
+                        {
+                            resourceBehaviour.amount = EditorGUI.IntField(
+                                new Rect(400 * rect.x, 160 * rect.y, 540 * rect.x, 25 * rect.y),
+                                "Gather Amount : ",
+                                resourceBehaviour.amount);
+                            resourceBehaviour.rate = EditorGUI.FloatField(
+                                new Rect(400 * rect.x, 190 * rect.y, 540 * rect.x, 25 * rect.y),
+                                "Gather Rate : ",
+                                resourceBehaviour.rate);
+                            resourceBehaviour.returnWhenFull = EditorGUI.Toggle(
+                                new Rect(400 * rect.x, 220 * rect.y, 540 * rect.x, 25 * rect.y),
+                                "Drop Off Resource : ",
+                                resourceBehaviour.returnWhenFull);
+                        }
+                        resourceBehaviour.carryCapacity = EditorGUI.IntField(
+                            new Rect(400 * rect.x, 250 * rect.y, 540 * rect.x, 25 * rect.y),
+                            "Carry Capacity : ",
+                            resourceBehaviour.carryCapacity);
+                    }
+                }
+            }
+            // Ratios
+            else if (subMenuState == 4)
+            {
+                GUI.DrawTexture(
+                    new Rect(1280 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y),
+                    selectionTexture,
+                    ScaleMode.StretchToFill);
+                if (GUI.Button(new Rect(400 * rect.x, 50 * rect.y, 273 * rect.x, 20 * rect.y), "Add"))
+                {
+                    ModifyUnitRatios(myTarget.ratio.Length + 1, myTarget.ratio.Length, myTarget);
+                }
+                if (GUI.Button(new Rect(673 * rect.x, 50 * rect.y, 272 * rect.x, 20 * rect.y), "Remove"))
+                {
+                    ModifyUnitRatios(myTarget.ratio.Length - 1, myTarget.ratio.Length, myTarget);
+                }
+                if (myTarget.ratio.Length > 0)
+                {
+                    string[] names = new string[myTarget.ratio.Length];
+                    for (int x = 0; x < names.Length; x++)
+                    {
+                        names[x] = "" + (x + 1) + ". " + myTarget.ratio[x].name;
+                    }
+                    if (arraySelect < names.Length)
+                    {
+                        arraySelect = EditorGUI.Popup(
+                            new Rect(400 * rect.x, 75 * rect.y, 545 * rect.x, 20 * rect.y),
+                            "Ratio : ",
+                            arraySelect,
+                            names);
+                        myTarget.ratio[arraySelect].name = EditorGUI.TextField(
+                            new Rect(400 * rect.x, 100 * rect.y, 545 * rect.x, 20 * rect.y),
+                            "Enemy Name : ",
+                            myTarget.ratio[arraySelect].name);
+                        myTarget.ratio[arraySelect].amount = EditorGUI.FloatField(
+                            new Rect(400 * rect.x, 125 * rect.y, 545 * rect.x, 20 * rect.y),
+                            "Amount : ",
+                            myTarget.ratio[arraySelect].amount);
+                    }
+                    else
+                    {
+                        arraySelect = 0;
+                    }
+                }
+            }
+        }
+        // The Visuals Area
+        else if (menuState == 1)
+        {
+            GUI.DrawTexture(
+                new Rect(675 * rect.x, 0, 275 * rect.x, 25 * rect.y),
+                selectionTexture,
+                ScaleMode.StretchToFill);
+            if (GUI.Button(new Rect(400 * rect.x, 25 * rect.y, 367 * rect.x, 20 * rect.y), "Selected"))
+            {
+                subMenuState = 0;
+                arraySelect = 0;
+            }
+            if (GUI.Button(new Rect(767 * rect.x, 25 * rect.y, 367 * rect.x, 20 * rect.y), "MiniMap"))
+            {
+                subMenuState = 1;
+                arraySelect = 0;
+            }
+            if (GUI.Button(new Rect(1134 * rect.x, 25 * rect.y, 366 * rect.x, 20 * rect.y), "Vision"))
+            {
+                subMenuState = 2;
+                arraySelect = 0;
+            }
+            // Selected
+            if (subMenuState == 0)
+            {
+                GUI.DrawTexture(
+                    new Rect(400 * rect.x, 25 * rect.y, 367 * rect.x, 20 * rect.y),
+                    selectionTexture,
+                    ScaleMode.StretchToFill);
+                myTarget.gui.SetType("Unit");
+                EditorGUI.LabelField(
+                    new Rect(400 * rect.x, 50 * rect.y, 545 * rect.x, 100 * rect.y),
+                    "GUI Image : ");
+                myTarget.gui.image = EditorGUI.ObjectField(
+                    new Rect(400 * rect.x, 80 * rect.y, 100 * rect.x, 100 * rect.y),
+                    "",
+                    myTarget.gui.image,
+                    typeof(Texture2D),
+                    true) as Texture2D;
+                //Modify Selected Objects
+                if (GUI.Button(new Rect(400 * rect.x, 180 * rect.y, 273 * rect.x, 25 * rect.y), "Add"))
+                {
+                    ModifyUnitSelectedObjects(
+                        myTarget.gui.selectObjs.Length + 1,
+                        myTarget.gui.selectObjs.Length,
+                        myTarget);
+                }
+                if (GUI.Button(new Rect(673 * rect.x, 180 * rect.y, 272 * rect.x, 25 * rect.y), "Remove"))
+                {
+                    ModifyUnitSelectedObjects(
+                        myTarget.gui.selectObjs.Length - 1,
+                        myTarget.gui.selectObjs.Length,
+                        myTarget);
+                }
+                string[] list = new string[myTarget.gui.selectObjs.Length];
+                for (int x = 0; x < list.Length; x++)
+                {
+                    if (myTarget.gui.selectObjs[x])
+                    {
+                        list[x] = (x + 1) + ". " + myTarget.gui.selectObjs[x].name;
+                    }
+                    else
+                    {
+                        list[x] = (x + 1) + ". Empty";
+                    }
                 }
                 arraySelect = EditorGUI.Popup(
-                    new Rect(400 * rect.x, 75 * rect.y, 545 * rect.x, 20 * rect.y),
-                    "Techs : ",
+                    new Rect(400 * rect.x, 210 * rect.y, 545 * rect.x, 25 * rect.y),
+                    "Objects : ",
                     arraySelect,
-                    unitTechs);
-                if (arraySelect >= myTarget.techEffect.Length)
+                    list);
+                if (arraySelect >= myTarget.gui.selectObjs.Length)
                 {
                     arraySelect = 0;
                 }
                 else
                 {
-                    int curY = 100;
-                    arraySelect2 = myTarget.techEffect[arraySelect].index;
-                    arraySelect2 = EditorGUI.Popup(
-                        new Rect(400 * rect.x, curY * rect.y, 545 * rect.x, 20 * rect.y),
-                        "Tech Options : ",
-                        arraySelect2,
-                        nameArray);
-                    curY += 25;
-                    myTarget.techEffect[arraySelect].index = arraySelect2;
-                    if (arraySelect2 > nameArray.Length)
-                    {
-                        arraySelect2 = 0;
-                    }
-                    myTarget.techEffect[arraySelect].name = names[arraySelect2];
-                    myTarget.techEffect[arraySelect].replacementObject = EditorGUI.ObjectField(
-                        new Rect(400 * rect.x, curY * rect.y, 545 * rect.x, 20 * rect.y),
-                        "Replacement Object : ",
-                        myTarget.techEffect[arraySelect].replacementObject,
+                    myTarget.gui.selectObjs[arraySelect] = EditorGUI.ObjectField(
+                        new Rect(400 * rect.x, 240 * rect.y, 545 * rect.x, 25 * rect.y),
+                        "",
+                        myTarget.gui.selectObjs[arraySelect],
                         typeof(GameObject),
                         false) as GameObject;
-                    curY += 25;
-                    string[,] functions = new string[24, 4]
+                }
+                Health healthObj = targetUnit.obj.GetComponent<Health>();
+                if (healthObj == null)
+                {
+                    if (GUI.Button(
+                        new Rect(400 * rect.x, 280 * rect.y, 545 * rect.x, 420 * rect.y),
+                        "Add Health Indicator"))
                     {
-                        /* 0 */ {"GetName", "SetName", "", ""},
-                        /* 1 */ {"GetMaxHealth", "SetMaxHealth", "AddMaxHealth", "SubMaxHealth"},
-                        /* 2 */ {"GetHealth", "SetHealth", "AddHealth", "SubHealth"},
-                        /* 3 */ {"GetGroup", "SetGroup", "", ""},
-                        /* 4 */ {"GetFighterUnit", "SetFighterUnit", "", ""},
-                        /* 5 */ {"GetAttackRate", "SetAttackRate", "AddAttackRate", "SubAttackRate"},
-                        /* 6 */ {"GetAttackRange", "SetAttackRange", "AddAttackRange", "SubAttackRange"},
-                        /* 7 */ {"GetAttackDamage", "SetAttackDamage", "AddAttackDamage", "SubAttackDamage"},
-                        /* 8 */ {"GetLookRange", "SetLookRange", "AddLookRange", "SubLookRange"},
-                        /* 9 */ {"GetSize", "SetSize", "AddSize", "SubSize"},
-                        /* 10 */ {"GetRadius", "SetRadius", "AddRadius", "SubRadius"},
-                        /* 11 */ {"GetResourceUnit", "SetResourceUnit", "", ""},
-                        /* 12 */ {"GetCanGather", "SetCanGather", "", ""},
-                        /* 13 */ {"GetResourceAmount", "SetResourceAmount", "AddResourceAmount", "SubResourceAmount"},
-                        /* 14 */ {"GetResourceRate", "SetResourceRate", "AddResourceRate", "SubResourceRate"},
-                        /* 15 */ {"GetBuilderUnit", "SetBuilderUnit", "AddBuilderUnit", "SubBuilderUnit"},
-                        /* 16 */ {"GetCanBuild", "SetCanBuild", "", ""},
-                        /* 17 */ {"GetBuilderAmount", "SetBuilderAmount", "AddBuilderAmount", "SubBuilderAmount"},
-                        /* 18 */ {"GetBuilderRate", "SetBuilderRate", "AddBuilderRate", "SubBuilderRate"},
-                        /* 19 */ {"GetSpeed", "SetSpeed", "AddSpeed", "SubSpeed"},
-                        /* 20 */ {"GetRotateSpeed", "SetRotateSpeed", "AddRotateSpeed", "SubRotateSpeed"},
-                        /* 21 */ {"GetMiniMapTag", "SetMiniMapTag", "AddMiniMapTag", "SubMiniMapTag"},
-                        /* 22 */ {"GetVisionRadius", "SetVisionRadius", "AddVisionRadius", "SubVisionRadius"},
-                        /* 23 */ {"GetCarryCapacity", "SetCarryCapacity", "AddCarryCapacity", "SubCarryCapacity"}
-                    };
-                    string[] variableName =
+                        targetUnit.obj.AddComponent<Health>();
+                    }
+                }
+                else
+                {
+                    healthObj.backgroundBar = EditorGUI.ObjectField(
+                        new Rect(400 * rect.x, 280 * rect.y, 100 * rect.x, 50 * rect.y),
+                        healthObj.backgroundBar,
+                        typeof(Texture2D),
+                        true) as Texture2D;
+                    healthObj.healthBar = EditorGUI.ObjectField(
+                        new Rect(400 * rect.x, 330 * rect.y, 100 * rect.x, 50 * rect.y),
+                        healthObj.healthBar,
+                        typeof(Texture2D),
+                        true) as Texture2D;
+                    healthObj.yIncrease = EditorGUI.FloatField(
+                        new Rect(400 * rect.x, 390 * rect.y, 545 * rect.x, 30 * rect.y),
+                        "World-Y Increase : ",
+                        healthObj.yIncrease);
+                    healthObj.scale = EditorGUI.IntField(
+                        new Rect(400 * rect.x, 420 * rect.y, 545 * rect.x, 30 * rect.y),
+                        "UI-X Scale : ",
+                        healthObj.scale);
+                    healthObj.yScale = EditorGUI.IntField(
+                        new Rect(400 * rect.x, 450 * rect.y, 545 * rect.x, 30 * rect.y),
+                        "UI-Y Scale : ",
+                        healthObj.yScale);
+                    int healthLength = healthObj.element.Length;
+                    healthLength = EditorGUI.IntField(
+                        new Rect(400 * rect.x, 485 * rect.y, 545 * rect.x, 30 * rect.y),
+                        "Health Elements : ",
+                        healthLength);
+                    if (healthLength != healthObj.element.Length)
                     {
-                        "Name", "Max Health", "Health", "Group",
-                        "Fighter Unit", "Attack Rate", "Attack Range", "Attack Damage", "Look Range",
-                        "Size", "Vision Radius",
-                        "Resource Unit", "Can Gather", "Gather Amount", "Gather Rate",
-                        "Builder Unit", "Can Build", "Rate", "Amount",
-                        "Speed", "Rotate Speed", "Mini Map Tag", "Vision Radius", "CarryCapacity"
-                    };
-                    for (var x = 0; x < myTarget.techEffect[arraySelect].effects.Length; x++)
+                        ModifyHealthElements(healthLength, healthObj.element.Length, healthObj);
+                    }
+                    if (healthLength > 0)
                     {
-                        Effects effects = myTarget.techEffect[arraySelect].effects[x];
-                        effects.effectName = EditorGUI.Popup(
-                            new Rect(400 * rect.x, curY * rect.y, 200 * rect.x, 20 * rect.y),
-                            "",
-                            effects.effectName,
-                            variableName);
-                        int index = effects.effectName;
-                        string[] funcTypes;
-                        if (index == 0 || index == 3 || index == 4 || index == 11 || index == 12 || index == 15 ||
-                            index == 16 || index == 21)
+                        string[] elementName = new string[healthLength];
+                        for (int x = 0; x < elementName.Length; x++)
                         {
-                            funcTypes = new string[2];
-                            funcTypes[0] = "Get";
-                            funcTypes[1] = "Set";
+                            elementName[x] = "Element " + (x + 1);
                         }
-                        else
+                        arraySelect1 = EditorGUI.Popup(
+                            new Rect(400 * rect.x, 520 * rect.y, 545 * rect.x, 25 * rect.y),
+                            "Element : ",
+                            arraySelect1,
+                            elementName);
+                        healthObj.element[arraySelect1].image = EditorGUI.ObjectField(
+                            new Rect(400 * rect.x, 540 * rect.y, 100 * rect.x, 50 * rect.y),
+                            healthObj.element[arraySelect1].image,
+                            typeof(Texture2D),
+                            true) as Texture2D;
+                        healthObj.element[arraySelect1].loc = EditorGUI.RectField(
+                            new Rect(400 * rect.x, 600 * rect.y, 545 * rect.x, 50 * rect.y),
+                            healthObj.element[arraySelect1].loc);
+                    }
+                    Vector2 point = new Vector2(620 * rect.x, 650 * rect.y);
+                    if (healthObj.backgroundBar != null)
+                    {
+                        GUI.DrawTexture(
+                            new Rect(point.x, point.y, healthObj.scale * ((float) 1), healthObj.yScale),
+                            healthObj.backgroundBar);
+                    }
+                    if (healthObj.healthBar != null)
+                    {
+                        GUI.DrawTexture(
+                            new Rect(point.x, point.y, healthObj.scale * ((float) 50 / 100), healthObj.yScale),
+                            healthObj.healthBar);
+                    }
+                    foreach (HealthElement healthElement in healthObj.element)
+                    {
+                        GUI.DrawTexture(
+                            new Rect(
+                                point.x + healthElement.loc.x,
+                                point.y - healthElement.loc.y,
+                                healthElement.loc.width,
+                                healthElement.loc.height),
+                            healthElement.image);
+                    }
+                }
+                helpState = 9;
+            }
+            // MiniMap
+            else if (subMenuState == 1)
+            {
+                GUI.DrawTexture(
+                    new Rect(767 * rect.x, 25 * rect.y, 367 * rect.x, 20 * rect.y),
+                    selectionTexture,
+                    ScaleMode.StretchToFill);
+                if (myTargetMap == null)
+                {
+                    if (GUI.Button(
+                        new Rect(400 * rect.x, 45 * rect.y, 1100 * rect.x, 705 * rect.y),
+                        "Add MiniMap Components"))
+                    {
+                        targetUnit.obj.AddComponent<MiniMapSignal>();
+                    }
+                }
+                else
+                {
+                    myTargetMap.enabled = EditorGUI.Toggle(
+                        new Rect(400 * rect.x, 70 * rect.y, 540 * rect.x, 25 * rect.y),
+                        "MiniMap Signal : ",
+                        myTargetMap.enabled);
+                    if (!myTargetMap.enabled)
+                    {
+                        return;
+                    }
+                    myTargetMap.miniMapTag = EditorGUI.TextField(
+                        new Rect(400 * rect.x, 100 * rect.y, 540 * rect.x, 25 * rect.y),
+                        "Tag : ",
+                        "" + myTargetMap.miniMapTag);
+                    GameObject mapObj = GameObject.Find("MiniMap");
+                    Color defaultColor = GUI.color;
+                    if (mapObj == null)
+                    {
+                        return;
+                    }
+                    MiniMap map = GameObject.Find("MiniMap").GetComponent<MiniMap>();
+                    if (map != null)
+                    {
+                        helpState = 10;
+                        foreach (MiniMapElement mapElement in map.elements)
                         {
-                            funcTypes = new string[4];
-                            funcTypes[0] = "Get";
-                            funcTypes[1] = "Set";
-                            funcTypes[2] = "Add";
-                            funcTypes[3] = "Sub";
-                        }
-                        effects.funcType = EditorGUI.Popup(
-                            new Rect(600 * rect.x, curY * rect.y, 100 * rect.x, 20 * rect.y),
-                            "",
-                            effects.funcType,
-                            funcTypes);
-                        effects.funcName = functions[index, effects.funcType];
-                        if (effects.funcType == 0)
-                        {
-                            EditorGUI.LabelField(
-                                new Rect(800 * rect.x, curY * rect.y, 145 * rect.x, 20 * rect.y),
-                                "Getter");
-                        }
-                        else
-                        {
-                            GameObject resourceManager;
-                            ResourceManager rMScript;
-                            switch (index)
+                            if (mapElement.tag == myTargetMap.miniMapTag)
                             {
-                                case 0:
-                                case 21:
-                                    effects.text = EditorGUI.TextField(
-                                        new Rect(800 * rect.x, curY * rect.y, 145 * rect.x, 20 * rect.y),
-                                        "",
-                                        effects.text);
+                                GUI.color = mapElement.tints.Length > miniMapState
+                                    ? mapElement.tints[miniMapState]
+                                    : mapElement.tints[0];
+                                int size = (int) (50 * rect.x);
+                                GUI.DrawTexture(
+                                    new Rect(400 * rect.x, 130 * rect.y, size, size),
+                                    mapElement.image);
+                                GUI.color = defaultColor;
+                                mapElement.image = EditorGUI.ObjectField(
+                                    new Rect(400 * rect.x, 185 * rect.y, 100, 100),
+                                    mapElement.image,
+                                    typeof(Texture2D),
+                                    true) as Texture2D;
+                                miniMapState = EditorGUI.IntField(
+                                    new Rect(400 * rect.x, 320 * rect.y, 540 * rect.x, 25 * rect.y),
+                                    "Faction : ",
+                                    miniMapState);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        helpState = 11;
+                    }
+                }
+            }
+            // Fog Of War
+            else if (subMenuState == 2)
+            {
+                GUI.DrawTexture(
+                    new Rect(1134 * rect.x, 25 * rect.y, 366 * rect.x, 20 * rect.y),
+                    selectionTexture,
+                    ScaleMode.StretchToFill);
+                if (myTargetVision == null)
+                {
+                    if (GUI.Button(
+                        new Rect(400 * rect.x, 45 * rect.y, 1100 * rect.x, 705 * rect.y),
+                        "Add Vision Components"))
+                    {
+                        targetUnit.obj.AddComponent<VisionSignal>();
+                        // Add More Components
+                    }
+                }
+                else
+                {
+                    myTargetVision.enabled = EditorGUI.Toggle(
+                        new Rect(400 * rect.x, 70 * rect.y, 540 * rect.x, 25 * rect.y),
+                        "Vision Signal : ",
+                        myTargetVision.enabled);
+                    if (myTargetVision.enabled)
+                    {
+                        myTargetVision.radius = EditorGUI.IntField(
+                            new Rect(400 * rect.x, 100 * rect.y, 540 * rect.x, 25 * rect.y),
+                            "Radius : ",
+                            myTargetVision.radius);
+                        myTargetVision.upwardSightHeight = EditorGUI.IntField(
+                            new Rect(400 * rect.x, 130 * rect.y, 540 * rect.x, 25 * rect.y),
+                            "Upward Sight Height : ",
+                            myTargetVision.upwardSightHeight);
+                        myTargetVision.downwardSightHeight = EditorGUI.IntField(
+                            new Rect(400 * rect.x, 160 * rect.y, 540 * rect.x, 25 * rect.y),
+                            "Downward Sight Height : ",
+                            myTargetVision.downwardSightHeight);
+                    }
+                    helpState = 12;
+                }
+            }
+        }
+        // Technology
+        else if (menuState == 2)
+        {
+            GUI.DrawTexture(
+                new Rect(950 * rect.x, 0, 275 * rect.x, 25 * rect.y),
+                selectionTexture,
+                ScaleMode.StretchToFill);
+            GUI.Box(new Rect(400 * rect.x, 25 * rect.y, 1100 * rect.x, 20 * rect.y), "");
+            if (GUI.Button(new Rect(400 * rect.x, 50 * rect.y, 273 * rect.x, 20 * rect.y), "Add"))
+            {
+                ModifyUnitTechEffects(myTarget.techEffect.Length + 1, myTarget.techEffect.Length, myTarget);
+            }
+            if (GUI.Button(new Rect(673 * rect.x, 50 * rect.y, 272 * rect.x, 20 * rect.y), "Remove"))
+            {
+                ModifyUnitTechEffects(myTarget.techEffect.Length - 1, myTarget.techEffect.Length, myTarget);
+            }
+            if (nTarget.Tech.Length <= 0 || myTarget.techEffect.Length <= 0)
+            {
+                return;
+            }
+            int size = nTarget.Tech.Length;
+            string[] names = new string[size];
+            string[] nameArray = new string[size];
+            for (int x = 0; x < nameArray.Length; x++)
+            {
+                nameArray[x] = (x + 1) + ". " + nTarget.Tech[x].name;
+                names[x] = nTarget.Tech[x].name;
+            }
+            string[] unitTechs = new string[myTarget.techEffect.Length];
+            for (int x = 0; x < unitTechs.Length; x++)
+            {
+                unitTechs[x] = (x + 1) + ". " + myTarget.techEffect[x].name;
+            }
+            arraySelect = EditorGUI.Popup(
+                new Rect(400 * rect.x, 75 * rect.y, 545 * rect.x, 20 * rect.y),
+                "Techs : ",
+                arraySelect,
+                unitTechs);
+            if (arraySelect >= myTarget.techEffect.Length)
+            {
+                arraySelect = 0;
+            }
+            else
+            {
+                int curY = 100;
+                arraySelect2 = myTarget.techEffect[arraySelect].index;
+                arraySelect2 = EditorGUI.Popup(
+                    new Rect(400 * rect.x, curY * rect.y, 545 * rect.x, 20 * rect.y),
+                    "Tech Options : ",
+                    arraySelect2,
+                    nameArray);
+                curY += 25;
+                myTarget.techEffect[arraySelect].index = arraySelect2;
+                if (arraySelect2 > nameArray.Length)
+                {
+                    arraySelect2 = 0;
+                }
+                myTarget.techEffect[arraySelect].name = names[arraySelect2];
+                myTarget.techEffect[arraySelect].replacementObject = EditorGUI.ObjectField(
+                    new Rect(400 * rect.x, curY * rect.y, 545 * rect.x, 20 * rect.y),
+                    "Replacement Object : ",
+                    myTarget.techEffect[arraySelect].replacementObject,
+                    typeof(GameObject),
+                    false) as GameObject;
+                curY += 25;
+                string[,] functions = new string[24, 4]
+                {
+                    /* 0 */ {"GetName", "SetName", "", ""},
+                    /* 1 */ {"GetMaxHealth", "SetMaxHealth", "AddMaxHealth", "SubMaxHealth"},
+                    /* 2 */ {"GetHealth", "SetHealth", "AddHealth", "SubHealth"},
+                    /* 3 */ {"GetFaction", "SetFaction", "", ""},
+                    /* 4 */ {"GetFighterUnit", "SetFighterUnit", "", ""},
+                    /* 5 */ {"GetAttackRate", "SetAttackRate", "AddAttackRate", "SubAttackRate"},
+                    /* 6 */ {"GetAttackRange", "SetAttackRange", "AddAttackRange", "SubAttackRange"},
+                    /* 7 */ {"GetAttackDamage", "SetAttackDamage", "AddAttackDamage", "SubAttackDamage"},
+                    /* 8 */ {"GetLookRange", "SetLookRange", "AddLookRange", "SubLookRange"},
+                    /* 9 */ {"GetSize", "SetSize", "AddSize", "SubSize"},
+                    /* 10 */ {"GetRadius", "SetRadius", "AddRadius", "SubRadius"},
+                    /* 11 */ {"GetResourceUnit", "SetResourceUnit", "", ""},
+                    /* 12 */ {"GetCanGather", "SetCanGather", "", ""},
+                    /* 13 */ {"GetResourceAmount", "SetResourceAmount", "AddResourceAmount", "SubResourceAmount"},
+                    /* 14 */ {"GetResourceRate", "SetResourceRate", "AddResourceRate", "SubResourceRate"},
+                    /* 15 */ {"GetBuilderUnit", "SetBuilderUnit", "AddBuilderUnit", "SubBuilderUnit"},
+                    /* 16 */ {"GetCanBuild", "SetCanBuild", "", ""},
+                    /* 17 */ {"GetBuilderAmount", "SetBuilderAmount", "AddBuilderAmount", "SubBuilderAmount"},
+                    /* 18 */ {"GetBuilderRate", "SetBuilderRate", "AddBuilderRate", "SubBuilderRate"},
+                    /* 19 */ {"GetSpeed", "SetSpeed", "AddSpeed", "SubSpeed"},
+                    /* 20 */ {"GetRotateSpeed", "SetRotateSpeed", "AddRotateSpeed", "SubRotateSpeed"},
+                    /* 21 */ {"GetMiniMapTag", "SetMiniMapTag", "AddMiniMapTag", "SubMiniMapTag"},
+                    /* 22 */ {"GetVisionRadius", "SetVisionRadius", "AddVisionRadius", "SubVisionRadius"},
+                    /* 23 */ {"GetCarryCapacity", "SetCarryCapacity", "AddCarryCapacity", "SubCarryCapacity"}
+                };
+                string[] variableName =
+                {
+                    "Name", "Max Health", "Health", "Group",
+                    "Fighter Unit", "Attack Rate", "Attack Range", "Attack Damage", "Look Range",
+                    "Size", "Vision Radius",
+                    "Resource Unit", "Can Gather", "Gather Amount", "Gather Rate",
+                    "Builder Unit", "Can Build", "Rate", "Amount",
+                    "Speed", "Rotate Speed", "Mini Map Tag", "Vision Radius", "CarryCapacity"
+                };
+                for (var x = 0; x < myTarget.techEffect[arraySelect].effects.Length; x++)
+                {
+                    Effects effects = myTarget.techEffect[arraySelect].effects[x];
+                    effects.effectName = EditorGUI.Popup(
+                        new Rect(400 * rect.x, curY * rect.y, 200 * rect.x, 20 * rect.y),
+                        "",
+                        effects.effectName,
+                        variableName);
+                    int index = effects.effectName;
+                    string[] funcTypes;
+                    if (index == 0 || index == 3 || index == 4 || index == 11 || index == 12 || index == 15 ||
+                        index == 16 || index == 21)
+                    {
+                        funcTypes = new string[2];
+                        funcTypes[0] = "Get";
+                        funcTypes[1] = "Set";
+                    }
+                    else
+                    {
+                        funcTypes = new string[4];
+                        funcTypes[0] = "Get";
+                        funcTypes[1] = "Set";
+                        funcTypes[2] = "Add";
+                        funcTypes[3] = "Sub";
+                    }
+                    effects.funcType = EditorGUI.Popup(
+                        new Rect(600 * rect.x, curY * rect.y, 100 * rect.x, 20 * rect.y),
+                        "",
+                        effects.funcType,
+                        funcTypes);
+                    effects.funcName = functions[index, effects.funcType];
+                    if (effects.funcType == 0)
+                    {
+                        EditorGUI.LabelField(
+                            new Rect(800 * rect.x, curY * rect.y, 145 * rect.x, 20 * rect.y),
+                            "Getter");
+                    }
+                    else
+                    {
+                        GameObject resourceManager;
+                        ResourceManager rMScript;
+                        switch (index)
+                        {
+                            case 0:
+                            case 21:
+                                effects.text = EditorGUI.TextField(
+                                    new Rect(800 * rect.x, curY * rect.y, 145 * rect.x, 20 * rect.y),
+                                    "",
+                                    effects.text);
+                                break;
+                            case 4:
+                            case 11:
+                            case 15:
+                                effects.toggle = EditorGUI.Toggle(
+                                    new Rect(800 * rect.x, curY * rect.y, 145 * rect.x, 20 * rect.y),
+                                    "",
+                                    effects.toggle);
+                                break;
+                            case 12:
+                                // Resource List
+                                resourceManager = GameObject.Find("Player Manager");
+                                if (resourceManager == null)
+                                {
                                     break;
-                                case 4:
-                                case 11:
-                                case 15:
-                                    effects.toggle = EditorGUI.Toggle(
-                                        new Rect(800 * rect.x, curY * rect.y, 145 * rect.x, 20 * rect.y),
-                                        "",
-                                        effects.toggle);
+                                }
+                                rMScript = resourceManager.GetComponent<ResourceManager>();
+                                if (!rMScript)
+                                {
                                     break;
-                                case 12:
+                                }
+                                if (myTarget.resource.behaviour.Length != rMScript.resourceTypes.Length)
+                                {
+                                    ModifyUnitGathering(
+                                        rMScript.resourceTypes.Length,
+                                        myTarget.resource.behaviour.Length,
+                                        myTarget);
+                                }
+                                else
+                                {
+                                    string[] resourceNames = new string[rMScript.resourceTypes.Length];
+                                    for (int y = 0; y < resourceNames.Length; y++)
+                                    {
+                                        resourceNames[y] = rMScript.resourceTypes[y].name;
+                                    }
+                                    if (arraySelect >= resourceNames.Length)
+                                    {
+                                        arraySelect = 0;
+                                    }
+                                    else
+                                    {
+                                        if (effects.index >= resourceNames.Length)
+                                        {
+                                            effects.index = 0;
+                                        }
+                                        effects.index = EditorGUI.Popup(
+                                            new Rect(700 * rect.x, curY * rect.y, 100 * rect.x, 20 * rect.y),
+                                            "",
+                                            effects.index,
+                                            resourceNames);
+                                        effects.toggle = EditorGUI.Toggle(
+                                            new Rect(800 * rect.x, curY * rect.y, 145 * rect.x, 20 * rect.y),
+                                            "",
+                                            effects.toggle);
+                                    }
+                                }
+                                break;
+                            case 16:
+                                // Building List
+                                if (myTarget.build.build.Length != nTarget.BuildingList.Length)
+                                {
+                                    ModifyUnitBuildBehaviour(
+                                        nTarget.BuildingList.Length,
+                                        myTarget.build.build.Length,
+                                        myTarget);
+                                }
+                                else
+                                {
+                                    string[] buildNames = new string[nTarget.BuildingList.Length];
+                                    for (int y = 0; y < buildNames.Length; y++)
+                                    {
+                                        if (nTarget.BuildingList[y].obj != null)
+                                        {
+                                            BuildingController cont = nTarget.BuildingList[y]
+                                                .obj.GetComponent<BuildingController>();
+                                            if (cont != null)
+                                            {
+                                                buildNames[y] = cont.name;
+                                            }
+                                        }
+                                    }
+                                    if (arraySelect >= buildNames.Length)
+                                    {
+                                        arraySelect = 0;
+                                    }
+                                    else
+                                    {
+                                        if (effects.index >= buildNames.Length)
+                                        {
+                                            effects.index = 0;
+                                        }
+                                        effects.index = EditorGUI.Popup(
+                                            new Rect(700 * rect.x, curY * rect.y, 100 * rect.x, 20 * rect.y),
+                                            "",
+                                            effects.index,
+                                            buildNames);
+                                        effects.toggle = EditorGUI.Toggle(
+                                            new Rect(800 * rect.x, curY * rect.y, 145 * rect.x, 20 * rect.y),
+                                            "",
+                                            effects.toggle);
+                                    }
+                                }
+                                break;
+                            case 13:
+                            case 14:
+                            case 17:
+                            case 18:
+                                if (index == 13 || index == 14)
+                                {
                                     // Resource List
                                     resourceManager = GameObject.Find("Player Manager");
                                     if (resourceManager == null)
@@ -1642,7 +1752,7 @@ public class FactionEditor : EditorWindow
                                     }
                                     if (myTarget.resource.behaviour.Length != rMScript.resourceTypes.Length)
                                     {
-                                        ModifyUR(
+                                        ModifyUnitGathering(
                                             rMScript.resourceTypes.Length,
                                             myTarget.resource.behaviour.Length,
                                             myTarget);
@@ -1669,18 +1779,22 @@ public class FactionEditor : EditorWindow
                                                 "",
                                                 effects.index,
                                                 resourceNames);
-                                            effects.toggle = EditorGUI.Toggle(
+                                            effects.amount = EditorGUI.FloatField(
                                                 new Rect(800 * rect.x, curY * rect.y, 145 * rect.x, 20 * rect.y),
                                                 "",
-                                                effects.toggle);
+                                                effects.amount);
                                         }
                                     }
-                                    break;
-                                case 16:
+                                }
+                                else if (index == 17 || index == 18)
+                                {
                                     // Building List
                                     if (myTarget.build.build.Length != nTarget.BuildingList.Length)
                                     {
-                                        ModifyUB(nTarget.BuildingList.Length, myTarget.build.build.Length, myTarget);
+                                        ModifyUnitBuildBehaviour(
+                                            nTarget.BuildingList.Length,
+                                            myTarget.build.build.Length,
+                                            myTarget);
                                     }
                                     else
                                     {
@@ -1689,8 +1803,8 @@ public class FactionEditor : EditorWindow
                                         {
                                             if (nTarget.BuildingList[y].obj != null)
                                             {
-                                                BuildingController cont = nTarget.BuildingList[y]
-                                                    .obj.GetComponent<BuildingController>();
+                                                BuildingController cont =
+                                                    nTarget.BuildingList[y].obj.GetComponent<BuildingController>();
                                                 if (cont != null)
                                                 {
                                                     buildNames[y] = cont.name;
@@ -1712,205 +1826,104 @@ public class FactionEditor : EditorWindow
                                                 "",
                                                 effects.index,
                                                 buildNames);
-                                            effects.toggle = EditorGUI.Toggle(
+                                            effects.amount = EditorGUI.FloatField(
                                                 new Rect(800 * rect.x, curY * rect.y, 145 * rect.x, 20 * rect.y),
                                                 "",
-                                                effects.toggle);
+                                                effects.amount);
                                         }
                                     }
-                                    break;
-                                case 13:
-                                case 14:
-                                case 17:
-                                case 18:
-                                    if (index == 13 || index == 14)
-                                    {
-                                        // Resource List
-                                        resourceManager = GameObject.Find("Player Manager");
-                                        if (resourceManager == null)
-                                        {
-                                            break;
-                                        }
-                                        rMScript = resourceManager.GetComponent<ResourceManager>();
-                                        if (!rMScript)
-                                        {
-                                            break;
-                                        }
-                                        if (myTarget.resource.behaviour.Length != rMScript.resourceTypes.Length)
-                                        {
-                                            ModifyUR(
-                                                rMScript.resourceTypes.Length,
-                                                myTarget.resource.behaviour.Length,
-                                                myTarget);
-                                        }
-                                        else
-                                        {
-                                            string[] resourceNames = new string[rMScript.resourceTypes.Length];
-                                            for (int y = 0; y < resourceNames.Length; y++)
-                                            {
-                                                resourceNames[y] = rMScript.resourceTypes[y].name;
-                                            }
-                                            if (arraySelect >= resourceNames.Length)
-                                            {
-                                                arraySelect = 0;
-                                            }
-                                            else
-                                            {
-                                                if (effects.index >= resourceNames.Length)
-                                                {
-                                                    effects.index = 0;
-                                                }
-                                                effects.index = EditorGUI.Popup(
-                                                    new Rect(700 * rect.x, curY * rect.y, 100 * rect.x, 20 * rect.y),
-                                                    "",
-                                                    effects.index,
-                                                    resourceNames);
-                                                effects.amount = EditorGUI.FloatField(
-                                                    new Rect(800 * rect.x, curY * rect.y, 145 * rect.x, 20 * rect.y),
-                                                    "",
-                                                    effects.amount);
-                                            }
-                                        }
-                                    }
-                                    else if (index == 17 || index == 18)
-                                    {
-                                        // Building List
-                                        if (myTarget.build.build.Length != nTarget.BuildingList.Length)
-                                        {
-                                            ModifyUB(
-                                                nTarget.BuildingList.Length,
-                                                myTarget.build.build.Length,
-                                                myTarget);
-                                        }
-                                        else
-                                        {
-                                            string[] buildNames = new string[nTarget.BuildingList.Length];
-                                            for (int y = 0; y < buildNames.Length; y++)
-                                            {
-                                                if (nTarget.BuildingList[y].obj != null)
-                                                {
-                                                    BuildingController cont =
-                                                        nTarget.BuildingList[y].obj.GetComponent<BuildingController>();
-                                                    if (cont != null)
-                                                    {
-                                                        buildNames[y] = cont.name;
-                                                    }
-                                                }
-                                            }
-                                            if (arraySelect >= buildNames.Length)
-                                            {
-                                                arraySelect = 0;
-                                            }
-                                            else
-                                            {
-                                                if (effects.index >= buildNames.Length)
-                                                {
-                                                    effects.index = 0;
-                                                }
-                                                effects.index = EditorGUI.Popup(
-                                                    new Rect(700 * rect.x, curY * rect.y, 100 * rect.x, 20 * rect.y),
-                                                    "",
-                                                    effects.index,
-                                                    buildNames);
-                                                effects.amount = EditorGUI.FloatField(
-                                                    new Rect(800 * rect.x, curY * rect.y, 145 * rect.x, 20 * rect.y),
-                                                    "",
-                                                    effects.amount);
-                                            }
-                                        }
-                                    }
-                                    break;
-                                default:
-                                    effects.amount = EditorGUI.FloatField(
-                                        new Rect(800 * rect.x, curY * rect.y, 145 * rect.x, 20 * rect.y),
-                                        "",
-                                        effects.amount);
-                                    break;
-                            }
+                                }
+                                break;
+                            default:
+                                effects.amount = EditorGUI.FloatField(
+                                    new Rect(800 * rect.x, curY * rect.y, 145 * rect.x, 20 * rect.y),
+                                    "",
+                                    effects.amount);
+                                break;
                         }
-                        curY += 25;
                     }
-                    if (GUI.Button(new Rect(400 * rect.x, curY * rect.y, 273 * rect.x, 20 * rect.y), "Add"))
-                    {
-                        ModifyUTE(
-                            myTarget.techEffect[arraySelect].effects.Length + 1,
-                            myTarget.techEffect[arraySelect].effects.Length,
-                            myTarget,
-                            arraySelect);
-                    }
-                    if (GUI.Button(new Rect(673 * rect.x, curY * rect.y, 272 * rect.x, 20 * rect.y), "Remove"))
-                    {
-                        ModifyUTE(
-                            myTarget.techEffect[arraySelect].effects.Length - 1,
-                            myTarget.techEffect[arraySelect].effects.Length,
-                            myTarget,
-                            arraySelect);
-                    }
+                    curY += 25;
+                }
+                if (GUI.Button(new Rect(400 * rect.x, curY * rect.y, 273 * rect.x, 20 * rect.y), "Add"))
+                {
+                    ModifyUnitTechEffectEffects(
+                        myTarget.techEffect[arraySelect].effects.Length + 1,
+                        myTarget.techEffect[arraySelect].effects.Length,
+                        myTarget,
+                        arraySelect);
+                }
+                if (GUI.Button(new Rect(673 * rect.x, curY * rect.y, 272 * rect.x, 20 * rect.y), "Remove"))
+                {
+                    ModifyUnitTechEffectEffects(
+                        myTarget.techEffect[arraySelect].effects.Length - 1,
+                        myTarget.techEffect[arraySelect].effects.Length,
+                        myTarget,
+                        arraySelect);
                 }
             }
-            // Animation and Sounds
-            else if (menuState == 3)
+        }
+        // Animation and Sounds
+        else if (menuState == 3)
+        {
+            GUI.DrawTexture(
+                new Rect(1225 * rect.x, 0, 275 * rect.x, 25 * rect.y),
+                selectionTexture,
+                ScaleMode.StretchToFill);
+            GUI.Box(new Rect(400 * rect.x, 25 * rect.y, 1100 * rect.x, 20 * rect.y), "");
+            Animator comp = targetUnit.obj.GetComponent<Animator>();
+            if (myTarget.anim.manager)
             {
-                GUI.DrawTexture(
-                    new Rect(1225 * rect.x, 0, 275 * rect.x, 25 * rect.y),
-                    selectionTexture,
-                    ScaleMode.StretchToFill);
-                GUI.Box(new Rect(400 * rect.x, 25 * rect.y, 1100 * rect.x, 20 * rect.y), "");
-                Animator comp = nTarget.UnitList[unitId].obj.GetComponent<Animator>();
-                if (myTarget.anim.manager)
-                {
-                    myTarget.anim.manager.runtimeAnimatorController = EditorGUI.ObjectField(
-                        new Rect(400 * rect.x, 70 * rect.y, 540 * rect.x, 25 * rect.y),
-                        "Controller : ",
-                        myTarget.anim.manager.runtimeAnimatorController,
-                        typeof(RuntimeAnimatorController),
-                        false) as RuntimeAnimatorController;
-                }
-                else if (comp)
-                {
-                    myTarget.anim.manager = comp;
-                }
-                else if (GUI.Button(new Rect(400 * rect.x, 70 * rect.y, 540 * rect.x, 25 * rect.y), "Add Animator"))
-                {
-                    nTarget.UnitList[unitId].obj.AddComponent<Animator>();
-                }
-                myTarget.anim.idleAudio = EditorGUI.ObjectField(
-                    new Rect(400 * rect.x, 100 * rect.y, 540 * rect.x, 25 * rect.y),
-                    "Idle Audio : ",
-                    myTarget.anim.idleAudio,
-                    typeof(AudioClip),
-                    false) as AudioClip;
-                myTarget.anim.moveAudio = EditorGUI.ObjectField(
-                    new Rect(400 * rect.x, 130 * rect.y, 540 * rect.x, 25 * rect.y),
-                    "Move Audio : ",
-                    myTarget.anim.moveAudio,
-                    typeof(AudioClip),
-                    false) as AudioClip;
-                myTarget.anim.gatherAudio = EditorGUI.ObjectField(
-                    new Rect(400 * rect.x, 160 * rect.y, 540 * rect.x, 25 * rect.y),
-                    "Gather Audio : ",
-                    myTarget.anim.gatherAudio,
-                    typeof(AudioClip),
-                    false) as AudioClip;
-                myTarget.anim.buildAudio = EditorGUI.ObjectField(
-                    new Rect(400 * rect.x, 190 * rect.y, 540 * rect.x, 25 * rect.y),
-                    "Build Audio : ",
-                    myTarget.anim.buildAudio,
-                    typeof(AudioClip),
-                    false) as AudioClip;
-                myTarget.anim.attackAudio = EditorGUI.ObjectField(
-                    new Rect(400 * rect.x, 220 * rect.y, 540 * rect.x, 25 * rect.y),
-                    "Attack Audio : ",
-                    myTarget.anim.attackAudio,
-                    typeof(AudioClip),
-                    false) as AudioClip;
-                myTarget.anim.deathObject = EditorGUI.ObjectField(
-                    new Rect(400 * rect.x, 250 * rect.y, 540 * rect.x, 25 * rect.y),
-                    "Death Object : ",
-                    myTarget.anim.deathObject,
-                    typeof(GameObject),
-                    false) as GameObject;
+                myTarget.anim.manager.runtimeAnimatorController = EditorGUI.ObjectField(
+                    new Rect(400 * rect.x, 70 * rect.y, 540 * rect.x, 25 * rect.y),
+                    "Controller : ",
+                    myTarget.anim.manager.runtimeAnimatorController,
+                    typeof(RuntimeAnimatorController),
+                    false) as RuntimeAnimatorController;
             }
+            else if (comp)
+            {
+                myTarget.anim.manager = comp;
+            }
+            else if (GUI.Button(new Rect(400 * rect.x, 70 * rect.y, 540 * rect.x, 25 * rect.y), "Add Animator"))
+            {
+                targetUnit.obj.AddComponent<Animator>();
+            }
+            myTarget.anim.idleAudio = EditorGUI.ObjectField(
+                new Rect(400 * rect.x, 100 * rect.y, 540 * rect.x, 25 * rect.y),
+                "Idle Audio : ",
+                myTarget.anim.idleAudio,
+                typeof(AudioClip),
+                false) as AudioClip;
+            myTarget.anim.moveAudio = EditorGUI.ObjectField(
+                new Rect(400 * rect.x, 130 * rect.y, 540 * rect.x, 25 * rect.y),
+                "Move Audio : ",
+                myTarget.anim.moveAudio,
+                typeof(AudioClip),
+                false) as AudioClip;
+            myTarget.anim.gatherAudio = EditorGUI.ObjectField(
+                new Rect(400 * rect.x, 160 * rect.y, 540 * rect.x, 25 * rect.y),
+                "Gather Audio : ",
+                myTarget.anim.gatherAudio,
+                typeof(AudioClip),
+                false) as AudioClip;
+            myTarget.anim.buildAudio = EditorGUI.ObjectField(
+                new Rect(400 * rect.x, 190 * rect.y, 540 * rect.x, 25 * rect.y),
+                "Build Audio : ",
+                myTarget.anim.buildAudio,
+                typeof(AudioClip),
+                false) as AudioClip;
+            myTarget.anim.attackAudio = EditorGUI.ObjectField(
+                new Rect(400 * rect.x, 220 * rect.y, 540 * rect.x, 25 * rect.y),
+                "Attack Audio : ",
+                myTarget.anim.attackAudio,
+                typeof(AudioClip),
+                false) as AudioClip;
+            myTarget.anim.deathObject = EditorGUI.ObjectField(
+                new Rect(400 * rect.x, 250 * rect.y, 540 * rect.x, 25 * rect.y),
+                "Death Object : ",
+                myTarget.anim.deathObject,
+                typeof(GameObject),
+                false) as GameObject;
         }
     }
 
@@ -1929,14 +1942,15 @@ public class FactionEditor : EditorWindow
         {
             return;
         }
-        BuildingController myTarget = nTarget.BuildingList[unitId].obj.GetComponent<BuildingController>();
-        MiniMapSignal myTargetMap = nTarget.BuildingList[unitId].obj.GetComponent<MiniMapSignal>();
-        VisionSignal myTargetVision = nTarget.BuildingList[unitId].obj.GetComponent<VisionSignal>();
+        Building targetBuilding = nTarget.BuildingList[unitId];
+        BuildingController myTarget = targetBuilding.obj.GetComponent<BuildingController>();
+        MiniMapSignal myTargetMap = targetBuilding.obj.GetComponent<MiniMapSignal>();
+        VisionSignal myTargetVision = targetBuilding.obj.GetComponent<VisionSignal>();
         if (!myTarget)
         {
             if (GUI.Button(new Rect(400 * rect.x, 0, 1100 * rect.x, 750 * rect.y), "+"))
             {
-                nTarget.BuildingList[unitId].obj.AddComponent<BuildingController>();
+                targetBuilding.obj.AddComponent<BuildingController>();
             }
             return;
         }
@@ -1963,10 +1977,10 @@ public class FactionEditor : EditorWindow
         // Stats
         if (menuState == 0)
         {
-            if (nTarget.BuildingList[unitId].obj != lastObj)
+            if (targetBuilding.obj != lastObj)
             {
-                objEditor = Editor.CreateEditor(nTarget.BuildingList[unitId].obj);
-                lastObj = nTarget.BuildingList[unitId].obj;
+                objEditor = Editor.CreateEditor(targetBuilding.obj);
+                lastObj = targetBuilding.obj;
             }
             if (menuState == 0 && subMenuState != 3)
             {
@@ -2010,31 +2024,31 @@ public class FactionEditor : EditorWindow
                     new Rect(400 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y),
                     selectionTexture,
                     ScaleMode.StretchToFill);
-                nTarget.BuildingList[unitId].autoBuild = EditorGUI.Toggle(
+                targetBuilding.autoBuild = EditorGUI.Toggle(
                     new Rect(400 * rect.x, 70 * rect.y, 540 * rect.x, 25 * rect.y),
                     "Auto Build : ",
-                    nTarget.BuildingList[unitId].autoBuild);
-                nTarget.BuildingList[unitId].tempObj = EditorGUI.ObjectField(
+                    targetBuilding.autoBuild);
+                targetBuilding.tempObj = EditorGUI.ObjectField(
                     new Rect(400 * rect.x, 100 * rect.y, 540 * rect.x, 25 * rect.y),
                     "Temporary : ",
-                    nTarget.BuildingList[unitId].tempObj,
+                    targetBuilding.tempObj,
                     typeof(GameObject),
                     true) as GameObject;
                 int curY = 130;
-                if (!nTarget.BuildingList[unitId].autoBuild)
+                if (!targetBuilding.autoBuild)
                 {
-                    nTarget.BuildingList[unitId].progressObj = EditorGUI.ObjectField(
+                    targetBuilding.progressObj = EditorGUI.ObjectField(
                         new Rect(400 * rect.x, curY * rect.y, 540 * rect.x, 25 * rect.y),
                         "Progress : ",
-                        nTarget.BuildingList[unitId].progressObj,
+                        targetBuilding.progressObj,
                         typeof(GameObject),
                         true) as GameObject;
                     curY += 30;
                 }
-                nTarget.BuildingList[unitId].obj = EditorGUI.ObjectField(
+                targetBuilding.obj = EditorGUI.ObjectField(
                     new Rect(400 * rect.x, curY * rect.y, 540 * rect.x, 25 * rect.y),
                     "Final : ",
-                    nTarget.BuildingList[unitId].obj,
+                    targetBuilding.obj,
                     typeof(GameObject),
                     true) as GameObject;
                 curY += 30;
@@ -2072,11 +2086,11 @@ public class FactionEditor : EditorWindow
                     myTarget.type = target.UnitTypes[arraySelect];
                     curY += 30;
                 }
-                if (nTarget.BuildingList[unitId].progressObj)
+                if (targetBuilding.progressObj)
                 {
-                    BuildingController progressObj = nTarget.BuildingList[unitId]
+                    BuildingController progressObj = targetBuilding
                         .progressObj.GetComponent<BuildingController>();
-                    BuildingController objScript = nTarget.BuildingList[unitId]
+                    BuildingController objScript = targetBuilding
                         .obj.GetComponent<BuildingController>();
                     if (progressObj != null)
                     {
@@ -2100,20 +2114,20 @@ public class FactionEditor : EditorWindow
                             "Progress Per Rate : ",
                             progressObj.progressPerRate);
                         curY += 30;
-                        progressObj.nextBuild = nTarget.BuildingList[unitId].obj;
+                        progressObj.nextBuild = targetBuilding.obj;
                         progressObj.buildingType = BuildingType.ProgressBuilding;
                         objScript.buildingType = BuildingType.CompleteBuilding;
                     }
                     else
                     {
-                        progressObj = nTarget.BuildingList[unitId].progressObj.AddComponent<BuildingController>();
+                        progressObj = targetBuilding.progressObj.AddComponent<BuildingController>();
                         progressObj.buildingType = BuildingType.ProgressBuilding;
                     }
                 }
                 ResourceManager mg = GameObject.Find("Player Manager").GetComponent<ResourceManager>();
-                if (nTarget.BuildingList[unitId].cost.Length != mg.resourceTypes.Length)
+                if (targetBuilding.cost.Length != mg.resourceTypes.Length)
                 {
-                    nTarget.BuildingList[unitId].cost = new int[mg.resourceTypes.Length];
+                    targetBuilding.cost = new int[mg.resourceTypes.Length];
                 }
                 string[] costs = new string[mg.resourceTypes.Length];
                 for (int x = 0; x < costs.Length; x++)
@@ -2132,16 +2146,16 @@ public class FactionEditor : EditorWindow
                 }
                 else
                 {
-                    nTarget.BuildingList[unitId].cost[arraySelect3] = EditorGUI.IntField(
+                    targetBuilding.cost[arraySelect3] = EditorGUI.IntField(
                         new Rect(400 * rect.x, curY * rect.y, 545 * rect.x, 25 * rect.y),
                         "Cost : ",
-                        nTarget.BuildingList[unitId].cost[arraySelect3]);
+                        targetBuilding.cost[arraySelect3]);
                     curY += 30;
                 }
                 GUI.skin.textArea.wordWrap = true;
-                nTarget.BuildingList[unitId].description = EditorGUI.TextArea(
+                targetBuilding.description = EditorGUI.TextArea(
                     new Rect(400 * rect.x, curY * rect.y, 545 * rect.x, 100 * rect.y),
-                    nTarget.BuildingList[unitId].description);
+                    targetBuilding.description);
             }
             // Production
             else if (subMenuState == 2)
@@ -2210,7 +2224,7 @@ public class FactionEditor : EditorWindow
                             new Rect(400 * rect.x, curY * rect.y, 270 * rect.x, 15 * rect.y),
                             "Add Unit"))
                         {
-                            ModifyGBU(
+                            ModifyFactionUnitProduction(
                                 myTarget.unitProduction.units.Length + 1,
                                 myTarget.unitProduction.units.Length,
                                 arraySelect);
@@ -2219,7 +2233,7 @@ public class FactionEditor : EditorWindow
                             new Rect(670 * rect.x, curY * rect.y, 270 * rect.x, 15 * rect.y),
                             "Remove Unit"))
                         {
-                            ModifyGBU(
+                            ModifyFactionUnitProduction(
                                 myTarget.unitProduction.units.Length - 1,
                                 myTarget.unitProduction.units.Length,
                                 arraySelect);
@@ -2251,10 +2265,10 @@ public class FactionEditor : EditorWindow
                                 typeof(Texture2D),
                                 true) as Texture2D;
                             curY += 110;
-                            myTarget.unitProduction.units[arraySelect2].groupIndex = EditorGUI.Popup(
+                            myTarget.unitProduction.units[arraySelect2].FactionIndex = EditorGUI.Popup(
                                 new Rect(400 * rect.x, curY * rect.y, 545 * rect.x, 25 * rect.y),
                                 "Unit To Produce : ",
-                                myTarget.unitProduction.units[arraySelect2].groupIndex,
+                                myTarget.unitProduction.units[arraySelect2].FactionIndex,
                                 unitNames);
                             curY += 20;
                             myTarget.unitProduction.units[arraySelect2].canProduce = EditorGUI.Toggle(
@@ -2317,7 +2331,7 @@ public class FactionEditor : EditorWindow
                             new Rect(400 * rect.x, curY * rect.y, 270 * rect.x, 15 * rect.y),
                             "Add Unit"))
                         {
-                            ModifyGBU(
+                            ModifyFactionUnitProduction(
                                 myTarget.unitProduction.units.Length + 1,
                                 myTarget.unitProduction.units.Length,
                                 arraySelect);
@@ -2326,7 +2340,7 @@ public class FactionEditor : EditorWindow
                             new Rect(670 * rect.x, curY * rect.y, 270 * rect.x, 15 * rect.y),
                             "Remove Unit"))
                         {
-                            ModifyGBU(
+                            ModifyFactionUnitProduction(
                                 myTarget.unitProduction.units.Length - 1,
                                 myTarget.unitProduction.units.Length,
                                 arraySelect);
@@ -2386,7 +2400,7 @@ public class FactionEditor : EditorWindow
                             new Rect(400 * rect.x, curY * rect.y, 270 * rect.x, 15 * rect.y),
                             "Add Tech"))
                         {
-                            ModifyGBT(
+                            ModifyFactionTechnologyProduction(
                                 myTarget.techProduction.techs.Length + 1,
                                 myTarget.techProduction.techs.Length,
                                 arraySelect);
@@ -2395,7 +2409,7 @@ public class FactionEditor : EditorWindow
                             new Rect(670 * rect.x, curY * rect.y, 270 * rect.x, 15 * rect.y),
                             "Remove Tech"))
                         {
-                            ModifyGBT(
+                            ModifyFactionTechnologyProduction(
                                 myTarget.techProduction.techs.Length - 1,
                                 myTarget.techProduction.techs.Length,
                                 arraySelect);
@@ -2509,7 +2523,7 @@ public class FactionEditor : EditorWindow
                             new Rect(400 * rect.x, curY * rect.y, 270 * rect.x, 15 * rect.y),
                             "Add Tech"))
                         {
-                            ModifyGBT(
+                            ModifyFactionTechnologyProduction(
                                 myTarget.techProduction.techs.Length + 1,
                                 myTarget.techProduction.techs.Length,
                                 arraySelect);
@@ -2518,7 +2532,7 @@ public class FactionEditor : EditorWindow
                             new Rect(670 * rect.x, curY * rect.y, 270 * rect.x, 15 * rect.y),
                             "Remove Tech"))
                         {
-                            ModifyGBT(
+                            ModifyFactionTechnologyProduction(
                                 myTarget.techProduction.techs.Length - 1,
                                 myTarget.techProduction.techs.Length,
                                 arraySelect);
@@ -2534,78 +2548,78 @@ public class FactionEditor : EditorWindow
                     new Rect(840 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y),
                     selectionTexture,
                     ScaleMode.StretchToFill);
-                nTarget.BuildingList[unitId].closeWidth = EditorGUI.IntField(
+                targetBuilding.closeWidth = EditorGUI.IntField(
                     new Rect(400 * rect.x, 70 * rect.y, 1100 * rect.x, 25 * rect.y),
                     "Close Width : ",
-                    nTarget.BuildingList[unitId].closeWidth);
-                nTarget.BuildingList[unitId].closeLength = EditorGUI.IntField(
+                    targetBuilding.closeWidth);
+                targetBuilding.closeLength = EditorGUI.IntField(
                     new Rect(400 * rect.x, 100 * rect.y, 1100 * rect.x, 25 * rect.y),
                     "Close Length : ",
-                    nTarget.BuildingList[unitId].closeLength);
-                int arraySize = (nTarget.BuildingList[unitId].closeWidth * 2 + 1) *
-                                (nTarget.BuildingList[unitId].closeLength * 2 + 1);
-                if (nTarget.BuildingList[unitId].closePoints.Length != arraySize)
+                    targetBuilding.closeLength);
+                int arraySize = (targetBuilding.closeWidth * 2 + 1) *
+                                (targetBuilding.closeLength * 2 + 1);
+                if (targetBuilding.closePoints.Length != arraySize)
                 {
-                    nTarget.BuildingList[unitId].closePoints = new int[arraySize];
+                    targetBuilding.closePoints = new int[arraySize];
                     for (int x = 0; x < arraySize; x++)
                     {
-                        nTarget.BuildingList[unitId].closePoints[x] = 2;
+                        targetBuilding.closePoints[x] = 2;
                     }
                 }
-                groupPosition2 = GUI.BeginScrollView(
+                factionPosition2 = GUI.BeginScrollView(
                     new Rect(400 * rect.x, 130 * rect.y, 1100 * rect.x, 570 * rect.y),
-                    groupPosition2,
+                    factionPosition2,
                     new Rect(
                         0,
                         0,
-                        30 * (nTarget.BuildingList[unitId].closeWidth * 2 + 1) + 60,
-                        30 * (nTarget.BuildingList[unitId].closeLength * 2 + 1) + 60));
-                for (int x = 0; x < nTarget.BuildingList[unitId].closeWidth * 2 + 1; x++)
+                        30 * (targetBuilding.closeWidth * 2 + 1) + 60,
+                        30 * (targetBuilding.closeLength * 2 + 1) + 60));
+                for (int x = 0; x < targetBuilding.closeWidth * 2 + 1; x++)
                 {
                     GUI.Label(new Rect(30 + 30 * x, 0, 30, 30), "" + x);
                 }
-                for (int y = 0; y < nTarget.BuildingList[unitId].closeLength * 2 + 1; y++)
+                for (int y = 0; y < targetBuilding.closeLength * 2 + 1; y++)
                 {
                     GUI.Label(new Rect(0, 30 + 30 * y, 30, 30), "" + y);
                 }
-                for (int x = 0; x < nTarget.BuildingList[unitId].closeWidth * 2 + 1; x++)
+                for (int x = 0; x < targetBuilding.closeWidth * 2 + 1; x++)
                 {
-                    for (int y = 0; y < nTarget.BuildingList[unitId].closeLength * 2 + 1; y++)
+                    for (int y = 0; y < targetBuilding.closeLength * 2 + 1; y++)
                     {
-                        int i = x * (nTarget.BuildingList[unitId].closeLength * 2 + 1) + y;
-                        if (nTarget.BuildingList[unitId].closePoints[i] == 0)
+                        int i = x * (targetBuilding.closeLength * 2 + 1) + y;
+                        if (targetBuilding.closePoints[i] == 0)
                         {
                             if (GUI.Button(new Rect(30 + 30 * x, 30 + 30 * y, 30, 30), "O"))
                             {
-                                nTarget.BuildingList[unitId].closePoints[i] = 1;
+                                targetBuilding.closePoints[i] = 1;
                             }
                         }
-                        else if (nTarget.BuildingList[unitId].closePoints[i] == 1)
+                        else if (targetBuilding.closePoints[i] == 1)
                         {
                             if (GUI.Button(new Rect(30 + 30 * x, 30 + 30 * y, 30, 30), "W"))
                             {
-                                nTarget.BuildingList[unitId].closePoints[i] = 2;
+                                targetBuilding.closePoints[i] = 2;
                             }
                         }
-                        else if (nTarget.BuildingList[unitId].closePoints[i] == 2)
+                        else if (targetBuilding.closePoints[i] == 2)
                         {
                             if (GUI.Button(new Rect(30 + 30 * x, 30 + 30 * y, 30, 30), "X"))
                             {
-                                nTarget.BuildingList[unitId].closePoints[i] = 0;
+                                targetBuilding.closePoints[i] = 0;
                             }
                         }
                     }
                 }
-                for (int x = 0; x < nTarget.BuildingList[unitId].closeWidth * 2 + 1; x++)
+                for (int x = 0; x < targetBuilding.closeWidth * 2 + 1; x++)
                 {
                     GUI.Label(
-                        new Rect(30 + 30 * x, 30 + 30 * (nTarget.BuildingList[unitId].closeLength * 2 + 1), 30, 30),
+                        new Rect(30 + 30 * x, 30 + 30 * (targetBuilding.closeLength * 2 + 1), 30, 30),
                         "" + x);
                 }
-                for (int y = 0; y < nTarget.BuildingList[unitId].closeLength * 2 + 1; y++)
+                for (int y = 0; y < targetBuilding.closeLength * 2 + 1; y++)
                 {
                     GUI.Label(
-                        new Rect(30 + 30 * (nTarget.BuildingList[unitId].closeWidth * 2 + 1), 30 + 30 * y, 30, 30),
+                        new Rect(30 + 30 * (targetBuilding.closeWidth * 2 + 1), 30 + 30 * y, 30, 30),
                         "" + y);
                 }
                 GUI.EndScrollView();
@@ -2618,7 +2632,7 @@ public class FactionEditor : EditorWindow
                     selectionTexture,
                     ScaleMode.StretchToFill);
                 // Put Button Here for Resource Generate
-                ResourceGenerate gen = nTarget.BuildingList[unitId].obj.GetComponent<ResourceGenerate>();
+                ResourceGenerate gen = targetBuilding.obj.GetComponent<ResourceGenerate>();
                 if (gen != null)
                 {
                     ResourceManager rm = GameObject.Find("Player Manager").GetComponent<ResourceManager>();
@@ -2664,7 +2678,7 @@ public class FactionEditor : EditorWindow
                         new Rect(400 * rect.x, 50 * rect.y, 540 * rect.x, 650 * rect.y),
                         "Add Resource Generator"))
                     {
-                        nTarget.BuildingList[unitId].obj.AddComponent<ResourceGenerate>();
+                        targetBuilding.obj.AddComponent<ResourceGenerate>();
                     }
                 }
             }
@@ -2674,7 +2688,7 @@ public class FactionEditor : EditorWindow
                     new Rect(1280 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y),
                     selectionTexture,
                     ScaleMode.StretchToFill);
-                ResourceDropOff dropOff = nTarget.BuildingList[unitId].obj.GetComponent<ResourceDropOff>();
+                ResourceDropOff dropOff = targetBuilding.obj.GetComponent<ResourceDropOff>();
                 if (dropOff != null)
                 {
                     ResourceManager rm = GameObject.Find("Player Manager").GetComponent<ResourceManager>();
@@ -2716,7 +2730,7 @@ public class FactionEditor : EditorWindow
                         new Rect(400 * rect.x, 50 * rect.y, 540 * rect.x, 650 * rect.y),
                         "Add Drop Off"))
                     {
-                        nTarget.BuildingList[unitId].obj.AddComponent<ResourceDropOff>();
+                        targetBuilding.obj.AddComponent<ResourceDropOff>();
                     }
                 }
             }
@@ -2724,10 +2738,10 @@ public class FactionEditor : EditorWindow
         // GUI
         else if (menuState == 1)
         {
-            if (nTarget.BuildingList[unitId].obj != lastObj)
+            if (targetBuilding.obj != lastObj)
             {
-                objEditor = Editor.CreateEditor(nTarget.BuildingList[unitId].obj);
-                lastObj = nTarget.BuildingList[unitId].obj;
+                objEditor = Editor.CreateEditor(targetBuilding.obj);
+                lastObj = targetBuilding.obj;
             }
             objEditor.OnInteractivePreviewGUI(
                 new Rect(945 * rect.x, 50 * rect.y, 555 * rect.x, 650 * rect.y),
@@ -2782,11 +2796,17 @@ public class FactionEditor : EditorWindow
                 //Modify Selected Objects
                 if (GUI.Button(new Rect(400 * rect.x, 180 * rect.y, 273 * rect.x, 25 * rect.y), "Add"))
                 {
-                    ModifyBS(myTarget.gui.selectObjs.Length + 1, myTarget.gui.selectObjs.Length, myTarget);
+                    ModifyBuildingSelectedObjects(
+                        myTarget.gui.selectObjs.Length + 1,
+                        myTarget.gui.selectObjs.Length,
+                        myTarget);
                 }
                 if (GUI.Button(new Rect(673 * rect.x, 180 * rect.y, 272 * rect.x, 25 * rect.y), "Remove"))
                 {
-                    ModifyBS(myTarget.gui.selectObjs.Length - 1, myTarget.gui.selectObjs.Length, myTarget);
+                    ModifyBuildingSelectedObjects(
+                        myTarget.gui.selectObjs.Length - 1,
+                        myTarget.gui.selectObjs.Length,
+                        myTarget);
                 }
                 string[] list = new string[myTarget.gui.selectObjs.Length];
                 for (int x = 0; x < list.Length; x++)
@@ -2818,14 +2838,14 @@ public class FactionEditor : EditorWindow
                         typeof(GameObject),
                         false) as GameObject;
                 }
-                Health healthObj = nTarget.BuildingList[unitId].obj.GetComponent<Health>();
+                Health healthObj = targetBuilding.obj.GetComponent<Health>();
                 if (healthObj == null)
                 {
                     if (GUI.Button(
                         new Rect(400 * rect.x, 280 * rect.y, 545 * rect.x, 420 * rect.y),
                         "Add Health Indicator"))
                     {
-                        nTarget.BuildingList[unitId].obj.AddComponent<Health>();
+                        targetBuilding.obj.AddComponent<Health>();
                     }
                 }
                 else
@@ -2859,7 +2879,7 @@ public class FactionEditor : EditorWindow
                         healthLength);
                     if (healthLength != healthObj.element.Length)
                     {
-                        ModifyHE(healthLength, healthObj.element.Length, healthObj);
+                        ModifyHealthElements(healthLength, healthObj.element.Length, healthObj);
                     }
                     if (healthLength > 0)
                     {
@@ -2993,7 +3013,7 @@ public class FactionEditor : EditorWindow
                         new Rect(400 * rect.x, 45 * rect.y, 1100 * rect.x, 705 * rect.y),
                         "Add MiniMap Components"))
                     {
-                        nTarget.BuildingList[unitId].obj.AddComponent<MiniMapSignal>();
+                        targetBuilding.obj.AddComponent<MiniMapSignal>();
                     }
                 }
                 else
@@ -3040,7 +3060,7 @@ public class FactionEditor : EditorWindow
                                 true) as Texture2D;
                             miniMapState = EditorGUI.IntField(
                                 new Rect(400 * rect.x, 320 * rect.y, 540 * rect.x, 25 * rect.y),
-                                "Group : ",
+                                "Faction : ",
                                 miniMapState);
                         }
                     }
@@ -3059,7 +3079,7 @@ public class FactionEditor : EditorWindow
                         new Rect(400 * rect.x, 45 * rect.y, 1100 * rect.x, 705 * rect.y),
                         "Add Vision Components"))
                     {
-                        nTarget.BuildingList[unitId].obj.AddComponent<VisionSignal>();
+                        targetBuilding.obj.AddComponent<VisionSignal>();
                         // Add More Components
                     }
                 }
@@ -3094,14 +3114,14 @@ public class FactionEditor : EditorWindow
                     new Rect(1280 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y),
                     selectionTexture,
                     ScaleMode.StretchToFill);
-                Progress progressObj = nTarget.BuildingList[unitId].progressObj.GetComponent<Progress>();
+                Progress progressObj = targetBuilding.progressObj.GetComponent<Progress>();
                 if (progressObj == null)
                 {
                     if (GUI.Button(
                         new Rect(400 * rect.x, 50 * rect.y, 545 * rect.x, 750 * rect.y),
                         "Add Progress Indicator"))
                     {
-                        nTarget.BuildingList[unitId].progressObj.AddComponent<Progress>();
+                        targetBuilding.progressObj.AddComponent<Progress>();
                     }
                 }
                 else
@@ -3129,7 +3149,7 @@ public class FactionEditor : EditorWindow
                         nl);
                     if (nl != progressObj.texture.Length)
                     {
-                        ModifyP(nl, progressObj.texture.Length, progressObj);
+                        ModifyProgressTextures(nl, progressObj.texture.Length, progressObj);
                     }
                     if (nl > 0)
                     {
@@ -3166,11 +3186,11 @@ public class FactionEditor : EditorWindow
             GUI.Box(new Rect(400 * rect.x, 25 * rect.y, 1100 * rect.x, 20 * rect.y), "");
             if (GUI.Button(new Rect(400 * rect.x, 50 * rect.y, 550 * rect.x, 20 * rect.y), "Add"))
             {
-                ModifyBT(myTarget.techEffect.Length + 1, myTarget.techEffect.Length, myTarget);
+                ModifyBuildingTechEffects(myTarget.techEffect.Length + 1, myTarget.techEffect.Length, myTarget);
             }
             if (GUI.Button(new Rect(950 * rect.x, 50 * rect.y, 550 * rect.x, 20 * rect.y), "Remove"))
             {
-                ModifyBT(myTarget.techEffect.Length - 1, myTarget.techEffect.Length, myTarget);
+                ModifyBuildingTechEffects(myTarget.techEffect.Length - 1, myTarget.techEffect.Length, myTarget);
             }
             if (nTarget.Tech.Length > 0 && myTarget.techEffect.Length > 0)
             {
@@ -3223,7 +3243,7 @@ public class FactionEditor : EditorWindow
                     /* 0 */ {"GetName", "SetName", "", ""},
                     /* 1 */ {"GetMaxHealth", "SetMaxHealth", "AddMaxHealth", "SubMaxHealth"},
                     /* 2 */ {"GetHealth", "SetHealth", "AddHealth", "SubHealth"},
-                    /* 3 */ {"GetGroup", "SetGroup", "", ""},
+                    /* 3 */ {"GetFaction", "SetFaction", "", ""},
                     /* 4 */ {"GetUCanProduce", "SetUCanProduce", "", ""},
                     /* 5 */ {"GetUICanProduce", "SetUICanProduce", "", ""},
                     /* 6 */ {"GetUCost", "SetUCost", "AddUCost", "SubUCost"},
@@ -3445,7 +3465,7 @@ public class FactionEditor : EditorWindow
                 }
                 if (GUI.Button(new Rect(400 * rect.x, curY * rect.y, 273 * rect.x, 20 * rect.y), "Add"))
                 {
-                    ModifyBTE(
+                    ModifyBuildingTechEffectEffects(
                         myTarget.techEffect[arraySelect].effects.Length + 1,
                         myTarget.techEffect[arraySelect].effects.Length,
                         myTarget,
@@ -3453,7 +3473,7 @@ public class FactionEditor : EditorWindow
                 }
                 if (GUI.Button(new Rect(673 * rect.x, curY * rect.y, 272 * rect.x, 20 * rect.y), "Remove"))
                 {
-                    ModifyBTE(
+                    ModifyBuildingTechEffectEffects(
                         myTarget.techEffect[arraySelect].effects.Length - 1,
                         myTarget.techEffect[arraySelect].effects.Length,
                         myTarget,
@@ -3464,10 +3484,10 @@ public class FactionEditor : EditorWindow
         // Anim/Sounds
         else if (menuState == 3)
         {
-            if (nTarget.BuildingList[unitId].obj != lastObj)
+            if (targetBuilding.obj != lastObj)
             {
-                objEditor = Editor.CreateEditor(nTarget.BuildingList[unitId].obj);
-                lastObj = nTarget.BuildingList[unitId].obj;
+                objEditor = Editor.CreateEditor(targetBuilding.obj);
+                lastObj = targetBuilding.obj;
             }
             objEditor.OnInteractivePreviewGUI(
                 new Rect(945 * rect.x, 50 * rect.y, 555 * rect.x, 650 * rect.y),
@@ -3477,7 +3497,7 @@ public class FactionEditor : EditorWindow
                 selectionTexture,
                 ScaleMode.StretchToFill);
             GUI.Box(new Rect(400 * rect.x, 25 * rect.y, 1100 * rect.x, 20 * rect.y), "");
-            Animator comp = nTarget.BuildingList[unitId].obj.GetComponent<Animator>();
+            Animator comp = targetBuilding.obj.GetComponent<Animator>();
             if (myTarget.anim.manager)
             {
                 myTarget.anim.manager.runtimeAnimatorController = EditorGUI.ObjectField(
@@ -3495,7 +3515,7 @@ public class FactionEditor : EditorWindow
             {
                 if (GUI.Button(new Rect(400 * rect.x, 70 * rect.y, 540 * rect.x, 25 * rect.y), "Add Animator"))
                 {
-                    nTarget.BuildingList[unitId].obj.AddComponent<Animator>();
+                    targetBuilding.obj.AddComponent<Animator>();
                 }
             }
             myTarget.anim.idleAudio = EditorGUI.ObjectField(
@@ -3527,8 +3547,7 @@ public class FactionEditor : EditorWindow
 
     // Functions for Modifying custom class arrays
 
-    // Faction
-    void ModifyG(int nl, int ol, int curLoc)
+    void ModifyFactions(int nl, int ol, int curLoc)
     {
         GameObject[] copyArr = new GameObject[ol];
         for (int x = 0; x < copyArr.Length; x++)
@@ -3574,8 +3593,7 @@ public class FactionEditor : EditorWindow
         InitializeFactionRelations();
     }
 
-    // Modify Techs
-    Technology[] ModifyT(int nl, int ol, Technology[] techs)
+    Technology[] ModifyTechs(int nl, int ol, Technology[] techs)
     {
         Technology[] copyArr = new Technology[ol];
         for (int x = 0; x < copyArr.Length; x++)
@@ -3603,8 +3621,7 @@ public class FactionEditor : EditorWindow
         return techs;
     }
 
-    // Group Unit
-    void ModifyGU(int nl, int ol, int curLoc)
+    void ModifyFactionUnits(int nl, int ol, int curLoc)
     {
         Unit[] copyArr = new Unit[ol];
         for (int x = 0; x < copyArr.Length; x++)
@@ -3651,8 +3668,7 @@ public class FactionEditor : EditorWindow
         }
     }
 
-    // Group Types
-    void ModifyGT(int nl, int ol, int curLoc)
+    void ModifyFactionTypes(int nl, int ol, int curLoc)
     {
         UnitType[] copyArr = new UnitType[ol];
         for (int x = 0; x < copyArr.Length; x++)
@@ -3692,8 +3708,7 @@ public class FactionEditor : EditorWindow
         }
     }
 
-    // Group Types Strengths
-    void ModifyGTS(int nl, int ol, int curLoc, int loc)
+    void ModifyFactionTypesStrengths(int nl, int ol, int curLoc, int loc)
     {
         Ratio[] copyArr = new Ratio[ol];
         for (int x = 0; x < copyArr.Length; x++)
@@ -3733,8 +3748,7 @@ public class FactionEditor : EditorWindow
         }
     }
 
-    // Group Types Weaknesses
-    void ModifyGTW(int nl, int ol, int curLoc, int loc)
+    void ModifyFactionTypesWeaknesses(int nl, int ol, int curLoc, int loc)
     {
         Ratio[] copyArr = new Ratio[ol];
         for (int x = 0; x < copyArr.Length; x++)
@@ -3774,8 +3788,7 @@ public class FactionEditor : EditorWindow
         }
     }
 
-    // Group Buildings
-    void ModifyGB(int nl, int ol, int curLoc)
+    void ModifyFactionBuildings(int nl, int ol, int curLoc)
     {
         Building[] copyArr = new Building[ol];
         for (int x = 0; x < copyArr.Length; x++)
@@ -3822,8 +3835,7 @@ public class FactionEditor : EditorWindow
         }
     }
 
-    // Group Buildings Unit (Production)
-    void ModifyGBU(int nl, int ol, int curLoc)
+    void ModifyFactionUnitProduction(int nl, int ol, int curLoc)
     {
         BuildingController buildCont = nTarget.BuildingList[unitId].obj.GetComponent<BuildingController>();
         ProduceUnit[] copyArr = new ProduceUnit[ol];
@@ -3857,8 +3869,7 @@ public class FactionEditor : EditorWindow
         }
     }
 
-    // Group Buildings Technology (Production)
-    void ModifyGBT(int nl, int ol, int curLoc)
+    void ModifyFactionTechnologyProduction(int nl, int ol, int curLoc)
     {
         BuildingController buildCont = nTarget.BuildingList[unitId].obj.GetComponent<BuildingController>();
         ProduceTech[] copyArr = new ProduceTech[ol];
@@ -3892,8 +3903,7 @@ public class FactionEditor : EditorWindow
         }
     }
 
-    // Unit Gathering
-    void ModifyUR(int nl, int ol, UnitController targ)
+    void ModifyUnitGathering(int nl, int ol, UnitController targ)
     {
         ResourceBehaviour[] copyArr = new ResourceBehaviour[ol];
         for (int x = 0; x < copyArr.Length; x++)
@@ -3921,8 +3931,7 @@ public class FactionEditor : EditorWindow
         }
     }
 
-    // Unit Tech Effects
-    void ModifyUT(int nl, int ol, UnitController targ)
+    void ModifyUnitTechEffects(int nl, int ol, UnitController targ)
     {
         TechEffect[] copyArr = new TechEffect[ol];
         for (int x = 0; x < copyArr.Length; x++)
@@ -3947,8 +3956,7 @@ public class FactionEditor : EditorWindow
         }
     }
 
-    // Unit Ratios
-    void ModifyURA(int nl, int ol, UnitController targ)
+    void ModifyUnitRatios(int nl, int ol, UnitController targ)
     {
         SRatio[] copyArr = new SRatio[ol];
         for (int x = 0; x < copyArr.Length; x++)
@@ -3973,8 +3981,7 @@ public class FactionEditor : EditorWindow
         }
     }
 
-    // Unit Building
-    void ModifyUB(int nl, int ol, UnitController targ)
+    void ModifyUnitBuildBehaviour(int nl, int ol, UnitController targ)
     {
         BuildBehaviour[] copyArr = new BuildBehaviour[ol];
         for (int x = 0; x < copyArr.Length; x++)
@@ -3999,8 +4006,7 @@ public class FactionEditor : EditorWindow
         }
     }
 
-    // Unit Selected Objects
-    void ModifyUS(int nl, int ol, UnitController targ)
+    void ModifyUnitSelectedObjects(int nl, int ol, UnitController targ)
     {
         GameObject[] copyArr = new GameObject[ol];
         for (int x = 0; x < copyArr.Length; x++)
@@ -4024,8 +4030,7 @@ public class FactionEditor : EditorWindow
         }
     }
 
-    // Unit Technology Effects.... Effects
-    void ModifyUTE(int nl, int ol, UnitController targ, int index)
+    void ModifyUnitTechEffectEffects(int nl, int ol, UnitController targ, int index)
     {
         Effects[] copyArr = new Effects[ol];
         for (int x = 0; x < copyArr.Length; x++)
@@ -4050,8 +4055,7 @@ public class FactionEditor : EditorWindow
         }
     }
 
-    // Building Tech Effects
-    void ModifyBT(int nl, int ol, BuildingController targ)
+    void ModifyBuildingTechEffects(int nl, int ol, BuildingController targ)
     {
         TechEffect[] copyArr = new TechEffect[ol];
         for (int x = 0; x < copyArr.Length; x++)
@@ -4076,8 +4080,7 @@ public class FactionEditor : EditorWindow
         }
     }
 
-    // Unit Technology Effects.... Effects
-    void ModifyBTE(int nl, int ol, BuildingController targ, int index)
+    void ModifyBuildingTechEffectEffects(int nl, int ol, BuildingController targ, int index)
     {
         Effects[] copyArr = new Effects[ol];
         for (int x = 0; x < copyArr.Length; x++)
@@ -4101,8 +4104,7 @@ public class FactionEditor : EditorWindow
         }
     }
 
-    // Building Selected Objects
-    void ModifyBS(int nl, int ol, BuildingController targ)
+    void ModifyBuildingSelectedObjects(int nl, int ol, BuildingController targ)
     {
         GameObject[] copyArr = new GameObject[ol];
         for (int x = 0; x < copyArr.Length; x++)
@@ -4126,8 +4128,7 @@ public class FactionEditor : EditorWindow
         }
     }
 
-    // Faction Relations
-    void ModifyGR(int nl, int ol)
+    void ModifyFactionRelations(int nl, int ol)
     {
         Relation[] copyArr = new Relation[ol];
         for (int x = 0; x < copyArr.Length; x++)
@@ -4152,7 +4153,7 @@ public class FactionEditor : EditorWindow
         }
     }
 
-    void ModifyHE(int nl, int ol, Health health)
+    void ModifyHealthElements(int nl, int ol, Health health)
     {
         HealthElement[] copyArr = new HealthElement[ol];
         for (int x = 0; x < copyArr.Length; x++)
@@ -4177,7 +4178,7 @@ public class FactionEditor : EditorWindow
         }
     }
 
-    void ModifyP(int nl, int ol, Progress progress)
+    void ModifyProgressTextures(int nl, int ol, Progress progress)
     {
         Texture[] copyArr = new Texture[ol];
         for (int x = 0; x < copyArr.Length; x++)

@@ -2,17 +2,16 @@ using UnityEngine;
 
 public class UnitMovement : MonoBehaviour
 {
-    Faction group;
     public int speed;
     public int rotateSpeed;
     public Vector3 target;
-    public UGrid gridScript;
+    UGrid gridScript;
     public int gridI;
     public UPath myPath;
     public int depth;
     public bool pathComplete;
     int curPoint;
-    public AStarManager pathing;
+    AStarManager pathing;
     public float checkDist = 1;
     public int layer;
     Transform myTransform;
@@ -25,46 +24,31 @@ public class UnitMovement : MonoBehaviour
         myTransform = GetComponent<Transform>();
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         if (pathComplete || myPath == null || myPath.list.Length <= 0)
         {
             return;
         }
-        bool skip = false;
         for (int x = 1; x < myPath.list.Length - 1; x++)
         {
-            if (gridScript.grids[gridI].grid[myPath.list[x]].state != 2)
+            if (gridScript.grids[gridI].points[myPath.list[x]].state != 2)
             {
                 continue;
             }
             RequestPath(target);
-            skip = true;
-            break;
-        }
-        if (skip)
-        {
             return;
         }
+        var pointLoc = gridScript.grids[gridI].points[myPath.list[curPoint]].loc;
         // Lerp Rotation
         Quaternion targetRotation = Quaternion.LookRotation(
-            new Vector3(
-                gridScript.grids[gridI].grid[myPath.list[curPoint]].loc.x,
-                0,
-                gridScript.grids[gridI].grid[myPath.list[curPoint]].loc.z)
-            - new Vector3(myTransform.position.x, 0, myTransform.position.z));
+            new Vector3(pointLoc.x, 0, pointLoc.z) - new Vector3(myTransform.position.x, 0, myTransform.position.z));
         myTransform.rotation = Quaternion.Slerp(myTransform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
         myTransform.Translate(Vector3.forward * speed * Time.deltaTime);
-        float distFromPlace = (new Vector3(
-                                   gridScript.grids[gridI].grid[myPath.list[curPoint]].loc.x,
-                                   0,
-                                   gridScript.grids[gridI].grid[myPath.list[curPoint]].loc.z)
-                               - new Vector3(
-                                   myTransform.position.x,
-                                   0,
-                                   myTransform.position.z)).sqrMagnitude;
-        if (!(distFromPlace < checkDist))
+        float distFromPlace = (
+            new Vector3(pointLoc.x, 0, pointLoc.z) - new Vector3(myTransform.position.x, 0, myTransform.position.z)
+        ).sqrMagnitude;
+        if (distFromPlace >= checkDist)
         {
             return;
         }
@@ -93,7 +77,7 @@ public class UnitMovement : MonoBehaviour
         if (myPath != null && myPath.list.Length > 0)
         {
             myPath.color = Color.green;
-            myPath.DisplayPath(curPoint, gridScript.grids[gridI].grid, gridScript.grids[gridI].nodeDist);
+            myPath.DisplayPath(curPoint, gridScript.grids[gridI].points, gridScript.grids[gridI].nodeDist);
         }
     }
 }

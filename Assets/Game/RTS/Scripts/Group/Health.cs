@@ -11,7 +11,7 @@ public class Health : MonoBehaviour
     public Texture2D healthBar;
     public Texture2D backgroundBar;
     public HealthElement[] element = new HealthElement[0];
-    [HideInInspector] Camera cam;
+    Camera cam { get; set; }
 
     //bool displayed = false;
 
@@ -58,7 +58,7 @@ public class Health : MonoBehaviour
             GUI.DrawTexture(
                 new Rect(point.x - widthSubtraction,
                     Screen.height - point.y,
-                    scale * ((float) 1),
+                    scale * (float) 1,
                     yScale),
                 backgroundBar);
         }
@@ -75,7 +75,8 @@ public class Health : MonoBehaviour
         for (int x = 0; x < element.Length; x++)
         {
             GUI.DrawTexture(
-                new Rect(point.x + element[x].loc.x - widthSubtraction,
+                new Rect(
+                    point.x + element[x].loc.x - widthSubtraction,
                     Screen.height - (point.y + element[x].loc.y),
                     element[x].loc.width,
                     element[x].loc.height),
