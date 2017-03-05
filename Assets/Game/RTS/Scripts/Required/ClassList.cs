@@ -263,8 +263,8 @@ public class SResource
         {
             cont.SetTarget(target, target.transform.position, "Resource");
         }
-        behaviour[sourceIndex].carrying = 0;
         manager.resourceTypes[sourceIndex].amount += behaviour[sourceIndex].carrying;
+        behaviour[sourceIndex].carrying = 0;
     }
 }
 
@@ -383,14 +383,14 @@ public class Seed
 [Serializable]
 public class ProduceUnit
 {
-    [FormerlySerializedAs("groupIndex")] public int FactionIndex;
+    [FormerlySerializedAs("groupIndex")] public int UnitIndex;
     public bool canProduce = true;
     public int[] cost = new int[0];
     public Texture customTexture;
     public string customName = "Unit";
-    public float dur = 10;
-    public float rate = 5;
-    public float amount;
+    public float dur = 5;
+    public float rate = 1;
+    public float amount = 1;
     public string description = "Description";
     float curDur;
     float lastTime;
@@ -405,7 +405,7 @@ public class ProduceUnit
         rate = unit.rate;
         amount = unit.amount;
         curDur = 0;
-        FactionIndex = unit.FactionIndex;
+        UnitIndex = unit.UnitIndex;
         lastTime = 0;
     }
 
@@ -415,7 +415,7 @@ public class ProduceUnit
 
     public bool Produce()
     {
-        if (!(lastTime + rate <= Time.time))
+        if (lastTime + rate > Time.time)
         {
             return false;
         }
@@ -1142,13 +1142,12 @@ public class Building
     public GameObject tempObj = null;
     public GameObject progressObj = null;
     public GameObject obj = null;
-    public int[] cost;
-
+    public int[] cost = new int[0];
     public bool available = true;
 
     //TODO add comment
-    public int closeWidth = 0;
 
+    public int closeWidth = 0;
     public int closeLength = 0;
     public int[] closePoints = new int[1];
     public string description = "Description";
@@ -1401,7 +1400,7 @@ public class SUnitBuilding
             }
             Vector3 loc = grid.DetermineNearestPoint(buildLoc.transform.position, buildLoc.transform.position, gridI);
             GameObject obj =
-                Object.Instantiate(faction.UnitList[jobs[x].FactionIndex].obj, loc, Quaternion.identity) as GameObject;
+                Object.Instantiate(faction.UnitList[jobs[x].UnitIndex].obj, loc, Quaternion.identity) as GameObject;
             UnitController script = obj.GetComponent<UnitController>();
             if (script)
             {

@@ -8,13 +8,13 @@ public class Grid
     public int size;
     public GridPoint[] points;
     public Vector3 startLoc;
-    public bool octileConnection = false;
+    public bool octileConnection;
     public float nodeDist;
 
     // specific points options
 
-    public bool displayGrid = false;
-    public bool displayLines = false;
+    public bool displayGrid { get; set; }
+    public bool displayLines { get; set; }
     public bool displaceDown = true;
     public bool checkSlope = false;
     public float slopeMax = 5;

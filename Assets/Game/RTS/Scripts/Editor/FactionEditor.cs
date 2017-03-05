@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 
 public class FactionEditor : EditorWindow
 {
@@ -107,6 +108,10 @@ public class FactionEditor : EditorWindow
                 DrawFactionGui(rect);
                 break;
             case 1:
+                if (nTarget == null)
+                {
+                    break;
+                }
                 if (unitState == 0)
                 {
                     DrawUnitGui(rect);
@@ -118,6 +123,12 @@ public class FactionEditor : EditorWindow
                 break;
         }
         DrawSetup(rect);
+
+        // Saves any changes to the Faction Manager on a Scene Save
+        if (!Application.isPlaying)
+        {
+            EditorSceneManager.MarkAllScenesDirty();
+        }
     }
 
     void DrawSetup(Vector2 rect)
@@ -812,10 +823,6 @@ public class FactionEditor : EditorWindow
 
     void DrawUnitGui(Vector2 rect)
     {
-        if (nTarget == null)
-        {
-            return;
-        }
         if (unitId >= nTarget.UnitList.Length || unitId < 0)
         {
             unitId = 0;
@@ -826,6 +833,9 @@ public class FactionEditor : EditorWindow
             return;
         }
         Unit targetUnit = nTarget.UnitList[unitId];
+        // Saves any changes on a Scene Save
+        EditorUtility.SetDirty(targetUnit.obj);
+
         MiniMapSignal myTargetMap = targetUnit.obj.GetComponent<MiniMapSignal>();
         VisionSignal myTargetVision = targetUnit.obj.GetComponent<VisionSignal>();
         UnitController myTarget = targetUnit.obj.GetComponent<UnitController>();
@@ -1929,10 +1939,6 @@ public class FactionEditor : EditorWindow
 
     void DrawBuildingGui(Vector2 rect)
     {
-        if (nTarget == null)
-        {
-            return;
-        }
         if (unitId >= nTarget.BuildingList.Length || unitId < 0)
         {
             unitId = 0;
@@ -1943,6 +1949,9 @@ public class FactionEditor : EditorWindow
             return;
         }
         Building targetBuilding = nTarget.BuildingList[unitId];
+        // Saves any changes on a Scene Save
+        EditorUtility.SetDirty(targetBuilding.obj);
+
         BuildingController myTarget = targetBuilding.obj.GetComponent<BuildingController>();
         MiniMapSignal myTargetMap = targetBuilding.obj.GetComponent<MiniMapSignal>();
         VisionSignal myTargetVision = targetBuilding.obj.GetComponent<VisionSignal>();
@@ -2265,10 +2274,10 @@ public class FactionEditor : EditorWindow
                                 typeof(Texture2D),
                                 true) as Texture2D;
                             curY += 110;
-                            myTarget.unitProduction.units[arraySelect2].FactionIndex = EditorGUI.Popup(
+                            myTarget.unitProduction.units[arraySelect2].UnitIndex = EditorGUI.Popup(
                                 new Rect(400 * rect.x, curY * rect.y, 545 * rect.x, 25 * rect.y),
                                 "Unit To Produce : ",
-                                myTarget.unitProduction.units[arraySelect2].FactionIndex,
+                                myTarget.unitProduction.units[arraySelect2].UnitIndex,
                                 unitNames);
                             curY += 20;
                             myTarget.unitProduction.units[arraySelect2].canProduce = EditorGUI.Toggle(
@@ -3114,6 +3123,10 @@ public class FactionEditor : EditorWindow
                     new Rect(1280 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y),
                     selectionTexture,
                     ScaleMode.StretchToFill);
+                if (targetBuilding.progressObj == null)
+                {
+                    return;
+                }
                 Progress progressObj = targetBuilding.progressObj.GetComponent<Progress>();
                 if (progressObj == null)
                 {
@@ -3858,13 +3871,18 @@ public class FactionEditor : EditorWindow
         }
         else
         {
-            for (int x = 0; x < buildCont.unitProduction.units.Length; x++)
+            for (int x = 0; x < ol; x++)
             {
                 if (x != curLoc + 1)
                 {
                     buildCont.unitProduction.units[x] = copyArr[y];
                     y++;
                 }
+            }
+            for (int x = ol; x < buildCont.unitProduction.units.Length; x++)
+            {
+                buildCont.unitProduction.units[x] = new ProduceUnit();
+                y++;
             }
         }
     }

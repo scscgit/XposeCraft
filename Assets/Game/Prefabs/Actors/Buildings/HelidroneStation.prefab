@@ -73,7 +73,7 @@ GameObject:
   m_IsActive: 1
 --- !u!1 &1000012082077172
 GameObject:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
@@ -81,7 +81,6 @@ GameObject:
   - 4: {fileID: 4000010423361518}
   - 33: {fileID: 33000011480320094}
   - 23: {fileID: 23000010548547188}
-  - 64: {fileID: 64000014120214728}
   m_Layer: 0
   m_Name: mesh01
   m_TagString: Untagged
@@ -99,16 +98,18 @@ GameObject:
   - 4: {fileID: 4000011128616968}
   - 54: {fileID: 54000013072979414}
   - 114: {fileID: 114000011502491114}
+  - 114: {fileID: 114000012283514396}
+  - 114: {fileID: 114000010305668448}
   m_Layer: 0
   m_Name: HelidroneStation
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1000012890720008
 GameObject:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
@@ -123,9 +124,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1000013035792030
+--- !u!1 &1000012985419072
 GameObject:
   m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 4000011523690510}
+  - 64: {fileID: 64000011331571062}
+  m_Layer: 11
+  m_Name: HelidroneStation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1000013035792030
+GameObject:
+  m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
@@ -177,11 +194,11 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012082077172}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.22, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
-  m_Father: {fileID: 4000011128616968}
+  m_Father: {fileID: 4000011523690510}
   m_RootOrder: 1
 --- !u!4 &4000010585762622
 Transform:
@@ -190,11 +207,11 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013035792030}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.22, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
-  m_Father: {fileID: 4000011128616968}
+  m_Father: {fileID: 4000011523690510}
   m_RootOrder: 2
 --- !u!4 &4000011128616968
 Transform:
@@ -207,9 +224,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 4000011131106730}
-  - {fileID: 4000010423361518}
-  - {fileID: 4000010585762622}
+  - {fileID: 4000011523690510}
   - {fileID: 4000011700494336}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -220,10 +235,26 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012890720008}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 4000011523690510}
+  m_RootOrder: 0
+--- !u!4 &4000011523690510
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012985419072}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.22, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children: []
+  m_Children:
+  - {fileID: 4000011131106730}
+  - {fileID: 4000010423361518}
+  - {fileID: 4000010585762622}
   m_Father: {fileID: 4000011128616968}
   m_RootOrder: 0
 --- !u!4 &4000011700494336
@@ -243,7 +274,7 @@ Transform:
   - {fileID: 4000013885537600}
   - {fileID: 4000013846813440}
   m_Father: {fileID: 4000011128616968}
-  m_RootOrder: 3
+  m_RootOrder: 1
 --- !u!4 &4000011733832198
 Transform:
   m_ObjectHideFlags: 1
@@ -432,18 +463,30 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!64 &64000014120214728
+--- !u!64 &64000011331571062
 MeshCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012082077172}
+  m_GameObject: {fileID: 1000012985419072}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Convex: 0
   m_Mesh: {fileID: 4300000, guid: b9874f684b8e86247bd7bedf387c72eb, type: 3}
+--- !u!114 &114000010305668448
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012185838616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14c44d521a4dcc54e964b99c7830db1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 010000
 --- !u!114 &114000011502491114
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -455,7 +498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8616cb41d8a93f41b1b5cda09d6f883, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Unit: {fileID: 1000012727340272, guid: 2b19777a5a42be44e903619f45f1a941, type: 2}
+  Unit: {fileID: 1000013194072380, guid: 7f050e5e6d3f94e42bd1ede82fa86849, type: 2}
   SpawnPositions:
   - {fileID: 1000014256360436}
   - {fileID: 1000010269664302}
@@ -463,3 +506,101 @@ MonoBehaviour:
   - {fileID: 1000011317896274}
   - {fileID: 1000014137548728}
   CreationInterval: 3
+--- !u!114 &114000012283514396
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012185838616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41005d3ab5c4f734bb377328f81383f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type:
+    name: Name
+    strengths: []
+    weaknesses: []
+  buildingType: 2
+  building:
+    autoBuild: 0
+    tempObj: {fileID: 0}
+    progressObj: {fileID: 0}
+    obj: {fileID: 0}
+    cost: 
+    available: 1
+    closeWidth: 0
+    closeLength: 0
+    closePoints: 00000000
+    description: Description
+  name: HelidroneStation
+  maxHealth: 500
+  health: 500
+  FactionIndex: 0
+  unitProduction:
+    canProduce: 1
+    units:
+    - UnitIndex: 1
+      canProduce: 1
+      cost: 320000000000000000000000
+      customTexture: {fileID: 0}
+      customName: Goblin
+      dur: 2
+      rate: 1
+      amount: 1
+      description: Worker
+    jobs: []
+    jobsAmount: 0
+    canBuildAtOnce: 1
+    maxAmount: 10
+    buildLoc: {fileID: 1000014256360436}
+    productionDistance: 6
+  techProduction:
+    canProduce: 0
+    techs: []
+    jobs: []
+    jobsAmount: 0
+    maxAmount: 10
+    canBuildAtOnce: 1
+  bGUI:
+    unitGUI:
+      startPos: {x: 50, y: 50}
+      buttonSize: {x: 100, y: 50}
+      buttonPerRow: 0
+      displacement: {x: 0, y: 0}
+    technologyGUI:
+      startPos: {x: 0, y: 0}
+      buttonSize: {x: 0, y: 0}
+      buttonPerRow: 0
+      displacement: {x: 0, y: 0}
+    jobsGUI:
+      startPos: {x: 50, y: 100}
+      buttonSize: {x: 100, y: 50}
+      buttonPerRow: 0
+      displacement: {x: 0, y: 0}
+  anim:
+    manager: {fileID: 0}
+    state: 
+    idleAudio: {fileID: 0}
+    buildUnitAudio: {fileID: 0}
+    buildTechAudio: {fileID: 0}
+    source: {fileID: 0}
+    deathObject: {fileID: 0}
+  gui:
+    selectObjs: []
+    image: {fileID: 0}
+    type: Unit
+    select: {fileID: 0}
+    display: 0
+    onlyDisplayed: 0
+  techEffect: []
+  loc: 0
+  progressReq: 100
+  progressCur: 0
+  progressPerRate: 0
+  buildIndex: 0
+  progressRate: 0.5
+  garrison: 0
+  nextBuild: {fileID: 0}
+  size: 1
+  gridI: 0

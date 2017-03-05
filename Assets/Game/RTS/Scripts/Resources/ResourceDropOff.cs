@@ -2,7 +2,7 @@
 
 public class ResourceDropOff : MonoBehaviour
 {
-    public bool[] type;
+    public bool[] type = new bool[0];
 
     void Start()
     {

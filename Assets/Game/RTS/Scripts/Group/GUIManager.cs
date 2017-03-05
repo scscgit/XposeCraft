@@ -339,7 +339,10 @@ public class GUIManager : MonoBehaviour
         int z = 0;
         for (int x = 0; x < faction.BuildingList.Length; x++)
         {
-            if (!faction.BuildingList[x].obj || !canBuild[x]) continue;
+            if (!faction.BuildingList[x].obj || !canBuild[x])
+            {
+                continue;
+            }
             // Displays the Building Name
             Rect rectLoc = new Rect(
                 (buildButtonSize.x + y * buildingBDisp.x) * ratio.x,

@@ -109,6 +109,16 @@ MonoBehaviour:
     technologyEffect: 
     technologyUpgrade: []
     available: 0
-  BuildingList: []
+  BuildingList:
+  - autoBuild: 0
+    tempObj: {fileID: 0}
+    progressObj: {fileID: 0}
+    obj: {fileID: 1000012185838616, guid: 71d4eacea24b0ed4baa984dfdc2f9c51, type: 2}
+    cost: 2c0100000000000000000000
+    available: 1
+    closeWidth: 0
+    closeLength: 0
+    closePoints: 00000000
+    description: Main Base
   Tech: []
   Color: {r: 0, g: 0, b: 0, a: 0}

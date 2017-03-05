@@ -56,14 +56,12 @@ MonoBehaviour:
     startLoc: {x: -200, y: 100, z: -200}
     octileConnection: 0
     nodeDist: 2
-    displayGrid: 0
-    displayLines: 0
     displaceDown: 1
     checkSlope: 1
     slopeMax: 1
     checkLayer:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 2048
     displaceLayer:
       serializedVersion: 2
       m_Bits: 256
