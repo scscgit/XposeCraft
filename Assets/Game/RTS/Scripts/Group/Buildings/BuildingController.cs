@@ -50,11 +50,12 @@ public class BuildingController : MonoBehaviour
 
     void Start()
     {
-        selection = GameObject.Find("Player Manager").GetComponent<UnitSelection>();
-        manager = GameObject.Find("Player Manager").GetComponent<GUIManager>();
+        var playerManager = GameObject.Find("Player Manager");
+        selection = playerManager.GetComponent<UnitSelection>();
+        manager = playerManager.GetComponent<GUIManager>();
         gui.type = "Building";
-        faction = GameObject.Find("Player Manager").GetComponent<GUIManager>().faction;
-        resourceManager = GameObject.Find("Player Manager").GetComponent<ResourceManager>();
+        faction = manager.faction;
+        resourceManager = playerManager.GetComponent<ResourceManager>();
         if (buildingType == BuildingType.ProgressBuilding)
         {
             InvokeRepeating("Progress", 0, progressRate);

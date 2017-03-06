@@ -66,11 +66,6 @@ public class UnitSelection : MonoBehaviour
         {
             placement.SetFaction(FactionIndex);
         }
-        GUIManager manager = gameObject.GetComponent<GUIManager>();
-        if (manager)
-        {
-            manager.faction = FactionM.FactionList[FactionIndex].GetComponent<Faction>();
-        }
         guiManager = gameObject.GetComponent<GUIManager>();
         GameObject obj = GameObject.Find("MiniMap");
         if (obj)
@@ -293,43 +288,53 @@ public class UnitSelection : MonoBehaviour
         int curSelectedAmount = 0;
         for (int x = 0; x < unitListLength; x++)
         {
-            if (unitList[x] == null)
+            var unit = unitList[x];
+            if (unit == null)
             {
                 unitList.RemoveAt(x);
                 x--;
                 unitListLength--;
                 continue;
             }
-            if (!(unitList[x].transform.position.x > selectionRect.x)
-                || !(unitList[x].transform.position.x < selectionRect.width)
-                || !(unitList[x].transform.position.z > selectionRect.y)
-                || !(unitList[x].transform.position.z < selectionRect.height)
+            if (!(unit.transform.position.x > selectionRect.x)
+                || !(unit.transform.position.x < selectionRect.width)
+                || !(unit.transform.position.z > selectionRect.y)
+                || !(unit.transform.position.z < selectionRect.height)
                 || curSelectedAmount >= maxUnitSelect)
             {
                 continue;
             }
             curSelectedAmount++;
-            curSelected.Add(unitList[x]);
-            curSelectedS.Add(unitList[x].GetComponent<UnitController>());
+            curSelected.Add(unit);
+            curSelectedS.Add(unit.GetComponent<UnitController>());
             curSelectedLength++;
             curSelectedS[curSelectedLength - 1].Select(true);
         }
         int curSelectedBuild = 0;
         for (int x = 0; x < buildingListLength; x++)
         {
-            if (!(buildingList[x].transform.position.x > selectionRect.x)
-                || !(buildingList[x].transform.position.x < selectionRect.width)
-                || !(buildingList[x].transform.position.z > selectionRect.y)
-                || !(buildingList[x].transform.position.z < selectionRect.height)
+            var building = buildingList[x];
+            if (building == null)
+            {
+                Debug.LogWarning("A building was not safely removed from UnitSelection script");
+                buildingList.RemoveAt(x);
+                x--;
+                buildingListLength--;
+                continue;
+            }
+            if (!(building.transform.position.x > selectionRect.x)
+                || !(building.transform.position.x < selectionRect.width)
+                || !(building.transform.position.z > selectionRect.y)
+                || !(building.transform.position.z < selectionRect.height)
                 || curSelectedAmount >= maxBuildingSelect)
             {
                 continue;
             }
             curSelectedAmount++;
-            curBuildSelected.Add(buildingList[x]);
-            curBuildSelectedS.Add(buildingList[x].GetComponent<BuildingController>());
+            curBuildSelected.Add(building);
+            curBuildSelectedS.Add(building.GetComponent<BuildingController>());
             curBuildSelectedLength++;
-            buildingList[x].GetComponent<BuildingController>().Select(true, curSelectedBuild);
+            building.GetComponent<BuildingController>().Select(true, curSelectedBuild);
             curSelectedBuild++;
         }
     }

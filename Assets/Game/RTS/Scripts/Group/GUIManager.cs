@@ -69,6 +69,13 @@ public class GUIManager : MonoBehaviour
         {
             miniMap = GameObject.Find("MiniMap").GetComponent<MiniMap>();
         }
+        if (faction == null)
+        {
+            faction = GameObject.Find("Faction Manager")
+                .GetComponent<FactionManager>()
+                .FactionList[select.FactionIndex]
+                .GetComponent<Faction>();
+        }
         ReconfigureWindows();
     }
 
@@ -184,7 +191,7 @@ public class GUIManager : MonoBehaviour
                     resourceSize.height * ratio.y),
                 resourceManager.resourceTypes[x].name + " : " + resourceManager.resourceTypes[x].amount);
             y = y + 1;
-            if (!(y >= RColumnsXRows.x))
+            if (y < RColumnsXRows.x)
             {
                 continue;
             }
@@ -319,7 +326,7 @@ public class GUIManager : MonoBehaviour
                 buildingProductionIndex = x;
             }
             y = y + 1;
-            if (!(y >= BColumnsXRows.x))
+            if (y < BColumnsXRows.x)
             {
                 continue;
             }

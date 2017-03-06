@@ -7,7 +7,7 @@ public class Health : MonoBehaviour
     int state;
     public float yIncrease = 5;
     public int scale = 50;
-    public int yScale = 10;
+    public int yScale = 6;
     public Texture2D healthBar;
     public Texture2D backgroundBar;
     public HealthElement[] element = new HealthElement[0];
@@ -89,5 +89,5 @@ public class Health : MonoBehaviour
 public class HealthElement
 {
     public Texture2D image = null;
-    public Rect loc = new Rect(0, 0, 50, 4);
+    public Rect loc = new Rect();
 }

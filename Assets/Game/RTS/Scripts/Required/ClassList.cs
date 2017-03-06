@@ -20,7 +20,7 @@ public class SWeapon
 
     public void AttackObject(GameObject target, GameObject self, string type, UnitType selfType)
     {
-        if (!(attackRate + lastAttackTime < Time.time))
+        if (attackRate + lastAttackTime >= Time.time)
         {
             return;
         }
@@ -188,7 +188,7 @@ public class SResource
         {
             return false;
         }
-        if (!(behaviour[sourceIndex].lastGather + behaviour[sourceIndex].rate < Time.time))
+        if (behaviour[sourceIndex].lastGather + behaviour[sourceIndex].rate >= Time.time)
         {
             return true;
         }
@@ -295,11 +295,7 @@ public class SBuild
 
     public bool Build()
     {
-        if (!builderUnit)
-        {
-            return false;
-        }
-        if (!build[source.buildIndex].canBuild)
+        if (!builderUnit || !build[source.buildIndex].canBuild)
         {
             return false;
         }
@@ -541,16 +537,30 @@ public class STechBuilding
 [Serializable]
 public class SBuildingGUI
 {
-    public BGUISetting unitGUI = new BGUISetting();
-    public BGUISetting technologyGUI = new BGUISetting();
-    public BGUISetting jobsGUI = new BGUISetting();
+    public BGUISetting unitGUI = new BGUISetting
+    {
+        startPos = new Vector2(200, 50),
+        buttonSize = new Vector2(150, 50)
+    };
+
+    public BGUISetting technologyGUI = new BGUISetting
+    {
+        startPos = new Vector2(350, 50),
+        buttonSize = new Vector2(150, 50)
+    };
+
+    public BGUISetting jobsGUI = new BGUISetting
+    {
+        startPos = new Vector2(50, 50),
+        buttonSize = new Vector2(150, 50)
+    };
 }
 
 [Serializable]
 public class BGUISetting
 {
-    public Vector2 startPos;
-    public Vector2 buttonSize;
+    public Vector2 startPos { get; set; }
+    public Vector2 buttonSize { get; set; }
     public int buttonPerRow;
     public Vector2 displacement;
     public bool contains { get; set; }

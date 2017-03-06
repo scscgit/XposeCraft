@@ -100,6 +100,7 @@ GameObject:
   - 114: {fileID: 114000012283514396}
   - 114: {fileID: 114000010305668448}
   - 114: {fileID: 114000014071300988}
+  - 114: {fileID: 114000012230150108}
   m_Layer: 0
   m_Name: HelidroneStation
   m_TagString: Building
@@ -219,7 +220,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012185838616}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -487,6 +488,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 010000
+--- !u!114 &114000012230150108
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012185838616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 127f11905b6dad347b1414b1bf5a9eac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  yIncrease: 10
+  scale: 50
+  yScale: 6
+  healthBar: {fileID: 2800000, guid: b4848ae624e9e384387c9a039d40f745, type: 3}
+  backgroundBar: {fileID: 2800000, guid: 4870aa1ba48b0ff4a9f5251b5c123d13, type: 3}
+  element:
+  - image: {fileID: 2800000, guid: b1d91bb80f18ccf4bbc51261c3b85314, type: 3}
+    loc:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 50
+      height: 1
+  - image: {fileID: 2800000, guid: b1d91bb80f18ccf4bbc51261c3b85314, type: 3}
+    loc:
+      serializedVersion: 2
+      x: 0
+      y: -6
+      width: 50
+      height: 1
+  - image: {fileID: 2800000, guid: b1d91bb80f18ccf4bbc51261c3b85314, type: 3}
+    loc:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 2
+      height: 6
+  - image: {fileID: 2800000, guid: b1d91bb80f18ccf4bbc51261c3b85314, type: 3}
+    loc:
+      serializedVersion: 2
+      x: 48
+      y: 0
+      width: 2
+      height: 6
 --- !u!114 &114000012283514396
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -545,18 +591,12 @@ MonoBehaviour:
     canBuildAtOnce: 1
   bGUI:
     unitGUI:
-      startPos: {x: 50, y: 50}
-      buttonSize: {x: 100, y: 50}
       buttonPerRow: 0
       displacement: {x: 0, y: 0}
     technologyGUI:
-      startPos: {x: 0, y: 0}
-      buttonSize: {x: 0, y: 0}
       buttonPerRow: 0
       displacement: {x: 0, y: 0}
     jobsGUI:
-      startPos: {x: 50, y: 100}
-      buttonSize: {x: 100, y: 50}
       buttonPerRow: 0
       displacement: {x: 0, y: 0}
   anim:

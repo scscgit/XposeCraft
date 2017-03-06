@@ -580,16 +580,20 @@ public class FactionEditor : EditorWindow
                 nTarget.Tech = ModifyTechs(nTarget.Tech.Length - 1, nTarget.Tech.Length, nTarget.Tech);
             }
             curY += 25;
-            string[] techName = new string[techs.Length];
+            string[] techNames = new string[techs.Length];
             for (int z = 0; z < techs.Length; z++)
             {
-                techName[z] = (z + 1) + ". " + techs[z].name;
+                techNames[z] = (z + 1) + ". " + techs[z].name;
+            }
+            if (techList >= techs.Length)
+            {
+                techList = 0;
             }
             techList = EditorGUI.Popup(
                 new Rect(0 * rect.x, curY * rect.y, 1300 * rect.x, 20 * rect.y),
                 "Tech : ",
                 techList,
-                techName);
+                techNames);
             curY += 25;
             techOpen = EditorGUI.Foldout(
                 new Rect(0 * rect.x, curY * rect.y, 1300 * rect.x, 20 * rect.y),
@@ -1343,6 +1347,10 @@ public class FactionEditor : EditorWindow
                             "Element : ",
                             arraySelect1,
                             elementName);
+                        if (arraySelect1 >= healthObj.element.Length)
+                        {
+                            arraySelect1 = 0;
+                        }
                         healthObj.element[arraySelect1].image = EditorGUI.ObjectField(
                             new Rect(400 * rect.x, 540 * rect.y, 100 * rect.x, 50 * rect.y),
                             healthObj.element[arraySelect1].image,
@@ -2930,13 +2938,18 @@ public class FactionEditor : EditorWindow
                     }
                     for (int x = 0; x < healthObj.element.Length; x++)
                     {
+                        var element = healthObj.element[x];
+                        if (element.image == null)
+                        {
+                            continue;
+                        }
                         GUI.DrawTexture(
                             new Rect(
-                                point.x + healthObj.element[x].loc.x,
-                                point.y - healthObj.element[x].loc.y,
-                                healthObj.element[x].loc.width,
-                                healthObj.element[x].loc.height),
-                            healthObj.element[x].image);
+                                point.x + element.loc.x,
+                                point.y - element.loc.y,
+                                element.loc.width,
+                                element.loc.height),
+                            element.image);
                     }
                 }
                 helpState = 9;
@@ -4185,11 +4198,33 @@ public class FactionEditor : EditorWindow
         health.element = new HealthElement[nl];
         if (nl > ol)
         {
-            for (int x = 0; x < copyArr.Length; x++)
+            for (int x = 0; x < ol; x++)
             {
                 health.element[x] = copyArr[x];
             }
-            health.element[nl - 1] = new HealthElement();
+            for (int x = ol; x < nl; x++)
+            {
+                // Default HealthElement: copies the image from a first element and first 4 will form a rectangle
+                health.element[x] = new HealthElement
+                {
+                    image = x == 0 ? null : health.element[0].image
+                };
+                switch (x)
+                {
+                    case 0:
+                        health.element[x].loc = new Rect(0, 0, 50, 1);
+                        break;
+                    case 1:
+                        health.element[x].loc = new Rect(0, -6, 50, 1);
+                        break;
+                    case 2:
+                        health.element[x].loc = new Rect(0, 0, 2, 6);
+                        break;
+                    case 3:
+                        health.element[x].loc = new Rect(48, 0, 2, 6);
+                        break;
+                }
+            }
         }
         else
         {
