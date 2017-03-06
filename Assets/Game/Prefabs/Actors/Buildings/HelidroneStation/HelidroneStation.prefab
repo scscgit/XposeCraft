@@ -97,9 +97,9 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000011128616968}
   - 54: {fileID: 54000013072979414}
-  - 114: {fileID: 114000011502491114}
   - 114: {fileID: 114000012283514396}
   - 114: {fileID: 114000010305668448}
+  - 114: {fileID: 114000014071300988}
   m_Layer: 0
   m_Name: HelidroneStation
   m_TagString: Building
@@ -248,7 +248,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012985419072}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.22, z: 0}
+  m_LocalPosition: {x: -2, y: 0.22, z: 7.7}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -264,7 +264,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010241821782}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.01, z: 0}
+  m_LocalPosition: {x: -2, y: 0.01, z: 7.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -487,25 +487,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 010000
---- !u!114 &114000011502491114
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012185838616}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8616cb41d8a93f41b1b5cda09d6f883, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Unit: {fileID: 1000013194072380, guid: 7f050e5e6d3f94e42bd1ede82fa86849, type: 2}
-  SpawnPositions:
-  - {fileID: 1000014256360436}
-  - {fileID: 1000010269664302}
-  - {fileID: 1000010292444758}
-  - {fileID: 1000011317896274}
-  - {fileID: 1000014137548728}
-  CreationInterval: 3
 --- !u!114 &114000012283514396
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -540,7 +521,7 @@ MonoBehaviour:
   unitProduction:
     canProduce: 1
     units:
-    - UnitIndex: 1
+    - UnitIndex: 0
       canProduce: 1
       cost: 320000000000000000000000
       customTexture: {fileID: 0}
@@ -604,3 +585,17 @@ MonoBehaviour:
   nextBuild: {fileID: 0}
   size: 1
   gridI: 0
+--- !u!114 &114000014071300988
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012185838616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ff9a4ee649c18e49a910cf93390c21e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 10
+  upwardSightHeight: 10
+  downwardSightHeight: 10

@@ -7,8 +7,8 @@ public class VisionSignal : MonoBehaviour
     // defined radius.
 
     public int radius = 5;
-    public int upwardSightHeight = 1;
-    public int downwardSightHeight = 1;
+    public int upwardSightHeight = 10;
+    public int downwardSightHeight = 10;
     bool quitting;
 
     void OnEnable()

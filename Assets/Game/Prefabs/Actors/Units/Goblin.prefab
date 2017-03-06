@@ -1005,6 +1005,7 @@ GameObject:
   - 114: {fileID: 114000010132634294}
   - 114: {fileID: 114000012442888390}
   - 114: {fileID: 114000012985283474}
+  - 114: {fileID: 114000010615598230}
   m_Layer: 9
   m_Name: Goblin
   m_TagString: Unit
@@ -2776,6 +2777,30 @@ MonoBehaviour:
   pathComplete: 0
   checkDist: 1
   layer: 0
+--- !u!114 &114000010615598230
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013194072380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 127f11905b6dad347b1414b1bf5a9eac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  yIncrease: 5
+  scale: 50
+  yScale: 10
+  healthBar: {fileID: 0}
+  backgroundBar: {fileID: 0}
+  element:
+  - image: {fileID: 2800000, guid: b1d91bb80f18ccf4bbc51261c3b85314, type: 3}
+    loc:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 50
+      height: 4
 --- !u!114 &114000012442888390
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2805,10 +2830,10 @@ MonoBehaviour:
     attackSphere: {fileID: 0}
     lookSphere: {fileID: 0}
   build:
-    builderUnit: 0
+    builderUnit: 1
     buildDist: 3
     build:
-    - canBuild: 0
+    - canBuild: 1
       rate: 1
       amount: 1
       lastBuild: 0

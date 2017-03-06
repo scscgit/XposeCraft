@@ -61,7 +61,7 @@ MonoBehaviour:
     slopeMax: 1
     checkLayer:
       serializedVersion: 2
-      m_Bits: 2048
+      m_Bits: 3072
     displaceLayer:
       serializedVersion: 2
       m_Bits: 256

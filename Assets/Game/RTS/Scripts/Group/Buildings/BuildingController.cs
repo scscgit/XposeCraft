@@ -43,6 +43,7 @@ public class BuildingController : MonoBehaviour
     Health healthObj;
     UGrid grid;
     UnitSelection selection;
+    ResourceManager resourceManager;
 
     //bool displayGUI = false;
     //Progress progressObj;
@@ -53,6 +54,7 @@ public class BuildingController : MonoBehaviour
         manager = GameObject.Find("Player Manager").GetComponent<GUIManager>();
         gui.type = "Building";
         faction = GameObject.Find("Player Manager").GetComponent<GUIManager>().faction;
+        resourceManager = GameObject.Find("Player Manager").GetComponent<ResourceManager>();
         if (buildingType == BuildingType.ProgressBuilding)
         {
             InvokeRepeating("Progress", 0, progressRate);
@@ -164,11 +166,15 @@ public class BuildingController : MonoBehaviour
             {
                 continue;
             }
-            if (bGUI.unitGUI.Display(x1, y1, unitProduction.units[x].customName,
-                unitProduction.units[x].customTexture, ratioX,
+            if (bGUI.unitGUI.Display(
+                x1,
+                y1,
+                unitProduction.units[x].customName,
+                unitProduction.units[x].customTexture,
+                ratioX,
                 ratioY))
             {
-                unitProduction.StartProduction(x);
+                unitProduction.StartProduction(x, resourceManager);
             }
             if (bGUI.unitGUI.contains)
             {
@@ -192,11 +198,10 @@ public class BuildingController : MonoBehaviour
             {
                 continue;
             }
-            if (bGUI.technologyGUI.Display(x1, y1, techProduction.techs[x].customName,
-                techProduction.techs[x].customTexture,
-                ratioX, ratioY))
+            if (bGUI.technologyGUI.Display(
+                x1, y1, techProduction.techs[x].customName, techProduction.techs[x].customTexture, ratioX, ratioY))
             {
-                techProduction.StartProduction(x);
+                techProduction.StartProduction(x, resourceManager);
             }
             if (bGUI.technologyGUI.contains)
             {
@@ -219,7 +224,7 @@ public class BuildingController : MonoBehaviour
             if (bGUI.jobsGUI.Display(
                 x1, y1, unitProduction.jobs[x].customName, unitProduction.jobs[x].customTexture, ratioX, ratioY))
             {
-                unitProduction.CancelProduction(x);
+                unitProduction.CancelProduction(x, resourceManager);
             }
             if (bGUI.jobsGUI.contains)
             {
@@ -238,7 +243,7 @@ public class BuildingController : MonoBehaviour
             if (bGUI.jobsGUI.Display(
                 x1, y1, techProduction.jobs[x].customName, techProduction.jobs[x].customTexture, ratioX, ratioY))
             {
-                techProduction.CancelProduction(x, faction);
+                techProduction.CancelProduction(x, faction, resourceManager);
             }
             if (bGUI.jobsGUI.contains)
             {

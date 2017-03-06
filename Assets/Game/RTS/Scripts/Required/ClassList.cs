@@ -463,7 +463,7 @@ public class ProduceTech
 
     public bool Produce()
     {
-        if (!(lastTime + rate <= Time.time))
+        if (lastTime + rate > Time.time)
         {
             return false;
         }
@@ -483,17 +483,36 @@ public class STechBuilding
     public int maxAmount = 10;
     public int canBuildAtOnce = 1;
 
-    public void StartProduction(int x)
+    public void StartProduction(int x, ResourceManager resourceManager)
     {
+        var job = new ProduceTech(techs[x]);
+        // If there are available resources, uses them before starting the production, otherwise returns
+        for (var index = 0; index < resourceManager.resourceTypes.Length; index++)
+        {
+            if (resourceManager.resourceTypes[index].amount < job.cost[index])
+            {
+                return;
+            }
+        }
+        for (var index = 0; index < resourceManager.resourceTypes.Length; index++)
+        {
+            resourceManager.resourceTypes[index].amount -= job.cost[index];
+        }
         if (jobsAmount < maxAmount)
         {
-            jobs.Add(new ProduceTech(techs[x]));
+            jobs.Add(job);
             jobsAmount++;
         }
     }
 
-    public void CancelProduction(int x, Faction faction)
+    public void CancelProduction(int x, Faction faction, ResourceManager resourceManager)
     {
+        var job = jobs[x];
+        // Returning the resource cost
+        for (var index = 0; index < resourceManager.resourceTypes.Length; index++)
+        {
+            resourceManager.resourceTypes[index].amount += job.cost[index];
+        }
         jobs.RemoveAt(x);
         jobsAmount--;
         faction.Tech[jobs[x].index].beingProduced = false;
@@ -843,12 +862,9 @@ public class APath
             for (var x = 0; x < mGrid[point].children.Length; x++)
             {
                 int lPoint = mGrid[point].children[x];
-                if (lPoint != endLoc)
+                if (lPoint != endLoc && (checkedList[lPoint] || mGrid[lPoint].state == 2))
                 {
-                    if (checkedList[lPoint] || mGrid[lPoint].state == 2)
-                    {
-                        continue;
-                    }
+                    continue;
                 }
                 float g_cost = (new Vector3(mGrid[lPoint].loc.x, 0, mGrid[lPoint].loc.z)
                                 - new Vector3(mGrid[point].loc.x, 0, mGrid[point].loc.z)
@@ -1371,17 +1387,36 @@ public class SUnitBuilding
     public int productionDistance = 6;
     int curLoc;
 
-    public void StartProduction(int x)
+    public void StartProduction(int x, ResourceManager resourceManager)
     {
+        var job = new ProduceUnit(units[x]);
+        // If there are available resources, uses them before starting the production, otherwise returns
+        for (var index = 0; index < resourceManager.resourceTypes.Length; index++)
+        {
+            if (resourceManager.resourceTypes[index].amount < job.cost[index])
+            {
+                return;
+            }
+        }
+        for (var index = 0; index < resourceManager.resourceTypes.Length; index++)
+        {
+            resourceManager.resourceTypes[index].amount -= job.cost[index];
+        }
         if (jobsAmount < maxAmount)
         {
-            jobs.Add(new ProduceUnit(units[x]));
+            jobs.Add(job);
             jobsAmount++;
         }
     }
 
-    public void CancelProduction(int x)
+    public void CancelProduction(int x, ResourceManager resourceManager)
     {
+        var job = jobs[x];
+        // Returning the resource cost
+        for (var index = 0; index < resourceManager.resourceTypes.Length; index++)
+        {
+            resourceManager.resourceTypes[index].amount += job.cost[index];
+        }
         jobs.RemoveAt(x);
         jobsAmount--;
     }
@@ -1390,11 +1425,7 @@ public class SUnitBuilding
     {
         for (int x = 0; x < canBuildAtOnce; x++)
         {
-            if (x >= jobsAmount)
-            {
-                continue;
-            }
-            if (!jobs[x].Produce())
+            if (x >= jobsAmount || !jobs[x].Produce())
             {
                 continue;
             }

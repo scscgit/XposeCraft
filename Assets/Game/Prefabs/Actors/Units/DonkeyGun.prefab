@@ -43,6 +43,7 @@ GameObject:
   - 82: {fileID: 82000010559592710}
   - 114: {fileID: 114000013558981164}
   - 114: {fileID: 114000013147277468}
+  - 114: {fileID: 114000014187389810}
   m_Layer: 9
   m_Name: DonkeyGun
   m_TagString: Unit
@@ -348,3 +349,20 @@ MonoBehaviour:
   size: 1
   targetType: 5
   tState: 4
+--- !u!114 &114000014187389810
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012727340272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 127f11905b6dad347b1414b1bf5a9eac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  yIncrease: 5
+  scale: 50
+  yScale: 10
+  healthBar: {fileID: 0}
+  backgroundBar: {fileID: 0}
+  element: []

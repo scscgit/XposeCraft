@@ -55,17 +55,18 @@ public class BuildingPlacement : MonoBehaviour
 
     public void BeginPlace(Building nBuild)
     {
-        bool canPlace = true;
+        if (nBuild.tempObj == null)
+        {
+            Debug.LogWarning("Temp Object for the "
+                             + (nBuild.obj == null ? "building" : nBuild.obj.name) + " is not set");
+            return;
+        }
         for (int x = 0; x < nBuild.cost.Length; x++)
         {
             if (nBuild.cost[x] > resourceManager.resourceTypes[x].amount)
             {
-                canPlace = false;
+                return;
             }
-        }
-        if (!canPlace)
-        {
-            return;
         }
         if (place)
         {

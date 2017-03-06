@@ -99,26 +99,27 @@ MonoBehaviour:
   Relations:
   - state: 3
   UnitList:
-  - obj: {fileID: 1000012727340272, guid: 2b19777a5a42be44e903619f45f1a941, type: 2}
+  - obj: {fileID: 1000013194072380, guid: 7f050e5e6d3f94e42bd1ede82fa86849, type: 2}
     cost: 
     technologyEffect: 
     technologyUpgrade: []
     available: 0
-  - obj: {fileID: 1000013194072380, guid: 7f050e5e6d3f94e42bd1ede82fa86849, type: 2}
+  - obj: {fileID: 1000012727340272, guid: 2b19777a5a42be44e903619f45f1a941, type: 2}
     cost: 
     technologyEffect: 
     technologyUpgrade: []
     available: 0
   BuildingList:
   - autoBuild: 0
-    tempObj: {fileID: 0}
-    progressObj: {fileID: 0}
+    tempObj: {fileID: 1000012642638208, guid: 9ff48ade0aac8cb4ba49dd2c0365f861, type: 2}
+    progressObj: {fileID: 1000013099823766, guid: b754638e561c2b24fab3678d417eb6b2,
+      type: 2}
     obj: {fileID: 1000012185838616, guid: 71d4eacea24b0ed4baa984dfdc2f9c51, type: 2}
     cost: 2c0100000000000000000000
     available: 1
-    closeWidth: 0
-    closeLength: 0
-    closePoints: 00000000
+    closeWidth: 3
+    closeLength: 3
+    closePoints: 02000000020000000200000002000000020000000200000002000000020000000200000002000000020000000200000002000000020000000200000002000000020000000200000002000000020000000200000002000000020000000200000002000000020000000200000002000000020000000200000002000000020000000200000002000000020000000200000002000000020000000200000002000000020000000200000002000000020000000200000002000000020000000200000002000000
     description: Main Base
   Tech: []
   Color: {r: 0, g: 0, b: 0, a: 0}

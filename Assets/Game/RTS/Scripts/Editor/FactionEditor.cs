@@ -1367,6 +1367,10 @@ public class FactionEditor : EditorWindow
                     }
                     foreach (HealthElement healthElement in healthObj.element)
                     {
+                        if (healthElement.image == null)
+                        {
+                            continue;
+                        }
                         GUI.DrawTexture(
                             new Rect(
                                 point.x + healthElement.loc.x,
@@ -2944,13 +2948,13 @@ public class FactionEditor : EditorWindow
                     new Rect(620 * rect.x, 25 * rect.y, 220 * rect.x, 20 * rect.y),
                     selectionTexture,
                     ScaleMode.StretchToFill);
-                string[] name = {"Units", "Techs", "Jobs"};
+                string[] names = {"Units", "Techs", "Jobs"};
                 arraySelect =
                     EditorGUI.Popup(
                         new Rect(400 * rect.x, 50 * rect.y, 550 * rect.x, 20 * rect.y),
                         "Type : ",
                         arraySelect,
-                        name);
+                        names);
                 if (arraySelect == 0)
                 {
                     myTarget.bGUI.unitGUI.startPos = EditorGUI.Vector2Field(

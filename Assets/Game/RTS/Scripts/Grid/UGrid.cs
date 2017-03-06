@@ -1,6 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
+#if UNITY_EDITOR
+using UnityEditor;
 
+#endif
+
+[ExecuteInEditMode]
 public class UGrid : MonoBehaviour
 {
     public Grid[] grids = new Grid[1];
@@ -33,9 +38,25 @@ public class UGrid : MonoBehaviour
 
     void OnEnable()
     {
+#if UNITY_EDITOR
+        // Loading a local choice of displaying the Grid
+        grids[index].displayGrid = EditorPrefs.GetBool("XposeCraft_UGrid_DisplayGrid", default(bool));
+        grids[index].displayLines = EditorPrefs.GetBool("XposeCraft_UGrid_DisplayLines", default(bool));
+#endif
         // Regenerating the Grid when the Game starts
         GenerateGrid(index);
     }
+
+#if UNITY_EDITOR
+
+    void OnDisable()
+    {
+        // Storing a local choice of displaying the Grid
+        EditorPrefs.SetBool("XposeCraft_UGrid_DisplayGrid", grids[index].displayGrid);
+        EditorPrefs.SetBool("XposeCraft_UGrid_DisplayLines", grids[index].displayLines);
+    }
+
+#endif
 
     public void GenerateGrid(int i)
     {
@@ -270,7 +291,11 @@ public class UGrid : MonoBehaviour
         for (var x = 0; x < grids[i].points.Length; x++)
         {
             GridPoint point = grids[i].points[x];
-            Collider[] coll = Physics.OverlapSphere(point.loc, grids[i].nodeDist / 2.25f, grids[i].checkLayer);
+            Collider[] coll = Physics.OverlapCapsule(
+                point.loc,
+                point.loc + Vector3.up * 2,
+                grids[i].nodeDist / 2.25f,
+                grids[i].checkLayer);
             // Changed the requirement to just one collision
             if (coll.Length >= 1)
             {

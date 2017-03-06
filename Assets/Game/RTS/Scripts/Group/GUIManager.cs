@@ -215,13 +215,13 @@ public class GUIManager : MonoBehaviour
             {
                 mouseOverGUI = true;
             }
-            // scsc: hotfix for gui trying to render e.g. 2-5th/5 units even after clicking on a 3rd one which selects only 1, thus getting out of bounds
+            // Hotfix for GUI trying to render remaining units after clicking on a single one, getting out of bounds
             if (select.curSelectedS.Count > x && select.curSelectedS[x].gui.image)
             {
                 GUI.DrawTexture(rectLoc, select.curSelectedS[x].gui.image);
             }
             y++;
-            if (!(y >= UColumnsXRows.x))
+            if (y < UColumnsXRows.x)
             {
                 continue;
             }
@@ -254,7 +254,7 @@ public class GUIManager : MonoBehaviour
                 GUI.DrawTexture(rectLoc, select.curBuildSelectedS[x].gui.image);
             }
             y++;
-            if (!(y >= UColumnsXRows.x))
+            if (y < UColumnsXRows.x)
             {
                 continue;
             }
@@ -360,7 +360,7 @@ public class GUIManager : MonoBehaviour
                 buildingProductionIndex = x;
             }
             y = y + 1;
-            if (!(y >= BColumnsXRows.x))
+            if (y < BColumnsXRows.x)
             {
                 continue;
             }
