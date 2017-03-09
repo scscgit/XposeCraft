@@ -5,15 +5,15 @@ Hra **[XposeCraft](https://github.com/scscgit/XposeCraft)** nie je obyčajná (z
 Pre programovanie odporúčam buď bezplatné vývojárske prostredie **[Visual Studio Community](https://www.visualstudio.com/cs/downloads/)** od Microsoftu, alebo jednu z vhodných (lepších) alternatív, ktorou je nástroj od firmy JetBrains, keďže ho majú študenti k dispozícii zadarmo - **[Rider](https://www.jetbrains.com/rider/)**. V čase písania bol v stave Early Build.
 
 # Príprava prostredia
-Je potrebné stiahnuť súbory z tohto GitHub projektu. Najrýchlejší spôsob buď tlačidlo na vrchu tejto stránky, alebo na stránke <https://github.com/scscgit/XposeCraft-API-Test/> vpravo kliknúť na tlačidlo Clone or download a zvoliť voľbu Download ZIP, prípadne kliknúť **[sem](https://github.com/scscgit/XposeCraft-API-Test/archive/master.zip)**. Druhou alternatívou je lokálne si projekt pomocou Gitu naklonovať. Následne vo vašom obľúbenom C# editore projekt spustíte, napríklad otvorením súboru s príponou .sln v koreňovom adresári projektu.
+Je potrebné stiahnuť súbory z tohto GitHub projektu. Najrýchlejší spôsob je buď stlačiť tlačidlo na vrchu tejto stránky, alebo na stránke <https://github.com/scscgit/XposeCraft/> vpravo kliknúť na tlačidlo Clone or download a zvoliť voľbu Download ZIP, prípadne kliknúť **[sem](https://github.com/scscgit/XposeCraft/archive/master.zip)**. Druhou alternatívou je lokálne si projekt pomocou Gitu naklonovať. Následne vo vašom obľúbenom C# editore projekt spustíte, napríklad otvorením súboru s príponou .sln v koreňovom adresári projektu.
 
 ***
 
 # Programátorské rozhranie hry (API)
-Jazyk, v ktorom je napísaná samotná hra a ktorý sa používa aj na písanie robota sa volá **C#**. Existujú rôzne návody vo forme kníh alebo webstránok, príkladmi sú jedna **[anglická](https://www.tutorialspoint.com/csharp/csharp_basic_syntax.htm)** a jedna **[česká](http://programujte.com/clanky/34-serial-c/)** stránka, ktoré sa zaoberajú úplnými základmi. Platí ale, že väčšinou už prvé lekcie pracujú s funkciami z rámca .NET, akou je napríklad [`Console.WriteLine`](https://msdn.microsoft.com/en-us/library/system.console.writeline(v=vs.110).aspx). Počas programovania robota bude ale táto znalosť zbytočná, keďže sa neprogramuje aplikácia pre konzolu. Poskytujem ale podobnú funkcionalitu, ktorú je dobrovoľne možné využívať na písanie správ do výstupného logu zobrazovaného po spustení simulácie, napríklad cez `Log.i(object kontext, string sprava);`.
+Jazyk, v ktorom je napísaná samotná hra a ktorý sa používa aj na písanie robota sa volá **C#**. Existujú rôzne návody vo forme kníh alebo webstránok, príkladmi sú jedna **[anglická](https://www.tutorialspoint.com/csharp/csharp_basic_syntax.htm)** a jedna **[česká](http://programujte.com/clanky/34-serial-c/)** stránka, ktoré sa zaoberajú úplnými základmi. Platí ale, že väčšinou už prvé lekcie pracujú s funkciami z rámca .NET, akou je napríklad [`Console.WriteLine`](https://msdn.microsoft.com/en-us/library/system.console.writeline(v=vs.110).aspx). Počas programovania robota bude ale táto znalosť zbytočná, keďže sa neprogramuje aplikácia pre konzolu. Poskytujem ale podobnú funkcionalitu, ktorú je dobrovoľne možné využívať na písanie správ do výstupného logu zobrazovaného po spustení simulácie, napríklad cez `Log.i(object kontext, string sprava);`.
 
 ## Písanie testov a overovanie úspešnosti
-Práca na vlastnom kóde robota prebieha výhradne v adresári (balíku) **[Test](https://github.com/scscgit/XposeCraft-API-Test/tree/master/XposeCraft%20API%20Test/Test)**, nachádzajúcom sa v adresári projektu. Obsahuje 3 triedy s fázami hry prebiehajúcimi v nasledujúcom poradí:
+Práca na vlastnom kóde robota prebieha výhradne v adresári (balíku) **[Test](https://github.com/scscgit/XposeCraft/tree/master/Assets/Scripts/Test)**, nachádzajúcom sa v adresári projektu. Obsahuje 3 triedy s fázami hry prebiehajúcimi v nasledujúcom poradí:
 * Economy - získavanie surovín,
 * Building - stavanie budov a jednotiek,
 * Battle - bojovanie s nepriateľom.
@@ -22,14 +22,12 @@ Na voľbe umiestnenia kódu síce striktne nezáleží, ale dodržanie tejto št
 
 Po akejkoľvek zmene je možnosť projekt spustiť a nechať zbehnúť testy, čím sa overí ako správnosť syntaxe, tak aj správne využitie funkcií.
 
-**Upozornenie: Program je stále v testovacom štádiu, takže správnosť kódu nie je vôbec testovaná spoľahlivo, ide teda hlavne o kontrolu syntaxe - aby nebol odovzdaný úplne nepreložiteľný kód.**
-
 ## Diagram Tried dostupného rozhrania
 
 [![Class Diagram](ClassDiagramGame.png)](ClassDiagramGame.png)
 
 ## Návod ku programátorskému rozhraniu hry (API)
-Adresár (balíček) s poskytovaným API hry sa nazýva Game a na vyššie uvedenom obrázku sú znázornené všetky jeho časti. Táto sekcia obsahuje podrobný popis každej z nich, ale pozostáva iba z verejne viditeľných členov (public). Nadpis každej triedy obsahuje v zátvorke úplne jednoznačný názov, ktorý v prípade priloženia sekcie `using` nie je potrebné písať namiesto skráteného tvaru. Sekcia 'using' sa pre danú triedu vytvorí napríklad stlačením kombinácie kláves CTRL+BODKA vo Visual Studiu alebo ALT+ENTER pri používaní skratiek programu Rider nad názvom triedy v kóde a zvolením tejto voľby.
+Adresár (balíček) s poskytovaným API hry sa nazýva Game a na vyššie uvedenom obrázku sú znázornené všetky jeho časti. Táto sekcia obsahuje podrobný popis každej z nich, ale pozostáva iba z verejne viditeľných členov (public). Nadpis každej triedy obsahuje v zátvorke úplne jednoznačný názov, ktorý v prípade priloženia sekcie `using` nie je potrebné písať namiesto skráteného tvaru. Sekcia 'using' sa pre danú triedu vytvorí napríklad stlačením kombinácie kláves CTRL+BODKA vo Visual Studiu alebo ALT+ENTER pri používaní skratiek programu Rider nad názvom triedy v kóde a zvolením tejto voľby.
 
 ***
 
