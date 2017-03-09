@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace XposeCraft.Game.Control.GameActions
+﻿namespace XposeCraft.Game.Control.GameActions
 {
-	class CustomFunction : GameAction
-	{
-		public delegate void CustomFunctionDelegate();
-		CustomFunctionDelegate Function;
+    class CustomFunction : GameAction
+    {
+        public delegate void CustomFunctionDelegate();
 
-		public CustomFunction(CustomFunctionDelegate function)
-		{
-			Function = function;
-		}
-	}
+        private CustomFunctionDelegate Function { get; set; }
+
+        public CustomFunction(CustomFunctionDelegate function)
+        {
+            Function = function;
+        }
+    }
 }

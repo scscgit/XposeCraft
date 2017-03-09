@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace XposeCraft.Game.Actors.Units
+﻿namespace XposeCraft.Game.Actors.Units
 {
-	class DonkeyGun : Unit
-	{
-		static readonly int MAX_HP = 120;
+    class DonkeyGun : Unit
+    {
+        static readonly int MAX_HP = 120;
 
-		public DonkeyGun(Position position) : base(position, MAX_HP)
-		{
-		}
-	}
+        public DonkeyGun(Position position) : base(position, MAX_HP)
+        {
+        }
+    }
 }

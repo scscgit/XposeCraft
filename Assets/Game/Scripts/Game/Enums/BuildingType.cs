@@ -1,8 +1,8 @@
 ﻿namespace XposeCraft.Game.Enums
 {
-	public enum BuildingType
-	{
-		BaseCenter,
-		NubianArmory,
-	}
+    public enum BuildingType
+    {
+        BaseCenter,
+        NubianArmory,
+    }
 }

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace XposeCraft.Game.Control.GameActions
+﻿namespace XposeCraft.Game.Control.GameActions
 {
-	public interface IGameAction
-	{
-	}
+    public interface IGameAction
+    {
+    }
 }

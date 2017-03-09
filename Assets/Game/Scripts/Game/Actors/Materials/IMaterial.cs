@@ -1,6 +1,6 @@
 ﻿namespace XposeCraft.Game.Actors.Materials
 {
-	public interface IMaterial : IActor
-	{
-	}
+    public interface IMaterial : IActor
+    {
+    }
 }

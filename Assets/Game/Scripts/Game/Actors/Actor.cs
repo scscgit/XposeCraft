@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace XposeCraft.Game.Actors
+﻿namespace XposeCraft.Game.Actors
 {
-	public abstract class Actor : IActor
-	{
-		protected Actor(Position position)
-		{
-			this.Position = position;
-		}
+    public abstract class Actor : IActor
+    {
+        protected Actor(Position position)
+        {
+            Position = position;
+        }
 
-		public Position Position
-		{
-			get; protected set;
-		}
-	}
+        public Position Position { get; protected set; }
+    }
 }

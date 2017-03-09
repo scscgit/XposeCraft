@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace XposeCraft.Game.Control.GameActions
+﻿namespace XposeCraft.Game.Control.GameActions
 {
-	/// <summary>
-	/// Action of a movement to a new position
-	/// </summary>
-	class Move : GameAction
-	{
-		Position Where;
+    /// <summary>
+    /// Action of a movement to a new position
+    /// </summary>
+    class Move : GameAction
+    {
+        private Position Where { get; set; }
 
-		public Move(Position where)
-		{
-			Where = where;
-		}
-	}
+        public Move(Position where)
+        {
+            Where = where;
+        }
+    }
 }

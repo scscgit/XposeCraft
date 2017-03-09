@@ -1,50 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Materials;
 using XposeCraft.Game.Actors.Units;
 
 namespace XposeCraft.GameInternal
 {
-	/// <summary>
-	/// Data structures used within a game: collections etc.
-	/// </summary>
-	public class Model
-	{
-		/// <summary>
-		/// Instance of the game Model
-		/// </summary>
-		public static Model Instance
-		{
-			get;
-		} = new Model();
+    /// <summary>
+    /// Data structures used within a game: collections etc.
+    /// </summary>
+    public class Model
+    {
+        /// <summary>
+        /// Instance of the game Model
+        /// </summary>
+        private static Model _instance;
 
-		/// <summary>
-		/// In-game Actors
-		/// </summary>
+        public static Model Instance
+        {
+            get { return _instance ?? (_instance = new Model()); }
+        }
 
-		public IList<IUnit> Units
-		{
-			get; set;
-		} = new List<IUnit>();
+        public Model()
+        {
+            Units = new List<IUnit>();
+            Buildings = new List<IBuilding>();
+            Materials = new List<IMaterial>();
+            Minerals = 80;
+        }
 
-		public IList<IBuilding> Buildings
-		{
-			get; set;
-		} = new List<IBuilding>();
+        /// <summary>
+        /// In-game Actors
+        /// </summary>
 
-		public IList<IMaterial> Materials
-		{
-			get; set;
-		} = new List<IMaterial>();
+        public IList<IUnit> Units { get; set; }
 
-		/// <summary>
-		/// Currencies of the player
-		/// </summary>
+        public IList<IBuilding> Buildings { get; set; }
 
-		public int Minerals
-		{
-			get; set;
-		} = 80;
-	}
+        public IList<IMaterial> Materials { get; set; }
+
+        /// <summary>
+        /// Currencies of the player
+        /// </summary>
+
+        public int Minerals { get; set; }
+    }
 }

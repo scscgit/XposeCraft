@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace XposeCraft.Test
+﻿namespace XposeCraft.Test
 {
-	/// <summary>
-	/// Any custom class made by a student.
-	/// </summary>
-	public class MyBot
-	{
-		public static int SomeNumber = 0;
-	}
+    /// <summary>
+    /// Any custom class made by a student.
+    /// </summary>
+    public class MyBot
+    {
+        public static int SomeNumber = 0;
+    }
 }
