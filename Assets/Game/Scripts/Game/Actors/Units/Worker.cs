@@ -1,28 +1,22 @@
-﻿using System;
-using XposeCraft.Game.Actors.Buildings;
+﻿using UnityEngine;
 using XposeCraft.Game.Actors.Materials;
-using XposeCraft.GameInternal;
 
 namespace XposeCraft.Game.Actors.Units
 {
     /// <summary>
-    /// Can gather various materials (mainly minerals) and build various buildings - based on a current API level.
+    /// Can gather various materials (mainly minerals) and build various buildings.
     /// </summary>
-    class Worker : Unit
+    public class Worker : Unit
     {
-        static readonly int MAX_HP = 120;
+        public IMaterial Gathering { get; private set; }
 
-        static readonly int BASE_CENTER_DELAY = 150;
-        static readonly int NUBIAN_ARMORY_DELAY = 75;
-
-        public Worker(Position position) : base(position, MAX_HP)
+        public Worker(GameObject gameObject) : base(gameObject)
         {
         }
 
-        public IMaterial Gathering { get; private set; }
-
         public void SendGather(IMaterial material)
         {
+            // TODO: override ReplaceActionQueue to set Gathering back to null; make Gathering an action
             Gathering = material;
         }
 
@@ -33,21 +27,6 @@ namespace XposeCraft.Game.Actors.Units
         // 3. finished event, return to gather
         public void CreateBuilding(Enums.BuildingType buildingType, Position position)
         {
-            IBuilding building;
-            switch (buildingType)
-            {
-                case Enums.BuildingType.BaseCenter:
-                    building = new BaseCenter(position);
-                    GameTimer.Schedule(BASE_CENTER_DELAY, () => { building.IsFinished = true; });
-                    break;
-                case Enums.BuildingType.NubianArmory:
-                    building = new NubianArmory(position);
-                    GameTimer.Schedule(NUBIAN_ARMORY_DELAY, () => { building.IsFinished = true; });
-                    break;
-                default:
-                    throw new Exception("Wrong building type parameter in CreateBuilding");
-            }
-            Model.Instance.Buildings.Add(building);
         }
     }
 }

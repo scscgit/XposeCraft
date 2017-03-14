@@ -1,18 +1,25 @@
-﻿using XposeCraft.Game.Control;
+﻿using UnityEngine;
+using XposeCraft.Game.Control;
 using XposeCraft.Game.Control.GameActions;
 
 namespace XposeCraft.Game.Actors.Units
 {
     public abstract class Unit : Actor, IUnit
     {
-        public UnitActionQueue ActionQueue { get; protected set; }
+        public UnitActionQueue ActionQueue { get; private set; }
 
-        public int Health { get; protected set; }
-        public int MaxHealth { get; private set; }
-
-        protected Unit(Position position, int maxHealth) : base(position)
+        public int Health
         {
-            MaxHealth = maxHealth;
+            get { return -1; }
+        }
+
+        public int MaxHealth
+        {
+            get { return -1; }
+        }
+
+        protected Unit(GameObject gameObject) : base(gameObject)
+        {
         }
 
         // TODO: deprecate in favor of equals operator?

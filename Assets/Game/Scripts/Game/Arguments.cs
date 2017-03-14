@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Units;
 
 namespace XposeCraft.Game
 {
+    [Serializable]
     public class Arguments
     {
         /// <summary>
@@ -14,18 +16,13 @@ namespace XposeCraft.Game
 
         public IDictionary<string, string> StringMap { get; private set; }
 
-        /// <summary>
-        /// Game resources
-        /// </summary>
+        // Game resources
 
         public int Minerals { get; set; }
 
-        /// <summary>
-        /// Actors
-        /// </summary>
+        // Actors
 
         public IUnit MyUnit { get; set; }
-
         public IBuilding MyBuilding { get; set; }
         public IUnit[] EnemyUnits { get; set; }
         public IBuilding[] EnemyBuildings { get; set; }

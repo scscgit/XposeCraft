@@ -3,28 +3,28 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace unitycoder_TerrainRotator
+namespace XposeCraft.UnityWorkarounds.Downloaded
 {
     public class TerrainRotator : EditorWindow
     {
         private const string appName = "Terrain Rotator";
 
         private bool autoRotate = true;
-        private float angle = 0; // rotation angle
+        private float angle; // rotation angle
         private float oldAngle = -1; // previous angle
-        private bool isRotating = false; // are we currently rotating
+        private bool isRotating; // are we currently rotating
 
         private float[,] origHeightMap; // original heightmap, unrotated
         private int[][,] origDetailLayer; // original detail layer, unrotated
         private float[,,] origAlphaMap; // original alphamap, unrotated
         private TreeInstance[] origTrees; // original trees, unrotated
 
-        private bool grabOriginal = false; // have we grabbed original data
+        private bool grabOriginal; // have we grabbed original data
 
         [MenuItem("Window/" + appName)]
         static void Init()
         {
-            TerrainRotator window = (TerrainRotator) EditorWindow.GetWindow(typeof(TerrainRotator));
+            TerrainRotator window = (TerrainRotator) GetWindow(typeof(TerrainRotator));
             window.titleContent.text = appName;
             window.minSize = new Vector2(300, 250);
         }

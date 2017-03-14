@@ -1,8 +1,10 @@
-﻿namespace XposeCraft.Game.Actors.Buildings
+﻿using UnityEngine;
+
+namespace XposeCraft.Game.Actors.Buildings
 {
-    class NubianArmory : Building
+    public class NubianArmory : Building
     {
-        public NubianArmory(Position position) : base(position)
+        public NubianArmory(GameObject gameObject) : base(gameObject)
         {
         }
 

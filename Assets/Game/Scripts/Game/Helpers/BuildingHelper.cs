@@ -10,7 +10,8 @@ namespace XposeCraft.Game.Helpers
         public static IList<TBuilding> GetBuildingsAsList<TBuilding>() where TBuilding : IBuilding
         {
             var list = new List<TBuilding>();
-            ForEach<TBuilding>(building => { list.Add(building); }, Model.Instance.Buildings);
+            ForEach<TBuilding, XposeCraft.Game.Actors.Buildings.Building>
+                (building => { list.Add(building); }, Player.CurrentPlayer.Buildings);
             return list;
         }
 

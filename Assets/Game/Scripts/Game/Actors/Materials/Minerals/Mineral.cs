@@ -1,8 +1,10 @@
-﻿namespace XposeCraft.Game.Actors.Materials.Minerals
+﻿using UnityEngine;
+
+namespace XposeCraft.Game.Actors.Materials.Minerals
 {
-    class Mineral : Material
+    public class Mineral : Material
     {
-        protected Mineral(Position position) : base(position)
+        protected Mineral(GameObject gameObject) : base(gameObject)
         {
         }
     }

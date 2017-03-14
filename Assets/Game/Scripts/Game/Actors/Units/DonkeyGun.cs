@@ -1,10 +1,10 @@
-﻿namespace XposeCraft.Game.Actors.Units
-{
-    class DonkeyGun : Unit
-    {
-        static readonly int MAX_HP = 120;
+﻿using UnityEngine;
 
-        public DonkeyGun(Position position) : base(position, MAX_HP)
+namespace XposeCraft.Game.Actors.Units
+{
+    public class DonkeyGun : Unit
+    {
+        public DonkeyGun(GameObject gameObject) : base(gameObject)
         {
         }
     }

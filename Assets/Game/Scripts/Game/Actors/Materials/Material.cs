@@ -1,8 +1,10 @@
-﻿namespace XposeCraft.Game.Actors.Materials
+﻿using UnityEngine;
+
+namespace XposeCraft.Game.Actors.Materials
 {
-    abstract class Material : Actor, IMaterial
+    public abstract class Material : Actor, IMaterial
     {
-        protected Material(Position position) : base(position)
+        protected Material(GameObject gameObject) : base(gameObject)
         {
         }
     }
