@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using XposeCraft.Game.Control.GameActions;
 
 namespace XposeCraft.Game.Control

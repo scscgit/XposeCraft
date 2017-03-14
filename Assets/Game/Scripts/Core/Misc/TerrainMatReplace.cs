@@ -1,11 +1,14 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public class TerrainMatReplace : MonoBehaviour
+namespace XposeCraft.Core.Misc
 {
-    public Material mat;
-
-    void Start()
+    public class TerrainMatReplace : MonoBehaviour
     {
-        gameObject.GetComponent<Terrain>().materialTemplate = mat;
+        public Material mat;
+
+        void Start()
+        {
+            gameObject.GetComponent<Terrain>().materialTemplate = mat;
+        }
     }
 }

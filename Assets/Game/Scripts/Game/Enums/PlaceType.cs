@@ -1,4 +1,4 @@
-﻿namespace XposeCraft.Game.Enums
+namespace XposeCraft.Game.Enums
 {
     public class PlaceType
     {

@@ -1,22 +1,26 @@
-﻿using UnityEngine;
+using UnityEngine;
+using XposeCraft.Core.Grid;
 
-public class DrawCube : MonoBehaviour
+namespace XposeCraft.Core.Misc
 {
-    UGrid grid;
-    public int index;
-    float nodeSize;
-
-    void OnDrawGizmos()
+    public class DrawCube : MonoBehaviour
     {
-        if (grid == null)
+        UGrid grid;
+        public int index;
+        float nodeSize;
+
+        void OnDrawGizmos()
         {
-            grid = GameObject.Find("UGrid").GetComponent<UGrid>();
-        }
-        else if (index < grid.grids.Length)
-        {
-            nodeSize = grid.grids[index].nodeDist;
-            Gizmos.color = Color.green;
-            Gizmos.DrawCube(gameObject.transform.position, new Vector3(nodeSize, nodeSize, nodeSize));
+            if (grid == null)
+            {
+                grid = GameObject.Find("UGrid").GetComponent<UGrid>();
+            }
+            else if (index < grid.grids.Length)
+            {
+                nodeSize = grid.grids[index].nodeDist;
+                Gizmos.color = Color.green;
+                Gizmos.DrawCube(gameObject.transform.position, new Vector3(nodeSize, nodeSize, nodeSize));
+            }
         }
     }
 }

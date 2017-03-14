@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+using UnityEngine;
+using XposeCraft.Game.Enums;
 
 namespace XposeCraft.Game.Actors.Buildings
 {
@@ -8,7 +9,7 @@ namespace XposeCraft.Game.Actors.Buildings
         {
         }
 
-        public bool CreateUnit(Enums.UnitType type)
+        public bool CreateUnit(UnitType type)
         {
             // TODO: add to the queue, event when created, public accessors to the current state
             return true;

@@ -1,42 +1,47 @@
-﻿using UnityEngine;
 using UnityEditor;
+using UnityEngine;
+using XposeCraft.Core.Grid;
+using XposeCraft.Core.Misc;
 
-public class UGridFindPoint : EditorWindow
+namespace XposeCraft.RTS
 {
-    int loc;
-    int index;
-    UGrid grid;
-    GameObject findPoint;
-    DrawCube pointCube;
-
-    [MenuItem("Window/Grid Find Point")]
-    static void Init()
+    public class UGridFindPoint : EditorWindow
     {
-        GetWindow(typeof(UGridFindPoint));
-    }
+        int loc;
+        int index;
+        UGrid grid;
+        GameObject findPoint;
+        DrawCube pointCube;
 
-    void OnGUI()
-    {
-        if (findPoint == null)
+        [MenuItem("Window/Grid Find Point")]
+        static void Init()
         {
-            findPoint = new GameObject {name = "Find Point"};
-            pointCube = findPoint.AddComponent<DrawCube>();
+            GetWindow(typeof(UGridFindPoint));
         }
-        if (grid == null)
+
+        void OnGUI()
         {
-            grid = GameObject.Find("UGrid").GetComponent<UGrid>();
-        }
-        index = EditorGUILayout.IntField("Grid : ", index);
-        if (index < grid.grids.Length && index >= 0)
-        {
-            loc = EditorGUILayout.IntField("Index : ", loc);
-            GridPoint[] points = grid.grids[index].points;
-            if (loc < points.Length && loc >= 0)
+            if (findPoint == null)
             {
-                Vector3 pointLoc = points[loc].loc;
-                GUILayout.Label("X : " + pointLoc.x + ", Y : " + pointLoc.y + ", Z : " + pointLoc.z);
-                findPoint.transform.position = pointLoc;
-                pointCube.index = index;
+                findPoint = new GameObject {name = "Find Point"};
+                pointCube = findPoint.AddComponent<DrawCube>();
+            }
+            if (grid == null)
+            {
+                grid = GameObject.Find("UGrid").GetComponent<UGrid>();
+            }
+            index = EditorGUILayout.IntField("Grid : ", index);
+            if (index < grid.grids.Length && index >= 0)
+            {
+                loc = EditorGUILayout.IntField("Index : ", loc);
+                GridPoint[] points = grid.grids[index].points;
+                if (loc < points.Length && loc >= 0)
+                {
+                    Vector3 pointLoc = points[loc].loc;
+                    GUILayout.Label("X : " + pointLoc.x + ", Y : " + pointLoc.y + ", Z : " + pointLoc.z);
+                    findPoint.transform.position = pointLoc;
+                    pointCube.index = index;
+                }
             }
         }
     }

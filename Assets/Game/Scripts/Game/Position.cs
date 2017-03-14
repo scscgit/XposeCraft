@@ -1,4 +1,4 @@
-﻿namespace XposeCraft.Game
+namespace XposeCraft.Game
 {
     public class Position
     {

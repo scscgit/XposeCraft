@@ -1,4 +1,4 @@
-﻿namespace XposeCraft.Game.Actors.Buildings
+namespace XposeCraft.Game.Actors.Buildings
 {
     public interface IBuilding : IActor
     {

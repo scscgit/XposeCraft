@@ -1,6 +1,7 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+using System;
 using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace XposeCraft.Collections
 {
@@ -11,7 +12,7 @@ namespace XposeCraft.Collections
     /// </summary>
     /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
     /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
-    [System.Serializable]
+    [Serializable]
     public class SerializableDictionary<TKey, TValue> : IDictionary<TKey, TValue>, ISerializationCallbackReceiver
     {
         [SerializeField] private List<TKey> _keys = new List<TKey>();
@@ -64,7 +65,7 @@ namespace XposeCraft.Collections
 
             if (_keys.Count != _values.Count)
             {
-                throw new System.Exception(string.Format(
+                throw new Exception(string.Format(
                     "there are {0} keys and {1} values after deserialization. Make sure that both key and value types are serializable.",
                     _keys.Count, _values.Count));
             }

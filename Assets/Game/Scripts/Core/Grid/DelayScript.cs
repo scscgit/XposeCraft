@@ -1,40 +1,43 @@
 using UnityEngine;
 
-public class DelayScript : MonoBehaviour
+namespace XposeCraft.Core.Grid
 {
-    public int amountCur;
-    public float delayAmount = 0.01f;
-    public int increment = 5;
-    public int total;
-    public int clearDelayAmount;
-
-    public float GetDelay()
+    public class DelayScript : MonoBehaviour
     {
-        if (amountCur >= increment - 1)
+        public int amountCur;
+        public float delayAmount = 0.01f;
+        public int increment = 5;
+        public int total;
+        public int clearDelayAmount;
+
+        public float GetDelay()
         {
-            total++;
+            if (amountCur >= increment - 1)
+            {
+                total++;
+                amountCur = 0;
+            }
+            else
+            {
+                amountCur++;
+            }
+            return delayAmount * total;
+        }
+
+        public void Update()
+        {
+            if (clearDelayAmount != total * increment + amountCur)
+            {
+                return;
+            }
             amountCur = 0;
+            total = 0;
+            clearDelayAmount = 0;
         }
-        else
-        {
-            amountCur++;
-        }
-        return delayAmount * total;
-    }
 
-    public void Update()
-    {
-        if (clearDelayAmount != total * increment + amountCur)
+        public void ClearDelay()
         {
-            return;
+            clearDelayAmount++;
         }
-        amountCur = 0;
-        total = 0;
-        clearDelayAmount = 0;
-    }
-
-    public void ClearDelay()
-    {
-        clearDelayAmount++;
     }
 }

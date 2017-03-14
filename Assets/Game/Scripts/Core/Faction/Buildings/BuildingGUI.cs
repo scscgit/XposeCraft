@@ -1,29 +1,34 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.Serialization;
+using XposeCraft.Core.Required;
 
-public class BuildingGUI : MonoBehaviour
+namespace XposeCraft.Core.Faction.Buildings
 {
-    [FormerlySerializedAs("groupManager")] public Faction Faction;
-    public Rect guiSize;
-    public BuildingPlacement place;
-
-    void OnGUI()
+    public class BuildingGUI : MonoBehaviour
     {
-        int y = 0;
-        int z = 0;
-        foreach (Building building in Faction.BuildingList)
+        [FormerlySerializedAs("groupManager")] public Faction Faction;
+        public Rect guiSize;
+        public BuildingPlacement place;
+
+        void OnGUI()
         {
-            if (GUI.Button(
-                new Rect(guiSize.x + z * guiSize.width, guiSize.y + y * guiSize.height, guiSize.width, guiSize.height),
-                building.obj.GetComponent<BuildingController>().name))
+            int y = 0;
+            int z = 0;
+            foreach (Building building in Faction.BuildingList)
             {
-                place.BeginPlace(building);
-            }
-            z = z + 1;
-            if (z == y)
-            {
-                y++;
-                z = 0;
+                if (GUI.Button(
+                    new Rect(
+                        guiSize.x + z * guiSize.width, guiSize.y + y * guiSize.height, guiSize.width, guiSize.height),
+                    building.obj.GetComponent<BuildingController>().name))
+                {
+                    place.BeginPlace(building);
+                }
+                z = z + 1;
+                if (z == y)
+                {
+                    y++;
+                    z = 0;
+                }
             }
         }
     }

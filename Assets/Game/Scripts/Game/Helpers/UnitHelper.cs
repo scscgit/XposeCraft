@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using XposeCraft.Game.Actors.Units;
 using XposeCraft.GameInternal;
@@ -13,8 +13,7 @@ namespace XposeCraft.Game.Helpers
         public static IList<TUnit> GetUnitsAsList<TUnit>() where TUnit : IUnit
         {
             var list = new List<TUnit>();
-            ForEach<TUnit, XposeCraft.Game.Actors.Units.Unit>
-                (unit => { list.Add(unit); }, Player.CurrentPlayer.Units);
+            ForEach<TUnit, Unit>(unit => { list.Add(unit); }, Player.CurrentPlayer.Units);
             return list;
         }
 

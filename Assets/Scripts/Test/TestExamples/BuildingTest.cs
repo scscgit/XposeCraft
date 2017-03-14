@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using XposeCraft.Game;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Units;
@@ -15,10 +15,6 @@ namespace XposeCraft.Test.TestExamples
     /// </summary>
     class BuildingTest
     {
-        public BuildingTest()
-        {
-        }
-
         /// <summary>
         /// Finds a worker that is just gathering any materials, without any other task
         /// </summary>
@@ -45,7 +41,7 @@ namespace XposeCraft.Test.TestExamples
                 {
                     var baseCenter = BuildingHelper.GetBuildings<BaseCenter>()[0];
                     var position = BuildingHelper.ClosestEmptySpaceTo(baseCenter);
-                    FindWorkerThatGathers().CreateBuilding(Game.Enums.BuildingType.NubianArmory, position);
+                    FindWorkerThatGathers().CreateBuilding(BuildingType.NubianArmory, position);
 
                     // We only need one army production building for now
                     args.ThisEvent.UnregisterEvent();
@@ -77,7 +73,7 @@ namespace XposeCraft.Test.TestExamples
                 {
                     foreach (NubianArmory armory in BuildingHelper.GetBuildings<NubianArmory>())
                     {
-                        if (armory.CreateUnit(Game.Enums.UnitType.DonkeyGun))
+                        if (armory.CreateUnit(UnitType.DonkeyGun))
                         {
                             if (MyBot.Army++ >= 5)
                             {

@@ -1,31 +1,34 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public class Arrow : MonoBehaviour
+namespace XposeCraft.Core.Misc.Demo
 {
-    GameObject target;
-    public int speed = 5;
-    public bool landed = true;
-
-    public void Attack(GameObject obj)
+    public class Arrow : MonoBehaviour
     {
-        target = obj;
-    }
+        GameObject target;
+        public int speed = 5;
+        public bool landed = true;
 
-    public void Start()
-    {
-        transform.parent = null;
-    }
-
-    public void Update()
-    {
-        transform.LookAt(target.transform);
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
-        float dist = Vector3.Distance(target.transform.position, transform.position);
-        if (dist < 1)
+        public void Attack(GameObject obj)
         {
-            //TimedDestruction destroy = GetComponent<TimedDestruction>();
-            landed = true;
-            gameObject.SetActive(false);
+            target = obj;
+        }
+
+        public void Start()
+        {
+            transform.parent = null;
+        }
+
+        public void Update()
+        {
+            transform.LookAt(target.transform);
+            transform.Translate(Vector3.forward * speed * Time.deltaTime);
+            float dist = Vector3.Distance(target.transform.position, transform.position);
+            if (dist < 1)
+            {
+                //TimedDestruction destroy = GetComponent<TimedDestruction>();
+                landed = true;
+                gameObject.SetActive(false);
+            }
         }
     }
 }

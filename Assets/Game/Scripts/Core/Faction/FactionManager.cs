@@ -1,17 +1,21 @@
 using UnityEngine;
 using UnityEngine.Serialization;
+using XposeCraft.Core.Required;
 
-public class FactionManager : MonoBehaviour
+namespace XposeCraft.Core.Faction
 {
-    [FormerlySerializedAs("selectionTexture")] public Texture SelectionTexture;
-    [FormerlySerializedAs("groupList")] public GameObject[] FactionList = new GameObject[0];
-    [FormerlySerializedAs("types")] public UnitType[] UnitTypes = new UnitType[0];
-
-    void OnDrawGizmosSelected()
+    public class FactionManager : MonoBehaviour
     {
-        if (gameObject.name != "Faction Manager")
+        [FormerlySerializedAs("selectionTexture")] public Texture SelectionTexture;
+        [FormerlySerializedAs("groupList")] public GameObject[] FactionList = new GameObject[0];
+        [FormerlySerializedAs("types")] public UnitType[] UnitTypes = new UnitType[0];
+
+        void OnDrawGizmosSelected()
         {
-            gameObject.name = "Faction Manager";
+            if (gameObject.name != "Faction Manager")
+            {
+                gameObject.name = "Faction Manager";
+            }
         }
     }
 }

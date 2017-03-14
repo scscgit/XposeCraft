@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace XposeCraft.Test
 {
@@ -10,10 +10,6 @@ namespace XposeCraft.Test
     /// </summary>
     class BattleTest
     {
-        public BattleTest()
-        {
-        }
-
         public void BattleStage(Action startNextStage)
         {
             startNextStage();

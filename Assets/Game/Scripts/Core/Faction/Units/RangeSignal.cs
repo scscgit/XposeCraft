@@ -1,20 +1,23 @@
 using UnityEngine;
 
-public class RangeSignal : MonoBehaviour
+namespace XposeCraft.Core.Faction.Units
 {
-    public int type;
-    public UnitController cont;
-    UnitController script;
-
-    void OnTriggerEnter(Collider coll)
+    public class RangeSignal : MonoBehaviour
     {
-        if (coll.gameObject.CompareTag("Unit"))
+        public int type;
+        public UnitController cont;
+        UnitController script;
+
+        void OnTriggerEnter(Collider coll)
         {
-            script = coll.gameObject.GetComponent<UnitController>();
-            int state = cont.DetermineRelations(script.FactionIndex);
-            if (state == 2)
+            if (coll.gameObject.CompareTag("Unit"))
             {
-                cont.SphereSignal(type, coll.gameObject);
+                script = coll.gameObject.GetComponent<UnitController>();
+                int state = cont.DetermineRelations(script.FactionIndex);
+                if (state == 2)
+                {
+                    cont.SphereSignal(type, coll.gameObject);
+                }
             }
         }
     }

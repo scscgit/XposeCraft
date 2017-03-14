@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Units;

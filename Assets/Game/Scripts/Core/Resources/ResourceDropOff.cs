@@ -1,11 +1,14 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public class ResourceDropOff : MonoBehaviour
+namespace XposeCraft.Core.Resources
 {
-    public bool[] type = new bool[0];
-
-    void Start()
+    public class ResourceDropOff : MonoBehaviour
     {
-        GameObject.Find("Player Manager").GetComponent<ResourceManager>().AddDropOff(gameObject, type);
+        public bool[] type = new bool[0];
+
+        void Start()
+        {
+            GameObject.Find("Player Manager").GetComponent<ResourceManager>().AddDropOff(gameObject, type);
+        }
     }
 }

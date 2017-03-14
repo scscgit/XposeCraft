@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+using System;
+using UnityEngine;
 
-public class HUDFPS : MonoBehaviour
+namespace XposeCraft.Core.Misc
 {
+    public class HUDFPS : MonoBehaviour
+    {
 // Attach this to a GUIText to make a frames/second indicator.
 //
 // It calculates frames/second over each updateInterval,
@@ -13,54 +16,55 @@ public class HUDFPS : MonoBehaviour
 // correct overall FPS even if the interval renders something like
 // 5.5 frames.
 
-    public float updateInterval = 0.5F;
+        public float updateInterval = 0.5F;
 
-    private float accum; // FPS accumulated over the interval
-    private int frames; // Frames drawn over the interval
-    private float timeleft; // Left time for current interval
+        private float accum; // FPS accumulated over the interval
+        private int frames; // Frames drawn over the interval
+        private float timeleft; // Left time for current interval
 
-    void Start()
-    {
-        if (!GetComponent<GUIText>())
+        void Start()
         {
-            Debug.Log("UtilityFramesPerSecond needs a GUIText component!");
-            enabled = false;
-            return;
+            if (!GetComponent<GUIText>())
+            {
+                Debug.Log("UtilityFramesPerSecond needs a GUIText component!");
+                enabled = false;
+                return;
+            }
+            timeleft = updateInterval;
         }
-        timeleft = updateInterval;
-    }
 
-    void Update()
-    {
-        timeleft -= Time.deltaTime;
-        accum += Time.timeScale / Time.deltaTime;
-        ++frames;
+        void Update()
+        {
+            timeleft -= Time.deltaTime;
+            accum += Time.timeScale / Time.deltaTime;
+            ++frames;
 
-        // Interval ended - update GUI text and start new interval
-        if (!(timeleft <= 0.0))
-        {
-            return;
-        }
-        // display two fractional digits (f2 format)
-        float fps = accum / frames;
-        string format = System.String.Format("{0:F2} FPS", fps);
-        GetComponent<GUIText>().text = format;
+            // Interval ended - update GUI text and start new interval
+            if (!(timeleft <= 0.0))
+            {
+                return;
+            }
+            // display two fractional digits (f2 format)
+            float fps = accum / frames;
+            string format = String.Format("{0:F2} FPS", fps);
+            GetComponent<GUIText>().text = format;
 
-        if (fps < 30)
-        {
-            GetComponent<GUIText>().material.color = Color.yellow;
+            if (fps < 30)
+            {
+                GetComponent<GUIText>().material.color = Color.yellow;
+            }
+            else if (fps < 10)
+            {
+                GetComponent<GUIText>().material.color = Color.red;
+            }
+            else
+            {
+                GetComponent<GUIText>().material.color = Color.green;
+            }
+            //	DebugConsole.Log(format,level);
+            timeleft = updateInterval;
+            accum = 0.0F;
+            frames = 0;
         }
-        else if (fps < 10)
-        {
-            GetComponent<GUIText>().material.color = Color.red;
-        }
-        else
-        {
-            GetComponent<GUIText>().material.color = Color.green;
-        }
-        //	DebugConsole.Log(format,level);
-        timeleft = updateInterval;
-        accum = 0.0F;
-        frames = 0;
     }
 }

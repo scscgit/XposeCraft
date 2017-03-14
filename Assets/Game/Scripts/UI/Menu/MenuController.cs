@@ -1,44 +1,47 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-/// <summary>
-/// Toggle support for Menu window.
-/// </summary>
-public class MenuController : MonoBehaviour
+namespace XposeCraft.UI.Menu
 {
-    public GameObject menu;
-    public bool MenuAtStart;
-
-    UIController ui;
-    Animator animator;
-
-    void Start()
+    /// <summary>
+    /// Toggle support for Menu window.
+    /// </summary>
+    public class MenuController : MonoBehaviour
     {
-        this.ui = menu.GetComponent<UIController>();
-        this.animator = menu.GetComponent<Animator>();
+        public GameObject menu;
+        public bool MenuAtStart;
 
-        if (!MenuAtStart)
-        {
-            // Pausing the animator, disabling the Menu
-            animator.enabled = false;
-            // Last started animation was Show, we explicitly set Hide
-            ui.Hide();
-        }
-    }
+        UIController ui;
+        Animator animator;
 
-    void Update()
-    {
-        if (Input.GetButtonDown("Cancel"))
+        void Start()
         {
-            animator.enabled = true;
-            var show = ui.isShow;
-            Debug.logger.Log("Escape button pressed, " + (show ? "closing" : "opening") + " menu");
-            if (show)
+            this.ui = menu.GetComponent<UIController>();
+            this.animator = menu.GetComponent<Animator>();
+
+            if (!MenuAtStart)
             {
+                // Pausing the animator, disabling the Menu
+                animator.enabled = false;
+                // Last started animation was Show, we explicitly set Hide
                 ui.Hide();
             }
-            else if (!show)
+        }
+
+        void Update()
+        {
+            if (Input.GetButtonDown("Cancel"))
             {
-                ui.Show();
+                animator.enabled = true;
+                var show = ui.isShow;
+                Debug.logger.Log("Escape button pressed, " + (show ? "closing" : "opening") + " menu");
+                if (show)
+                {
+                    ui.Hide();
+                }
+                else if (!show)
+                {
+                    ui.Show();
+                }
             }
         }
     }

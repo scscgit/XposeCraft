@@ -1,57 +1,61 @@
 using UnityEngine;
+using XposeCraft.Core.Required;
 
-public class CursorManager : MonoBehaviour
+namespace XposeCraft.UI.Cursor
 {
-    public CursorType[] cursor;
-    string curState = "";
-    Vector2 hotSpot = Vector2.zero;
-
-    void OnDrawGizmos()
+    public class CursorManager : MonoBehaviour
     {
-        if (gameObject.name != "Cursor Manager")
-        {
-            gameObject.name = "Cursor Manager";
-        }
-    }
+        public CursorType[] cursor;
+        string curState = "";
+        Vector2 hotSpot = Vector2.zero;
 
-    void OnDrawGizmosSelected()
-    {
-        for (int x = 1; x < cursor.Length; x++)
+        void OnDrawGizmos()
         {
-            if (cursor[x].moveUp)
+            if (gameObject.name != "Cursor Manager")
             {
-                cursor[x].moveUp = false;
-                CursorType clone = cursor[x - 1];
-                cursor[x - 1] = cursor[x];
-                cursor[x] = clone;
+                gameObject.name = "Cursor Manager";
             }
         }
-    }
 
-    void Update()
-    {
-        for (int x = 0; x < cursor.Length; x++)
+        void OnDrawGizmosSelected()
         {
-            if (curState == cursor[x].tag)
+            for (int x = 1; x < cursor.Length; x++)
             {
-                Cursor.SetCursor(cursor[x].texture, hotSpot, new CursorMode());
+                if (cursor[x].moveUp)
+                {
+                    cursor[x].moveUp = false;
+                    CursorType clone = cursor[x - 1];
+                    cursor[x - 1] = cursor[x];
+                    cursor[x] = clone;
+                }
             }
         }
-        curState = cursor[cursor.Length - 1].tag;
-    }
 
-    public void CursorSet(string state)
-    {
-        for (int x = 0; x < cursor.Length; x++)
+        void Update()
         {
-            if (cursor[x].tag == curState)
+            for (int x = 0; x < cursor.Length; x++)
             {
-                break;
+                if (curState == cursor[x].tag)
+                {
+                    UnityEngine.Cursor.SetCursor(cursor[x].texture, hotSpot, new CursorMode());
+                }
             }
-            if (cursor[x].tag == state)
+            curState = cursor[cursor.Length - 1].tag;
+        }
+
+        public void CursorSet(string state)
+        {
+            for (int x = 0; x < cursor.Length; x++)
             {
-                curState = state;
-                break;
+                if (cursor[x].tag == curState)
+                {
+                    break;
+                }
+                if (cursor[x].tag == state)
+                {
+                    curState = state;
+                    break;
+                }
             }
         }
     }

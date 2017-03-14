@@ -1,22 +1,25 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public class TimedDestruction : MonoBehaviour
+namespace XposeCraft.Core.Misc
 {
-    public float time = 3;
-    float startTime;
-    bool set;
-
-    void OnEnable()
+    public class TimedDestruction : MonoBehaviour
     {
-        startTime = Time.time;
-        set = true;
-    }
+        public float time = 3;
+        float startTime;
+        bool set;
 
-    void Update()
-    {
-        if (set && startTime + time <= Time.time)
+        void OnEnable()
         {
-            gameObject.SetActive(false);
+            startTime = Time.time;
+            set = true;
+        }
+
+        void Update()
+        {
+            if (set && startTime + time <= Time.time)
+            {
+                gameObject.SetActive(false);
+            }
         }
     }
 }

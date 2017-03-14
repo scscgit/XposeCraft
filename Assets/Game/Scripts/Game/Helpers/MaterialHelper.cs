@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using XposeCraft.Game.Actors;
 using XposeCraft.Game.Actors.Materials;
@@ -12,8 +12,7 @@ namespace XposeCraft.Game.Helpers
         public static IList<TMaterial> GetMaterialsAsList<TMaterial>() where TMaterial : IMaterial
         {
             var list = new List<TMaterial>();
-            ForEach<TMaterial, XposeCraft.Game.Actors.Materials.Material>
-                (material => { list.Add(material); }, Player.CurrentPlayer.Materials);
+            ForEach<TMaterial, Material>(material => { list.Add(material); }, Player.CurrentPlayer.Materials);
             return list;
         }
 
@@ -25,7 +24,7 @@ namespace XposeCraft.Game.Helpers
         public static Mineral GetNearestMineralsTo(IActor actor)
         {
             Mineral closestMineral = null;
-            ForEach<Mineral, XposeCraft.Game.Actors.Materials.Material>(mineral =>
+            ForEach<Mineral, Material>(mineral =>
             {
                 if (closestMineral == null || mineral.Position < closestMineral.Position)
                 {

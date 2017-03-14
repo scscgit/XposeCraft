@@ -1,4 +1,4 @@
-﻿// Terrain Rotate tool by UnityCoder.com
+// Terrain Rotate tool by UnityCoder.com
 
 using UnityEditor;
 using UnityEngine;

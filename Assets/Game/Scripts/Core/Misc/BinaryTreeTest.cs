@@ -1,43 +1,47 @@
-﻿using UnityEngine;
+using UnityEngine;
+using XposeCraft.Core.Required;
 
-public class BinaryTreeTest : MonoBehaviour
+namespace XposeCraft.Core.Misc
 {
-    public bool remove;
-    public bool recalculate;
-    public int indexChanged;
-    public bool add;
-    public int numberToAdd;
-    public int indexToAdd;
-    public int lowestNumber;
-    public BinaryHeap heap;
-
-    void OnDrawGizmos()
+    public class BinaryTreeTest : MonoBehaviour
     {
-        if (add)
+        public bool remove;
+        public bool recalculate;
+        public int indexChanged;
+        public bool add;
+        public int numberToAdd;
+        public int indexToAdd;
+        public int lowestNumber;
+        public BinaryHeap heap;
+
+        void OnDrawGizmos()
         {
-            numberToAdd = Random.Range(0, 99);
-            indexToAdd = numberToAdd;
-            heap.Add(numberToAdd, indexToAdd);
-            add = false;
-        }
-        if (remove)
-        {
-            heap.Remove();
-            remove = false;
-        }
-        if (recalculate)
-        {
-            heap.Recalculate(indexChanged);
-            recalculate = false;
-        }
-        int lw = 100;
-        for (int x = 0; x < heap.numberOfItems; x++)
-        {
-            if (heap.binaryHeap[x].cost < lw)
+            if (add)
             {
-                lw = heap.binaryHeap[x].cost;
+                numberToAdd = Random.Range(0, 99);
+                indexToAdd = numberToAdd;
+                heap.Add(numberToAdd, indexToAdd);
+                add = false;
             }
+            if (remove)
+            {
+                heap.Remove();
+                remove = false;
+            }
+            if (recalculate)
+            {
+                heap.Recalculate(indexChanged);
+                recalculate = false;
+            }
+            int lw = 100;
+            for (int x = 0; x < heap.numberOfItems; x++)
+            {
+                if (heap.binaryHeap[x].cost < lw)
+                {
+                    lw = heap.binaryHeap[x].cost;
+                }
+            }
+            lowestNumber = lw;
         }
-        lowestNumber = lw;
     }
 }

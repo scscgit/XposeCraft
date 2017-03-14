@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+using System.Threading;
+using NUnit.Framework;
 
 namespace XposeCraft.Test
 {
@@ -7,7 +8,7 @@ namespace XposeCraft.Test
     {
         protected void Sleep(int milliseconds)
         {
-            System.Threading.Thread.Sleep(milliseconds);
+            Thread.Sleep(milliseconds);
         }
 
         protected string SuccessString(bool success)

@@ -1,45 +1,49 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
+using XposeCraft.Core.Required;
 
-public class ResourceManager : MonoBehaviour
+namespace XposeCraft.Core.Resources
 {
-    public ResourceType[] resourceTypes;
-    public List<GameObject> dropOffPoints;
-    public List<bool[]> dropOffTypes = new List<bool[]>(0);
-    public int dropOffAmount;
-
-    public void AddDropOff(GameObject obj, bool[] type)
+    public class ResourceManager : MonoBehaviour
     {
-        dropOffPoints.Add(obj);
-        dropOffTypes.Add(type);
-        dropOffAmount++;
-    }
+        public ResourceType[] resourceTypes;
+        public List<GameObject> dropOffPoints;
+        public List<bool[]> dropOffTypes = new List<bool[]>(0);
+        public int dropOffAmount;
 
-    public void RemoveDropOff(GameObject obj)
-    {
-        for (int x = 0; x < dropOffAmount; x++)
+        public void AddDropOff(GameObject obj, bool[] type)
         {
-            if (obj == dropOffPoints[x])
+            dropOffPoints.Add(obj);
+            dropOffTypes.Add(type);
+            dropOffAmount++;
+        }
+
+        public void RemoveDropOff(GameObject obj)
+        {
+            for (int x = 0; x < dropOffAmount; x++)
             {
-                dropOffPoints.RemoveAt(x);
-                dropOffTypes.RemoveAt(x);
-                dropOffAmount--;
-                //x--;
-                break;
+                if (obj == dropOffPoints[x])
+                {
+                    dropOffPoints.RemoveAt(x);
+                    dropOffTypes.RemoveAt(x);
+                    dropOffAmount--;
+                    //x--;
+                    break;
+                }
             }
         }
-    }
 
-    public void FixedUpdate()
-    {
-        for (int x = 0; x < dropOffAmount; x++)
+        public void FixedUpdate()
         {
-            if (dropOffPoints[x] == null)
+            for (int x = 0; x < dropOffAmount; x++)
             {
-                dropOffPoints.RemoveAt(x);
-                dropOffTypes.RemoveAt(x);
-                x--;
-                dropOffAmount--;
+                if (dropOffPoints[x] == null)
+                {
+                    dropOffPoints.RemoveAt(x);
+                    dropOffTypes.RemoveAt(x);
+                    x--;
+                    dropOffAmount--;
+                }
             }
         }
     }

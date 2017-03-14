@@ -1,20 +1,23 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public class ArrowManager : MonoBehaviour
+namespace XposeCraft.Core.Misc.Demo
 {
-    public Arrow[] arrows;
-
-    public void Attack(GameObject obj)
+    public class ArrowManager : MonoBehaviour
     {
-        for (int x = 0; x < arrows.Length; x++)
+        public Arrow[] arrows;
+
+        public void Attack(GameObject obj)
         {
-            if (arrows[x].landed)
+            for (int x = 0; x < arrows.Length; x++)
             {
-                arrows[x].transform.position = transform.position;
-                arrows[x].landed = false;
-                arrows[x].Attack(obj);
-                arrows[x].gameObject.SetActive(true);
-                break;
+                if (arrows[x].landed)
+                {
+                    arrows[x].transform.position = transform.position;
+                    arrows[x].landed = false;
+                    arrows[x].Attack(obj);
+                    arrows[x].gameObject.SetActive(true);
+                    break;
+                }
             }
         }
     }

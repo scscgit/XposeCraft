@@ -1,12 +1,15 @@
 using UnityEngine;
 
-public class AlterTime : MonoBehaviour
+namespace XposeCraft.Core.Misc
 {
-    public string key = "q";
-    public int modifier = 2;
-
-    void Update()
+    public class AlterTime : MonoBehaviour
     {
-        Time.timeScale = Input.GetKey(key) ? modifier : 1;
+        public string key = "q";
+        public int modifier = 2;
+
+        void Update()
+        {
+            Time.timeScale = Input.GetKey(key) ? modifier : 1;
+        }
     }
 }

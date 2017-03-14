@@ -1,5 +1,6 @@
-﻿using UnityEngine;
+using UnityEngine;
 using XposeCraft.Game.Actors.Materials;
+using XposeCraft.Game.Enums;
 
 namespace XposeCraft.Game.Actors.Units
 {
@@ -25,7 +26,7 @@ namespace XposeCraft.Game.Actors.Units
         // 2. start construction object, queued event when finished
         // 2.5. if interrupted, worker can repeat step 1 and continue on 2 without creating a new object
         // 3. finished event, return to gather
-        public void CreateBuilding(Enums.BuildingType buildingType, Position position)
+        public void CreateBuilding(BuildingType buildingType, Position position)
         {
         }
     }

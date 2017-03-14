@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using XposeCraft.Game;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Units;
@@ -15,10 +15,6 @@ namespace XposeCraft.Test.TestExamples
     /// </summary>
     class EconomyTest
     {
-        public EconomyTest()
-        {
-        }
-
         public void EconomyStage(Action startNextStage)
         {
             // Game started, the first worker will get to work

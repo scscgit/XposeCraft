@@ -1,7 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using XposeCraft.Collections;
 using XposeCraft.Game;
+using XposeCraft.Game.Actors.Buildings;
+using XposeCraft.Game.Actors.Materials;
+using XposeCraft.Game.Actors.Units;
 using XposeCraft.Game.Enums;
 
 namespace XposeCraft.GameInternal
@@ -41,9 +44,9 @@ namespace XposeCraft.GameInternal
 
         // In-game Actors available to the Player.
 
-        public List<Game.Actors.Units.Unit> Units;
-        public List<Game.Actors.Buildings.Building> Buildings;
-        public List<Game.Actors.Materials.Material> Materials;
+        public List<Unit> Units;
+        public List<Building> Buildings;
+        public List<Material> Materials;
 
         // Currencies of the Player.
 

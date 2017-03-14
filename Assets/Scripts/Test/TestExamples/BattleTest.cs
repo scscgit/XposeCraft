@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using XposeCraft.Game;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Units;
@@ -17,10 +17,6 @@ namespace XposeCraft.Test.TestExamples
     /// </summary>
     class BattleTest
     {
-        public BattleTest()
-        {
-        }
-
         public void BattleStage(Action startNextStage)
         {
             // Plan individual unit attacks or a return when meeting too many units

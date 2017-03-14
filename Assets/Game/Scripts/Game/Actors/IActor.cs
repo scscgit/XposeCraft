@@ -1,4 +1,4 @@
-﻿namespace XposeCraft.Game.Actors
+namespace XposeCraft.Game.Actors
 {
     public interface IActor
     {

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.GameInternal;
@@ -10,8 +10,7 @@ namespace XposeCraft.Game.Helpers
         public static IList<TBuilding> GetBuildingsAsList<TBuilding>() where TBuilding : IBuilding
         {
             var list = new List<TBuilding>();
-            ForEach<TBuilding, XposeCraft.Game.Actors.Buildings.Building>
-                (building => { list.Add(building); }, Player.CurrentPlayer.Buildings);
+            ForEach<TBuilding, Building>(building => { list.Add(building); }, Player.CurrentPlayer.Buildings);
             return list;
         }
 

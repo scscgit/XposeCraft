@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace XposeCraft.UnityWorkarounds
@@ -17,10 +18,10 @@ namespace XposeCraft.UnityWorkarounds
 
         static string GetLocation()
         {
-            var location = System.Environment.GetEnvironmentVariable("location");
+            var location = Environment.GetEnvironmentVariable("location");
             if (string.IsNullOrEmpty(location))
             {
-                throw new System.ArgumentException(
+                throw new ArgumentException(
                     "Wrong content of environment value \"location\", please define a location for build result");
             }
             return location;
@@ -29,7 +30,7 @@ namespace XposeCraft.UnityWorkarounds
         static BuildTarget GetTarget()
         {
             BuildTarget target;
-            switch (System.Environment.GetEnvironmentVariable("target").ToLower())
+            switch (Environment.GetEnvironmentVariable("target").ToLower())
             {
                 case "windows":
                 case "win":
@@ -64,7 +65,7 @@ namespace XposeCraft.UnityWorkarounds
                     break;
 
                 default:
-                    throw new System.ArgumentException(
+                    throw new ArgumentException(
                         "Wrong content of environment value \"target\", please define a build target platform");
             }
             return target;
@@ -73,7 +74,7 @@ namespace XposeCraft.UnityWorkarounds
         static BuildOptions GetOptions()
         {
             BuildOptions options;
-            switch (System.Environment.GetEnvironmentVariable("options").ToLower())
+            switch (Environment.GetEnvironmentVariable("options").ToLower())
             {
                 case "development":
                 case "dev":

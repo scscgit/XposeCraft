@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using XposeCraft.Game.Enums;
 using XposeCraft.GameInternal;
 

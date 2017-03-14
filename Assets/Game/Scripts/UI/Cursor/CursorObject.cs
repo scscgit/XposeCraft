@@ -1,20 +1,23 @@
 using UnityEngine;
 
-public class CursorObject : MonoBehaviour
+namespace XposeCraft.UI.Cursor
 {
-    CursorManager mang;
-    public string cursorTag;
-
-    void Start()
+    public class CursorObject : MonoBehaviour
     {
-        mang = GameObject.Find("Cursor Manager").GetComponent<CursorManager>();
-    }
+        CursorManager mang;
+        public string cursorTag;
 
-    void OnMouseOver()
-    {
-        if (this.enabled)
+        void Start()
         {
-            mang.SendMessage("CursorSet", cursorTag);
+            mang = GameObject.Find("Cursor Manager").GetComponent<CursorManager>();
+        }
+
+        void OnMouseOver()
+        {
+            if (enabled)
+            {
+                mang.SendMessage("CursorSet", cursorTag);
+            }
         }
     }
 }

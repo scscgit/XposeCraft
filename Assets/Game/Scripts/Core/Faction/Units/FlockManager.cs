@@ -1,27 +1,30 @@
+using System;
 using UnityEngine;
 
-public class FlockManager : MonoBehaviour
+namespace XposeCraft.Core.Faction.Units
 {
-    public Formation[] formations;
-    public Texture gridLineTexture;
-}
+    public class FlockManager : MonoBehaviour
+    {
+        public Formation[] formations;
+        public Texture gridLineTexture;
+    }
 
-[System.Serializable]
-public class Formation
-{
-    public string name = "Formation";
-    public FLine[] fLines;
-    public FGrid grid = new FGrid();
+    [Serializable]
+    public class Formation
+    {
+        public string name = "Formation";
+        public FLine[] fLines;
+        public FGrid grid = new FGrid();
 
-    //FPoint[] fPoints;
-}
+        //FPoint[] fPoints;
+    }
 
-[System.Serializable]
-public class FLine
-{
-    public float percent = 25;
-    public Vector2 pointIndex = new Vector2(0, 1);
-}
+    [Serializable]
+    public class FLine
+    {
+        public float percent = 25;
+        public Vector2 pointIndex = new Vector2(0, 1);
+    }
 
 /*
 [System.Serializable]
@@ -31,9 +34,10 @@ class FPoint {
 }
 */
 
-[System.Serializable]
-public class FGrid
-{
-    public Vector2 lw;
-    public float pointDisp;
+    [Serializable]
+    public class FGrid
+    {
+        public Vector2 lw;
+        public float pointDisp;
+    }
 }

@@ -1,25 +1,31 @@
 using UnityEngine;
+using XposeCraft.Core.Fog_Of_War;
 
-public class MiniMapSignal : MonoBehaviour
+namespace XposeCraft.UI.MiniMap
 {
-    public string miniMapTag;
-    public bool display;
-    public int factionIndex { get; set; }
-    public bool isStatic;
-    VisionReceiver receiver;
-
-    void Awake()
+    public class MiniMapSignal : MonoBehaviour
     {
-        if (!GameObject.Find("MiniMap").GetComponent<MiniMap>().AddElement(gameObject, miniMapTag, this, factionIndex))
+        public string miniMapTag;
+        public bool display;
+        public int factionIndex { get; set; }
+        public bool isStatic;
+        VisionReceiver receiver;
+
+        void Awake()
         {
-            Debug.Log("MiniMap : Unit Tag : " + miniMapTag + " Not Found");
+            if (!GameObject.Find("MiniMap")
+                .GetComponent<MiniMap>()
+                .AddElement(gameObject, miniMapTag, this, factionIndex))
+            {
+                Debug.Log("MiniMap : Unit Tag : " + miniMapTag + " Not Found");
+            }
+            receiver = GetComponent<VisionReceiver>();
         }
-        receiver = GetComponent<VisionReceiver>();
-    }
 
-    //If the renderer is disabled, the minimap icon will not show up
-    void FixedUpdate()
-    {
-        display = receiver == null || receiver.curState < 2;
+        //If the renderer is disabled, the minimap icon will not show up
+        void FixedUpdate()
+        {
+            display = receiver == null || receiver.curState < 2;
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using XposeCraft.Game.Control;
+using XposeCraft.Game.Control;
 
 namespace XposeCraft.Game.Actors.Units
 {

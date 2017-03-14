@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace XposeCraft.Game.Actors.Buildings
 {

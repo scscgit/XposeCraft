@@ -1,72 +1,76 @@
-﻿using UnityEngine;
+using UnityEngine;
+using XposeCraft.Core.Required;
 
-public class DemoScene : MonoBehaviour
+namespace XposeCraft.Core.Misc.Demo
 {
-    public GUISkin skin;
-    public GameObject siloTemplate;
-
-    string[] displayText =
+    public class DemoScene : MonoBehaviour
     {
-        "Hello, and welcome to the SRTS Pack Demo Scene! In this scene I am going to take you through the basics of the SRTS pack! First, please select a unit.",
-        "Great, now lets make an outpost to spot any oncoming attacks! With the units selected, click the outpost option in the bottom left of the screen and place it on the map in a discovered area.",
-        "Next lets go ahead and make a house to produce more worker units! Simply select the house option and place it in a discovered area.",
-        "Now lets produce 5 more worker units! Simply select the house and in the top right click Worker 5 times.",
-        "Alright, now we just need to make a silo for when the units are collecting resources. Simply place one here, since it is near the woods!",
-        "",
-        ""
-    };
+        public GUISkin skin;
+        public GameObject siloTemplate;
 
-    int state;
-    public UnitSelection select;
+        string[] displayText =
+        {
+            "Hello, and welcome to the SRTS Pack Demo Scene! In this scene I am going to take you through the basics of the SRTS pack! First, please select a unit.",
+            "Great, now lets make an outpost to spot any oncoming attacks! With the units selected, click the outpost option in the bottom left of the screen and place it on the map in a discovered area.",
+            "Next lets go ahead and make a house to produce more worker units! Simply select the house option and place it in a discovered area.",
+            "Now lets produce 5 more worker units! Simply select the house and in the top right click Worker 5 times.",
+            "Alright, now we just need to make a silo for when the units are collecting resources. Simply place one here, since it is near the woods!",
+            "",
+            ""
+        };
 
-    void OnGUI()
-    {
-        GUI.skin = skin;
-        GUI.Box(new Rect(Screen.width - 300, 0, 300, 100), displayText[state]);
-    }
+        int state;
+        public UnitSelection select;
 
-    void FixedUpdate()
-    {
-        if (state == 0)
+        void OnGUI()
         {
-            if (select != null && select.curSelectedLength > 0)
-            {
-                state = 1;
-            }
+            GUI.skin = skin;
+            GUI.Box(new Rect(Screen.width - 300, 0, 300, 100), displayText[state]);
         }
-        else if (state == 1)
+
+        void FixedUpdate()
         {
-            if (GameObject.Find("Outpost") != null)
+            if (state == 0)
             {
-                state = 2;
-            }
-        }
-        else if (state == 2)
-        {
-            if (GameObject.Find("House") != null)
-            {
-                state = 3;
-            }
-        }
-        else if (state == 3)
-        {
-            GameObject[] gameTag;
-            gameTag = GameObject.FindGameObjectsWithTag("Unit");
-            int amount = 0;
-            for (int x = 0; x < gameTag.Length; x++)
-            {
-                if (gameTag[x].name == "Worker Unit")
+                if (select != null && select.curSelectedLength > 0)
                 {
-                    amount++;
+                    state = 1;
                 }
             }
-            if (amount >= 10)
+            else if (state == 1)
             {
-                state = 4;
+                if (GameObject.Find("Outpost") != null)
+                {
+                    state = 2;
+                }
             }
-        }
-        else if (state == 4)
-        {
+            else if (state == 2)
+            {
+                if (GameObject.Find("House") != null)
+                {
+                    state = 3;
+                }
+            }
+            else if (state == 3)
+            {
+                GameObject[] gameTag;
+                gameTag = GameObject.FindGameObjectsWithTag("Unit");
+                int amount = 0;
+                for (int x = 0; x < gameTag.Length; x++)
+                {
+                    if (gameTag[x].name == "Worker Unit")
+                    {
+                        amount++;
+                    }
+                }
+                if (amount >= 10)
+                {
+                    state = 4;
+                }
+            }
+            else if (state == 4)
+            {
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace XposeCraft.Game.Control.GameActions
+namespace XposeCraft.Game.Control.GameActions
 {
     /// <summary>
     /// Action of a movement to a new position,

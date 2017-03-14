@@ -1,4 +1,4 @@
-﻿namespace XposeCraft.Test
+namespace XposeCraft.Test
 {
     /// <summary>
     /// Any custom class made by a student.

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using XposeCraft.Game.Actors;
 
 namespace XposeCraft.Game.Helpers
