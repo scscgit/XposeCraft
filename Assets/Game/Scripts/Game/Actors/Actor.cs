@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace XposeCraft.Game.Actors
@@ -8,7 +9,13 @@ namespace XposeCraft.Game.Actors
     /// </summary>
     public abstract class Actor : ScriptableObject, IActor
     {
-        protected GameObject GameObject { get; private set; }
+        [SerializeField] private GameObject _gameObject;
+
+        protected GameObject GameObject
+        {
+            get { return _gameObject; }
+            private set { _gameObject = value; }
+        }
 
         public Position Position
         {
@@ -25,12 +32,32 @@ namespace XposeCraft.Game.Actors
         /// </summary>
         /// <param name="gameObject">Actor representation as a GameObject</param>
         /// <typeparam name="T">Subclass type</typeparam>
-        /// <returns></returns>
+        /// <returns>New instance of an Actor</returns>
         public static T Create<T>(GameObject gameObject) where T : Actor
         {
             var instance = CreateInstance<T>();
             instance.GameObject = gameObject;
             return instance;
+        }
+
+        /// <summary>
+        /// The only safe way to create an Actor is to add him to a GameObject.
+        /// </summary>
+        /// <param name="gameObject">Actor representation as a GameObject, null if it has to be created</param>
+        /// <typeparam name="T">Subclass type</typeparam>
+        /// <returns>Attached instance of the Actor</returns>
+        [Obsolete]
+        public static T CreateAsMonoBehaviour<T>(GameObject gameObject) where T : Actor
+        {
+            // Alternative to be used when if the Actor is MonoBehaviour instead of ScriptableObject
+            throw new InvalidOperationException();
+//            if (gameObject == null)
+//            {
+//                gameObject = new GameObject {name = typeof(T).Name};
+//            }
+//            var instance = gameObject.AddComponent<T>();
+//            instance.GameObject = gameObject;
+//            return instance;
         }
 
         protected Actor(GameObject gameObject)

@@ -3,7 +3,7 @@ using XposeCraft.Game.Actors;
 
 namespace XposeCraft.Game.Helpers
 {
-    abstract class ActorHelper<TForActorHelper> where TForActorHelper : IActor
+    public abstract class ActorHelper<TForActorHelper> where TForActorHelper : IActor
     {
         public delegate void ForEachAction<in TActor>(TActor unit);
 

@@ -1,33 +1,30 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using XposeCraft.Collections;
-using XposeCraft.Game;
 using XposeCraft.Game.Actors.Buildings;
-using XposeCraft.Game.Actors.Materials;
 using XposeCraft.Game.Actors.Units;
-using XposeCraft.Game.Enums;
+using Event = XposeCraft.Game.Event;
+using EventType = XposeCraft.Game.Enums.EventType;
+using Material = XposeCraft.Game.Actors.Materials.Material;
 
 namespace XposeCraft.GameInternal
 {
     /// <summary>
     /// Data structures that make up the Model of a Player used within a game.
+    /// It is a good idea not to persist it as a prefab, as the instance will usually hold references to Scene objects.
     /// </summary>
-    [Serializable]
-    public class Player
+    public class Player : MonoBehaviour
     {
-        /// <summary>
-        /// Unity hot-swap serialization workaround.
-        /// </summary>
+        // Unity hot-swap serialization workarounds.
+
         [Serializable]
         public class EventList : List<Event>
         {
         }
 
-        /// <summary>
-        /// Unity hot-swap serialization workaround.
-        /// </summary>
         [Serializable]
-        public class RegisteredEventsDictionary : SerializableDictionary<EventType, EventList>
+        public class RegisteredEventsDictionary : SerializableDictionary3<EventType, EventList>
         {
         }
 

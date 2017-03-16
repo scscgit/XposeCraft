@@ -1,5 +1,10 @@
 using System.Threading;
 using NUnit.Framework;
+using UnityEngine;
+using XposeCraft.Game.Actors;
+using XposeCraft.Game.Actors.Buildings;
+using XposeCraft.Game.Helpers;
+using XposeCraft.GameInternal;
 
 namespace XposeCraft.Test
 {
@@ -26,7 +31,14 @@ namespace XposeCraft.Test
         [Test]
         public void RunTests()
         {
-            Assert.True(false);
+            var gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+            var nubianFactoryMock = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            nubianFactoryMock.name = "NubianFactoryMock";
+            gameManager.Players[0].Buildings.Add(Actor.Create<NubianArmory>(nubianFactoryMock));
+
+            Player.CurrentPlayer = gameManager.Players[0];
+            Assert.AreEqual(1, BuildingHelper.GetBuildings<IBuilding>().Length);
+
             /*
             // Creating Model
             Model.Instance.Buildings.Add(new BaseCenter(PlaceType.NearBase));

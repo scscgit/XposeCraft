@@ -13,7 +13,11 @@ namespace XposeCraft.UnityWorkarounds
         {
             string[] scenes = {"Assets/Game/Scenes/BasicScene.unity"};
 
-            BuildPipeline.BuildPlayer(scenes, GetLocation(), GetTarget(), GetOptions());
+            var buildError = BuildPipeline.BuildPlayer(scenes, GetLocation(), GetTarget(), GetOptions());
+            if (!buildError.Equals(string.Empty))
+            {
+                throw new Exception(buildError);
+            }
         }
 
         static string GetLocation()

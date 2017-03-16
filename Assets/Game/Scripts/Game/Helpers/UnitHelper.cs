@@ -8,7 +8,7 @@ namespace XposeCraft.Game.Helpers
     /// <summary>
     /// Provide easy access for operations, that may be complicated or impossible by using direct API of other classess.
     /// </summary>
-    class UnitHelper : ActorHelper<IUnit>
+    public sealed class UnitHelper : ActorHelper<IUnit>
     {
         public static IList<TUnit> GetUnitsAsList<TUnit>() where TUnit : IUnit
         {

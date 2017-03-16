@@ -14,7 +14,7 @@ namespace XposeCraft.Collections
     /// </summary>
     /// <typeparam name="TKey">The type of keys in the dictionary.</typeparam>
     /// <typeparam name="TValue">The type of values in the dictionary.</typeparam>
-    public class ParentSerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
+    public class SerializableDictionary2<TKey, TValue> : Dictionary<TKey, TValue>, ISerializationCallbackReceiver
     {
         [SerializeField, HideInInspector] private List<TKey> _serializedKeys = new List<TKey>();
         [SerializeField, HideInInspector] private List<TValue> _serializedValues = new List<TValue>();

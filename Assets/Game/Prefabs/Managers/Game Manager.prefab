@@ -52,17 +52,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Players:
-  - RegisteredEvents:
-      _keys: 
-      _values: []
-    Units: []
-    Buildings: []
-    Materials: []
-    Minerals: 0
-  - RegisteredEvents:
-      _keys: 
-      _values: []
-    Units: []
-    Buildings: []
-    Materials: []
-    Minerals: 0
+  - {fileID: 0}

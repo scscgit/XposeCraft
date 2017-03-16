@@ -7,7 +7,7 @@ using XposeCraft.GameInternal;
 
 namespace XposeCraft.Game.Helpers
 {
-    class MaterialHelper : ActorHelper<IMaterial>
+    public sealed class MaterialHelper : ActorHelper<IMaterial>
     {
         public static IList<TMaterial> GetMaterialsAsList<TMaterial>() where TMaterial : IMaterial
         {

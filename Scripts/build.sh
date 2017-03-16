@@ -8,44 +8,44 @@ project="XposeCraft"
 # I used executeMethod workaround, but a not-yet tested -testscenes=TestScene1,TestScene2 that is not in a documentation may possibly work too
 
 echo "Attempting to build $project for Windows"
-export location="$(pwd)/Build/windows/$project.exe"
+export location="$(pwd)/Builds/windows/$project.exe"
 export target="win"
-export options=""
+export options="none"
 /Applications/Unity/Unity.app/Contents/MacOS/Unity \
   -batchmode \
   -nographics \
   -silent-crashes \
   -logFile $(pwd)/unity.log \
   -projectPath $(pwd) \
-  -executeMethod "BuildProject.Build" \
+  -executeMethod "XposeCraft.UnityWorkarounds.BuildProject.Build" \
   -quit
 win=$?
 
 echo "Attempting to build $project for OS X"
-export location="$(pwd)/Build/osx/$project.exe"
+export location="$(pwd)/Builds/osx/$project.exe"
 export target="osx"
-export options=""
+export options="none"
 /Applications/Unity/Unity.app/Contents/MacOS/Unity \
   -batchmode \
   -nographics \
   -silent-crashes \
   -logFile $(pwd)/unity.log \
   -projectPath $(pwd) \
-  -executeMethod "BuildProject.Build" \
+  -executeMethod "XposeCraft.UnityWorkarounds.BuildProject.Build" \
   -quit
 osx=$?
 
 echo "Attempting to build $project for Linux"
-export location="$(pwd)/Build/linux/$project.exe"
+export location="$(pwd)/Builds/linux/$project.exe"
 export target="linux"
-export options=""
+export options="none"
 /Applications/Unity/Unity.app/Contents/MacOS/Unity \
   -batchmode \
   -nographics \
   -silent-crashes \
   -logFile $(pwd)/unity.log \
   -projectPath $(pwd) \
-  -executeMethod "BuildProject.Build" \
+  -executeMethod "XposeCraft.UnityWorkarounds.BuildProject.Build" \
   -quit
 linux=$?
 

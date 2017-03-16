@@ -5,7 +5,7 @@ using XposeCraft.GameInternal;
 
 namespace XposeCraft.Game.Helpers
 {
-    class BuildingHelper : ActorHelper<IBuilding>
+    public sealed class BuildingHelper : ActorHelper<IBuilding>
     {
         public static IList<TBuilding> GetBuildingsAsList<TBuilding>() where TBuilding : IBuilding
         {
