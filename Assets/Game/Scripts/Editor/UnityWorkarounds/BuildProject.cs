@@ -1,6 +1,11 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityTest;
+using UnityTest.IntegrationTestRunner;
 
 namespace XposeCraft.UnityWorkarounds
 {
@@ -9,14 +14,84 @@ namespace XposeCraft.UnityWorkarounds
     /// </summary>
     public class BuildProject : MonoBehaviour
     {
+        private class TestCallback : ITestRunnerCallback
+        {
+            public void RunStarted(string platform, List<TestComponent> testsToRun)
+            {
+                print("*** Run started ***");
+            }
+
+            public void RunFinished(List<TestResult> testResults)
+            {
+                print("*** Run finished ***");
+                _stopTests = true;
+            }
+
+            public void AllScenesFinished()
+            {
+                print("*** All scenes finished ***");
+            }
+
+            public void TestStarted(TestResult test)
+            {
+                print("*** Test started ***");
+            }
+
+            public void TestFinished(TestResult test)
+            {
+                print("*** Test finished ***");
+            }
+
+            public void TestRunInterrupted(List<ITestComponent> testsNotRun)
+            {
+                print("*** Test run interrupted ***");
+                _stopTests = true;
+            }
+        }
+
+        private static readonly string[] BuildScenes =
+        {
+            "Assets/Game/Scenes/BasicScene.unity"
+        };
+
+        private static readonly string[] TestScenes =
+        {
+            BuildScenes[0],
+            "Assets/Game/Scenes/AutomationTest.unity"
+        };
+
+        private static bool _stopTests;
+
         public static void Build()
         {
-            string[] scenes = {"Assets/Game/Scenes/BasicScene.unity"};
-
-            var buildError = BuildPipeline.BuildPlayer(scenes, GetLocation(), GetTarget(), GetOptions());
+            var buildError = BuildPipeline.BuildPlayer(BuildScenes, GetLocation(), GetTarget(), GetOptions());
             if (!buildError.Equals(string.Empty))
             {
+                Debug.LogError(buildError);
                 throw new Exception(buildError);
+            }
+        }
+
+        /// <summary>
+        /// Run tests after combining the scenes.
+        /// Currently not working.
+        /// </summary>
+        [Obsolete]
+        public static void Test()
+        {
+            foreach (string scene in TestScenes)
+            {
+                EditorSceneManager.OpenScene(scene, OpenSceneMode.Additive);
+            }
+            var testRunner = TestRunner.GetTestRunner();
+            testRunner.TestRunnerCallback.Add(new TestCallback());
+            print("*** Start of testing ***");
+            Batch.RunIntegrationTests(null, TestScenes.ToList(), new List<string>());
+
+            while (!_stopTests)
+            {
+                System.Threading.Thread.Sleep(5000);
+                print(_stopTests ? "*** End of testing ***" : "*** Tests are still running ***");
             }
         }
 

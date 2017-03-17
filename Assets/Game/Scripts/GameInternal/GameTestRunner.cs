@@ -1,15 +1,13 @@
 using System.Threading;
-using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.Assertions;
 using XposeCraft.Game.Actors;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Helpers;
-using XposeCraft.GameInternal;
 
-namespace XposeCraft.Test
+namespace XposeCraft.GameInternal
 {
-    [TestFixture]
-    class GameTestRunner
+    public class GameTestRunner : MonoBehaviour
     {
         protected void Sleep(int milliseconds)
         {
@@ -23,14 +21,15 @@ namespace XposeCraft.Test
 
         public delegate void NextStageStarter();
 
-        [SetUp]
-        public void Init()
+        private void Start()
         {
+            RunTests();
         }
 
-        [Test]
         public void RunTests()
         {
+            print("*** " + typeof(GameTestRunner).Name + ".RunTests called ***");
+
             var gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
             var nubianFactoryMock = GameObject.CreatePrimitive(PrimitiveType.Cube);
             nubianFactoryMock.name = "NubianFactoryMock";
@@ -38,6 +37,8 @@ namespace XposeCraft.Test
 
             Player.CurrentPlayer = gameManager.Players[0];
             Assert.AreEqual(1, BuildingHelper.GetBuildings<IBuilding>().Length);
+
+            IntegrationTest.Pass();
 
             /*
             // Creating Model

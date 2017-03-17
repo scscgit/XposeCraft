@@ -60,13 +60,13 @@ fi
 
 if [ $osx -ne 0 ]
 then
-  echo "OS X build failed with error code $win."
+  echo "OS X build failed with error code $osx."
   exit $osx
 fi
 
 if [ $linux -ne 0 ]
 then
-  echo "Linux build failed with error code $win."
+  echo "Linux build failed with error code $linux."
   exit $linux
 fi
 
