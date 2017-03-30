@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using XposeCraft.Core.Faction.Units;
-using XposeCraft.Core.Grid;
+using XposeCraft.Core.Grids;
 
 namespace XposeCraft.Core.Required
 {

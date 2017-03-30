@@ -1,5 +1,5 @@
 using UnityEngine;
-using XposeCraft.Core.Grid;
+using XposeCraft.Core.Grids;
 
 namespace XposeCraft.Core.Misc
 {

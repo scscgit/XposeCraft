@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.Serialization;
-using XposeCraft.Core.Grid;
+using XposeCraft.Core.Grids;
 using XposeCraft.Core.Required;
 using XposeCraft.Core.Resources;
 

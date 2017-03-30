@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using XposeCraft.Core.Grid;
+using XposeCraft.Core.Grids;
 
 namespace XposeCraft.RTS
 {

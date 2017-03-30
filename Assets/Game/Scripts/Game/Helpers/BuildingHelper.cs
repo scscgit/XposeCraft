@@ -17,7 +17,7 @@ namespace XposeCraft.Game.Helpers
         public static Position ClosestEmptySpaceTo(IBuilding building)
         {
             // TODO: implement, demo
-            return new Position();
+            return null;
         }
 
         public static TBuilding[] GetBuildings<TBuilding>() where TBuilding : IBuilding

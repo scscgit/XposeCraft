@@ -1,7 +1,7 @@
 using UnityEngine;
 using XposeCraft.Core.Required;
 
-namespace XposeCraft.Core.Grid
+namespace XposeCraft.Core.Grids
 {
     public class SeedObjects : MonoBehaviour
     {

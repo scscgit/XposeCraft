@@ -1,8 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
+using XposeCraft.Core.Faction.Units;
 using XposeCraft.Core.Fog_Of_War;
-using XposeCraft.Core.Grid;
+using XposeCraft.Core.Grids;
 using XposeCraft.Core.Required;
 using XposeCraft.Core.Resources;
+using XposeCraft.Game;
 
 namespace XposeCraft.Core.Faction.Buildings
 {
@@ -18,7 +21,6 @@ namespace XposeCraft.Core.Faction.Buildings
         public int gridI;
         int loc;
         int factionIndex;
-        bool aStar = false;
         public bool placed { get; set; }
 
         public void Start()
@@ -54,7 +56,7 @@ namespace XposeCraft.Core.Faction.Buildings
             placed = false;
             if (place)
             {
-                PlaceBuild();
+                TryPlaceBuild();
             }
         }
 
@@ -122,7 +124,7 @@ namespace XposeCraft.Core.Faction.Buildings
             }
         }
 
-        public void PlaceBuild()
+        public void TryPlaceBuild()
         {
             if (Input.GetButtonDown("RMB"))
             {
@@ -151,22 +153,22 @@ namespace XposeCraft.Core.Faction.Buildings
                 loc = i;
                 obj.transform.position = uGrid.grids[gridI].points[i].loc;
             }
-            bool canPlace = build.CheckPoints(uGrid, gridI, loc) && fog.CheckLocation(obj.transform.position);
-            if (!canPlace || !Input.GetButtonDown("LMB"))
+            if (!Input.GetButtonDown("LMB"))
             {
                 return;
             }
-            GameObject tempObj;
-            build.ClosePoints(uGrid, gridI, loc, aStar);
-
-            if (build.autoBuild)
+            if (!PlaceProgressBuilding(
+                build,
+                unitSelect.curSelectedS,
+                factionIndex,
+                new Position(loc),
+                obj.transform.position,
+                obj.transform.rotation,
+                uGrid.grids[gridI],
+                fog,
+                resourceManager))
             {
-                tempObj = Instantiate(build.obj, obj.transform.position, obj.transform.rotation) as GameObject;
-            }
-            else
-            {
-                tempObj = Instantiate(build.progressObj, obj.transform.position, obj.transform.rotation) as GameObject;
-                unitSelect.SetTarget(tempObj, tempObj.transform.position);
+                return;
             }
             if (!Input.GetButton("ContinuePlace"))
             {
@@ -174,14 +176,37 @@ namespace XposeCraft.Core.Faction.Buildings
                 place = false;
                 placed = true;
             }
-            for (int x = 0; x < build.cost.Length; x++)
+        }
+
+        public static bool PlaceProgressBuilding(Building building, List<UnitController> builderUnits,
+            int factionIndex, Position position, Vector3 vPos, Quaternion rotation,
+            Grid grid, Fog fog, ResourceManager resourceManager)
+        {
+            if (!building.CheckPoints(grid, position.PointLocation) || !fog.CheckLocation(vPos))
             {
-                resourceManager.resourceTypes[x].amount -= build.cost[x];
+                return false;
+            }
+            GameObject tempObj;
+            building.ClosePoints(grid, position.PointLocation);
+
+            if (building.autoBuild)
+            {
+                tempObj = Instantiate(building.obj, vPos, rotation) as GameObject;
+            }
+            else
+            {
+                tempObj = Instantiate(building.progressObj, vPos, rotation) as GameObject;
+                UnitSelection.SetTarget(builderUnits, tempObj, tempObj.transform.position);
+            }
+            for (int x = 0; x < building.cost.Length; x++)
+            {
+                resourceManager.resourceTypes[x].amount -= building.cost[x];
             }
             BuildingController script = tempObj.GetComponent<BuildingController>();
-            script.building = build;
-            script.loc = loc;
+            script.building = building;
+            script.loc = position.PointLocation;
             script.FactionIndex = factionIndex;
+            return true;
         }
     }
 }

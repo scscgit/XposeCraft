@@ -6,11 +6,13 @@ using UnityEditor;
 
 #endif
 
-namespace XposeCraft.Core.Grid
+namespace XposeCraft.Core.Grids
 {
     [ExecuteInEditMode]
     public class UGrid : MonoBehaviour
     {
+        public const string ScriptName = "UGrid";
+
         public Grid[] grids = new Grid[1];
         public bool generate;
         public int index;
@@ -19,9 +21,9 @@ namespace XposeCraft.Core.Grid
 
         void OnDrawGizmos()
         {
-            if (gameObject.name != "UGrid")
+            if (gameObject.name != ScriptName)
             {
-                gameObject.name = "UGrid";
+                gameObject.name = ScriptName;
             }
             // Regenerating the Grid when the Editor Scene view loads
             if (grids[index].points == null)

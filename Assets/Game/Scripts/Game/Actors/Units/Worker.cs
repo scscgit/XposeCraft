@@ -1,5 +1,12 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+using XposeCraft.Core.Faction.Buildings;
+using XposeCraft.Core.Faction.Units;
+using XposeCraft.Core.Required;
 using XposeCraft.Game.Actors.Materials;
-using XposeCraft.Game.Enums;
+using XposeCraft.GameInternal;
+using BuildingType = XposeCraft.Game.Enums.BuildingType;
 
 namespace XposeCraft.Game.Actors.Units
 {
@@ -9,6 +16,14 @@ namespace XposeCraft.Game.Actors.Units
     public class Worker : Unit
     {
         public IMaterial Gathering { get; private set; }
+
+        private UnitController _unitController;
+
+        protected override void Initialize()
+        {
+            base.Initialize();
+            _unitController = GameObject.GetComponent<UnitController>();
+        }
 
         public void SendGather(IMaterial material)
         {
@@ -23,6 +38,37 @@ namespace XposeCraft.Game.Actors.Units
         // 3. finished event, return to gather
         public void CreateBuilding(BuildingType buildingType, Position position)
         {
+            BuildingPlacement.PlaceProgressBuilding(
+                FindBuildingInFaction(buildingType),
+                new List<UnitController> {_unitController},
+                _unitController.FactionIndex,
+                position,
+                position.Location,
+                Quaternion.identity,
+                GameManager.Instance.UGrid.grids[GameManager.Instance.UGrid.index],
+                GameManager.Instance.Fog,
+                GameManager.Instance.ResourceManager
+            );
+        }
+
+        private Building FindBuildingInFaction(BuildingType buildingType)
+        {
+            for (var index = 0; index < Player.CurrentPlayer.Faction.BuildingList.Length; index++)
+            {
+                var building = Player.CurrentPlayer.Faction.BuildingList[index];
+                if (!building.obj.name.Equals(buildingType.ToString()))
+                {
+                    continue;
+                }
+                if (!_unitController.build.build[index].canBuild)
+                {
+                    throw new InvalidOperationException(
+                        "Building of the chosen building type cannot be built by this Unit");
+                }
+                return building;
+            }
+            throw new InvalidOperationException(
+                "Building of the chosen building type is not available in your Faction");
         }
     }
 }

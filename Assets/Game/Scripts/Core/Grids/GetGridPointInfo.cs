@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace XposeCraft.Core.Grid
+namespace XposeCraft.Core.Grids
 {
     public class GetGridPointInfo : MonoBehaviour
     {

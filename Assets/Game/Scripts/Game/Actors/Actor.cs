@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using XposeCraft.GameInternal;
 
 namespace XposeCraft.Game.Actors
 {
@@ -21,8 +22,8 @@ namespace XposeCraft.Game.Actors
         {
             get
             {
-                // TODO: create new position based on GridPoint
-                return null;
+                var uGrid = GameManager.Instance.UGrid;
+                return new Position(uGrid.DetermineLoc(GameObject.transform.position, uGrid.index));
             }
         }
 

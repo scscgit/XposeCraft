@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Faction.Units;
-using XposeCraft.Core.Grid;
+using XposeCraft.Core.Grids;
 using XposeCraft.Core.Resources;
 using XposeCraft.UI.MiniMap;
 using Object = UnityEngine.Object;
@@ -1185,14 +1185,14 @@ namespace XposeCraft.Core.Required
         public int[] closePoints = new int[1];
         public string description = "Description";
 
-        public void ClosePoints(UGrid grid, int gridI, int index, bool pathing)
+        public void ClosePoints(Grid grid, int index)
         {
             for (int x = -closeWidth; x <= closeWidth; x++)
             {
                 for (int y = -closeLength; y <= closeLength; y++)
                 {
-                    int i = x + y * grid.grids[gridI].size;
-                    grid.grids[gridI].points[index + i].state =
+                    int i = x + y * grid.size;
+                    grid.points[index + i].state =
                         closePoints[(x + closeWidth) * (closeLength * 2 + 1) + (y + closeLength)];
                 }
             }
@@ -1210,7 +1210,7 @@ namespace XposeCraft.Core.Required
             }
         }
 
-        public bool CheckPoints(UGrid grid, int gridI, int index)
+        public bool CheckPoints(Grid grid, int index)
         {
             bool state = true;
             for (int x = -closeWidth; x <= closeWidth; x++)
@@ -1219,7 +1219,7 @@ namespace XposeCraft.Core.Required
                 {
                     if (closePoints[(x + closeWidth) * closeLength + (y + closeLength)] != 0)
                     {
-                        if (grid.grids[gridI].points[index + x + y * grid.grids[gridI].size].state == 2)
+                        if (grid.points[index + x + y * grid.size].state == 2)
                         {
                             state = false;
                         }

@@ -65,10 +65,9 @@ namespace XposeCraft.UnityWorkarounds
         public static void Build()
         {
             var buildError = BuildPipeline.BuildPlayer(BuildScenes, GetLocation(), GetTarget(), GetOptions());
-            if (!buildError.Equals(string.Empty))
+            if (!string.IsNullOrEmpty(buildError))
             {
                 Debug.LogError(buildError);
-                throw new Exception(buildError);
             }
         }
 

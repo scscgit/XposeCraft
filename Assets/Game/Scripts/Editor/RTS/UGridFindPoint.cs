@@ -1,6 +1,6 @@
 using UnityEditor;
 using UnityEngine;
-using XposeCraft.Core.Grid;
+using XposeCraft.Core.Grids;
 using XposeCraft.Core.Misc;
 
 namespace XposeCraft.RTS

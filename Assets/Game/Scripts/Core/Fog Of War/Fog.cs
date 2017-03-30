@@ -8,6 +8,8 @@ namespace XposeCraft.Core.Fog_Of_War
 {
     public class Fog : MonoBehaviour
     {
+        public const string ScriptName = "Fog";
+
         // This is the basis script of the fog of war system
         // Without this, the VisionSignal, VisionBlocker, and VisionReceiver scripts won't do anything
 
@@ -68,9 +70,9 @@ namespace XposeCraft.Core.Fog_Of_War
             // This is required so that the terrain's mat will be reset after the game ends
             ResetTransparentTerrain();
 
-            if (gameObject.name != "Fog")
+            if (gameObject.name != ScriptName)
             {
-                gameObject.name = "Fog";
+                gameObject.name = ScriptName;
             }
         }
 

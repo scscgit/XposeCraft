@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using XposeCraft.Collections;
+using XposeCraft.Core.Faction;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Units;
+using XposeCraft.Game.Enums;
 using Event = XposeCraft.Game.Event;
 using EventType = XposeCraft.Game.Enums.EventType;
 using Material = XposeCraft.Game.Actors.Materials.Material;
@@ -33,6 +35,9 @@ namespace XposeCraft.GameInternal
         /// Needs to be replaced before executing any Event.
         /// </summary>
         public static Player CurrentPlayer;
+
+        public PlaceType PlaceType;
+        public Faction Faction;
 
         /// <summary>
         /// Actions hooked to Events that can, but don't have to be, run at any time.

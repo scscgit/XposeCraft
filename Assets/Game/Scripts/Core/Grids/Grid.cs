@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace XposeCraft.Core.Grid
+namespace XposeCraft.Core.Grids
 {
     [Serializable]
     public class Grid

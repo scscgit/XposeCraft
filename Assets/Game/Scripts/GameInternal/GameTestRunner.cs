@@ -1,8 +1,12 @@
+using System;
+using System.Collections;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.Assertions;
 using XposeCraft.Game.Actors;
 using XposeCraft.Game.Actors.Buildings;
+using XposeCraft.Game.Actors.Units;
+using XposeCraft.Game.Enums;
 using XposeCraft.Game.Helpers;
 
 namespace XposeCraft.GameInternal
@@ -17,6 +21,12 @@ namespace XposeCraft.GameInternal
         protected string SuccessString(bool success)
         {
             return success ? "finished successfully" : "failed";
+        }
+
+        protected IEnumerator RunAfterSeconds(int seconds, Action action)
+        {
+            yield return new WaitForSeconds(seconds);
+            action.Invoke();
         }
 
         public delegate void NextStageStarter();
@@ -38,7 +48,11 @@ namespace XposeCraft.GameInternal
             Player.CurrentPlayer = gameManager.Players[0];
             Assert.AreEqual(1, BuildingHelper.GetBuildings<IBuilding>().Length);
 
-            IntegrationTest.Pass();
+            var worker = Actor.Create<Worker>(GameObject.Find("Goblin"));
+            gameManager.Players[0].Units.Add(worker);
+
+            StartCoroutine(RunAfterSeconds(2, () => worker.CreateBuilding(BuildingType.NubianArmory, worker.Position)));
+            StartCoroutine(RunAfterSeconds(4, IntegrationTest.Pass));
 
             /*
             // Creating Model

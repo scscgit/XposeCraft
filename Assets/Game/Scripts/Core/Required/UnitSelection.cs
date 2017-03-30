@@ -4,7 +4,7 @@ using UnityEngine.Serialization;
 using XposeCraft.Core.Faction;
 using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Faction.Units;
-using XposeCraft.Core.Grid;
+using XposeCraft.Core.Grids;
 using XposeCraft.UI.MiniMap;
 
 namespace XposeCraft.Core.Required
@@ -30,7 +30,6 @@ namespace XposeCraft.Core.Required
         Vector2 endLoc;
         Vector3 endLocV3;
         bool deselected;
-        Vector3 movePoint;
 
         // Hidden Info
         //{
@@ -185,6 +184,11 @@ namespace XposeCraft.Core.Required
 
         public void SetTarget(GameObject obj, Vector3 loc)
         {
+            SetTarget(curSelectedS, obj, loc);
+        }
+
+        public static void SetTarget(List<UnitController> units, GameObject obj, Vector3 loc)
+        {
             string type; // = "None";
             if (obj.CompareTag("Unit"))
             {
@@ -202,23 +206,9 @@ namespace XposeCraft.Core.Required
             {
                 type = "Location";
             }
-            movePoint = loc;
-            int z = 0;
-            if (type == "Location")
+            foreach (UnitController unit in units)
             {
-                for (int x = 0; x < curSelectedLength; x++)
-                {
-                    UnitController unit = curSelectedS[z];
-                    unit.SetTarget(obj, movePoint, type);
-                    z++;
-                }
-            }
-            else
-            {
-                for (int x = 0; x < curSelectedLength; x++)
-                {
-                    curSelectedS[x].SetTarget(obj, movePoint, type);
-                }
+                unit.SetTarget(obj, loc, type);
             }
         }
 

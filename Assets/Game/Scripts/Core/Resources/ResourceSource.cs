@@ -1,5 +1,5 @@
 using UnityEngine;
-using XposeCraft.Core.Grid;
+using XposeCraft.Core.Grids;
 
 namespace XposeCraft.Core.Resources
 {
@@ -35,7 +35,7 @@ namespace XposeCraft.Core.Resources
         {
             UGrid uGrid = GameObject.Find("UGrid").GetComponent<UGrid>();
             int index = DetermineLoc(transform.position, uGrid);
-            Grid.Grid grid = uGrid.grids[gridI];
+            Grid grid = uGrid.grids[gridI];
             grid.points[index].state = 0;
             for (int x = -closeSize; x <= closeSize; x++)
             {
@@ -51,7 +51,7 @@ namespace XposeCraft.Core.Resources
         {
             UGrid uGrid = GameObject.Find("UGrid").GetComponent<UGrid>();
             int index = DetermineLoc(transform.position, uGrid);
-            Grid.Grid grid = uGrid.grids[gridI];
+            Grid grid = uGrid.grids[gridI];
             grid.points[index].state = 2;
             for (int x = -closeSize; x <= closeSize; x++)
             {
@@ -65,7 +65,7 @@ namespace XposeCraft.Core.Resources
 
         int DetermineLoc(Vector3 loc, UGrid gridScript)
         {
-            Grid.Grid grid = gridScript.grids[gridI];
+            Grid grid = gridScript.grids[gridI];
             float xLoc = loc.x - grid.startLoc.x;
             float yLoc = loc.z - grid.startLoc.z;
             int x = Mathf.RoundToInt(xLoc / grid.nodeDist);
