@@ -26,6 +26,10 @@ namespace XposeCraft.Game.Actors
             }
         }
 
+        protected virtual void Initialize()
+        {
+        }
+
         /// <summary>
         /// The only safe way to create an Actor. Constructor usage is not advised for ScriptableObject.
         /// Source: http://answers.unity3d.com/questions/310847/how-to-create-instance-of-scriptableobject-and-pas.html
@@ -37,6 +41,7 @@ namespace XposeCraft.Game.Actors
         {
             var instance = CreateInstance<T>();
             instance.GameObject = gameObject;
+            instance.Initialize();
             return instance;
         }
 
@@ -58,11 +63,6 @@ namespace XposeCraft.Game.Actors
 //            var instance = gameObject.AddComponent<T>();
 //            instance.GameObject = gameObject;
 //            return instance;
-        }
-
-        protected Actor(GameObject gameObject)
-        {
-            GameObject = gameObject;
         }
     }
 }

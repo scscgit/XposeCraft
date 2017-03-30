@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000011176261026}
   m_Layer: 0
-  m_Name: Temp NubianComplex
+  m_Name: Temp NubianArmory
   m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35,7 +35,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000012221062930}
   m_Layer: 11
-  m_Name: NubianComplex
+  m_Name: NubianArmory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

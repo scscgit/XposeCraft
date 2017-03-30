@@ -1,4 +1,3 @@
-using UnityEngine;
 using XposeCraft.Game.Control;
 using XposeCraft.Game.Control.GameActions;
 
@@ -16,10 +15,6 @@ namespace XposeCraft.Game.Actors.Units
         public int MaxHealth
         {
             get { return -1; }
-        }
-
-        protected Unit(GameObject gameObject) : base(gameObject)
-        {
         }
 
         // TODO: deprecate in favor of equals operator?

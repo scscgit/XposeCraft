@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace XposeCraft.Game.Actors.Buildings
 {
     /// <summary>
@@ -7,10 +5,6 @@ namespace XposeCraft.Game.Actors.Buildings
     /// </summary>
     public class BaseCenter : Building
     {
-        public BaseCenter(GameObject gameObject) : base(gameObject)
-        {
-        }
-
         public bool CreateWorker()
         {
             return false;

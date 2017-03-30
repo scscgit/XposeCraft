@@ -1,4 +1,3 @@
-using UnityEngine;
 using XposeCraft.Game.Actors.Materials;
 using XposeCraft.Game.Enums;
 
@@ -10,10 +9,6 @@ namespace XposeCraft.Game.Actors.Units
     public class Worker : Unit
     {
         public IMaterial Gathering { get; private set; }
-
-        public Worker(GameObject gameObject) : base(gameObject)
-        {
-        }
 
         public void SendGather(IMaterial material)
         {
