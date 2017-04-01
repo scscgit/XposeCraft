@@ -1,17 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Faction.Units;
 using XposeCraft.Core.Required;
+using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Materials;
 using XposeCraft.GameInternal;
+using Building = XposeCraft.Core.Required.Building;
 using BuildingType = XposeCraft.Game.Enums.BuildingType;
 
 namespace XposeCraft.Game.Actors.Units
 {
     /// <summary>
-    /// Can gather various materials (mainly minerals) and build various buildings.
+    /// Can gather various resources and build various buildings.
     /// </summary>
     public class Worker : Unit
     {
@@ -36,19 +39,45 @@ namespace XposeCraft.Game.Actors.Units
         // 2. start construction object, queued event when finished
         // 2.5. if interrupted, worker can repeat step 1 and continue on 2 without creating a new object
         // 3. finished event, return to gather
-        public void CreateBuilding(BuildingType buildingType, Position position)
+        public IBuilding CreateBuilding(BuildingType buildingType, Position position)
         {
-            BuildingPlacement.PlaceProgressBuilding(
-                FindBuildingInFaction(buildingType),
-                new List<UnitController> {_unitController},
-                _unitController.FactionIndex,
-                position,
-                position.Location,
-                Quaternion.identity,
-                GameManager.Instance.UGrid.grids[GameManager.Instance.UGrid.index],
-                GameManager.Instance.Fog,
-                GameManager.Instance.ResourceManager
+            return Create<Buildings.Building>(
+                DetermineBuildingType(buildingType),
+                BuildingPlacement.PlaceProgressBuilding(
+                    FindBuildingInFaction(buildingType),
+                    new List<UnitController> {_unitController},
+                    _unitController.FactionIndex,
+                    position,
+                    position.Location,
+                    Quaternion.identity,
+                    GameManager.Instance.UGrid.grids[GameManager.Instance.UGrid.index],
+                    GameManager.Instance.Fog,
+                    GameManager.Instance.ResourceManager
+                )
             );
+        }
+
+        public bool FinishBuiding(IBuilding building)
+        {
+            if (building.Finished)
+            {
+                return false;
+            }
+            building.FinishBuildingByWorker(new List<UnitController> {_unitController});
+            return true;
+        }
+
+        private Type DetermineBuildingType(BuildingType buildingType)
+        {
+            switch (buildingType)
+            {
+                case BuildingType.BaseCenter:
+                    return typeof(BaseCenter);
+                case BuildingType.NubianArmory:
+                    return typeof(NubianArmory);
+                default:
+                    throw new InvalidEnumArgumentException();
+            }
         }
 
         private Building FindBuildingInFaction(BuildingType buildingType)

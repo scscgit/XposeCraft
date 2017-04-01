@@ -3,6 +3,9 @@ using XposeCraft.Core.Fog_Of_War;
 using XposeCraft.Core.Grids;
 using XposeCraft.Core.Resources;
 using XposeCraft.Game;
+using XposeCraft.Game.Actors;
+using XposeCraft.Game.Actors.Buildings;
+using XposeCraft.Game.Actors.Units;
 using EventType = XposeCraft.Game.Enums.EventType;
 
 namespace XposeCraft.GameInternal
@@ -14,6 +17,9 @@ namespace XposeCraft.GameInternal
         public static GameManager Instance;
 
         public Player[] Players;
+        public Object BaseCenterPrefab;
+        public Object WorkerPrefab;
+        public int StartingWorkers = 1;
         private object _firedEventLock;
 
         public UGrid UGrid { get; private set; }
@@ -35,6 +41,33 @@ namespace XposeCraft.GameInternal
             UGrid = GameObject.Find(UGrid.ScriptName).GetComponent<UGrid>();
             Fog = GameObject.Find(Fog.ScriptName).GetComponent<Fog>();
             ResourceManager = GameObject.Find("Player Manager").GetComponent<ResourceManager>();
+        }
+
+        private void Start()
+        {
+            foreach (var player in Players)
+            {
+                player.Buildings.Add(
+                    Actor.Create<BaseCenter>(
+                        (GameObject) Instantiate(
+                            BaseCenterPrefab,
+                            player.MyBase.Center.Location,
+                            Quaternion.identity)
+                    )
+                );
+
+                for (var workerIndex = 0; workerIndex < StartingWorkers; workerIndex++)
+                {
+                    player.Units.Add(
+                        Actor.Create<Worker>(
+                            (GameObject) Instantiate(
+                                WorkerPrefab,
+                                ((BaseCenter) player.Buildings[0]).SpawnPosition.Location,
+                                Quaternion.identity)
+                        )
+                    );
+                }
+            }
         }
 
         private void Update()

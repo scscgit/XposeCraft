@@ -33,12 +33,12 @@ namespace XposeCraft.Test.TestExamples
                 {
                     // After he collected minerals, another worker will be built
                     var baseCenter = BuildingHelper.GetBuildings<BaseCenter>()[0];
-                    baseCenter.CreateWorker();
+                    baseCenter.CreateUnit(UnitType.Worker);
 
                     // After creating (it means after few seconds), he will need to go gather too
                     Event.Register(EventType.UnitCreated, argsB =>
                     {
-                        if (argsB.MyUnit.GetType().Equals(typeof(Worker)))
+                        if (argsB.MyUnit.GetType() == typeof(Worker))
                         {
                             Worker worker = (Worker) argsB.MyUnit;
                             worker.SendGather(MaterialHelper.GetNearestMineralsTo(worker));

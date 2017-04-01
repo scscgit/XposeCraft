@@ -52,9 +52,9 @@ namespace XposeCraft.Test.TestExamples
             Event.Register(EventType.BuildingCreated, args =>
             {
                 if (
-                    args.MyBuilding.GetType().Equals(typeof(NubianArmory))
+                    args.MyBuilding.GetType() == typeof(NubianArmory)
                     &&
-                    args.MyUnit.GetType().Equals(typeof(Worker))
+                    args.MyUnit.GetType() == typeof(Worker)
                 )
                 {
                     var worker = (Worker) args.MyUnit;

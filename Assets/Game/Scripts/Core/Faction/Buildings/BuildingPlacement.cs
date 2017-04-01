@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using XposeCraft.Core.Faction.Units;
@@ -178,35 +179,43 @@ namespace XposeCraft.Core.Faction.Buildings
             }
         }
 
-        public static bool PlaceProgressBuilding(Building building, List<UnitController> builderUnits,
+        public static GameObject PlaceProgressBuilding(Building building, List<UnitController> builderUnits,
             int factionIndex, Position position, Vector3 vPos, Quaternion rotation,
             Grid grid, Fog fog, ResourceManager resourceManager)
         {
             if (!building.CheckPoints(grid, position.PointLocation) || !fog.CheckLocation(vPos))
             {
-                return false;
+                throw new InvalidOperationException(building + " building placement location is invalid");
             }
-            GameObject tempObj;
-            building.ClosePoints(grid, position.PointLocation);
-
-            if (building.autoBuild)
+            for (int x = 0; x < building.cost.Length; x++)
             {
-                tempObj = Instantiate(building.obj, vPos, rotation) as GameObject;
-            }
-            else
-            {
-                tempObj = Instantiate(building.progressObj, vPos, rotation) as GameObject;
-                UnitSelection.SetTarget(builderUnits, tempObj, tempObj.transform.position);
+                if (resourceManager.resourceTypes[x].amount < building.cost[x])
+                {
+                    throw new InvalidOperationException("Not enough resources for placing the " + " building");
+                }
             }
             for (int x = 0; x < building.cost.Length; x++)
             {
                 resourceManager.resourceTypes[x].amount -= building.cost[x];
             }
-            BuildingController script = tempObj.GetComponent<BuildingController>();
+            GameObject buildingObject;
+            building.ClosePoints(grid, position.PointLocation);
+
+            if (building.autoBuild)
+            {
+                buildingObject = (GameObject) Instantiate(building.obj, vPos, rotation);
+            }
+            else
+            {
+                buildingObject = (GameObject) Instantiate(building.progressObj, vPos, rotation);
+                UnitSelection.SetTarget(builderUnits, buildingObject, buildingObject.transform.position);
+            }
+
+            BuildingController script = buildingObject.GetComponent<BuildingController>();
             script.building = building;
             script.loc = position.PointLocation;
             script.FactionIndex = factionIndex;
-            return true;
+            return buildingObject;
         }
     }
 }

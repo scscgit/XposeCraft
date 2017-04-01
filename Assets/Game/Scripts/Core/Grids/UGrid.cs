@@ -339,6 +339,10 @@ namespace XposeCraft.Core.Grids
             }
         }
 
+        public int DetermineLoc(Vector3 loc)
+        {
+            return DetermineLoc(loc, index);
+        }
 
         public int DetermineLoc(Vector3 loc, int gridI)
         {

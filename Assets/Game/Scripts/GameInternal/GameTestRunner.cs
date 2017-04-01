@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.Assertions;
-using XposeCraft.Game.Actors;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Units;
 using XposeCraft.Game.Enums;
@@ -38,21 +38,28 @@ namespace XposeCraft.GameInternal
 
         public void RunTests()
         {
-            print("*** " + typeof(GameTestRunner).Name + ".RunTests called ***");
+            Log.i("*** " + typeof(GameTestRunner).Name + ".RunTests called ***");
 
             var gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
-            var nubianFactoryMock = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            nubianFactoryMock.name = "NubianFactoryMock";
-            gameManager.Players[0].Buildings.Add(Actor.Create<NubianArmory>(nubianFactoryMock));
-
             Player.CurrentPlayer = gameManager.Players[0];
+
             Assert.AreEqual(1, BuildingHelper.GetBuildings<IBuilding>().Length);
+            Assert.AreEqual(1, BuildingHelper.GetBuildings<BaseCenter>().Length);
+            var units = gameManager.StartingWorkers;
+            Assert.AreEqual(units, UnitHelper.GetUnits<IUnit>().Length);
+            Assert.AreEqual(units, UnitHelper.GetUnits<Worker>().Length);
 
-            var worker = Actor.Create<Worker>(GameObject.Find("Goblin"));
-            gameManager.Players[0].Units.Add(worker);
+            var workers = UnitHelper.GetUnitsAsList<Worker>();
 
-            StartCoroutine(RunAfterSeconds(1,
-                () => worker.CreateBuilding(BuildingType.NubianArmory, PlaceType.MyBase.Left)));
+            StartCoroutine(RunAfterSeconds(1, () =>
+            {
+                var building = workers[0].CreateBuilding(BuildingType.NubianArmory, PlaceType.MyBase.Left);
+                foreach (var worker in workers)
+                {
+                    worker.FinishBuiding(building);
+                }
+            }));
+
             StartCoroutine(RunAfterSeconds(5, IntegrationTest.Pass));
 
             /*

@@ -2,12 +2,21 @@ using XposeCraft.Game.Enums;
 
 namespace XposeCraft.Game.Actors.Buildings
 {
-    public class NubianArmory : Building
+    public class NubianArmory : Building, IUnitProduction
     {
-        public bool CreateUnit(UnitType type)
+        public new bool CreateUnit(UnitType type)
         {
-            // TODO: add to the queue, event when created, public accessors to the current state
-            return true;
+            return base.CreateUnit(type);
+        }
+
+        public new int QueuedUnits
+        {
+            get { return base.QueuedUnits; }
+        }
+
+        public new int QueueLimit
+        {
+            get { return base.QueueLimit; }
         }
     }
 }

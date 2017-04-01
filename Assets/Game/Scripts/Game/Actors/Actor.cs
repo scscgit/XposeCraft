@@ -20,11 +20,7 @@ namespace XposeCraft.Game.Actors
 
         public Position Position
         {
-            get
-            {
-                var uGrid = GameManager.Instance.UGrid;
-                return new Position(uGrid.DetermineLoc(GameObject.transform.position, uGrid.index));
-            }
+            get { return new Position(GameManager.Instance.UGrid.DetermineLoc(GameObject.transform.position)); }
         }
 
         protected virtual void Initialize()
@@ -40,30 +36,19 @@ namespace XposeCraft.Game.Actors
         /// <returns>New instance of an Actor</returns>
         public static T Create<T>(GameObject gameObject) where T : Actor
         {
-            var instance = CreateInstance<T>();
+            return Create<T>(typeof(T), gameObject);
+        }
+
+        public static T Create<T>(Type type, GameObject gameObject) where T : Actor
+        {
+            if (!typeof(T).IsAssignableFrom(type))
+            {
+                throw new InvalidOperationException("T does not match type parameter");
+            }
+            var instance = (T) CreateInstance(type);
             instance.GameObject = gameObject;
             instance.Initialize();
             return instance;
-        }
-
-        /// <summary>
-        /// The only safe way to create an Actor is to add him to a GameObject.
-        /// </summary>
-        /// <param name="gameObject">Actor representation as a GameObject, null if it has to be created</param>
-        /// <typeparam name="T">Subclass type</typeparam>
-        /// <returns>Attached instance of the Actor</returns>
-        [Obsolete]
-        public static T CreateAsMonoBehaviour<T>(GameObject gameObject) where T : Actor
-        {
-            // Alternative to be used when if the Actor is MonoBehaviour instead of ScriptableObject
-            throw new InvalidOperationException();
-//            if (gameObject == null)
-//            {
-//                gameObject = new GameObject {name = typeof(T).Name};
-//            }
-//            var instance = gameObject.AddComponent<T>();
-//            instance.GameObject = gameObject;
-//            return instance;
         }
     }
 }
