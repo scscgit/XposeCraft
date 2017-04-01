@@ -148,7 +148,11 @@ namespace XposeCraft.Core.Faction.Buildings
             {
                 return;
             }
-            int i = uGrid.DetermineLoc(hit.point, gridI);
+            int i = uGrid.DetermineLocation(hit.point, gridI);
+            if (!uGrid.IsValidLocation(i))
+            {
+                return;
+            }
             if (uGrid.grids[gridI].points[i].state != 2)
             {
                 loc = i;
@@ -158,16 +162,20 @@ namespace XposeCraft.Core.Faction.Buildings
             {
                 return;
             }
-            if (!PlaceProgressBuilding(
-                build,
-                unitSelect.curSelectedS,
-                factionIndex,
-                new Position(loc),
-                obj.transform.position,
-                obj.transform.rotation,
-                uGrid.grids[gridI],
-                fog,
-                resourceManager))
+            try
+            {
+                PlaceProgressBuilding(
+                    build,
+                    unitSelect.curSelectedS,
+                    factionIndex,
+                    new Position(loc),
+                    obj.transform.position,
+                    obj.transform.rotation,
+                    uGrid.grids[gridI],
+                    fog,
+                    resourceManager);
+            }
+            catch (InvalidOperationException)
             {
                 return;
             }

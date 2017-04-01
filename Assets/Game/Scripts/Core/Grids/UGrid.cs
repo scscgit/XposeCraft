@@ -339,23 +339,33 @@ namespace XposeCraft.Core.Grids
             }
         }
 
-        public int DetermineLoc(Vector3 loc)
+        public int DetermineLocation(Vector3 location)
         {
-            return DetermineLoc(loc, index);
+            return DetermineLocation(location, index);
         }
 
-        public int DetermineLoc(Vector3 loc, int gridI)
+        public int DetermineLocation(Vector3 location, int gridIndex)
         {
-            float xLoc = loc.x - grids[gridI].startLoc.x;
-            float yLoc = loc.z - grids[gridI].startLoc.z;
-            int x = Mathf.RoundToInt(xLoc / grids[gridI].nodeDist);
-            int y = Mathf.RoundToInt(yLoc / grids[gridI].nodeDist);
-            return x + y * grids[gridI].size;
+            float xLoc = location.x - grids[gridIndex].startLoc.x;
+            float yLoc = location.z - grids[gridIndex].startLoc.z;
+            int x = Mathf.RoundToInt(xLoc / grids[gridIndex].nodeDist);
+            int y = Mathf.RoundToInt(yLoc / grids[gridIndex].nodeDist);
+            return x + y * grids[gridIndex].size;
+        }
+
+        public bool IsValidLocation(int location)
+        {
+            return IsValidLocation(location, index);
+        }
+
+        public bool IsValidLocation(int location, int gridIndex)
+        {
+            return location >= 0 && location < grids[gridIndex].points.Length;
         }
 
         public Vector3 DetermineNearestPoint(Vector3 startPoint, Vector3 point, int i)
         {
-            int loc = DetermineLoc(point, i);
+            int loc = DetermineLocation(point, i);
             if (grids[i].points[loc].state != 2)
             {
                 return grids[i].points[loc].loc;

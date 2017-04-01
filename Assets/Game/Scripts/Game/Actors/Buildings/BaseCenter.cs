@@ -20,7 +20,7 @@ namespace XposeCraft.Game.Actors.Buildings
                 {
                     if (component.name == SpawnPositionName)
                     {
-                        return new Position(GameManager.Instance.UGrid.DetermineLoc(component.position));
+                        return new Position(GameManager.Instance.UGrid.DetermineLocation(component.position));
                     }
                 }
                 throw new InvalidOperationException(

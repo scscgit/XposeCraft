@@ -47,24 +47,20 @@ namespace XposeCraft.GameInternal
         {
             foreach (var player in Players)
             {
-                player.Buildings.Add(
-                    Actor.Create<BaseCenter>(
-                        (GameObject) Instantiate(
-                            BaseCenterPrefab,
-                            player.MyBase.Center.Location,
-                            Quaternion.identity)
-                    )
+                Player.CurrentPlayer = player;
+                Actor.Create<BaseCenter>(
+                    (GameObject) Instantiate(
+                        BaseCenterPrefab,
+                        player.MyBase.Center.Location,
+                        Quaternion.identity)
                 );
-
                 for (var workerIndex = 0; workerIndex < StartingWorkers; workerIndex++)
                 {
-                    player.Units.Add(
-                        Actor.Create<Worker>(
-                            (GameObject) Instantiate(
-                                WorkerPrefab,
-                                ((BaseCenter) player.Buildings[0]).SpawnPosition.Location,
-                                Quaternion.identity)
-                        )
+                    Actor.Create<Worker>(
+                        (GameObject) Instantiate(
+                            WorkerPrefab,
+                            ((BaseCenter) player.Buildings[0]).SpawnPosition.Location,
+                            Quaternion.identity)
                     );
                 }
             }

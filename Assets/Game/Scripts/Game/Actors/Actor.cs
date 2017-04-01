@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using XposeCraft.Game.Actors.Buildings;
+using XposeCraft.Game.Actors.Units;
 using XposeCraft.GameInternal;
 
 namespace XposeCraft.Game.Actors
@@ -20,7 +22,7 @@ namespace XposeCraft.Game.Actors
 
         public Position Position
         {
-            get { return new Position(GameManager.Instance.UGrid.DetermineLoc(GameObject.transform.position)); }
+            get { return new Position(GameManager.Instance.UGrid.DetermineLocation(GameObject.transform.position)); }
         }
 
         protected virtual void Initialize()
@@ -48,6 +50,19 @@ namespace XposeCraft.Game.Actors
             var instance = (T) CreateInstance(type);
             instance.GameObject = gameObject;
             instance.Initialize();
+            var building = instance as Building;
+            if (building != null)
+            {
+                Player.CurrentPlayer.Buildings.Add(building);
+            }
+            else
+            {
+                var unit = instance as Unit;
+                if (unit != null)
+                {
+                    Player.CurrentPlayer.Units.Add(unit);
+                }
+            }
             return instance;
         }
     }

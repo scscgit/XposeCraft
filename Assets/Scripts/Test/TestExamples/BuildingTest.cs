@@ -1,6 +1,7 @@
 using System;
 using XposeCraft.Game;
 using XposeCraft.Game.Actors.Buildings;
+using XposeCraft.Game.Actors.Resources.Minerals;
 using XposeCraft.Game.Actors.Units;
 using XposeCraft.Game.Enums;
 using XposeCraft.Game.Helpers;
@@ -58,7 +59,7 @@ namespace XposeCraft.Test.TestExamples
                 )
                 {
                     var worker = (Worker) args.MyUnit;
-                    worker.SendGather(MaterialHelper.GetNearestMineralsTo(worker));
+                    worker.SendGather(ResourceHelper.GetNearestResourceTo<Mineral>(worker));
                     BuildArmy(startNextStage);
                 }
                 args.ThisEvent.UnregisterEvent();

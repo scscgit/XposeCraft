@@ -27,8 +27,7 @@ namespace XposeCraft.Game.Actors.Buildings
         /// </summary>
         public void FinishBuildingByWorker(List<UnitController> builderUnits)
         {
-            // todo pos.loc change for gobject.transform.pos
-            UnitSelection.SetTarget(builderUnits, GameObject, Position.Location);
+            UnitSelection.SetTarget(builderUnits, GameObject, GameObject.transform.position);
         }
 
         protected bool CreateUnit(UnitType type)

@@ -34,14 +34,9 @@ namespace XposeCraft.Game
             _pointLocation = pointLocation;
         }
 
-        public static bool operator <(Position left, Position right)
+        public Path PathFrom(Position position)
         {
-            return true;
-        }
-
-        public static bool operator >(Position left, Position right)
-        {
-            return false;
+            return new Path(position, this);
         }
     }
 }

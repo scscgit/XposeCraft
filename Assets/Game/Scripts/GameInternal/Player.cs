@@ -4,11 +4,11 @@ using UnityEngine;
 using XposeCraft.Collections;
 using XposeCraft.Core.Faction;
 using XposeCraft.Game.Actors.Buildings;
+using XposeCraft.Game.Actors.Resources;
 using XposeCraft.Game.Actors.Units;
 using XposeCraft.Game.Enums;
 using Event = XposeCraft.Game.Event;
 using EventType = XposeCraft.Game.Enums.EventType;
-using Material = XposeCraft.Game.Actors.Materials.Material;
 
 namespace XposeCraft.GameInternal
 {
@@ -53,7 +53,7 @@ namespace XposeCraft.GameInternal
 
         public List<Unit> Units;
         public List<Building> Buildings;
-        public List<Material> Materials;
+        public List<Resource> Resources;
 
         // Currencies of the Player.
 

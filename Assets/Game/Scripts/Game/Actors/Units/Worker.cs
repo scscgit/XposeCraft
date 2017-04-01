@@ -4,9 +4,8 @@ using System.ComponentModel;
 using UnityEngine;
 using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Faction.Units;
-using XposeCraft.Core.Required;
 using XposeCraft.Game.Actors.Buildings;
-using XposeCraft.Game.Actors.Materials;
+using XposeCraft.Game.Actors.Resources;
 using XposeCraft.GameInternal;
 using Building = XposeCraft.Core.Required.Building;
 using BuildingType = XposeCraft.Game.Enums.BuildingType;
@@ -18,7 +17,7 @@ namespace XposeCraft.Game.Actors.Units
     /// </summary>
     public class Worker : Unit
     {
-        public IMaterial Gathering { get; private set; }
+        public IResource Gathering { get; private set; }
 
         private UnitController _unitController;
 
@@ -28,10 +27,10 @@ namespace XposeCraft.Game.Actors.Units
             _unitController = GameObject.GetComponent<UnitController>();
         }
 
-        public void SendGather(IMaterial material)
+        public void SendGather(IResource resource)
         {
             // TODO: override ReplaceActionQueue to set Gathering back to null; make Gathering an action
-            Gathering = material;
+            Gathering = resource;
         }
 
         // TODO:
