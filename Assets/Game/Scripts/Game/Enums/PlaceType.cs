@@ -6,58 +6,31 @@ namespace XposeCraft.Game.Enums
     [Serializable]
     public class PlaceType
     {
-        public Position NearBase_;
-        public Position UnderBaseRamp_;
-        public Position EnemyBaseCenter_;
-        public Position EnemyBasePositionLeft_;
-        public Position EnemyBasePositionFront_;
-        public Position EnemyBasePositionRight_;
-        public Position EnemyBasePositionBack_;
+        public Position Center;
+        public Position Left;
+        public Position Right;
+        public Position Front;
+        public Position Back;
+        public Position UnderRamp;
 
-        public static Position NearBase
+        public static PlaceType MyBase
         {
-            get { return Player.CurrentPlayer.PlaceType.NearBase_; }
+            get { return Player.CurrentPlayer.MyBase; }
         }
 
-        public static Position UnderBaseRamp
+        public static PlaceType EnemyBase
         {
-            get { return Player.CurrentPlayer.PlaceType.UnderBaseRamp_; }
-        }
-
-        public static Position EnemyBaseCenter
-        {
-            get { return Player.CurrentPlayer.PlaceType.EnemyBaseCenter_; }
-        }
-
-        public static Position EnemyBasePositionLeft
-        {
-            get { return Player.CurrentPlayer.PlaceType.EnemyBasePositionLeft_; }
-        }
-
-        public static Position EnemyBasePositionFront
-        {
-            get { return Player.CurrentPlayer.PlaceType.EnemyBasePositionFront_; }
-        }
-
-        public static Position EnemyBasePositionRight
-        {
-            get { return Player.CurrentPlayer.PlaceType.EnemyBasePositionRight_; }
-        }
-
-        public static Position EnemyBasePositionBack
-        {
-            get { return Player.CurrentPlayer.PlaceType.EnemyBasePositionBack_; }
+            get { return Player.CurrentPlayer.EnemyBase; }
         }
 
         public PlaceType(Position[] positions)
         {
-            NearBase_ = positions[0];
-            UnderBaseRamp_ = positions[1];
-            EnemyBaseCenter_ = positions[2];
-            EnemyBasePositionLeft_ = positions[3];
-            EnemyBasePositionFront_ = positions[4];
-            EnemyBasePositionRight_ = positions[5];
-            EnemyBasePositionBack_ = positions[6];
+            Center = positions[0];
+            Left = positions[1];
+            Right = positions[2];
+            Front = positions[3];
+            Back = positions[4];
+            UnderRamp = positions[5];
         }
     }
 }

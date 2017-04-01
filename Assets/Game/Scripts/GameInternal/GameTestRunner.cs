@@ -51,8 +51,9 @@ namespace XposeCraft.GameInternal
             var worker = Actor.Create<Worker>(GameObject.Find("Goblin"));
             gameManager.Players[0].Units.Add(worker);
 
-            StartCoroutine(RunAfterSeconds(2, () => worker.CreateBuilding(BuildingType.NubianArmory, worker.Position)));
-            StartCoroutine(RunAfterSeconds(4, IntegrationTest.Pass));
+            StartCoroutine(RunAfterSeconds(1,
+                () => worker.CreateBuilding(BuildingType.NubianArmory, PlaceType.MyBase.Left)));
+            StartCoroutine(RunAfterSeconds(5, IntegrationTest.Pass));
 
             /*
             // Creating Model

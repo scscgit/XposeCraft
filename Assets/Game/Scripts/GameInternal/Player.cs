@@ -36,8 +36,13 @@ namespace XposeCraft.GameInternal
         /// </summary>
         public static Player CurrentPlayer;
 
-        public PlaceType PlaceType;
+        /// <summary>
+        /// Faction of the Player, allied Players will share it.
+        /// </summary>
         public Faction Faction;
+
+        public PlaceType MyBase;
+        public PlaceType EnemyBase;
 
         /// <summary>
         /// Actions hooked to Events that can, but don't have to be, run at any time.

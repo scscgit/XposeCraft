@@ -27,7 +27,7 @@ namespace XposeCraft.Test.TestExamples
                     // Too many enemies, return back
                     foreach (IUnit unit in UnitHelper.GetUnits<IUnit>())
                     {
-                        unit.MoveTo(PlaceType.NearBase);
+                        unit.MoveTo(PlaceType.MyBase.Center);
                     }
                 }
                 else
@@ -60,10 +60,10 @@ namespace XposeCraft.Test.TestExamples
             // TODO: decide if units can do this or just after ForEach
             Array.ForEach(myUnits, unit =>
             {
-                unit.AttackMoveTo(PlaceType.EnemyBasePositionRight)
+                unit.AttackMoveTo(PlaceType.EnemyBase.Right)
                     .After(new WaitForActionsOf(myUnits))
                     .After(new CustomFunction(() => { WorkersCanExpand(); }))
-                    .After(new AttackMove(PlaceType.EnemyBaseCenter));
+                    .After(new AttackMove(PlaceType.EnemyBase.Center));
             });
         }
 

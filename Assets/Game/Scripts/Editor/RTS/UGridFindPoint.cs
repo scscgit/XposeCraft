@@ -1,17 +1,14 @@
 using UnityEditor;
 using UnityEngine;
 using XposeCraft.Core.Grids;
-using XposeCraft.Core.Misc;
 
 namespace XposeCraft.RTS
 {
     public class UGridFindPoint : EditorWindow
     {
-        int loc;
-        int index;
-        UGrid grid;
-        GameObject findPoint;
-        DrawCube pointCube;
+        private int _pointIndex;
+        private int _gridIndex;
+        private UGrid _uGrid;
 
         [MenuItem("Window/Grid Find Point")]
         static void Init()
@@ -21,26 +18,22 @@ namespace XposeCraft.RTS
 
         void OnGUI()
         {
-            if (findPoint == null)
+            if (_uGrid == null)
             {
-                findPoint = new GameObject {name = "Find Point"};
-                pointCube = findPoint.AddComponent<DrawCube>();
+                _uGrid = GameObject.Find("UGrid").GetComponent<UGrid>();
             }
-            if (grid == null)
+            _gridIndex = EditorGUILayout.IntField("Grid : ", _gridIndex);
+            if (_gridIndex < _uGrid.grids.Length && _gridIndex >= 0)
             {
-                grid = GameObject.Find("UGrid").GetComponent<UGrid>();
-            }
-            index = EditorGUILayout.IntField("Grid : ", index);
-            if (index < grid.grids.Length && index >= 0)
-            {
-                loc = EditorGUILayout.IntField("Index : ", loc);
-                GridPoint[] points = grid.grids[index].points;
-                if (loc < points.Length && loc >= 0)
+                _pointIndex = EditorGUILayout.IntField("Index : ", _pointIndex);
+                GridPoint[] points = _uGrid.grids[_gridIndex].points;
+                if (_pointIndex < points.Length && _pointIndex >= 0)
                 {
-                    Vector3 pointLoc = points[loc].loc;
+                    Vector3 pointLoc = points[_pointIndex].loc;
                     GUILayout.Label("X : " + pointLoc.x + ", Y : " + pointLoc.y + ", Z : " + pointLoc.z);
-                    findPoint.transform.position = pointLoc;
-                    pointCube.index = index;
+                    _uGrid.FindPointGridIndex = _gridIndex;
+                    _uGrid.FindPointLoc = pointLoc;
+                    SceneView.RepaintAll();
                 }
             }
         }

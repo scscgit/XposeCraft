@@ -19,6 +19,9 @@ namespace XposeCraft.Core.Grids
         public APath pathfinding;
         public Texture selectionTexture;
 
+        public int FindPointGridIndex { get; set; }
+        public Vector3? FindPointLoc { get; set; }
+
         void OnDrawGizmos()
         {
             if (gameObject.name != ScriptName)
@@ -39,6 +42,18 @@ namespace XposeCraft.Core.Grids
             {
                 grids[index].DisplayGrid(0);
             }
+            DrawUGridFindPoint();
+        }
+
+        private void DrawUGridFindPoint()
+        {
+            if (FindPointGridIndex >= grids.Length || !FindPointLoc.HasValue)
+            {
+                return;
+            }
+            var nodeSize = grids[FindPointGridIndex].nodeDist;
+            Gizmos.color = Color.green;
+            Gizmos.DrawCube(FindPointLoc.Value, new Vector3(nodeSize, nodeSize, nodeSize));
         }
 
         void OnEnable()
@@ -352,7 +367,6 @@ namespace XposeCraft.Core.Grids
             children.Add(point);
             Vector3 finalLoc = Vector3.zero;
             //int finalIndex = 0;
-            int z = 0;
             bool[] checkList = new bool[grids[i].points.Length];
             while (!found || childAmount > 0)
             {
@@ -360,7 +374,6 @@ namespace XposeCraft.Core.Grids
                 for (int x = 0; x < pointChildren.Length; x++)
                 {
                     int child = pointChildren[x];
-                    z++;
                     if (grids[i].points[child].state != 2)
                     {
                         if (!found)
@@ -376,7 +389,7 @@ namespace XposeCraft.Core.Grids
                         {
                             Vector3 nLoc = grids[i].points[child].loc;
                             float curDist = (startPoint - nLoc).sqrMagnitude;
-                            if (!(curDist < dist))
+                            if (curDist >= dist)
                             {
                                 continue;
                             }

@@ -1018,22 +1018,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c89d218438f22c489d3905e3e581406, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlaceType:
-    NearBase_:
-      _pointLocation: 0
-    UnderBaseRamp_:
-      _pointLocation: 0
-    EnemyBaseCenter_:
-      _pointLocation: 0
-    EnemyBasePositionLeft_:
-      _pointLocation: 0
-    EnemyBasePositionFront_:
-      _pointLocation: 0
-    EnemyBasePositionRight_:
-      _pointLocation: 0
-    EnemyBasePositionBack_:
-      _pointLocation: 0
   Faction: {fileID: 1058991603}
+  MyBase:
+    Center:
+      _pointLocation: 0
+    Left:
+      _pointLocation: 21886
+    Right:
+      _pointLocation: 0
+    Front:
+      _pointLocation: 0
+    Back:
+      _pointLocation: 0
+    UnderRamp:
+      _pointLocation: 0
+  EnemyBase:
+    Center:
+      _pointLocation: 0
+    Left:
+      _pointLocation: 0
+    Right:
+      _pointLocation: 0
+    Front:
+      _pointLocation: 0
+    Back:
+      _pointLocation: 0
+    UnderRamp:
+      _pointLocation: 0
   RegisteredEvents:
     _buckets: ffffffffffffffffffffffff
     _hashCodes: 000000000000000000000000
@@ -1809,7 +1820,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4000011656508326, guid: 7f050e5e6d3f94e42bd1ede82fa86849, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -25.8
+      value: -16.2
       objectReference: {fileID: 0}
     - target: {fileID: 4000011656508326, guid: 7f050e5e6d3f94e42bd1ede82fa86849, type: 2}
       propertyPath: m_LocalPosition.y
@@ -1817,7 +1828,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000011656508326, guid: 7f050e5e6d3f94e42bd1ede82fa86849, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 15.1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4000011656508326, guid: 7f050e5e6d3f94e42bd1ede82fa86849, type: 2}
       propertyPath: m_LocalRotation.x
