@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 4000013083000728}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: HelidroneStation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34,7 +34,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 4000010534309994}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Temp HelidroneStation
   m_TagString: Building
   m_Icon: {fileID: 0}

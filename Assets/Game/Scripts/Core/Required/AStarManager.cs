@@ -17,8 +17,6 @@ namespace XposeCraft.Core.Required
         public int amountOfThreads;
         bool[] startedThreads;
 
-        //int passes;
-
         void OnDrawGizmos()
         {
             if (gameObject.name != "A*")
@@ -45,7 +43,6 @@ namespace XposeCraft.Core.Required
 
         void FixedUpdate()
         {
-            //passes++;
             int startListAmount = listAmount;
             for (int x = 0; x < amountOfThreads; x++)
             {
@@ -71,25 +68,20 @@ namespace XposeCraft.Core.Required
                 }
             }
 
-            int y = 0;
-            for (int x = 0; x < amountOfThreads; x++)
+            for (int x = 0, y = 0; x < amountOfThreads; x++, y++)
             {
-                if (startedThreads[x] && !apath[x].generate)
+                if (!startedThreads[x] || apath[x].generate || x >= startListAmount)
                 {
-                    if (x < startListAmount)
-                    {
-                        returnList[y].GetComponent<UnitMovement>().SetPath(apath[x].myPath);
-                        returnList.RemoveAt(y);
-                        targetList.RemoveAt(y);
-                        indexList.RemoveAt(y);
-                        startList.RemoveAt(y);
-
-                        listAmount--;
-                        startedThreads[x] = false;
-                        y--;
-                    }
+                    continue;
                 }
-                y++;
+                returnList[y].GetComponent<UnitMovement>().SetPath(apath[x].myPath);
+                returnList.RemoveAt(y);
+                targetList.RemoveAt(y);
+                indexList.RemoveAt(y);
+                startList.RemoveAt(y);
+                listAmount--;
+                startedThreads[x] = false;
+                y--;
             }
         }
 

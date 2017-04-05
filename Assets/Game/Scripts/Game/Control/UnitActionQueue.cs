@@ -5,7 +5,7 @@ namespace XposeCraft.Game.Control
 {
     public class UnitActionQueue
     {
-        Queue<IGameAction> Queue = new Queue<IGameAction>();
+        private Queue<IGameAction> Queue = new Queue<IGameAction>();
 
         public UnitActionQueue()
         {

@@ -37,7 +37,6 @@ namespace XposeCraft.Core.Required
         bool mouseDown;
         bool largeSelect;
         float disp = 0.5f;
-        public Rect selectionRect { get; set; }
         Rect localWindow { get; set; }
         public UGrid gridScript { get; set; }
         public MiniMap map { get; set; }
@@ -83,59 +82,28 @@ namespace XposeCraft.Core.Required
 
         public void Update()
         {
-            if (map)
+            if (map
+                && !map.localBounds.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y))
+                && Input.GetButton("LMB")
+                || Input.GetButton("LMB"))
             {
-                if (
-                    !map.localBounds.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y))
-                    && Input.GetButton("LMB")
-                )
-                {
-                    if (!mouseDown)
-                    {
-                        if (!guiManager.mouseOverGUI && !placement.place && !placement.placed)
-                        {
-                            mouseDown = true;
-                            startLoc = Input.mousePosition;
-                            startLoc = WithinScreen(startLoc);
-                            if (!deselected)
-                            {
-                                Deselect();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        endLoc = Input.mousePosition;
-                        endLoc = WithinScreen(endLoc);
-                        if ((endLoc - startLoc).magnitude > disp)
-                        {
-                            largeSelect = true;
-                        }
-                    }
-                }
-            }
-            else if (Input.GetButton("LMB"))
-            {
-                if (!mouseDown)
-                {
-                    if (!guiManager.mouseOverGUI && !placement.place && !placement.placed)
-                    {
-                        mouseDown = true;
-                        startLoc = Input.mousePosition;
-                        startLoc = WithinScreen(startLoc);
-                        if (!deselected)
-                        {
-                            Deselect();
-                        }
-                    }
-                }
-                else
+                if (mouseDown)
                 {
                     endLoc = Input.mousePosition;
                     endLoc = WithinScreen(endLoc);
                     if ((endLoc - startLoc).magnitude > disp)
                     {
                         largeSelect = true;
+                    }
+                }
+                else if (!guiManager.mouseOverGUI && !placement.place && !placement.placed)
+                {
+                    mouseDown = true;
+                    startLoc = Input.mousePosition;
+                    startLoc = WithinScreen(startLoc);
+                    if (!deselected)
+                    {
+                        Deselect();
                     }
                 }
             }
@@ -153,26 +121,18 @@ namespace XposeCraft.Core.Required
             if (Input.GetButtonDown("RMB"))
             {
                 RaycastHit hit;
-                if (map)
-                {
-                    if (map.localBounds.Contains(new Vector2(
+                if (map && map.localBounds.Contains(new Vector2(
                         Input.mousePosition.x, Screen.height - Input.mousePosition.y)))
-                    {
-                        Vector3 point = Determine3DLoc(new Vector2(
-                            Input.mousePosition.x,
-                            Screen.height - Input.mousePosition.y));
-                        Physics.Raycast(point, Vector3.down, out hit, 10000);
-                    }
-                    else
-                    {
-                        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                        Physics.Raycast(ray, out hit, 10000, layer);
-                    }
+                {
+                    Vector3 point = Determine3DLoc(new Vector2(
+                        Input.mousePosition.x,
+                        Screen.height - Input.mousePosition.y));
+                    Physics.Raycast(point, Vector3.down, out hit, 10000);
                 }
                 else
                 {
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    Physics.Raycast(ray, out hit, layer, 10000);
+                    Physics.Raycast(ray, out hit, 10000, layer);
                 }
                 if (hit.collider)
                 {
@@ -240,13 +200,7 @@ namespace XposeCraft.Core.Required
             {
                 endLocV3 = hit.point;
             }
-            selectionRect = startLocV3.x > endLocV3.x
-                ? new Rect(endLocV3.x, selectionRect.y, startLocV3.x, selectionRect.height)
-                : new Rect(startLocV3.x, selectionRect.y, endLocV3.x, selectionRect.height);
-            selectionRect = startLocV3.z > endLocV3.z
-                ? new Rect(selectionRect.x, endLocV3.z, selectionRect.width, startLocV3.z)
-                : new Rect(selectionRect.x, startLocV3.z, selectionRect.width, endLocV3.z);
-            SelectionArea();
+            SelectArea(startLocV3, endLocV3);
         }
 
         public void Deselect()
@@ -271,7 +225,7 @@ namespace XposeCraft.Core.Required
                     curBuildSelectedLength--;
                     continue;
                 }
-                curBuildSelected[x].GetComponent<BuildingController>().Select(false, 0);
+                curBuildSelected[x].GetComponent<BuildingController>().Select(false);
             }
             curSelected = new List<GameObject>();
             curSelectedS = new List<UnitController>();
@@ -281,34 +235,63 @@ namespace XposeCraft.Core.Required
             curBuildSelectedLength = 0;
         }
 
-        public void SelectionArea()
+        public void SelectArea(Vector3 startLocation, Vector3 endLocation)
         {
-            int curSelectedAmount = 0;
+            var units = new List<GameObject>();
+            var buildings = new List<GameObject>();
+            SelectionFind(startLocation, endLocation, units, buildings, true);
+            for (int unitIndex = 0; unitIndex < units.Count; unitIndex++)
+            {
+                var unit = units[unitIndex];
+                curSelected.Add(unit);
+                var controller = unit.GetComponent<UnitController>();
+                controller.Select(true);
+                curSelectedS.Add(controller);
+                curSelectedLength++;
+            }
+            for (int buildingIndex = 0; buildingIndex < buildings.Count; buildingIndex++)
+            {
+                var building = buildings[buildingIndex];
+                curBuildSelected.Add(building);
+                var controller = building.GetComponent<BuildingController>();
+                controller.Select(true);
+                curBuildSelectedS.Add(controller);
+                curBuildSelectedLength++;
+            }
+        }
+
+        /// <summary>
+        /// Adds GameObjects representing units and buildings from the map within the rectangle size to the lists.
+        /// </summary>
+        /// <param name="startLocation">Start of rectangle for selection within the scene.</param>
+        /// <param name="endLocation">End of rectangle for selection within the scene.</param>
+        /// <param name="units">Output list for matched units.</param>
+        /// <param name="buildings">Output list for matched buildings.</param>
+        /// <param name="limit">True if this should respect UnitSelection's limit of selection amount.</param>
+        public void SelectionFind(
+            Vector3 startLocation, Vector3 endLocation, List<GameObject> units, List<GameObject> buildings, bool limit)
+        {
+            Rect selectionRect = MapRectangle(startLocation, endLocation);
+            int selectedAmount = 0;
             for (int x = 0; x < unitListLength; x++)
             {
                 var unit = unitList[x];
                 if (unit == null)
                 {
+                    Debug.LogWarning("A unit was not safely removed from UnitSelection script");
                     unitList.RemoveAt(x);
                     x--;
                     unitListLength--;
                     continue;
                 }
-                if (!(unit.transform.position.x > selectionRect.x)
-                    || !(unit.transform.position.x < selectionRect.width)
-                    || !(unit.transform.position.z > selectionRect.y)
-                    || !(unit.transform.position.z < selectionRect.height)
-                    || curSelectedAmount >= maxUnitSelect)
+                if (!WithinRectangleBounds(unit, selectionRect) || limit && selectedAmount >= maxUnitSelect)
                 {
                     continue;
                 }
-                curSelectedAmount++;
-                curSelected.Add(unit);
-                curSelectedS.Add(unit.GetComponent<UnitController>());
-                curSelectedLength++;
-                curSelectedS[curSelectedLength - 1].Select(true);
+                selectedAmount++;
+                units.Add(unit);
             }
-            int curSelectedBuild = 0;
+            selectedAmount = 0;
             for (int x = 0; x < buildingListLength; x++)
             {
                 var building = buildingList[x];
@@ -320,21 +303,32 @@ namespace XposeCraft.Core.Required
                     buildingListLength--;
                     continue;
                 }
-                if (!(building.transform.position.x > selectionRect.x)
-                    || !(building.transform.position.x < selectionRect.width)
-                    || !(building.transform.position.z > selectionRect.y)
-                    || !(building.transform.position.z < selectionRect.height)
-                    || curSelectedAmount >= maxBuildingSelect)
+                if (!WithinRectangleBounds(building, selectionRect) || limit && selectedAmount >= maxBuildingSelect)
                 {
                     continue;
                 }
-                curSelectedAmount++;
-                curBuildSelected.Add(building);
-                curBuildSelectedS.Add(building.GetComponent<BuildingController>());
-                curBuildSelectedLength++;
-                building.GetComponent<BuildingController>().Select(true, curSelectedBuild);
-                curSelectedBuild++;
+                buildings.Add(building);
+                selectedAmount++;
             }
+        }
+
+        private static Rect MapRectangle(Vector3 startLocation, Vector3 endLocation)
+        {
+            Rect selectionRect = startLocation.x > endLocation.x
+                ? new Rect(endLocation.x, 0, startLocation.x, 0)
+                : new Rect(startLocation.x, 0, endLocation.x, 0);
+            selectionRect = startLocation.z > endLocation.z
+                ? new Rect(selectionRect.x, endLocation.z, selectionRect.width, startLocation.z)
+                : new Rect(selectionRect.x, startLocation.z, selectionRect.width, endLocation.z);
+            return selectionRect;
+        }
+
+        public static bool WithinRectangleBounds(GameObject unit, Rect rectangle)
+        {
+            return unit.transform.position.x > rectangle.x
+                   && unit.transform.position.x < rectangle.width
+                   && unit.transform.position.z > rectangle.y
+                   && unit.transform.position.z < rectangle.height;
         }
 
         public Vector2 WithinScreen(Vector2 loc)
@@ -399,7 +393,7 @@ namespace XposeCraft.Core.Required
                 }
                 for (int x = 0; x < curBuildSelectedLength; x++)
                 {
-                    curBuildSelectedS[x].Select(false, 0);
+                    curBuildSelectedS[x].Select(false);
                 }
                 curBuildSelected = new List<GameObject>();
                 curBuildSelectedS = new List<BuildingController>();
@@ -421,7 +415,7 @@ namespace XposeCraft.Core.Required
                 }
                 for (int x = 0; x < curBuildSelectedLength; x++)
                 {
-                    curBuildSelectedS[x].Select(false, 0);
+                    curBuildSelectedS[x].Select(false);
                 }
                 GameObject obj = curBuildSelected[i];
                 BuildingController cont = curBuildSelectedS[i];
@@ -433,7 +427,7 @@ namespace XposeCraft.Core.Required
                 curSelected = new List<GameObject>();
                 curSelectedS = new List<UnitController>();
                 curSelectedLength = 0;
-                cont.Select(true, 0);
+                cont.Select(true);
             }
         }
 
@@ -487,7 +481,7 @@ namespace XposeCraft.Core.Required
                     curBuildSelected.Add(buildingList[x]);
                     curBuildSelectedS.Add(buildingList[x].GetComponent<BuildingController>());
                     curBuildSelectedLength++;
-                    buildingList[x].GetComponent<BuildingController>().Select(true, 0);
+                    buildingList[x].GetComponent<BuildingController>().Select(true);
                     break;
                 }
             }

@@ -140,12 +140,7 @@ namespace XposeCraft.Core.Faction.Units
                     }
                     break;
                 case Target.Resource:
-                    if (resource.source == null)
-                    {
-                        resource.source = target.GetComponent<ResourceSource>();
-                        resource.target = target;
-                    }
-                    else if (resource.source.gameObject != target)
+                    if (resource.source == null || resource.source.gameObject != target)
                     {
                         resource.source = target.GetComponent<ResourceSource>();
                         resource.target = target;
@@ -280,28 +275,21 @@ namespace XposeCraft.Core.Faction.Units
                         switch (tState)
                         {
                             case TargetState.Self:
-                                if (build.source == null)
+                                if (build.source == null || build.source.gameObject != target)
                                 {
                                     build.source = target.GetComponent<BuildingController>();
                                 }
-                                else if (build.source.gameObject != target)
+                                else if (build.source.buildingType == BuildingType.ProgressBuilding && build.Build())
                                 {
-                                    build.source = target.GetComponent<BuildingController>();
+                                    if (anim.state != "Build")
+                                    {
+                                        anim.state = "Build";
+                                        anim.Animate();
+                                    }
                                 }
                                 else
                                 {
-                                    if (build.Build())
-                                    {
-                                        if (anim.state != "Build")
-                                        {
-                                            anim.state = "Build";
-                                            anim.Animate();
-                                        }
-                                    }
-                                    else
-                                    {
-                                        ResetTarget();
-                                    }
+                                    ResetTarget();
                                 }
                                 break;
                             case TargetState.Enemy:
@@ -344,13 +332,9 @@ namespace XposeCraft.Core.Faction.Units
 
         public int DetermineRelations(int factionIndex)
         {
-            if (faction == null)
-            {
-                return 3;
-            }
-            return factionIndex != FactionIndex
-                ? faction.Relations[factionIndex].state
-                : 3;
+            return faction == null || factionIndex == FactionIndex
+                ? 3
+                : faction.Relations[factionIndex].state;
         }
 
         public void Damage(UnitType nType, int attackDamage)

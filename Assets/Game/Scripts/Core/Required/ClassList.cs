@@ -306,7 +306,7 @@ namespace XposeCraft.Core.Required
             {
                 return false;
             }
-            if (!(build[source.buildIndex].lastBuild + build[source.buildIndex].rate < Time.time))
+            if (build[source.buildIndex].lastBuild + build[source.buildIndex].rate >= Time.time)
             {
                 return true;
             }

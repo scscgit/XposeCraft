@@ -1,7 +1,7 @@
 namespace XposeCraft.Game.Control.GameActions
 {
     /// <summary>
-    /// Action of a movement to a new position
+    /// Action of a movement to a new position.
     /// </summary>
     class Move : GameAction
     {

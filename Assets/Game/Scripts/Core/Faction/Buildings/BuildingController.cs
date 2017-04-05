@@ -115,10 +115,9 @@ namespace XposeCraft.Core.Faction.Buildings
             }
         }
 
-        public void Select(bool state, int index)
+        public void Select(bool state)
         {
             selected = state;
-            //displayGUI = index == 0 ? state : false;
         }
 
         public void Place()

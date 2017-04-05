@@ -97,11 +97,12 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000011128616968}
   - 54: {fileID: 54000013072979414}
+  - 65: {fileID: 65000013855522434}
   - 114: {fileID: 114000012283514396}
   - 114: {fileID: 114000010305668448}
   - 114: {fileID: 114000014071300988}
   - 114: {fileID: 114000012230150108}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: HelidroneStation
   m_TagString: Building
   m_Icon: {fileID: 0}
@@ -133,8 +134,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 4000011523690510}
-  - 64: {fileID: 64000011331571062}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: HelidroneStation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -464,18 +464,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!64 &64000011331571062
-MeshCollider:
+--- !u!65 &65000013855522434
+BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012985419072}
+  m_GameObject: {fileID: 1000012185838616}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Convex: 0
-  m_Mesh: {fileID: 4300000, guid: b9874f684b8e86247bd7bedf387c72eb, type: 3}
+  m_Size: {x: 10, y: 4, z: 11}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!114 &114000010305668448
 MonoBehaviour:
   m_ObjectHideFlags: 1

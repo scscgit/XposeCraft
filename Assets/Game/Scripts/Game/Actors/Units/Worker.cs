@@ -30,6 +30,7 @@ namespace XposeCraft.Game.Actors.Units
         public void SendGather(IResource resource)
         {
             // TODO: override ReplaceActionQueue to set Gathering back to null; make Gathering an action
+            StopGathering();
             Gathering = resource;
         }
 
@@ -40,6 +41,7 @@ namespace XposeCraft.Game.Actors.Units
         // 3. finished event, return to gather
         public IBuilding CreateBuilding(BuildingType buildingType, Position position)
         {
+            StopGathering();
             return Create<Buildings.Building>(
                 DetermineBuildingType(buildingType),
                 BuildingPlacement.PlaceProgressBuilding(
@@ -47,7 +49,6 @@ namespace XposeCraft.Game.Actors.Units
                     new List<UnitController> {_unitController},
                     _unitController.FactionIndex,
                     position,
-                    position.Location,
                     Quaternion.identity,
                     GameManager.Instance.UGrid.grids[GameManager.Instance.UGrid.index],
                     GameManager.Instance.Fog,
@@ -58,12 +59,18 @@ namespace XposeCraft.Game.Actors.Units
 
         public bool FinishBuiding(IBuilding building)
         {
+            StopGathering();
             if (building.Finished)
             {
                 return false;
             }
             building.FinishBuildingByWorker(new List<UnitController> {_unitController});
             return true;
+        }
+
+        private void StopGathering()
+        {
+            Gathering = null;
         }
 
         private Type DetermineBuildingType(BuildingType buildingType)

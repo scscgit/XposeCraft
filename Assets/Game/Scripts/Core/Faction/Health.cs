@@ -61,7 +61,8 @@ namespace XposeCraft.Core.Faction
             if (backgroundBar != null)
             {
                 GUI.DrawTexture(
-                    new Rect(point.x - widthSubtraction,
+                    new Rect(
+                        point.x - widthSubtraction,
                         Screen.height - point.y,
                         scale * (float) 1,
                         yScale),

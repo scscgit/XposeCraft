@@ -3,11 +3,11 @@ using XposeCraft.Game.Actors.Units;
 namespace XposeCraft.Game.Control.GameActions
 {
     /// <summary>
-    /// Action of waiting for other unit to finish its queue
+    /// Action of waiting for other units to finish their own queue.
     /// </summary>
     class WaitForActionsOf : GameAction
     {
-        IUnit[] Targets;
+        private IUnit[] Targets;
 
         public WaitForActionsOf(IUnit target)
         {

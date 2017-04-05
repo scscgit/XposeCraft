@@ -20,10 +20,11 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000013249450624}
   - 54: {fileID: 54000010391847624}
+  - 65: {fileID: 65000011884182676}
   - 114: {fileID: 114000012267555674}
   - 114: {fileID: 114000010995196164}
   - 114: {fileID: 114000011897728376}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: NubianArmory
   m_TagString: Building
   m_Icon: {fileID: 0}
@@ -87,8 +88,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 4000012443010848}
-  - 64: {fileID: 64000010314554546}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: NubianArmory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,18 +251,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!64 &64000010314554546
-MeshCollider:
+--- !u!65 &65000011884182676
+BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012017879918}
+  m_GameObject: {fileID: 1000011171905086}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Convex: 0
-  m_Mesh: {fileID: 4300002, guid: b397449eac90d434b8cb504684be4327, type: 3}
+  m_Size: {x: 10, y: 4, z: 10}
+  m_Center: {x: 0, y: 2, z: -1}
 --- !u!114 &114000010995196164
 MonoBehaviour:
   m_ObjectHideFlags: 1
