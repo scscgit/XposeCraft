@@ -7,6 +7,7 @@ using XposeCraft.Core.Faction.Units;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Resources;
 using XposeCraft.GameInternal;
+using XposeCraft.GameInternal.Helpers;
 using Building = XposeCraft.Core.Required.Building;
 using BuildingType = XposeCraft.Game.Enums.BuildingType;
 
@@ -19,19 +20,16 @@ namespace XposeCraft.Game.Actors.Units
     {
         public IResource Gathering { get; private set; }
 
-        private UnitController _unitController;
-
-        protected override void Initialize()
-        {
-            base.Initialize();
-            _unitController = GameObject.GetComponent<UnitController>();
-        }
-
+        /// <summary>
+        /// Send the Worker to gather a resource.
+        /// </summary>
+        /// <param name="resource">Resource to be gathered.</param>
         public void SendGather(IResource resource)
         {
             // TODO: override ReplaceActionQueue to set Gathering back to null; make Gathering an action
             StopGathering();
             Gathering = resource;
+            resource.GatherByWorker(new List<UnitController> {UnitController});
         }
 
         // TODO:
@@ -43,11 +41,11 @@ namespace XposeCraft.Game.Actors.Units
         {
             StopGathering();
             return Create<Buildings.Building>(
-                DetermineBuildingType(buildingType),
+                BuildingHelper.DetermineBuildingType(buildingType),
                 BuildingPlacement.PlaceProgressBuilding(
-                    FindBuildingInFaction(buildingType),
-                    new List<UnitController> {_unitController},
-                    _unitController.FactionIndex,
+                    BuildingHelper.FindBuildingInFaction(buildingType, UnitController),
+                    new List<UnitController> {UnitController},
+                    UnitController.FactionIndex,
                     position,
                     Quaternion.identity,
                     GameManager.Instance.UGrid.grids[GameManager.Instance.UGrid.index],
@@ -57,6 +55,11 @@ namespace XposeCraft.Game.Actors.Units
             );
         }
 
+        /// <summary>
+        /// Send the Worker to finish the construction of an existing building.
+        /// </summary>
+        /// <param name="building">Building to have its construction finished.</param>
+        /// <returns>True if the request was valid.</returns>
         public bool FinishBuiding(IBuilding building)
         {
             StopGathering();
@@ -64,46 +67,13 @@ namespace XposeCraft.Game.Actors.Units
             {
                 return false;
             }
-            building.FinishBuildingByWorker(new List<UnitController> {_unitController});
+            building.FinishBuildingByWorker(new List<UnitController> {UnitController});
             return true;
         }
 
         private void StopGathering()
         {
             Gathering = null;
-        }
-
-        private Type DetermineBuildingType(BuildingType buildingType)
-        {
-            switch (buildingType)
-            {
-                case BuildingType.BaseCenter:
-                    return typeof(BaseCenter);
-                case BuildingType.NubianArmory:
-                    return typeof(NubianArmory);
-                default:
-                    throw new InvalidEnumArgumentException();
-            }
-        }
-
-        private Building FindBuildingInFaction(BuildingType buildingType)
-        {
-            for (var index = 0; index < Player.CurrentPlayer.Faction.BuildingList.Length; index++)
-            {
-                var building = Player.CurrentPlayer.Faction.BuildingList[index];
-                if (!building.obj.name.Equals(buildingType.ToString()))
-                {
-                    continue;
-                }
-                if (!_unitController.build.build[index].canBuild)
-                {
-                    throw new InvalidOperationException(
-                        "Building of the chosen building type cannot be built by this Unit");
-                }
-                return building;
-            }
-            throw new InvalidOperationException(
-                "Building of the chosen building type is not available in your Faction");
         }
     }
 }

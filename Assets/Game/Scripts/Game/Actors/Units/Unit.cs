@@ -1,3 +1,4 @@
+using XposeCraft.Core.Faction.Units;
 using XposeCraft.Game.Control;
 using XposeCraft.Game.Control.GameActions;
 
@@ -15,6 +16,14 @@ namespace XposeCraft.Game.Actors.Units
         public int MaxHealth
         {
             get { return -1; }
+        }
+
+        protected UnitController UnitController { get; private set; }
+
+        protected override void Initialize()
+        {
+            base.Initialize();
+            UnitController = GameObject.GetComponent<UnitController>();
         }
 
         // TODO: deprecate in favor of equals operator?

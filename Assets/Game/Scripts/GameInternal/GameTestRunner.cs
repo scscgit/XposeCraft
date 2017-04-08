@@ -4,9 +4,13 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.Assertions;
 using XposeCraft.Game.Actors.Buildings;
+using XposeCraft.Game.Actors.Resources.Minerals;
 using XposeCraft.Game.Actors.Units;
 using XposeCraft.Game.Enums;
 using XposeCraft.Game.Helpers;
+using XposeCraft.Test;
+using Event = XposeCraft.Game.Event;
+using EventType = XposeCraft.Game.Enums.EventType;
 
 namespace XposeCraft.GameInternal
 {
@@ -27,8 +31,6 @@ namespace XposeCraft.GameInternal
             yield return new WaitForSeconds(seconds);
             action.Invoke();
         }
-
-        public delegate void NextStageStarter();
 
         private void Start()
         {
@@ -52,88 +54,72 @@ namespace XposeCraft.GameInternal
 
             StartCoroutine(RunAfterSeconds(1, () =>
             {
+                var minerals = ResourceHelper.GetResources<Mineral>();
+                for (var index = 1; index < workers.Count; index++)
+                {
+                    workers[index].SendGather(minerals[index]);
+                }
+            }));
+
+            Event.Register(EventType.MineralsChanged, args =>
+            {
+                Log.i(this, args.Minerals + " minerals");
                 var building = workers[0].CreateBuilding(BuildingType.NubianArmory, PlaceType.MyBase.Left);
                 foreach (var worker in workers)
                 {
                     worker.FinishBuiding(building);
                 }
+            });
+
+            RunPlayerTests();
+
+            StartCoroutine(RunAfterSeconds(29, () =>
+            {
+                Log.i("----------------------------------");
+                Log.i(">>         End of Game.         <<");
+                Log.i("----------------------------------");
+                IntegrationTest.Pass();
             }));
+        }
 
-            StartCoroutine(RunAfterSeconds(5, IntegrationTest.Pass));
+        public void RunPlayerTests()
+        {
+            Log.i("----------------------------------");
+            Log.i(">>  Starting a Planning Phase.  <<");
+            Log.i("----------------------------------");
 
-            /*
-            // Creating Model
-            Model.Instance.Buildings.Add(new BaseCenter(PlaceType.NearBase));
-            Model.Instance.Units.Add(new Worker(PlaceType.NearBase));
+            var end = new Action(() =>
+            {
+                Log.i("----------------------------------");
+                Log.i(">>   End of a Planning Phase.   <<");
+                Log.i("----------------------------------");
+            });
 
-            Log.i(null, "----------------------------------");
-            Log.i(null, ">>  Starting a new Test Round.  <<");
-            Log.i(null, "----------------------------------");
-
-            var battleStage = new NextStageStarter(() =>
+            var battleStage = new Action(() =>
             {
                 Log.i(this, "Starting Battle Stage");
-                var battle = new BattleTest();
-                bool result = Battle(battle, () => { });
-                Log.i(battle, "End of Battle Stage: " + SuccessString(result));
+                var battleTest = new BattleTest();
+                battleTest.BattleStage(end);
+                Log.i(battleTest, "End of Battle Stage");
             });
 
-            var buildingStage = new NextStageStarter(() =>
+            var buildingStage = new Action(() =>
             {
                 Log.i(this, "Starting Building Stage");
-                var building = new BuildingTest();
-                bool result = Building(building, battleStage);
-                Log.i(building, "End of Building Stage: " + SuccessString(result));
+                var buildingTest = new BuildingTest();
+                buildingTest.BuildingStage(battleStage);
+                Log.i(buildingTest, "End of Building Stage");
             });
 
-            var economyStage = new NextStageStarter(() =>
+            var economyStage = new Action(() =>
             {
                 Log.i(this, "Starting Economy Stage");
-                var economy = new EconomyTest();
-                bool result = Economy(economy, buildingStage);
-                Log.i(economy, "End of Economy Stage: " + SuccessString(result));
+                var economyTest = new EconomyTest();
+                economyTest.EconomyStage(buildingStage);
+                Log.i(economyTest, "End of Economy Stage");
             });
 
             economyStage();
-
-            Log.i(null, "");
-            Log.i(null, ">>   End of a Planning Phase.   <<");
-            Log.i(null, "");
-
-            var gameTimer = new GameTimer();
-            gameTimer.RunGame(() =>
-            {
-                if (gameTimer.Cycle >= 500)
-                {
-                    return true;
-                }
-                return false;
-            });
-
-            Log.i(null, "");
-            Log.i(null, ">>   End of Game.   <<");
-            Log.i(null, "");
-            */
         }
-
-        /*
-        bool Economy(EconomyTest economy, NextStageStarter startNextStage)
-        {
-            economy.EconomyStage(startNextStage);
-            return true;
-        }
-
-        bool Building(BuildingTest building, NextStageStarter startNextStage)
-        {
-            building.BuildingStage(startNextStage);
-            return true;
-        }
-
-        bool Battle(BattleTest battle, NextStageStarter startNextStage)
-        {
-            battle.BattleStage(startNextStage);
-            return true;
-        }
-        */
     }
 }

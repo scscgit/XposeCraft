@@ -246,7 +246,7 @@ namespace XposeCraft.Core.Required
                     continue;
                 }
                 float dist = (manager.dropOffPoints[x].transform.position - obj.transform.position).sqrMagnitude;
-                if (!(dist < closeDist) && closeDist != -1)
+                if (dist >= closeDist && closeDist != -1)
                 {
                     continue;
                 }

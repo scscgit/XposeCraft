@@ -4,7 +4,12 @@ using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Fog_Of_War;
 using XposeCraft.Core.Required;
 using XposeCraft.Core.Resources;
+using XposeCraft.Game;
+using XposeCraft.GameInternal;
+using XposeCraft.GameInternal.Helpers;
 using XposeCraft.UI.MiniMap;
+using EventType = XposeCraft.Game.Enums.EventType;
+using Unit = XposeCraft.Game.Actors.Units.Unit;
 
 namespace XposeCraft.Core.Faction.Units
 {
@@ -15,6 +20,7 @@ namespace XposeCraft.Core.Faction.Units
     [RequireComponent(typeof(Rigidbody))]
     public class UnitController : MonoBehaviour
     {
+        public Unit UnitActor;
         public new string name = "Unit";
         public int maxHealth = 100;
         public int health = 100;
@@ -320,6 +326,12 @@ namespace XposeCraft.Core.Faction.Units
                             transform.position.y,
                             target.transform.position.z));
                         resource.DropOff(this);
+                        var args = new Arguments
+                        {
+                            MyUnit = UnitActor,
+                            Minerals = ResourceHelper.GetMinerals(resource.manager)
+                        };
+                        GameManager.Instance.FiredEvent(EventType.MineralsChanged, args);
                     }
                     else if (anim.state != "Move")
                     {

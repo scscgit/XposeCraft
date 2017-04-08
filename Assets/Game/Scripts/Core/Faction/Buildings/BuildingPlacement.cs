@@ -208,18 +208,25 @@ namespace XposeCraft.Core.Faction.Buildings
                 resourceManager.resourceTypes[x].amount -= building.cost[x];
             }
             GameObject buildingObject;
-            building.ClosePoints(grid, position.PointLocation);
-
             if (building.autoBuild)
             {
-                buildingObject = (GameObject) Instantiate(building.obj, location, rotation);
+                buildingObject = InstantiateProgressBuilding(
+                    building, building.obj, factionIndex, position, rotation, grid, fog);
             }
             else
             {
-                buildingObject = (GameObject) Instantiate(building.progressObj, location, rotation);
+                buildingObject = InstantiateProgressBuilding(
+                    building, building.progressObj, factionIndex, position, rotation, grid, fog);
                 UnitSelection.SetTarget(builderUnits, buildingObject, buildingObject.transform.position);
             }
+            return buildingObject;
+        }
 
+        public static GameObject InstantiateProgressBuilding(Building building, GameObject buildingPrefab,
+            int factionIndex, Position position, Quaternion rotation, Grid grid, Fog fog)
+        {
+            building.ClosePoints(grid, position.PointLocation);
+            GameObject buildingObject = (GameObject) Instantiate(buildingPrefab, position.Location, rotation);
             BuildingController script = buildingObject.GetComponent<BuildingController>();
             script.building = building;
             script.loc = position.PointLocation;

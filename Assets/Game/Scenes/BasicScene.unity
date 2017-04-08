@@ -381,6 +381,12 @@ Prefab:
       value: 
       objectReference: {fileID: 1000012185838616, guid: 71d4eacea24b0ed4baa984dfdc2f9c51,
         type: 2}
+    - target: {fileID: 114000012748735766, guid: c7d4622598e10ca448a15f060738561b,
+        type: 2}
+      propertyPath: BaseCenterProgressPrefab
+      value: 
+      objectReference: {fileID: 1000013099823766, guid: b754638e561c2b24fab3678d417eb6b2,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c7d4622598e10ca448a15f060738561b, type: 2}
   m_IsPrefabParent: 0
@@ -422,6 +428,11 @@ Prefab:
     - target: {fileID: 4000010171155422, guid: 758e1132d574cf143bb905d0d42c24af, type: 2}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012604824786, guid: 758e1132d574cf143bb905d0d42c24af,
+        type: 2}
+      propertyPath: scrollSpeed
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 758e1132d574cf143bb905d0d42c24af, type: 2}
@@ -984,9 +995,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Faction: {fileID: 1058991603}
+  FactionIndex: 0
   MyBase:
     Center:
-      _pointLocation: 20493
+      _pointLocation: 20095
     Left:
       _pointLocation: 21687
     Right:
@@ -1011,15 +1023,9 @@ MonoBehaviour:
     UnderRamp:
       _pointLocation: 0
   RegisteredEvents:
-    _buckets: ffffffffffffffffffffffff
-    _hashCodes: 000000000000000000000000
-    _next: 000000000000000000000000
-    _count: 0
-    _version: 0
-    _freeList: -1
-    _freeCount: 0
-    _keys: 000000000000000000000000
-    _values: []
+    _serializedKeys: 
+    _serializedValues: []
+    _serializedCount: 0
   Units: []
   Buildings: []
   Resources: []

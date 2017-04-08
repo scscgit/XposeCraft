@@ -120,13 +120,18 @@ namespace XposeCraft.Core.Faction.Buildings
             selected = state;
         }
 
-        public void Place()
+        /// <summary>
+        /// Replaces the current Progress building, which will get destoryed, by a complete building.
+        /// </summary>
+        /// <returns>Instance of the new completed building.</returns>
+        public GameObject Place()
         {
             GameObject obj = Instantiate(nextBuild, transform.position, Quaternion.identity) as GameObject;
             BuildingController build = obj.GetComponent<BuildingController>();
             build.building = building;
             build.loc = loc;
             Destroy(gameObject);
+            return obj;
         }
 
         public void Damage(UnitType nType, int damage)

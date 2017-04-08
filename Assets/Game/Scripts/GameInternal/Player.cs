@@ -26,7 +26,7 @@ namespace XposeCraft.GameInternal
         }
 
         [Serializable]
-        public class RegisteredEventsDictionary : SerializableDictionary3<EventType, EventList>
+        public class RegisteredEventsDictionary : SerializableDictionary2<EventType, EventList>
         {
         }
 
@@ -41,7 +41,16 @@ namespace XposeCraft.GameInternal
         /// </summary>
         public Faction Faction;
 
+        public int FactionIndex;
+
+        /// <summary>
+        /// This Player's Base.
+        /// </summary>
         public PlaceType MyBase;
+
+        /// <summary>
+        /// This Player's Enemy's Base.
+        /// </summary>
         public PlaceType EnemyBase;
 
         /// <summary>
@@ -55,7 +64,7 @@ namespace XposeCraft.GameInternal
         public List<Building> Buildings;
         public List<Resource> Resources;
 
-        // Currencies of the Player.
+        // Currencies of the Player. (TODO)
 
         public int Minerals = 80;
     }
