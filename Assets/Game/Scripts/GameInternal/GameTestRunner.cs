@@ -3,6 +3,7 @@ using System.Collections;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.Assertions;
+using XposeCraft.Game;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Resources.Minerals;
 using XposeCraft.Game.Actors.Units;
@@ -39,19 +40,17 @@ namespace XposeCraft.GameInternal
 
         public void RunTests()
         {
+            // Test state initialization
             Log.i("*** " + typeof(GameTestRunner).Name + ".RunTests called ***");
+            Player.CurrentPlayer = GameManager.Instance.Players[0];
 
-            var gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
-            Player.CurrentPlayer = gameManager.Players[0];
+            // Meta-tests
+            SelfTests();
 
-            Assert.AreEqual(1, BuildingHelper.GetBuildings<IBuilding>().Length);
-            Assert.AreEqual(1, BuildingHelper.GetBuildings<BaseCenter>().Length);
-            var units = gameManager.StartingWorkers;
-            Assert.AreEqual(units, UnitHelper.GetUnits<IUnit>().Length);
-            Assert.AreEqual(units, UnitHelper.GetUnits<Worker>().Length);
+            // Temporary Example Test follows
 
             var workers = UnitHelper.GetUnitsAsList<Worker>();
-
+            workers[0].CreateBuilding(BuildingType.NubianArmory, PlaceType.MyBase.Right);
             StartCoroutine(RunAfterSeconds(1, () =>
             {
                 var minerals = ResourceHelper.GetResources<Mineral>();
@@ -65,6 +64,8 @@ namespace XposeCraft.GameInternal
             {
                 Log.i(this, args.Minerals + " minerals");
                 var building = workers[0].CreateBuilding(BuildingType.NubianArmory, PlaceType.MyBase.Left);
+                workers[1].CreateBuilding(BuildingType.NubianArmory, PlaceType.MyBase.Back);
+                workers[2].CreateBuilding(BuildingType.NubianArmory, PlaceType.MyBase.Front);
                 foreach (var worker in workers)
                 {
                     worker.FinishBuiding(building);
@@ -80,6 +81,20 @@ namespace XposeCraft.GameInternal
                 Log.i("----------------------------------");
                 IntegrationTest.Pass();
             }));
+        }
+
+        public void SelfTests()
+        {
+            // GameManager starting Unit creation
+            Assert.AreEqual(1, BuildingHelper.GetBuildings<IBuilding>().Length);
+            Assert.AreEqual(1, BuildingHelper.GetBuildings<BaseCenter>().Length);
+            var units = GameManager.Instance.StartingWorkers;
+            Assert.AreEqual(units, UnitHelper.GetUnits<IUnit>().Length);
+            Assert.AreEqual(units, UnitHelper.GetUnits<Worker>().Length);
+
+            // Position Grid coordinate calculation Unit Test
+            var center = PlaceType.MyBase.Center;
+            Assert.AreEqual(center.PointLocation, new Position(center.X, center.Y).PointLocation);
         }
 
         public void RunPlayerTests()

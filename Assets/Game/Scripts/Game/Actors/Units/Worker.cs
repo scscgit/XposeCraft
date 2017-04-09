@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
 using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Faction.Units;
@@ -8,7 +6,6 @@ using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Resources;
 using XposeCraft.GameInternal;
 using XposeCraft.GameInternal.Helpers;
-using Building = XposeCraft.Core.Required.Building;
 using BuildingType = XposeCraft.Game.Enums.BuildingType;
 
 namespace XposeCraft.Game.Actors.Units
@@ -48,8 +45,6 @@ namespace XposeCraft.Game.Actors.Units
                     UnitController.FactionIndex,
                     position,
                     Quaternion.identity,
-                    GameManager.Instance.UGrid.grids[GameManager.Instance.UGrid.index],
-                    GameManager.Instance.Fog,
                     GameManager.Instance.ResourceManager
                 )
             );

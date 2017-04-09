@@ -7,6 +7,7 @@ using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Faction.Units;
 using XposeCraft.Core.Grids;
 using XposeCraft.Core.Resources;
+using XposeCraft.GameInternal;
 using XposeCraft.UI.MiniMap;
 using Object = UnityEngine.Object;
 
@@ -269,6 +270,10 @@ namespace XposeCraft.Core.Required
             if (target != null)
             {
                 cont.SetTarget(target, target.transform.position, "Resource");
+            }
+            else
+            {
+                Log.e(this, "DropOff target of " + cont.name + " is null");
             }
             manager.resourceTypes[sourceIndex].amount += behaviour[sourceIndex].carrying;
             behaviour[sourceIndex].carrying = 0;

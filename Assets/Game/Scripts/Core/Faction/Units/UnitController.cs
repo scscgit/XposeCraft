@@ -110,10 +110,11 @@ namespace XposeCraft.Core.Faction.Units
             gui.Start(gameObject);
             for (int x = 0; x < techEffect.Length; x++)
             {
-                faction.Tech[techEffect[x].index].AddListener(gameObject);
-                if (faction.Tech[techEffect[x].index].active)
+                var technology = faction.Tech[techEffect[x].index];
+                technology.AddListener(gameObject);
+                if (technology.active)
                 {
-                    Upgraded(faction.Tech[techEffect[x].index].name);
+                    Upgraded(technology.name);
                 }
             }
             gameObject.name = name;

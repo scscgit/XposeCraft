@@ -19,17 +19,34 @@ namespace XposeCraft.GameInternal
     {
         public const string ScriptName = "Game Manager";
 
-        public static GameManager Instance;
+        private static GameManager _instance;
+
+        public static GameManager Instance
+        {
+            get { return _instance ?? (_instance = GameObject.Find(ScriptName).GetComponent<GameManager>()); }
+        }
 
         public Player[] Players;
         public GameObject BaseCenterProgressPrefab;
         public GameObject WorkerPrefab;
         public int StartingWorkers = 1;
+        public bool Debug;
+
         private object _firedEventLock;
+
+        public object FiredEventLock
+        {
+            get { return _firedEventLock ?? (_firedEventLock = new object()); }
+        }
 
         public UGrid UGrid { get; private set; }
         public Fog Fog { get; private set; }
         public ResourceManager ResourceManager { get; private set; }
+
+        public Grid Grid
+        {
+            get { return UGrid.grids[UGrid.index]; }
+        }
 
         private void OnDrawGizmos()
         {
@@ -41,8 +58,7 @@ namespace XposeCraft.GameInternal
 
         private void Awake()
         {
-            Instance = this;
-            _firedEventLock = new object();
+            _instance = this;
             UGrid = GameObject.Find(UGrid.ScriptName).GetComponent<UGrid>();
             Fog = GameObject.Find(Fog.ScriptName).GetComponent<Fog>();
             ResourceManager = GameObject.Find("Player Manager").GetComponent<ResourceManager>();
@@ -66,9 +82,7 @@ namespace XposeCraft.GameInternal
                             BaseCenterProgressPrefab,
                             player.FactionIndex,
                             player.MyBase.Center,
-                            Quaternion.identity,
-                            UGrid.grids[UGrid.index],
-                            Fog)
+                            Quaternion.identity)
                         .GetComponent<BuildingController>()
                         .Place()
                         .gameObject);
@@ -94,10 +108,14 @@ namespace XposeCraft.GameInternal
 
         public void FiredEvent(EventType eventType, Arguments args)
         {
-            lock (_firedEventLock)
+            lock (FiredEventLock)
             {
                 foreach (var player in Players)
                 {
+                    if (!player.RegisteredEvents.ContainsKey(eventType))
+                    {
+                        continue;
+                    }
                     foreach (var registeredEvent in player.RegisteredEvents[eventType])
                     {
                         registeredEvent.Function(args);

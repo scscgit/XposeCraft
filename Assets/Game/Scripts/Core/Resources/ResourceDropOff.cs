@@ -8,7 +8,9 @@ namespace XposeCraft.Core.Resources
 
         void Start()
         {
-            GameObject.Find("Player Manager").GetComponent<ResourceManager>().AddDropOff(gameObject, type);
+            var typeList = new ResourceManager.BoolList();
+            typeList.AddRange(type);
+            GameObject.Find("Player Manager").GetComponent<ResourceManager>().AddDropOff(gameObject, typeList);
         }
     }
 }

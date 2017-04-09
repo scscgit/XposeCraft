@@ -7,6 +7,7 @@ using XposeCraft.Core.Grids;
 using XposeCraft.Core.Required;
 using XposeCraft.Core.Resources;
 using XposeCraft.Game;
+using XposeCraft.GameInternal;
 
 namespace XposeCraft.Core.Faction.Buildings
 {
@@ -170,8 +171,6 @@ namespace XposeCraft.Core.Faction.Buildings
                     factionIndex,
                     new Position(loc),
                     obj.transform.rotation,
-                    uGrid.grids[gridI],
-                    fog,
                     resourceManager);
             }
             catch (InvalidOperationException)
@@ -187,13 +186,21 @@ namespace XposeCraft.Core.Faction.Buildings
         }
 
         public static GameObject PlaceProgressBuilding(Building building, List<UnitController> builderUnits,
-            int factionIndex, Position position, Quaternion rotation,
-            Grid grid, Fog fog, ResourceManager resourceManager)
+            int factionIndex, Position position, Quaternion rotation, ResourceManager resourceManager)
         {
             Vector3 location = position.Location;
-            if (!building.CheckPoints(grid, position.PointLocation) || !fog.CheckLocation(location))
+            try
             {
-                throw new InvalidOperationException(building + " building placement location is invalid");
+                CheckValidPlacement(building, position, location, false);
+            }
+            catch (Exception)
+            {
+                // Visualizing the error placement
+                if (GameManager.Instance.Debug)
+                {
+                    building.ClosePoints(GameManager.Instance.Grid, position.PointLocation);
+                }
+                throw;
             }
             for (int x = 0; x < building.cost.Length; x++)
             {
@@ -211,27 +218,55 @@ namespace XposeCraft.Core.Faction.Buildings
             if (building.autoBuild)
             {
                 buildingObject = InstantiateProgressBuilding(
-                    building, building.obj, factionIndex, position, rotation, grid, fog);
+                    building, building.obj, factionIndex, position, rotation);
             }
             else
             {
                 buildingObject = InstantiateProgressBuilding(
-                    building, building.progressObj, factionIndex, position, rotation, grid, fog);
+                    building, building.progressObj, factionIndex, position, rotation);
                 UnitSelection.SetTarget(builderUnits, buildingObject, buildingObject.transform.position);
             }
             return buildingObject;
         }
 
-        public static GameObject InstantiateProgressBuilding(Building building, GameObject buildingPrefab,
-            int factionIndex, Position position, Quaternion rotation, Grid grid, Fog fog)
+        public static GameObject InstantiateProgressBuilding(
+            Building building, GameObject buildingPrefab, int factionIndex, Position position, Quaternion rotation)
         {
-            building.ClosePoints(grid, position.PointLocation);
-            GameObject buildingObject = (GameObject) Instantiate(buildingPrefab, position.Location, rotation);
+            // Placement validation is done redundantly twice, because this can be called directly too
+            var location = position.Location;
+            try
+            {
+                CheckValidPlacement(building, position, location, false);
+            }
+            catch (Exception)
+            {
+                // Visualizing the error placement
+                building.ClosePoints(GameManager.Instance.Grid, position.PointLocation);
+                throw;
+            }
+            building.ClosePoints(GameManager.Instance.Grid, position.PointLocation);
+            GameObject buildingObject = (GameObject) Instantiate(buildingPrefab, location, rotation);
             BuildingController script = buildingObject.GetComponent<BuildingController>();
             script.building = building;
             script.loc = position.PointLocation;
             script.FactionIndex = factionIndex;
             return buildingObject;
+        }
+
+        public static void CheckValidPlacement(
+            Building building, Position position, Vector3 location, bool invalidUnderFog)
+        {
+            if (!IsValidPlacement(building, position, location, invalidUnderFog))
+            {
+                throw new InvalidOperationException(building + "'s building placement location is invalid");
+            }
+        }
+
+        public static bool IsValidPlacement(
+            Building building, Position position, Vector3 location, bool invalidUnderFog)
+        {
+            return building.CheckPoints(GameManager.Instance.Grid, position.PointLocation)
+                   && (!invalidUnderFog || GameManager.Instance.Fog.CheckLocation(location));
         }
     }
 }
