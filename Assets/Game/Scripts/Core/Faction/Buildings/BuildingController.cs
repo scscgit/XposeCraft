@@ -53,7 +53,7 @@ namespace XposeCraft.Core.Faction.Buildings
         //bool displayGUI = false;
         //Progress progressObj;
 
-        void Start()
+        private void Awake()
         {
             var playerManager = GameObject.Find("Player Manager");
             selection = playerManager.GetComponent<UnitSelection>();
@@ -68,7 +68,7 @@ namespace XposeCraft.Core.Faction.Buildings
             else if (buildingType == BuildingType.CompleteBuilding)
             {
                 gameObject.name = name;
-                gui.Start(gameObject);
+                gui.Awake(gameObject);
                 for (int x = 0; x < techEffect.Length; x++)
                 {
                     faction.Tech[techEffect[x].index].AddListener(gameObject);

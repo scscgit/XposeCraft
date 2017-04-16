@@ -20,7 +20,8 @@ namespace XposeCraft.Core.Faction.Units
     [RequireComponent(typeof(Rigidbody))]
     public class UnitController : MonoBehaviour
     {
-        public Unit UnitActor;
+        public Player PlayerOwner { get; set; }
+        public Unit UnitActor { get; set; }
         public new string name = "Unit";
         public int maxHealth = 100;
         public int health = 100;
@@ -96,7 +97,7 @@ namespace XposeCraft.Core.Faction.Units
             weapon.CheckSpheres();
         }
 
-        void Start()
+        private void Awake()
         {
             selection = GameObject.Find("Player Manager").GetComponent<UnitSelection>();
             vision = gameObject.GetComponent<VisionSignal>();
@@ -107,7 +108,7 @@ namespace XposeCraft.Core.Faction.Units
                 .GetComponent<FactionManager>()
                 .FactionList[FactionIndex]
                 .GetComponent<Faction>();
-            gui.Start(gameObject);
+            gui.Awake(gameObject);
             for (int x = 0; x < techEffect.Length; x++)
             {
                 var technology = faction.Tech[techEffect[x].index];
@@ -120,7 +121,6 @@ namespace XposeCraft.Core.Faction.Units
             gameObject.name = name;
             healthObj = GetComponent<Health>();
         }
-
 
         public void DisplayHealth()
         {
@@ -332,7 +332,7 @@ namespace XposeCraft.Core.Faction.Units
                             MyUnit = UnitActor,
                             Minerals = ResourceHelper.GetMinerals(resource.manager)
                         };
-                        GameManager.Instance.FiredEvent(EventType.MineralsChanged, args);
+                        GameManager.Instance.FiredEvent(PlayerOwner, EventType.MineralsChanged, args);
                     }
                     else if (anim.state != "Move")
                     {

@@ -52,7 +52,7 @@ namespace XposeCraft.Game.Actors.Buildings
             BuildingController = GameObject.GetComponent<BuildingController>();
             if (!GameObject.CompareTag("Building"))
             {
-                throw new InvalidOperationException("Building Actor state is invalid, GameObject missing tag");
+                throw new InvalidOperationException("Building Actor has invalid state, GameObject is missing tag");
             }
         }
     }

@@ -7,8 +7,7 @@ using XposeCraft.GameInternal;
 namespace XposeCraft.Game.Actors
 {
     /// <summary>
-    /// Representation of a Game Actor in the Unity.
-    /// Remember to mark all implementation subclasses [Serializable] in order for hotswap to work.
+    /// Representation of a Game Actor in Unity.
     /// </summary>
     public abstract class Actor : ScriptableObject, IActor
     {
@@ -30,6 +29,7 @@ namespace XposeCraft.Game.Actors
         }
 
         /// <summary>
+        /// Internal method, do not use directly.
         /// The only safe way to create an Actor. Constructor usage is not advised for ScriptableObject.
         /// Source: http://answers.unity3d.com/questions/310847/how-to-create-instance-of-scriptableobject-and-pas.html
         /// </summary>
@@ -41,6 +41,9 @@ namespace XposeCraft.Game.Actors
             return Create<T>(typeof(T), gameObject);
         }
 
+        /// <summary>
+        /// Internal method, do not use directly.
+        /// </summary>
         public static T Create<T>(Type type, GameObject gameObject) where T : Actor
         {
             if (!typeof(T).IsAssignableFrom(type))

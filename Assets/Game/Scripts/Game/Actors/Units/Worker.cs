@@ -37,7 +37,7 @@ namespace XposeCraft.Game.Actors.Units
         public IBuilding CreateBuilding(BuildingType buildingType, Position position)
         {
             StopGathering();
-            return Create<Buildings.Building>(
+            return Create<Building>(
                 BuildingHelper.DetermineBuildingType(buildingType),
                 BuildingPlacement.PlaceProgressBuilding(
                     BuildingHelper.FindBuildingInFaction(buildingType, UnitController),
@@ -54,7 +54,7 @@ namespace XposeCraft.Game.Actors.Units
         /// Send the Worker to finish the construction of an existing building.
         /// </summary>
         /// <param name="building">Building to have its construction finished.</param>
-        /// <returns>True if the request was valid.</returns>
+        /// <returns>True if the request was processed as valid.</returns>
         public bool FinishBuiding(IBuilding building)
         {
             StopGathering();

@@ -22,11 +22,6 @@ namespace XposeCraft.GameInternal
             Thread.Sleep(milliseconds);
         }
 
-        protected string SuccessString(bool success)
-        {
-            return success ? "finished successfully" : "failed";
-        }
-
         protected IEnumerator RunAfterSeconds(int seconds, Action action)
         {
             yield return new WaitForSeconds(seconds);
@@ -40,39 +35,23 @@ namespace XposeCraft.GameInternal
 
         public void RunTests()
         {
-            // Test state initialization
             Log.i("*** " + typeof(GameTestRunner).Name + ".RunTests called ***");
-            Player.CurrentPlayer = GameManager.Instance.Players[0];
 
-            // Meta-tests
-            SelfTests();
-
-            // Temporary Example Test follows
-
-            var workers = UnitHelper.GetUnitsAsList<Worker>();
-            workers[0].CreateBuilding(BuildingType.NubianArmory, PlaceType.MyBase.Right);
-            StartCoroutine(RunAfterSeconds(1, () =>
+            // Test for each Player
+            foreach (var player in GameManager.Instance.Players)
             {
-                var minerals = ResourceHelper.GetResources<Mineral>();
-                for (var index = 1; index < workers.Count; index++)
-                {
-                    workers[index].SendGather(minerals[index]);
-                }
-            }));
+                // Player state initialization
+                Player.CurrentPlayer = player;
 
-            Event.Register(EventType.MineralsChanged, args =>
-            {
-                Log.i(this, args.Minerals + " minerals");
-                var building = workers[0].CreateBuilding(BuildingType.NubianArmory, PlaceType.MyBase.Left);
-                workers[1].CreateBuilding(BuildingType.NubianArmory, PlaceType.MyBase.Back);
-                workers[2].CreateBuilding(BuildingType.NubianArmory, PlaceType.MyBase.Front);
-                foreach (var worker in workers)
-                {
-                    worker.FinishBuiding(building);
-                }
-            });
+                // Meta-tests
+                SelfTests();
 
-            RunPlayerTests();
+                // Temporary Example Test
+                ExampleTest();
+
+                // Game bot run
+                RunPlayerTests();
+            }
 
             StartCoroutine(RunAfterSeconds(29, () =>
             {
@@ -97,11 +76,35 @@ namespace XposeCraft.GameInternal
             Assert.AreEqual(center.PointLocation, new Position(center.X, center.Y).PointLocation);
         }
 
+        public void ExampleTest()
+        {
+            var workers = UnitHelper.GetUnitsAsList<Worker>();
+            workers[0].CreateBuilding(BuildingType.NubianArmory, PlaceType.MyBase.Right);
+            StartCoroutine(RunAfterSeconds(1, () =>
+            {
+                var minerals = ResourceHelper.GetResources<Mineral>();
+                for (var index = 1; index < workers.Count; index++)
+                {
+                    workers[index].SendGather(minerals[index]);
+                }
+            }));
+
+            Event.Register(EventType.MineralsChanged, args =>
+            {
+                Log.i(this, args.Minerals + " minerals");
+                var building = workers[0].CreateBuilding(BuildingType.NubianArmory, PlaceType.MyBase.Left);
+                workers[1].CreateBuilding(BuildingType.NubianArmory, PlaceType.MyBase.Back);
+                workers[2].CreateBuilding(BuildingType.NubianArmory, PlaceType.MyBase.Front);
+                foreach (var worker in workers)
+                {
+                    worker.FinishBuiding(building);
+                }
+            });
+        }
+
         public void RunPlayerTests()
         {
-            Log.i("----------------------------------");
             Log.i(">>  Starting a Planning Phase.  <<");
-            Log.i("----------------------------------");
 
             var end = new Action(() =>
             {

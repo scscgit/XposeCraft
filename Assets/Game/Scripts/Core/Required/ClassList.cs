@@ -346,7 +346,7 @@ namespace XposeCraft.Core.Required
             type = ntype == "Unit" ? "Unit" : "Building";
         }
 
-        public void Start(GameObject obj)
+        public void Awake(GameObject obj)
         {
             select = GameObject.Find("Player Manager").GetComponent<UnitSelection>();
             switch (type)

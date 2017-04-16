@@ -1,21 +1,24 @@
+using System;
 using XposeCraft.Core.Faction.Units;
+using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Control;
 using XposeCraft.Game.Control.GameActions;
+using XposeCraft.GameInternal;
 
 namespace XposeCraft.Game.Actors.Units
 {
     public abstract class Unit : Actor, IUnit
     {
-        public UnitActionQueue ActionQueue { get; private set; }
+        public UnitActionQueue ActionQueue { get; set; }
 
         public int Health
         {
-            get { return -1; }
+            get { return UnitController.GetHealth(); }
         }
 
         public int MaxHealth
         {
-            get { return -1; }
+            get { return UnitController.GetMaxHealth(); }
         }
 
         protected UnitController UnitController { get; private set; }
@@ -24,27 +27,33 @@ namespace XposeCraft.Game.Actors.Units
         {
             base.Initialize();
             UnitController = GameObject.GetComponent<UnitController>();
-        }
-
-        // TODO: deprecate in favor of equals operator?
-        public UnitActionQueue ReplaceActionQueue(UnitActionQueue queue)
-        {
-            return ActionQueue = queue;
+            UnitController.UnitActor = this;
+            // TODO: make sure the specification will never require asynchronous or other random Actor initialization
+            UnitController.PlayerOwner = Player.CurrentPlayer;
+            if (!GameObject.CompareTag("Unit"))
+            {
+                throw new InvalidOperationException("Unit Actor has invalid state, GameObject is missing tag");
+            }
         }
 
         public UnitActionQueue Attack(IUnit unit)
         {
-            return ReplaceActionQueue(new UnitActionQueue(new Attack(unit)));
+            return ActionQueue = new UnitActionQueue(new Attack(unit));
+        }
+
+        public UnitActionQueue Attack(IBuilding building)
+        {
+            return ActionQueue = new UnitActionQueue(new Attack(building));
         }
 
         public UnitActionQueue MoveTo(Position position)
         {
-            return ReplaceActionQueue(new UnitActionQueue(new Move(position)));
+            return ActionQueue = new UnitActionQueue(new Move(position));
         }
 
         public UnitActionQueue AttackMoveTo(Position position)
         {
-            return ReplaceActionQueue(new UnitActionQueue(new AttackMove(position)));
+            return ActionQueue = new UnitActionQueue(new AttackMove(position));
         }
     }
 }

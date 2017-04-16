@@ -20,7 +20,7 @@ namespace XposeCraft.Core.Faction.Units
         public int layer;
         Transform myTransform;
 
-        void Start()
+        private void Awake()
         {
             Physics.IgnoreLayerCollision(layer, layer, true);
             pathing = GameObject.Find("A*").GetComponent<AStarManager>();

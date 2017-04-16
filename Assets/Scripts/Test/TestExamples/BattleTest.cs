@@ -39,7 +39,7 @@ namespace XposeCraft.Test.TestExamples
                     }
                     foreach (IUnit unit in UnitHelper.GetUnits<IUnit>())
                     {
-                        unit.ReplaceActionQueue(queue);
+                        unit.ActionQueue = queue;
                     }
                 }
             });
@@ -82,7 +82,7 @@ namespace XposeCraft.Test.TestExamples
                     // Any unit of course exposes its position in form of coordinates; MyBot is custom player’s class
                     args.MyUnit.MoveTo(MyBot.HealMeetPointUnit.Position);
                     MyBot.MeetPointEvent = Event.Register(EventType.UnitGainedHealth,
-                        argsB => { argsB.MyUnit.ReplaceActionQueue(oldActions); });
+                        argsB => { argsB.MyUnit.ActionQueue = oldActions; });
                 }
             });
         }

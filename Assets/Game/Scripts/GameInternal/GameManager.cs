@@ -106,21 +106,27 @@ namespace XposeCraft.GameInternal
         {
         }
 
-        public void FiredEvent(EventType eventType, Arguments args)
+        public void FiredEvent(Player player, EventType eventType, Arguments args)
         {
             lock (FiredEventLock)
             {
-                foreach (var player in Players)
+                Player.CurrentPlayer = player;
+                if (!player.RegisteredEvents.ContainsKey(eventType))
                 {
-                    if (!player.RegisteredEvents.ContainsKey(eventType))
-                    {
-                        continue;
-                    }
-                    foreach (var registeredEvent in player.RegisteredEvents[eventType])
-                    {
-                        registeredEvent.Function(args);
-                    }
+                    return;
                 }
+                foreach (var registeredEvent in player.RegisteredEvents[eventType])
+                {
+                    registeredEvent.Function(args);
+                }
+            }
+        }
+
+        public void FiredEventForAllPlayers(EventType eventType, Arguments args)
+        {
+            foreach (var player in Players)
+            {
+                FiredEvent(player, eventType, args);
             }
         }
     }

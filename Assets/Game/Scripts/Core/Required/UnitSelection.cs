@@ -5,6 +5,7 @@ using XposeCraft.Core.Faction;
 using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Faction.Units;
 using XposeCraft.Core.Grids;
+using XposeCraft.GameInternal;
 using XposeCraft.UI.MiniMap;
 
 namespace XposeCraft.Core.Required
@@ -168,6 +169,11 @@ namespace XposeCraft.Core.Required
             }
             foreach (UnitController unit in units)
             {
+                if (unit == null)
+                {
+                    Log.e(typeof(UnitSelection), "UnitController with null value has attempted to set its target");
+                    continue;
+                }
                 unit.SetTarget(obj, loc, type);
             }
         }
