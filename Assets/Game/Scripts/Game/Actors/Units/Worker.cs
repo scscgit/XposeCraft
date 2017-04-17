@@ -46,7 +46,8 @@ namespace XposeCraft.Game.Actors.Units
                     position,
                     Quaternion.identity,
                     GameManager.Instance.ResourceManager
-                )
+                ),
+                Player.CurrentPlayer
             );
         }
 

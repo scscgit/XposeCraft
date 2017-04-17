@@ -23,13 +23,12 @@ namespace XposeCraft.Game.Actors.Units
 
         protected UnitController UnitController { get; private set; }
 
-        protected override void Initialize()
+        protected override void Initialize(Player playerOwner)
         {
-            base.Initialize();
+            base.Initialize(playerOwner);
             UnitController = GameObject.GetComponent<UnitController>();
             UnitController.UnitActor = this;
-            // TODO: make sure the specification will never require asynchronous or other random Actor initialization
-            UnitController.PlayerOwner = Player.CurrentPlayer;
+            UnitController.PlayerOwner = playerOwner;
             if (!GameObject.CompareTag("Unit"))
             {
                 throw new InvalidOperationException("Unit Actor has invalid state, GameObject is missing tag");

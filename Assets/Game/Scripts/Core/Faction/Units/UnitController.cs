@@ -133,7 +133,7 @@ namespace XposeCraft.Core.Faction.Units
 
         void FixedUpdate()
         {
-            if (target == null)
+            if (target == null || target == gameObject)
             {
                 targetType = Target.None;
             }
@@ -176,6 +176,24 @@ namespace XposeCraft.Core.Faction.Units
                     }
                     break;
                 case Target.Unit:
+                    if (tState == TargetState.Undecided)
+                    {
+                        switch (faction.Relations[target.GetComponent<UnitController>().FactionIndex].state)
+                        {
+                            case 0:
+                                tState = TargetState.Ally;
+                                break;
+                            case 1:
+                                tState = TargetState.Neutral;
+                                break;
+                            case 2:
+                                tState = TargetState.Enemy;
+                                break;
+                            case 3:
+                                tState = TargetState.Self;
+                                break;
+                        }
+                    }
                     if (movement.pathComplete)
                     {
                         transform.LookAt(new Vector3(
@@ -195,24 +213,6 @@ namespace XposeCraft.Core.Faction.Units
                         }
                         switch (tState)
                         {
-                            case TargetState.Undecided:
-                                UnitController targetController = target.GetComponent<UnitController>();
-                                switch (faction.Relations[targetController.FactionIndex].state)
-                                {
-                                    case 0:
-                                        tState = TargetState.Ally;
-                                        break;
-                                    case 1:
-                                        tState = TargetState.Neutral;
-                                        break;
-                                    case 2:
-                                        tState = TargetState.Enemy;
-                                        break;
-                                    case 3:
-                                        tState = TargetState.Self;
-                                        break;
-                                }
-                                break;
                             case TargetState.Ally:
                                 break;
                             case TargetState.Neutral:
@@ -233,9 +233,14 @@ namespace XposeCraft.Core.Faction.Units
                         anim.state = "Move";
                         anim.Animate();
                     }
-                    if (weapon.InRange(target.transform.position, transform.position))
+                    if (tState == TargetState.Enemy
+                        && weapon.fighterUnit
+                        && weapon.InRange(target.transform.position, transform.position)
+                        || (transform.position - target.transform.position).magnitude < 2)
                     {
                         movement.pathComplete = true;
+                        anim.state = "Idle";
+                        anim.Animate();
                     }
                     break;
                 case Target.Location:

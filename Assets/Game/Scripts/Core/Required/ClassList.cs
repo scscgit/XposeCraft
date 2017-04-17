@@ -717,15 +717,17 @@ namespace XposeCraft.Core.Required
         {
             Vector3 loc1 = gridScript.DetermineNearestPoint(startLoc, endLoc, 0);
             Vector3 loc2 = gridScript.DetermineNearestPoint(endLoc, startLoc, 0);
-            int pointLoc1 = DetermineLoc(loc1);
-            int pointLoc2 = DetermineLoc(loc2);
+            int pointLoc1 = gridScript.DetermineLocation(loc1, gridI);
+            int pointLoc2 = gridScript.DetermineLocation(loc2, gridI);
             return myPath = FindNormalPath(pointLoc1, pointLoc2);
         }
 
         // Finds the First Path
         public UPath FindFirstPath(Vector3 startLoc, Vector3 endLoc)
         {
-            return FindFastPath(DetermineLoc(startLoc), DetermineLoc(endLoc));
+            return FindFastPath(
+                gridScript.DetermineLocation(startLoc, gridI),
+                gridScript.DetermineLocation(endLoc, gridI));
         }
 
         // Finds a normal A* Path
@@ -794,12 +796,12 @@ namespace XposeCraft.Core.Required
         // Finds the first Path
         UPath FindFastPath(int startLoc, int endLoc)
         {
-            float[] fcostList = new float[gridScript.grids[gridI].points.Length];
-            float[] gcostList = new float[gridScript.grids[gridI].points.Length];
-            bool[] checkedList = new bool[gridScript.grids[gridI].points.Length];
-            bool[] addedList = new bool[gridScript.grids[gridI].points.Length];
-            int l = gridScript.grids[gridI].points.Length;
-            GridPoint[] lGrid = new GridPoint[l];
+            int pointsLength = gridScript.grids[gridI].points.Length;
+            float[] fcostList = new float[pointsLength];
+            float[] gcostList = new float[pointsLength];
+            bool[] checkedList = new bool[pointsLength];
+            bool[] addedList = new bool[pointsLength];
+            GridPoint[] lGrid = new GridPoint[pointsLength];
             for (int x = 0; x < lGrid.Length; x++)
             {
                 lGrid[x] = new GridPoint(gridScript.grids[gridI].points[x]);
@@ -807,7 +809,6 @@ namespace XposeCraft.Core.Required
             List<int> openList = new List<int> {startLoc};
             int oLLength = 1;
             checkedList[openList[0]] = true;
-            UPath mp = null;
             while (oLLength > 0)
             {
                 int point = openList[0];
@@ -815,12 +816,7 @@ namespace XposeCraft.Core.Required
                 openList.RemoveAt(0);
                 if (point == endLoc)
                 {
-                    UPath lp = BackTrack(startLoc, endLoc, lGrid);
-                    if (lp != null)
-                    {
-                        mp = lp;
-                        break;
-                    }
+                    return BackTrack(startLoc, endLoc, lGrid);
                 }
                 oLLength--;
                 foreach (int lPoint in lGrid[point].children)
@@ -848,16 +844,17 @@ namespace XposeCraft.Core.Required
                     oLLength++;
                 }
             }
-            return mp;
+            return null;
         }
 
         // Finds the first Path
         UPath FindFastMTPath(int startLoc, int endLoc)
         {
-            float[] fcostList = new float[gridScript.grids[gridI].points.Length];
-            float[] gcostList = new float[gridScript.grids[gridI].points.Length];
-            bool[] checkedList = new bool[gridScript.grids[gridI].points.Length];
-            bool[] addedList = new bool[gridScript.grids[gridI].points.Length];
+            int pointsLength = gridScript.grids[gridI].points.Length;
+            float[] fcostList = new float[pointsLength];
+            float[] gcostList = new float[pointsLength];
+            bool[] checkedList = new bool[pointsLength];
+            bool[] addedList = new bool[pointsLength];
             for (int x = 0; x < mGrid.Length; x++)
             {
                 mGrid[x].state = gridScript.grids[gridI].points[x].state;
@@ -865,7 +862,6 @@ namespace XposeCraft.Core.Required
             List<int> openList = new List<int> {startLoc};
             int oLLength = 1;
             checkedList[openList[0]] = true;
-            UPath mp = null;
             while (oLLength > 0)
             {
                 int point = openList[0];
@@ -873,12 +869,7 @@ namespace XposeCraft.Core.Required
                 openList.RemoveAt(0);
                 if (point == endLoc)
                 {
-                    UPath lp = BackTrack(startLoc, endLoc, mGrid);
-                    if (lp != null)
-                    {
-                        mp = lp;
-                        break;
-                    }
+                    return BackTrack(startLoc, endLoc, mGrid);
                 }
                 oLLength--;
                 for (var x = 0; x < mGrid[point].children.Length; x++)
@@ -910,7 +901,7 @@ namespace XposeCraft.Core.Required
                     oLLength++;
                 }
             }
-            return mp;
+            return null;
         }
 
         UPath BackTrack(int startLoc, int endLoc, int[] lGridLookup, GridPoint[] lGrid)
@@ -949,15 +940,6 @@ namespace XposeCraft.Core.Required
                 loc = lGrid[loc].parent;
             }
             return mp;
-        }
-
-        int DetermineLoc(Vector3 loc)
-        {
-            float xLoc = loc.x - gridScript.grids[gridI].startLoc.x;
-            float yLoc = loc.z - gridScript.grids[gridI].startLoc.z;
-            int x = Mathf.RoundToInt(xLoc / gridScript.grids[gridI].nodeDist);
-            int y = Mathf.RoundToInt(yLoc / gridScript.grids[gridI].nodeDist);
-            return x + y * gridScript.grids[gridI].size;
         }
 
         int DetermineSector(int loc, int gridSize, int sectorSize)

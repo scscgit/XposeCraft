@@ -44,24 +44,24 @@ namespace XposeCraft.Core.Faction.Units
                 return;
             }
             var pointLoc = gridScript.grids[gridI].points[myPath.list[curPoint]].loc;
+            float distFromPlace = (
+                new Vector3(pointLoc.x, 0, pointLoc.z) - new Vector3(myTransform.position.x, 0, myTransform.position.z)
+            ).sqrMagnitude;
+            if (distFromPlace < checkDist)
+            {
+                curPoint++;
+                if (curPoint == myPath.list.Length)
+                {
+                    pathComplete = true;
+                    return;
+                }
+            }
             // Lerp Rotation
             Quaternion targetRotation = Quaternion.LookRotation(
                 new Vector3(pointLoc.x, 0, pointLoc.z)
                 - new Vector3(myTransform.position.x, 0, myTransform.position.z));
             myTransform.rotation = Quaternion.Slerp(myTransform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
             myTransform.Translate(Vector3.forward * speed * Time.deltaTime);
-            float distFromPlace = (
-                new Vector3(pointLoc.x, 0, pointLoc.z) - new Vector3(myTransform.position.x, 0, myTransform.position.z)
-            ).sqrMagnitude;
-            if (distFromPlace >= checkDist)
-            {
-                return;
-            }
-            curPoint++;
-            if (curPoint == myPath.list.Length)
-            {
-                pathComplete = true;
-            }
         }
 
         public void RequestPath(Vector3 target)

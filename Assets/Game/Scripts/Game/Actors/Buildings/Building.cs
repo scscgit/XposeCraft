@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Faction.Units;
 using XposeCraft.Core.Required;
+using XposeCraft.GameInternal;
 using BuildingType = XposeCraft.Core.Faction.Buildings.BuildingType;
 using UnitType = XposeCraft.Game.Enums.UnitType;
 
@@ -46,9 +47,9 @@ namespace XposeCraft.Game.Actors.Buildings
             get { return BuildingController.unitProduction.maxAmount; }
         }
 
-        protected override void Initialize()
+        protected override void Initialize(Player playerOwner)
         {
-            base.Initialize();
+            base.Initialize(playerOwner);
             BuildingController = GameObject.GetComponent<BuildingController>();
             if (!GameObject.CompareTag("Building"))
             {

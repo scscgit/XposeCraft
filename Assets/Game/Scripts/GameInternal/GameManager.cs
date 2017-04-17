@@ -89,7 +89,8 @@ namespace XposeCraft.GameInternal
                             Quaternion.identity)
                         .GetComponent<BuildingController>()
                         .Place()
-                        .gameObject);
+                        .gameObject
+                    , player);
                 for (var workerIndex = 0; workerIndex < StartingWorkers; workerIndex++)
                 {
                     Actor.Create<Worker>(
@@ -98,7 +99,7 @@ namespace XposeCraft.GameInternal
                             // Workers will be spawned near the first Base
                             ((BaseCenter) player.Buildings[0]).SpawnPosition.Location,
                             Quaternion.identity)
-                    );
+                        , player);
                 }
 
                 // Initialize Resources to use the shared list
@@ -121,6 +122,11 @@ namespace XposeCraft.GameInternal
         {
             lock (FiredEventLock)
             {
+                if (player == null)
+                {
+                    throw new Exception("Attempt to trigger Event without Player context. " +
+                                        "Maybe the Controller Script wasn't initialized by creating Actor?");
+                }
                 Player.CurrentPlayer = player;
                 if (!player.RegisteredEvents.ContainsKey(eventType))
                 {

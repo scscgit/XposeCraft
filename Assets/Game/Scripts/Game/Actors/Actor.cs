@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using XposeCraft.Core.Faction.Units;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Units;
 using XposeCraft.GameInternal;
@@ -24,7 +25,7 @@ namespace XposeCraft.Game.Actors
             get { return new Position(GameManager.Instance.UGrid.DetermineLocation(GameObject.transform.position)); }
         }
 
-        protected virtual void Initialize()
+        protected virtual void Initialize(Player playerOwner)
         {
         }
 
@@ -33,18 +34,19 @@ namespace XposeCraft.Game.Actors
         /// The only safe way to create an Actor. Constructor usage is not advised for ScriptableObject.
         /// Source: http://answers.unity3d.com/questions/310847/how-to-create-instance-of-scriptableobject-and-pas.html
         /// </summary>
-        /// <param name="gameObject">Actor representation as a GameObject</param>
+        /// <param name="gameObject">Actor representation as a GameObject in the Scene.</param>
+        /// <param name="playerOwner">Player that owns the Unit and should be used as its context.</param>
         /// <typeparam name="T">Subclass type</typeparam>
         /// <returns>New instance of an Actor</returns>
-        public static T Create<T>(GameObject gameObject) where T : Actor
+        public static T Create<T>(GameObject gameObject, Player playerOwner) where T : Actor
         {
-            return Create<T>(typeof(T), gameObject);
+            return Create<T>(typeof(T), gameObject, playerOwner);
         }
 
         /// <summary>
         /// Internal method, do not use directly.
         /// </summary>
-        public static T Create<T>(Type type, GameObject gameObject) where T : Actor
+        public static T Create<T>(Type type, GameObject gameObject, Player playerOwner) where T : Actor
         {
             if (!typeof(T).IsAssignableFrom(type))
             {
@@ -52,7 +54,7 @@ namespace XposeCraft.Game.Actors
             }
             var instance = (T) CreateInstance(type);
             instance.GameObject = gameObject;
-            instance.Initialize();
+            instance.Initialize(playerOwner);
             var building = instance as Building;
             if (building != null)
             {

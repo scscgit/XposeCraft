@@ -28,7 +28,7 @@ namespace XposeCraft.Game.Actors.Resources
                 default:
                     throw new InvalidOperationException("Invalid Resource type of GameObject based on its name");
             }
-            return Create<T>(type, gameObject);
+            return Create<T>(type, gameObject, null);
         }
     }
 }

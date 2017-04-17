@@ -1,8 +1,8 @@
-﻿using System;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using XposeCraft.Collections;
 using UnityObject = UnityEngine.Object;
 
 namespace XposeCraft.Inspector
@@ -18,7 +18,7 @@ namespace XposeCraft.Inspector
     {
         private const float ButtonWidth = 18f;
 
-        private SerializableDictionary3<TKey, TValue> _dictionary;
+        private Dictionary<TKey, TValue> _dictionary;
         private bool _foldout;
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
@@ -48,6 +48,7 @@ namespace XposeCraft.Inspector
 
             if (GUI.Button(buttonRect, new GUIContent("+", "Add item"), EditorStyles.miniButton))
             {
+                Undo.RecordObject(property.serializedObject.targetObject, "Add Dictionary Item");
                 AddNewItem();
             }
 
@@ -55,6 +56,7 @@ namespace XposeCraft.Inspector
 
             if (GUI.Button(buttonRect, new GUIContent("X", "Clear dictionary"), EditorStyles.miniButtonRight))
             {
+                Undo.RecordObject(property.serializedObject.targetObject, "Clear Dictionary");
                 ClearDictionary();
             }
 
@@ -77,6 +79,9 @@ namespace XposeCraft.Inspector
                 {
                     try
                     {
+                        Undo.RecordObject(
+                            property.serializedObject.targetObject,
+                            "Change Key of Dictionary Item from " + key + " to " + newKey);
                         _dictionary.Remove(key);
                         _dictionary.Add(newKey, value);
                     }
@@ -94,6 +99,9 @@ namespace XposeCraft.Inspector
                 value = DoField(valueRect, typeof(TValue), value);
                 if (EditorGUI.EndChangeCheck())
                 {
+                    Undo.RecordObject(
+                        property.serializedObject.targetObject,
+                        "Change value of Dictionary Item with Key " + key + " to " + value);
                     _dictionary[key] = value;
                     break;
                 }
@@ -103,6 +111,7 @@ namespace XposeCraft.Inspector
                 removeRect.width = ButtonWidth;
                 if (GUI.Button(removeRect, new GUIContent("x", "Remove item"), EditorStyles.miniButtonRight))
                 {
+                    Undo.RecordObject(property.serializedObject.targetObject, "Remove Dictionary Item " + key);
                     RemoveItem(key);
                     break;
                 }
@@ -119,10 +128,10 @@ namespace XposeCraft.Inspector
             if (_dictionary == null)
             {
                 var target = property.serializedObject.targetObject;
-                _dictionary = fieldInfo.GetValue(target) as SerializableDictionary3<TKey, TValue>;
+                _dictionary = fieldInfo.GetValue(target) as Dictionary<TKey, TValue>;
                 if (_dictionary == null)
                 {
-                    _dictionary = new SerializableDictionary3<TKey, TValue>();
+                    _dictionary = new Dictionary<TKey, TValue>();
                     fieldInfo.SetValue(target, _dictionary);
                 }
 
@@ -131,7 +140,7 @@ namespace XposeCraft.Inspector
         }
 
         private static readonly Dictionary<Type, Func<Rect, object, object>> _Fields =
-            new Dictionary<Type, Func<Rect, object, object>>()
+            new Dictionary<Type, Func<Rect, object, object>>
             {
                 {typeof(int), (rect, value) => EditorGUI.IntField(rect, (int) value)},
                 {typeof(float), (rect, value) => EditorGUI.FloatField(rect, (float) value)},
@@ -154,6 +163,14 @@ namespace XposeCraft.Inspector
 
             if (typeof(UnityObject).IsAssignableFrom(type))
                 return (T) (object) EditorGUI.ObjectField(rect, (UnityObject) (object) value, type, true);
+
+            // Only display the size of collections
+            if (typeof(ICollection).IsAssignableFrom(type))
+            {
+                var collection = (ICollection) value;
+                EditorGUI.TextField(rect, "Size " + (collection == null ? 0 : collection.Count), GUIStyle.none);
+                return value;
+            }
 
             Debug.Log("Type is not supported: " + type);
             return value;
