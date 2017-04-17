@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using XposeCraft.Core.Required;
@@ -375,6 +376,10 @@ namespace XposeCraft.Core.Grids
 
         public Vector3 FindNearestPoint(Vector3 startPoint, int point, int i, float dist)
         {
+            if (!IsValidLocation(point))
+            {
+                throw new Exception("Invalid Grid Point Location");
+            }
             bool found = false;
             List<int> children = new List<int>();
             int childAmount = 1;

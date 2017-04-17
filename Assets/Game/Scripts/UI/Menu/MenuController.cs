@@ -1,47 +1,61 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace XposeCraft.UI.Menu
 {
     /// <summary>
-    /// Toggle support for Menu window.
+    /// Toggle and action support for Menu window.
     /// </summary>
     public class MenuController : MonoBehaviour
     {
-        public GameObject menu;
+        // To prevent disable when using the toggle, this script must not be attached to that Menu or any of its children
+        [FormerlySerializedAs("menu")] public GameObject Menu;
+
         public bool MenuAtStart;
+        public bool ToggleOnEscape = true;
 
-        UIController ui;
-        Animator animator;
+        private UIController _ui;
+        private Animator _animator;
 
-        void Start()
+        public void QuitGame()
         {
-            this.ui = menu.GetComponent<UIController>();
-            this.animator = menu.GetComponent<Animator>();
+            Application.Quit();
+            Debug.Log("The application was quit");
+        }
+
+        public void ToggleDisplay()
+        {
+            _animator.enabled = true;
+            var show = _ui.isShow;
+            if (show)
+            {
+                _ui.Hide();
+            }
+            else
+            {
+                _ui.Show();
+            }
+        }
+
+        private void Start()
+        {
+            _ui = Menu.GetComponent<UIController>();
+            _animator = Menu.GetComponent<Animator>();
 
             if (!MenuAtStart)
             {
                 // Pausing the animator, disabling the Menu
-                animator.enabled = false;
+                _animator.enabled = false;
                 // Last started animation was Show, we explicitly set Hide
-                ui.Hide();
+                _ui.Hide();
             }
         }
 
-        void Update()
+        private void Update()
         {
-            if (Input.GetButtonDown("Cancel"))
+            if (ToggleOnEscape && Input.GetButtonDown("Cancel"))
             {
-                animator.enabled = true;
-                var show = ui.isShow;
-                Debug.logger.Log("Escape button pressed, " + (show ? "closing" : "opening") + " menu");
-                if (show)
-                {
-                    ui.Hide();
-                }
-                else if (!show)
-                {
-                    ui.Show();
-                }
+                ToggleDisplay();
             }
         }
     }

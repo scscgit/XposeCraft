@@ -99,6 +99,7 @@ namespace XposeCraft.GameInternal
                 {
                     worker.FinishBuiding(building);
                 }
+                args.ThisEvent.UnregisterEvent();
             });
         }
 

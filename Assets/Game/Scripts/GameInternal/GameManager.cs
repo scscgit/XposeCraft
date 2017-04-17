@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using XposeCraft.Core.Faction.Buildings;
@@ -11,6 +12,7 @@ using XposeCraft.Game.Actors.Resources;
 using XposeCraft.Game.Actors.Units;
 using XposeCraft.GameInternal.Helpers;
 using BuildingType = XposeCraft.Game.Enums.BuildingType;
+using Event = XposeCraft.Game.Event;
 using EventType = XposeCraft.Game.Enums.EventType;
 
 namespace XposeCraft.GameInternal
@@ -31,6 +33,8 @@ namespace XposeCraft.GameInternal
         public GameObject WorkerPrefab;
         public int StartingWorkers = 1;
         public bool Debug;
+        public bool DisplayAllHealthBars;
+        public bool DisplayOnlyDamagedHealthBars;
 
         private object _firedEventLock;
 
@@ -106,6 +110,13 @@ namespace XposeCraft.GameInternal
         {
         }
 
+        /// <summary>
+        /// Fires an Event for the Player to run his registered actions.
+        /// TODO: if Arguments get reused between multiple players, do a deep clone.
+        /// </summary>
+        /// <param name="player">Context of the Model to be used.</param>
+        /// <param name="eventType">Game Event that is fired.</param>
+        /// <param name="args">Arguments to be used.</param>
         public void FiredEvent(Player player, EventType eventType, Arguments args)
         {
             lock (FiredEventLock)
@@ -115,13 +126,16 @@ namespace XposeCraft.GameInternal
                 {
                     return;
                 }
-                foreach (var registeredEvent in player.RegisteredEvents[eventType])
+                // Copy current events before iterating over them
+                var events = new List<Event>(player.RegisteredEvents[eventType]);
+                foreach (var registeredEvent in events)
                 {
-                    registeredEvent.Function(args);
+                    registeredEvent.Function(new Arguments(args, registeredEvent));
                 }
             }
         }
 
+        [Obsolete]
         public void FiredEventForAllPlayers(EventType eventType, Arguments args)
         {
             foreach (var player in Players)

@@ -130,7 +130,7 @@ namespace XposeCraft.UI.MiniMap
             }
             else
             {
-                Debug.LogWarning("Minimap could not detect its camera location, check your Cam Zoom Layer");
+                Debug.LogWarning("Minimap could not detect its camera location via ray, check your Cam Zoom Layer");
             }
             if (!moveCamera)
             {
@@ -198,7 +198,7 @@ namespace XposeCraft.UI.MiniMap
                 localBounds.y + localBounds.height - (loc.z - realWorldBounds.y) * size.height);
         }
 
-        Vector3 Determine3dLoc(float cameraHeight, Vector2 loc)
+        public Vector3 Determine3dLoc(float cameraHeight, Vector2 loc)
         {
             Rect size = new Rect(
                 realWorldBounds.x / localBounds.x,

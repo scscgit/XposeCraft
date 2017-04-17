@@ -4,6 +4,7 @@ using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Faction.Units;
 using XposeCraft.Core.Required;
 using XposeCraft.Core.Resources;
+using XposeCraft.GameInternal;
 using XposeCraft.UI.MiniMap;
 using GUIElement = XposeCraft.Core.Required.GUIElement;
 
@@ -59,31 +60,16 @@ namespace XposeCraft.Core.Faction
             }
         }
 
-        void Start()
+        private void Awake()
         {
-            if (place == null)
-            {
-                place = gameObject.GetComponent<BuildingPlacement>();
-            }
-            if (select == null)
-            {
-                select = gameObject.GetComponent<UnitSelection>();
-            }
-            if (resourceManager == null)
-            {
-                resourceManager = gameObject.GetComponent<ResourceManager>();
-            }
-            if (miniMap == null)
-            {
-                miniMap = GameObject.Find("MiniMap").GetComponent<MiniMap>();
-            }
-            if (faction == null)
-            {
-                faction = GameObject.Find("Faction Manager")
-                    .GetComponent<FactionManager>()
-                    .FactionList[select.FactionIndex]
-                    .GetComponent<Faction>();
-            }
+            place = gameObject.GetComponent<BuildingPlacement>();
+            select = gameObject.GetComponent<UnitSelection>();
+            resourceManager = gameObject.GetComponent<ResourceManager>();
+            miniMap = GameObject.Find("MiniMap").GetComponent<MiniMap>();
+            faction = GameObject.Find("Faction Manager")
+                .GetComponent<FactionManager>()
+                .FactionList[select.FactionIndex]
+                .GetComponent<Faction>();
             ReconfigureWindows();
         }
 
@@ -130,13 +116,37 @@ namespace XposeCraft.Core.Faction
                 }
                 progressList[x].DisplayProgress();
             }
-            for (int x = 0; x < select.curSelectedLength; x++)
+            if (GameManager.Instance.DisplayAllHealthBars)
             {
-                select.curSelectedS[x].DisplayHealth();
+                foreach (var unit in select.UnitList)
+                {
+                    if (GameManager.Instance.DisplayOnlyDamagedHealthBars
+                        && unit.GetHealth() == unit.GetMaxHealth())
+                    {
+                        continue;
+                    }
+                    unit.DisplayHealth();
+                }
+                foreach (var building in select.BuildingList)
+                {
+                    if (GameManager.Instance.DisplayOnlyDamagedHealthBars
+                        && building.GetHealth() == building.GetMaxHealth())
+                    {
+                        continue;
+                    }
+                    building.DisplayHealth();
+                }
             }
-            for (int x = 0; x < select.curBuildSelectedLength; x++)
+            else
             {
-                select.curBuildSelectedS[x].DisplayHealth();
+                for (int x = 0; x < select.curSelectedLength; x++)
+                {
+                    select.curSelectedS[x].DisplayHealth();
+                }
+                for (int x = 0; x < select.curBuildSelectedLength; x++)
+                {
+                    select.curBuildSelectedS[x].DisplayHealth();
+                }
             }
             foreach (GUIElement element in elements)
             {

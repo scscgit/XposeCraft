@@ -5,6 +5,9 @@ using XposeCraft.Game.Actors.Units;
 
 namespace XposeCraft.Game
 {
+    /// <summary>
+    /// Description of a Game Event occurrence.
+    /// </summary>
     [Serializable]
     public class Arguments
     {
@@ -30,6 +33,25 @@ namespace XposeCraft.Game
         public Arguments()
         {
             StringMap = new Dictionary<string, string>();
+        }
+
+        /// <summary>
+        /// Clone constructor.
+        /// TODO: do a deep clone.
+        /// </summary>
+        /// <param name="arguments">Arguments to have its parameters copied to the new instance.</param>
+        public Arguments(Arguments arguments, Event thisEvent)
+        {
+            ThisEvent = thisEvent;
+            // TODO: clone
+            StringMap = arguments.StringMap;
+            Minerals = arguments.Minerals;
+            MyUnit = arguments.MyUnit;
+            MyBuilding = arguments.MyBuilding;
+            // TODO: clone
+            EnemyUnits = arguments.EnemyUnits;
+            // TODO: clone
+            EnemyBuildings = arguments.EnemyBuildings;
         }
     }
 }
