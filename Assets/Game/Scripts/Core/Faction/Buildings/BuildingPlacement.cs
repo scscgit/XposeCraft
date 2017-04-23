@@ -8,6 +8,7 @@ using XposeCraft.Core.Required;
 using XposeCraft.Core.Resources;
 using XposeCraft.Game;
 using XposeCraft.GameInternal;
+using XposeCraft.GameInternal.Helpers;
 
 namespace XposeCraft.Core.Faction.Buildings
 {
@@ -188,7 +189,7 @@ namespace XposeCraft.Core.Faction.Buildings
         public static GameObject PlaceProgressBuilding(Building building, List<UnitController> builderUnits,
             int factionIndex, Position position, Quaternion rotation, ResourceManager resourceManager)
         {
-            Vector3 location = position.Location;
+            Vector3 location = PositionHelper.PositionToLocation(position);
             try
             {
                 CheckValidPlacement(building, position, location, false);
@@ -233,7 +234,7 @@ namespace XposeCraft.Core.Faction.Buildings
             Building building, GameObject buildingPrefab, int factionIndex, Position position, Quaternion rotation)
         {
             // Placement validation is done redundantly twice, because this can be called directly too
-            var location = position.Location;
+            var location = PositionHelper.PositionToLocation(position);
             try
             {
                 CheckValidPlacement(building, position, location, false);

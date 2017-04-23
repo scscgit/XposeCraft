@@ -82,10 +82,9 @@ namespace XposeCraft.GameInternal
             workers[0].CreateBuilding(BuildingType.NubianArmory, PlaceType.MyBase.Right);
             StartCoroutine(RunAfterSeconds(1, () =>
             {
-                var minerals = ResourceHelper.GetResources<Mineral>();
                 for (var index = 1; index < workers.Count; index++)
                 {
-                    workers[index].SendGather(minerals[index]);
+                    workers[index].SendGather(ResourceHelper.GetNearestResourceTo<Mineral>(workers[index]));
                 }
             }));
 
@@ -107,19 +106,13 @@ namespace XposeCraft.GameInternal
         {
             Log.i(">>  Starting a Planning Phase.  <<");
 
-            var end = new Action(() =>
-            {
-                Log.i("----------------------------------");
-                Log.i(">>   End of a Planning Phase.   <<");
-                Log.i("----------------------------------");
-            });
+            var end = new Action(() => { Log.i(">>   End of a Planning Phase.   <<"); });
 
             var battleStage = new Action(() =>
             {
                 Log.i(this, "Starting Battle Stage");
                 var battleTest = new BattleTest();
                 battleTest.BattleStage(end);
-                Log.i(battleTest, "End of Battle Stage");
             });
 
             var buildingStage = new Action(() =>
@@ -127,7 +120,6 @@ namespace XposeCraft.GameInternal
                 Log.i(this, "Starting Building Stage");
                 var buildingTest = new BuildingTest();
                 buildingTest.BuildingStage(battleStage);
-                Log.i(buildingTest, "End of Building Stage");
             });
 
             var economyStage = new Action(() =>
@@ -135,7 +127,6 @@ namespace XposeCraft.GameInternal
                 Log.i(this, "Starting Economy Stage");
                 var economyTest = new EconomyTest();
                 economyTest.EconomyStage(buildingStage);
-                Log.i(economyTest, "End of Economy Stage");
             });
 
             economyStage();

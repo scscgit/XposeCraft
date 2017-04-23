@@ -17,6 +17,7 @@ namespace XposeCraft.Game
         /// </summary>
         public Event ThisEvent { get; set; }
 
+        // TODO: replace
         public IDictionary<string, string> StringMap { get; private set; }
 
         // Game resources
@@ -40,6 +41,7 @@ namespace XposeCraft.Game
         /// TODO: do a deep clone.
         /// </summary>
         /// <param name="arguments">Arguments to have its parameters copied to the new instance.</param>
+        /// <param name="thisEvent">Event represented by the Arguments instance.</param>
         public Arguments(Arguments arguments, Event thisEvent)
         {
             ThisEvent = thisEvent;

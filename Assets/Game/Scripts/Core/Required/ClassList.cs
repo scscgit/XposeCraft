@@ -7,6 +7,7 @@ using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Faction.Units;
 using XposeCraft.Core.Grids;
 using XposeCraft.Core.Resources;
+using XposeCraft.Game;
 using XposeCraft.GameInternal;
 using XposeCraft.UI.MiniMap;
 using Object = UnityEngine.Object;
@@ -676,29 +677,20 @@ namespace XposeCraft.Core.Required
         {
             try
             {
-                if (mGrid == null)
-                {
-                    int l = gridScript.grids[gridI].points.Length;
-                    mGrid = new GridPoint[l];
-                    for (int z = 0; z < mGrid.Length; z++)
-                    {
-                        mGrid[z] = new GridPoint(gridScript.grids[gridI].points[z]);
-                    }
-                }
-                else if (mGrid.Length == 0)
-                {
-                    int l = gridScript.grids[gridI].points.Length;
-                    mGrid = new GridPoint[l];
-                    for (int z = 0; z < mGrid.Length; z++)
-                    {
-                        mGrid[z] = new GridPoint(gridScript.grids[gridI].points[z]);
-                    }
-                }
+                InitializeGrid();
                 if (!generate)
                 {
                     return;
                 }
-                myPath = FindPath(end, start);
+                //myPath = FindPath(end, start);
+                // Testing the usage of Path API instead of a direct access during this GUI request
+                myPath = new UPath
+                {
+                    list = new Path(
+                        new Position(gridScript.DetermineLocation(start)),
+                        new Position(gridScript.DetermineLocation(end))
+                    ).PointLocations
+                };
             }
             catch (Exception e)
             {
@@ -712,14 +704,28 @@ namespace XposeCraft.Core.Required
             }
         }
 
-        // The Vector3 based implementation
-        public UPath FindPath(Vector3 startLoc, Vector3 endLoc)
+        public void InitializeGrid()
         {
-            Vector3 loc1 = gridScript.DetermineNearestPoint(startLoc, endLoc, 0);
-            Vector3 loc2 = gridScript.DetermineNearestPoint(endLoc, startLoc, 0);
+            if (mGrid != null && mGrid.Length != 0)
+            {
+                return;
+            }
+            var points = gridScript.grids[gridI].points;
+            mGrid = new GridPoint[points.Length];
+            for (int z = 0; z < mGrid.Length; z++)
+            {
+                mGrid[z] = new GridPoint(points[z]);
+            }
+        }
+
+        // The Vector3 based implementation
+        public UPath FindPath(Vector3 endLoc, Vector3 startLoc)
+        {
+            Vector3 loc1 = gridScript.DetermineNearestPoint(endLoc, startLoc, 0);
+            Vector3 loc2 = gridScript.DetermineNearestPoint(startLoc, endLoc, 0);
             int pointLoc1 = gridScript.DetermineLocation(loc1, gridI);
             int pointLoc2 = gridScript.DetermineLocation(loc2, gridI);
-            return myPath = FindNormalPath(pointLoc1, pointLoc2);
+            return FindNormalPath(pointLoc1, pointLoc2);
         }
 
         // Finds the First Path
@@ -731,14 +737,15 @@ namespace XposeCraft.Core.Required
         }
 
         // Finds a normal A* Path
-        UPath FindNormalPath(int startLoc, int endLoc)
+        public UPath FindNormalPath(int startLoc, int endLoc)
         {
-            int[] gcostList = new int[gridScript.grids[gridI].points.Length];
-            bool[] checkedList = new bool[gridScript.grids[gridI].points.Length];
-            bool[] addedList = new bool[gridScript.grids[gridI].points.Length];
+            var points = gridScript.grids[gridI].points;
+            int[] gcostList = new int[points.Length];
+            bool[] checkedList = new bool[points.Length];
+            bool[] addedList = new bool[points.Length];
             for (int x = 0; x < mGrid.Length; x++)
             {
-                mGrid[x].state = gridScript.grids[gridI].points[x].state;
+                mGrid[x].state = points[x].state;
             }
 
             BinaryHeap openList = new BinaryHeap();
@@ -777,7 +784,7 @@ namespace XposeCraft.Core.Required
                     {
                         continue;
                     }
-                    h_cost = (int) ((mGrid[lPoint].loc - mGrid[endLoc].loc).sqrMagnitude);
+                    h_cost = (int) (mGrid[lPoint].loc - mGrid[endLoc].loc).sqrMagnitude;
                     f_cost = g_cost + h_cost;
                     mGrid[lPoint].parent = point;
                     gcostList[lPoint] = g_cost;
@@ -956,10 +963,6 @@ namespace XposeCraft.Core.Required
     public class UPath
     {
         public int[] list = new int[0];
-
-        // TODO Implement functionality for Cost
-        public float cost = 0;
-
         public Color color = Color.white;
         public bool displayPath = false;
 
@@ -1199,21 +1202,18 @@ namespace XposeCraft.Core.Required
 
         public bool CheckPoints(Grid grid, int index)
         {
-            bool state = true;
             for (int x = -closeWidth; x <= closeWidth; x++)
             {
                 for (int y = -closeLength; y <= closeLength; y++)
                 {
-                    if (closePoints[(x + closeWidth) * closeLength + (y + closeLength)] != 0)
+                    if (closePoints[(x + closeWidth) * closeLength + (y + closeLength)] != 0
+                        && grid.points[index + x + y * grid.size].state == 2)
                     {
-                        if (grid.points[index + x + y * grid.size].state == 2)
-                        {
-                            state = false;
-                        }
+                        return false;
                     }
                 }
             }
-            return state;
+            return true;
         }
 
         int DetermineSector(int loc, int gridSize, int sectorSize)
@@ -1494,33 +1494,20 @@ namespace XposeCraft.Core.Required
             binaryHeap[numberOfItems].cost = fCost;
             binaryHeap[numberOfItems].index = index;
 
-            int bubbleIndex = numberOfItems;
-            while (bubbleIndex != 0)
-            {
-                int parentIndex = (bubbleIndex - 1) / 2;
-                if (binaryHeap[bubbleIndex] <= binaryHeap[parentIndex])
-                {
-                    int tmpIndex = binaryHeap[parentIndex].index;
-                    int tmpValue = binaryHeap[parentIndex].cost;
-                    binaryHeap[parentIndex].Equals(binaryHeap[bubbleIndex]);
-                    binaryHeap[bubbleIndex].cost = tmpValue;
-                    binaryHeap[bubbleIndex].index = tmpIndex;
-                    bubbleIndex = parentIndex;
-                }
-                else
-                {
-                    break;
-                }
-            }
+            Recalculate(numberOfItems, 0, -1);
             numberOfItems++;
         }
 
-        public void Recalculate(int index)
+        public void Recalculate(int bubbleIndex)
         {
-            int bubbleIndex = index;
-            while (bubbleIndex != 1)
+            Recalculate(bubbleIndex, 1, 0);
+        }
+
+        public void Recalculate(int bubbleIndex, int target, int parentBubbleIndexOffset)
+        {
+            while (bubbleIndex != target)
             {
-                int parentIndex = bubbleIndex / 2;
+                int parentIndex = (bubbleIndex + parentBubbleIndexOffset) / 2;
                 if (binaryHeap[bubbleIndex] <= binaryHeap[parentIndex])
                 {
                     int tmpIndex = binaryHeap[parentIndex].index;

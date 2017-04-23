@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using XposeCraft.Core.Required;
+using XposeCraft.Game;
+using XposeCraft.GameInternal.Helpers;
 #if UNITY_EDITOR
 using UnityEditor;
 
@@ -347,11 +349,12 @@ namespace XposeCraft.Core.Grids
 
         public int DetermineLocation(Vector3 location, int gridIndex)
         {
-            float xLoc = location.x - grids[gridIndex].startLoc.x;
-            float yLoc = location.z - grids[gridIndex].startLoc.z;
-            int x = Mathf.RoundToInt(xLoc / grids[gridIndex].nodeDist);
-            int y = Mathf.RoundToInt(yLoc / grids[gridIndex].nodeDist);
-            return x + y * grids[gridIndex].size;
+            var grid = grids[gridIndex];
+            float xLoc = location.x - grid.startLoc.x;
+            float yLoc = location.z - grid.startLoc.z;
+            int x = Mathf.RoundToInt(xLoc / grid.nodeDist);
+            int y = Mathf.RoundToInt(yLoc / grid.nodeDist);
+            return x + y * grid.size;
         }
 
         public bool IsValidLocation(int location)
@@ -364,17 +367,37 @@ namespace XposeCraft.Core.Grids
             return location >= 0 && location < grids[gridIndex].points.Length;
         }
 
+        public int DetermineNearestLocation(Position start)
+        {
+            var startPoint = PositionHelper.PositionToLocation(start);
+            int loc = DetermineLocation(startPoint, index);
+            if (grids[index].points[loc].state != 2)
+            {
+                return loc;
+            }
+            int? nearestLocation;
+            FindNearestPoint(startPoint, loc, index, Mathf.Infinity, out nearestLocation);
+            return nearestLocation.Value;
+        }
+
         public Vector3 DetermineNearestPoint(Vector3 startPoint, Vector3 point, int i)
         {
             int loc = DetermineLocation(point, i);
-            if (grids[i].points[loc].state != 2)
+            var gridPoint = grids[i].points[loc];
+            if (gridPoint.state != 2)
             {
-                return grids[i].points[loc].loc;
+                return gridPoint.loc;
             }
             return FindNearestPoint(startPoint, loc, i, Mathf.Infinity);
         }
 
-        public Vector3 FindNearestPoint(Vector3 startPoint, int point, int i, float dist)
+        private Vector3 FindNearestPoint(Vector3 startPoint, int point, int i, float dist)
+        {
+            int? finalIndex;
+            return FindNearestPoint(startPoint, point, i, dist, out finalIndex);
+        }
+
+        private Vector3 FindNearestPoint(Vector3 startPoint, int point, int i, float dist, out int? finalIndex)
         {
             if (!IsValidLocation(point))
             {
@@ -385,7 +408,7 @@ namespace XposeCraft.Core.Grids
             int childAmount = 1;
             children.Add(point);
             Vector3 finalLoc = Vector3.zero;
-            //int finalIndex = 0;
+            finalIndex = null;
             bool[] checkList = new bool[grids[i].points.Length];
             while (!found || childAmount > 0)
             {
@@ -393,31 +416,7 @@ namespace XposeCraft.Core.Grids
                 for (int x = 0; x < pointChildren.Length; x++)
                 {
                     int child = pointChildren[x];
-                    if (grids[i].points[child].state != 2)
-                    {
-                        if (!found)
-                        {
-                            found = true;
-                            Vector3 nLoc = grids[i].points[child].loc;
-                            float curDist = (startPoint - nLoc).sqrMagnitude;
-                            dist = curDist;
-                            finalLoc = nLoc;
-                            //finalIndex = pointChildren[x];
-                        }
-                        else
-                        {
-                            Vector3 nLoc = grids[i].points[child].loc;
-                            float curDist = (startPoint - nLoc).sqrMagnitude;
-                            if (curDist >= dist)
-                            {
-                                continue;
-                            }
-                            dist = curDist;
-                            //finalIndex = pointChildren[x];
-                            finalLoc = nLoc;
-                        }
-                    }
-                    else
+                    if (grids[i].points[child].state == 2)
                     {
                         if (found || checkList[child])
                         {
@@ -426,6 +425,27 @@ namespace XposeCraft.Core.Grids
                         children.Add(child);
                         checkList[child] = true;
                         childAmount++;
+                    }
+                    else if (!found)
+                    {
+                        found = true;
+                        Vector3 nLoc = grids[i].points[child].loc;
+                        float curDist = (startPoint - nLoc).sqrMagnitude;
+                        dist = curDist;
+                        finalLoc = nLoc;
+                        finalIndex = child;
+                    }
+                    else
+                    {
+                        Vector3 nLoc = grids[i].points[child].loc;
+                        float curDist = (startPoint - nLoc).sqrMagnitude;
+                        if (curDist >= dist)
+                        {
+                            continue;
+                        }
+                        dist = curDist;
+                        finalIndex = child;
+                        finalLoc = nLoc;
                     }
                 }
                 children.RemoveAt(0);

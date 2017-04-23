@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using XposeCraft.Core.Faction.Units;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Units;
 using XposeCraft.GameInternal;
@@ -20,6 +19,9 @@ namespace XposeCraft.Game.Actors
             private set { _gameObject = value; }
         }
 
+        /// <summary>
+        /// Current Position of the Actor.
+        /// </summary>
         public Position Position
         {
             get { return new Position(GameManager.Instance.UGrid.DetermineLocation(GameObject.transform.position)); }
@@ -36,8 +38,8 @@ namespace XposeCraft.Game.Actors
         /// </summary>
         /// <param name="gameObject">Actor representation as a GameObject in the Scene.</param>
         /// <param name="playerOwner">Player that owns the Unit and should be used as its context.</param>
-        /// <typeparam name="T">Subclass type</typeparam>
-        /// <returns>New instance of an Actor</returns>
+        /// <typeparam name="T">Subclass type.</typeparam>
+        /// <returns>New instance of an Actor.</returns>
         public static T Create<T>(GameObject gameObject, Player playerOwner) where T : Actor
         {
             return Create<T>(typeof(T), gameObject, playerOwner);

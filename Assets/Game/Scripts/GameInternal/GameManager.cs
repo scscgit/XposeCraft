@@ -4,6 +4,7 @@ using UnityEngine;
 using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Fog_Of_War;
 using XposeCraft.Core.Grids;
+using XposeCraft.Core.Required;
 using XposeCraft.Core.Resources;
 using XposeCraft.Game;
 using XposeCraft.Game.Actors;
@@ -25,7 +26,7 @@ namespace XposeCraft.GameInternal
 
         public static GameManager Instance
         {
-            get { return _instance ?? (_instance = GameObject.Find(ScriptName).GetComponent<GameManager>()); }
+            get { return _instance; }
         }
 
         public Player[] Players;
@@ -45,6 +46,7 @@ namespace XposeCraft.GameInternal
 
         public UGrid UGrid { get; private set; }
         public Fog Fog { get; private set; }
+        public AStarManager AStarManager { get; private set; }
         public ResourceManager ResourceManager { get; private set; }
 
         public Grid Grid
@@ -62,10 +64,16 @@ namespace XposeCraft.GameInternal
 
         private void Awake()
         {
-            _instance = this;
             UGrid = GameObject.Find(UGrid.ScriptName).GetComponent<UGrid>();
             Fog = GameObject.Find(Fog.ScriptName).GetComponent<Fog>();
+            AStarManager = GameObject.Find(AStarManager.ScriptName).GetComponent<AStarManager>();
             ResourceManager = GameObject.Find("Player Manager").GetComponent<ResourceManager>();
+        }
+
+        private void OnEnable()
+        {
+            // Initialize singleton on wake up after hot-swap, because lazy initialization from other thread is illegal
+            _instance = this;
         }
 
         private void Start()
@@ -97,7 +105,7 @@ namespace XposeCraft.GameInternal
                         (GameObject) Instantiate(
                             WorkerPrefab,
                             // Workers will be spawned near the first Base
-                            ((BaseCenter) player.Buildings[0]).SpawnPosition.Location,
+                            PositionHelper.PositionToLocation(((BaseCenter) player.Buildings[0]).SpawnPosition),
                             Quaternion.identity)
                         , player);
                 }

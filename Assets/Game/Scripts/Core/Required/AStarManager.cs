@@ -1,27 +1,44 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
+using UnityEditor.Events;
 using UnityEngine;
+using UnityEngine.Events;
 using XposeCraft.Core.Faction.Units;
-using XposeCraft.Core.Grids;
+using XposeCraft.GameInternal;
 
 namespace XposeCraft.Core.Required
 {
     public class AStarManager : MonoBehaviour
     {
+        public class PathFoundArguments : UnityEngine.Object
+        {
+            public APath APath;
+            public GameObject GameObject;
+        }
+
+        [Serializable]
+        public class PathFoundEvent : UnityEvent<PathFoundArguments>
+        {
+        }
+
+        public const string ScriptName = "A*";
+
         APath[] apath;
         List<Vector3> targetList;
         List<int> indexList;
         List<Vector3> startList;
         List<GameObject> returnList;
+        public List<PathFoundEvent> _finishActionList;
         int listAmount;
         public int amountOfThreads;
         bool[] startedThreads;
 
         void OnDrawGizmos()
         {
-            if (gameObject.name != "A*")
+            if (gameObject.name != ScriptName)
             {
-                gameObject.name = "A*";
+                gameObject.name = ScriptName;
             }
         }
 
@@ -32,11 +49,11 @@ namespace XposeCraft.Core.Required
             startList = new List<Vector3>();
             indexList = new List<int>();
             returnList = new List<GameObject>();
+            _finishActionList = new List<PathFoundEvent>();
             apath = new APath[amountOfThreads];
-            UGrid gridScript = GameObject.Find("UGrid").GetComponent<UGrid>();
             for (int x = 0; x < apath.Length; x++)
             {
-                apath[x] = new APath {gridScript = gridScript};
+                apath[x] = new APath {gridScript = GameManager.Instance.UGrid};
             }
             startedThreads = new bool[amountOfThreads];
         }
@@ -44,16 +61,14 @@ namespace XposeCraft.Core.Required
         void FixedUpdate()
         {
             int startListAmount = listAmount;
-            for (int x = 0; x < amountOfThreads; x++)
+            for (int x = 0; x < amountOfThreads && x < startListAmount; x++)
             {
-                if (x < startListAmount && !startedThreads[x])
+                if (!startedThreads[x])
                 {
-                    Vector3 loc = startList[x];
-                    Vector3 loc1 = targetList[x];
                     apath[x].myPath = null;
-                    apath[x].start = loc;
+                    apath[x].start = startList[x];
                     apath[x].gridI = indexList[x];
-                    apath[x].end = loc1;
+                    apath[x].end = targetList[x];
                     apath[x].generate = true;
                     apath[x].index = returnList[x].name;
                     ThreadPool.QueueUserWorkItem(apath[x].FindMTPath);
@@ -74,7 +89,11 @@ namespace XposeCraft.Core.Required
                 {
                     continue;
                 }
-                returnList[y].GetComponent<UnitMovement>().SetPath(apath[x].myPath);
+                if (_finishActionList[y] != null)
+                {
+                    _finishActionList[y].Invoke(new PathFoundArguments {APath = apath[x], GameObject = returnList[y]});
+                }
+                _finishActionList.RemoveAt(y);
                 returnList.RemoveAt(y);
                 targetList.RemoveAt(y);
                 indexList.RemoveAt(y);
@@ -85,24 +104,45 @@ namespace XposeCraft.Core.Required
             }
         }
 
-        public void RequestPath(Vector3 loc, Vector3 loc1, GameObject obj, int index)
+        private void SetPathToUnit(PathFoundArguments arguments)
         {
-            // If there was an old request for the same object, that is not yet being processed
-            // (based on the maximum amount of active parallel threads), invalidate it to prevent duplicate pending
-            // requests. This will both improve performance and prevent the need for synchronization.
-            int previousRequestIndex = returnList.IndexOf(obj);
-            if (previousRequestIndex > amountOfThreads)
-            {
-                returnList.RemoveAt(previousRequestIndex);
-                targetList.RemoveAt(previousRequestIndex);
-                indexList.RemoveAt(previousRequestIndex);
-                startList.RemoveAt(previousRequestIndex);
-                listAmount--;
-            }
+            arguments.GameObject.GetComponent<UnitMovement>().SetPath(arguments.APath.myPath);
+        }
 
-            startList.Add(loc);
-            indexList.Add(index);
-            targetList.Add(loc1);
+        public void RequestPathUnitMovement(Vector3 start, Vector3 target, GameObject obj, int gridIndex)
+        {
+            RequestPath(start, target, SetPathToUnit, obj, gridIndex);
+        }
+
+        public void RequestPath(
+            Vector3 start, Vector3 target, UnityAction<PathFoundArguments> finishAction, GameObject obj, int gridIndex)
+        {
+            // If there is an old duplicate pending request for the same object, invalidate it to improve performance
+            int previousRequestIndex = returnList.IndexOf(obj);
+            if (previousRequestIndex >= 0)
+            {
+                if (previousRequestIndex < amountOfThreads && startedThreads[previousRequestIndex])
+                {
+                    _finishActionList[previousRequestIndex] = null;
+                    returnList[previousRequestIndex] = null;
+                }
+                else
+                {
+                    _finishActionList.RemoveAt(previousRequestIndex);
+                    returnList.RemoveAt(previousRequestIndex);
+                    targetList.RemoveAt(previousRequestIndex);
+                    indexList.RemoveAt(previousRequestIndex);
+                    startList.RemoveAt(previousRequestIndex);
+                    listAmount--;
+                }
+            }
+            // Enqueue the new request
+            var pathFoundEvent = new PathFoundEvent();
+            UnityEventTools.AddPersistentListener(pathFoundEvent, finishAction);
+            _finishActionList.Add(pathFoundEvent);
+            startList.Add(start);
+            indexList.Add(gridIndex);
+            targetList.Add(target);
             returnList.Add(obj);
             listAmount++;
         }

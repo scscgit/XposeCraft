@@ -67,7 +67,7 @@ namespace XposeCraft.Core.Faction.Units
         public void RequestPath(Vector3 target)
         {
             myPath = null;
-            pathing.RequestPath(myTransform.position, target, gameObject, gridI);
+            pathing.RequestPathUnitMovement(myTransform.position, target, gameObject, gridI);
             pathComplete = false;
         }
 
@@ -82,7 +82,8 @@ namespace XposeCraft.Core.Faction.Units
             if (myPath != null && myPath.list.Length > 0)
             {
                 myPath.color = Color.green;
-                myPath.DisplayPath(curPoint, gridScript.grids[gridI].points, gridScript.grids[gridI].nodeDist);
+                var grid = gridScript.grids[gridI];
+                myPath.DisplayPath(curPoint, grid.points, grid.nodeDist);
             }
         }
     }
