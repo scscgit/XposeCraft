@@ -72,7 +72,7 @@ namespace UnityTest
             {
                 config.sendResultsOverNetwork = false;
                 Debug.Log("You can't use WebPlayer as active platform for running integration tests. Switching to Standalone");
-                EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTarget.StandaloneWindows);
+                EditorUserBuildSettings.SwitchActiveBuildTarget(BuildPipeline.GetBuildTargetGroup(target), BuildTarget.StandaloneWindows);
             }
 
             PlatformRunner.BuildAndRunInPlayer(config);

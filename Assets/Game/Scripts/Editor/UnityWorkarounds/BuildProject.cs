@@ -68,6 +68,7 @@ namespace XposeCraft.UnityWorkarounds
             if (!string.IsNullOrEmpty(buildError))
             {
                 Debug.LogError(buildError);
+                throw new Exception(buildError);
             }
         }
 

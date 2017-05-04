@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using UnityEditor.Events;
 using UnityEngine;
 using UnityEngine.Events;
 using XposeCraft.Core.Faction.Units;
 using XposeCraft.GameInternal;
+#if UNITY_EDITOR
+using UnityEditor.Events;
+
+#endif
 
 namespace XposeCraft.Core.Required
 {
@@ -138,7 +141,12 @@ namespace XposeCraft.Core.Required
             }
             // Enqueue the new request
             var pathFoundEvent = new PathFoundEvent();
+#if UNITY_EDITOR
+            // When in the Editor, the listener is persisted during a hot-swap
             UnityEventTools.AddPersistentListener(pathFoundEvent, finishAction);
+#else
+            pathFoundEvent.AddListener(finishAction);
+#endif
             _finishActionList.Add(pathFoundEvent);
             startList.Add(start);
             indexList.Add(gridIndex);
