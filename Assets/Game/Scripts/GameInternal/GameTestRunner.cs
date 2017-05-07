@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Threading;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions;
 using XposeCraft.Game;
@@ -17,6 +18,9 @@ namespace XposeCraft.GameInternal
 {
     public class GameTestRunner : MonoBehaviour
     {
+        public static bool Passed { get; set; }
+        public static bool Failed { get; set; }
+
         protected void Sleep(int milliseconds)
         {
             Thread.Sleep(milliseconds);
@@ -30,11 +34,14 @@ namespace XposeCraft.GameInternal
 
         private void Start()
         {
+            Log.Level = Log.LogLevel.Info;
             RunTests();
         }
 
         public void RunTests()
         {
+            Passed = false;
+            Failed = false;
             Log.i("*** " + typeof(GameTestRunner).Name + ".RunTests called ***");
 
             // Test for each Player
@@ -42,6 +49,7 @@ namespace XposeCraft.GameInternal
             {
                 // Player state initialization
                 Player.CurrentPlayer = player;
+                Log.i(this, "Switching tested Player to " + player.name);
 
                 // Meta-tests
                 SelfTests();
@@ -58,8 +66,44 @@ namespace XposeCraft.GameInternal
                 Log.i("----------------------------------");
                 Log.i(">>         End of Game.         <<");
                 Log.i("----------------------------------");
-                IntegrationTest.Pass();
+                IntegrationTest.Fail();
+                Failed = true;
+                //IntegrationTest.Pass();
+                //Passed = true;
             }));
+        }
+
+        private void Update()
+        {
+            // Quits the game (or the editor when running from batch) after the test ends; pauses when in Editor
+            if (Failed)
+            {
+                Log.e("Integration test failed");
+                if (SystemInfo.graphicsDeviceID == 0)
+                {
+                    EditorApplication.Exit(1);
+                }
+                else
+                {
+                    Application.Quit();
+                    EditorApplication.isPaused = true;
+                    Failed = false;
+                }
+            }
+            else if (Passed)
+            {
+                Log.i("Quitting the application");
+                if (SystemInfo.graphicsDeviceID == 0)
+                {
+                    EditorApplication.Exit(0);
+                }
+                else
+                {
+                    Application.Quit();
+                    EditorApplication.isPaused = true;
+                    Passed = false;
+                }
+            }
         }
 
         public void SelfTests()

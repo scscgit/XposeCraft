@@ -27,6 +27,7 @@ namespace UnityTest
             get
             {
 #if !IMITATE_BATCH_MODE
+                //if (Application.isEditor)
                 if (Application.isEditor && !IsBatchMode())
                     return true;
 #endif

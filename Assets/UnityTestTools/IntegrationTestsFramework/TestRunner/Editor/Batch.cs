@@ -99,6 +99,7 @@ namespace UnityTest
             }
                 
             EditorBuildSettings.scenes = (testScenes.Concat(otherBuildScenes).ToList()).Select(s => new EditorBuildSettingsScene(s, true)).ToArray();
+            //BuildProject.OpenScenes(testScenes.ToArray());
             EditorSceneManager.OpenScene(testScenes.First());
             GuiHelper.SetConsoleErrorPause(false);
 

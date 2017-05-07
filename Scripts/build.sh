@@ -17,8 +17,7 @@ export options="none"
   -silent-crashes \
   -logFile $(pwd)/unity.log \
   -projectPath $(pwd) \
-  -executeMethod "XposeCraft.UnityWorkarounds.BuildProject.Build" \
-  -quit
+  -executeMethod "XposeCraft.UnityWorkarounds.BuildProject.Build"
 win=$?
 
 echo "Attempting to build $project for OS X"
@@ -31,8 +30,7 @@ export options="none"
   -silent-crashes \
   -logFile $(pwd)/unity.log \
   -projectPath $(pwd) \
-  -executeMethod "XposeCraft.UnityWorkarounds.BuildProject.Build" \
-  -quit
+  -executeMethod "XposeCraft.UnityWorkarounds.BuildProject.Build"
 osx=$?
 
 echo "Attempting to build $project for Linux"
@@ -45,8 +43,7 @@ export options="none"
   -silent-crashes \
   -logFile $(pwd)/unity.log \
   -projectPath $(pwd) \
-  -executeMethod "XposeCraft.UnityWorkarounds.BuildProject.Build" \
-  -quit
+  -executeMethod "XposeCraft.UnityWorkarounds.BuildProject.Build"
 linux=$?
 
 echo 'Logs from build'
