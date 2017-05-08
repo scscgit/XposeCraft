@@ -1,9 +1,13 @@
 using System;
 using System.ComponentModel;
+using UnityEngine;
+using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Faction.Units;
+using XposeCraft.Game;
 using XposeCraft.Game.Actors.Buildings;
-using XposeCraft.Game.Enums;
 using Building = XposeCraft.Core.Required.Building;
+using BuildingType = XposeCraft.Game.Enums.BuildingType;
+using Object = UnityEngine.Object;
 
 namespace XposeCraft.GameInternal.Helpers
 {
@@ -60,6 +64,46 @@ namespace XposeCraft.GameInternal.Helpers
                 default:
                     return false;
             }
+        }
+
+        public static GameObject InstantiateProgressBuilding(
+            Building building, GameObject buildingPrefab, int factionIndex, Position position, Quaternion rotation)
+        {
+            // Placement validation is done redundantly twice, because this can be called directly too
+            var location = PositionHelper.PositionToLocation(position);
+            try
+            {
+                CheckValidPlacement(building, position, location, false);
+            }
+            catch (Exception)
+            {
+                // Visualizing the error placement
+                building.ClosePoints(GameManager.Instance.Grid, position.PointLocation);
+                throw;
+            }
+            building.ClosePoints(GameManager.Instance.Grid, position.PointLocation);
+            GameObject buildingObject = Object.Instantiate(buildingPrefab, location, rotation);
+            BuildingController script = buildingObject.GetComponent<BuildingController>();
+            script.building = building;
+            script.loc = position.PointLocation;
+            script.FactionIndex = factionIndex;
+            return buildingObject;
+        }
+
+        public static void CheckValidPlacement(
+            Building building, Position position, Vector3 location, bool invalidUnderFog)
+        {
+            if (!IsValidPlacement(building, position, location, invalidUnderFog))
+            {
+                throw new InvalidOperationException(building + "'s building placement location is invalid");
+            }
+        }
+
+        public static bool IsValidPlacement(
+            Building building, Position position, Vector3 location, bool invalidUnderFog)
+        {
+            return building.CheckPoints(GameManager.Instance.Grid, position.PointLocation)
+                   && (!invalidUnderFog || GameManager.Instance.Fog.CheckLocation(location));
         }
     }
 }

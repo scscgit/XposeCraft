@@ -62,13 +62,10 @@ namespace XposeCraft.UnityWorkarounds
             {
                 return;
             }
-            //EditorApplication.playmodeStateChanged += TestAfterPlaying;
-            TestAfterPlaying();
+            // Direct method call is not sufficient, otherwise it seems to be executing before the switch
             PlayerPrefs.SetInt("testAfterPlayingReady", 0);
+            EditorApplication.playmodeStateChanged += TestAfterPlaying;
         }
-
-        // Used to fire a method used for testing right after entering Playing mode
-        private static bool testAfterPlayingReady;
 
         private static readonly string[] BuildScenes =
         {
@@ -82,6 +79,7 @@ namespace XposeCraft.UnityWorkarounds
         };
 
         private static bool _stopTests;
+        private static Thread _testBackgroundThread;
 
         [MenuItem("Unity Test Tools/Build XposeCraft")]
         public static void Build()
@@ -100,38 +98,69 @@ namespace XposeCraft.UnityWorkarounds
         [MenuItem("Unity Test Tools/Test XposeCraft")]
         public static void Test()
         {
+            CleanTestRunner();
             OpenScenes(TestScenes);
             PlayerPrefs.SetInt("testAfterPlayingReady", 1);
             EditorApplication.isPlaying = true;
+        }
+
+        private static void TestAfterPlaying()
+        {
             var allTestComponents = TestComponent.FindAllTestsOnScene().ToList();
             var dynamicTests = allTestComponents.Where(t => t.dynamic).ToList();
             var dynamicTestsToRun = dynamicTests.Select(c => c.dynamicTypeName).ToList();
             allTestComponents.RemoveAll(dynamicTests.Contains);
 
             TestComponent.DisableAllTests();
-            var testRunner = TestRunner.GetTestRunner();
+            var testRunner = CleanTestRunner();
             testRunner.TestRunnerCallback.Add(new TestCallback());
             testRunner.InitRunner(allTestComponents, dynamicTestsToRun);
 
-            testRunner.StartCoroutine(testRunner.StateMachine());
             print("*** Start of testing ***");
-        }
-
-        private static void TestAfterPlaying()
-        {
-            // Currently not used, moved Passed and Failed functionality to the GameTestRunner
-            new Thread(() =>
+            testRunner.StartCoroutine(testRunner.StateMachine());
+            if (!testRunner.enabled)
             {
-                while (true)
+                throw new Exception("BuildProject self-assertion failed: Test Runner is not enabled");
+            }
+
+            // Makes sure the flag used to keep track of thread exit is initialized correctly
+            TestRunner.ApplicationIsPlaying = true;
+            // Currently not used, moved Passed and Failed functionality to the GameTestRunner
+            if (_testBackgroundThread != null)
+            {
+                Log.i("Interrupting previous test thread");
+                _testBackgroundThread.Interrupt();
+            }
+            _testBackgroundThread = new Thread(() =>
+            {
+                const int timeoutMinutes = 5;
+                for (var i = 0; i < timeoutMinutes * 30; i++)
                 {
+                    if (!TestRunner.ApplicationIsPlaying)
+                    {
+                        Log.i("Application stopped, exiting test thread");
+                        return;
+                    }
                     // _stopTests doesn't currently work, as its callback is never called from the TestRunner
                     if (_stopTests)
                     {
                         GameTestRunner.Passed = true;
+                        return;
                     }
                     Thread.Sleep(2000);
                 }
-            }).Start();
+                Log.e("Test timeout, " + timeoutMinutes + " minute" + (timeoutMinutes == 1 ? "" : "s") + " passed");
+                GameTestRunner.Failed = true;
+            });
+            _testBackgroundThread.Start();
+        }
+
+        private static TestRunner CleanTestRunner()
+        {
+            // Cleanup of previous test runner, preventing errors caused by OnDestroy with invalid state
+            var testRunner = TestRunner.GetTestRunner();
+            testRunner.currentTest = null;
+            return testRunner;
         }
 
         /// <summary>
@@ -152,14 +181,17 @@ namespace XposeCraft.UnityWorkarounds
             var emptyScene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene);
             for (int openSceneIndex = 0; openSceneIndex < SceneManager.sceneCount - 1; ++openSceneIndex)
             {
-                var x = EditorSceneManager.CloseScene(SceneManager.GetSceneAt(openSceneIndex), true);
-                Log.i(SceneManager.GetSceneAt(openSceneIndex).name + " " + x);
+                EditorSceneManager.CloseScene(SceneManager.GetSceneAt(openSceneIndex), true);
             }
             foreach (string scene in scenes)
             {
                 EditorSceneManager.OpenScene(scene, OpenSceneMode.Additive);
             }
             EditorSceneManager.CloseScene(emptyScene, true);
+            // (Unsuccessfully) trying to prevent receiving stale references from calls like FindObjectsOfTypeAll
+            // Source: < http://answers.unity3d.com/questions/655273/findobjectsoftypeall-returns-old-objects.html >
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
 
         static string GetLocation()

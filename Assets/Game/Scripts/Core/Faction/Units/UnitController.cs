@@ -26,7 +26,6 @@ namespace XposeCraft.Core.Faction.Units
         public int maxHealth = 100;
         public int health = 100;
         [FormerlySerializedAs("group")] public int FactionIndex;
-        Faction faction;
         int index;
         public UnitType type;
         public SWeapon weapon = new SWeapon();
@@ -46,6 +45,11 @@ namespace XposeCraft.Core.Faction.Units
         public Vector3 targetPoint;
         public int size = 1;
         Health healthObj;
+
+        protected Faction Faction
+        {
+            get { return GameManager.Instance.Factions[FactionIndex]; }
+        }
 
         public enum Target
         {
@@ -104,14 +108,10 @@ namespace XposeCraft.Core.Faction.Units
             miniMap = gameObject.GetComponent<MiniMapSignal>();
             movement = gameObject.GetComponent<UnitMovement>();
             gui.type = "Unit";
-            faction = GameObject.Find("Faction Manager")
-                .GetComponent<FactionManager>()
-                .FactionList[FactionIndex]
-                .GetComponent<Faction>();
             gui.Awake(gameObject);
             for (int x = 0; x < techEffect.Length; x++)
             {
-                var technology = faction.Tech[techEffect[x].index];
+                var technology = Faction.Tech[techEffect[x].index];
                 technology.AddListener(gameObject);
                 if (technology.active)
                 {
@@ -178,7 +178,7 @@ namespace XposeCraft.Core.Faction.Units
                 case Target.Unit:
                     if (tState == TargetState.Undecided)
                     {
-                        switch (faction.Relations[target.GetComponent<UnitController>().FactionIndex].state)
+                        switch (Faction.Relations[target.GetComponent<UnitController>().FactionIndex].state)
                         {
                             case 0:
                                 tState = TargetState.Ally;
@@ -219,11 +219,14 @@ namespace XposeCraft.Core.Faction.Units
                                 // I haven't quite figured out what to do here so I recommend against setting anything to neutral at this moment
                                 break;
                             case TargetState.Enemy:
-                                weapon.AttackObject(target, gameObject, "Unit", type);
-                                if (weapon.fighterUnit && anim.state != "Attack")
+                                if (weapon.InRange(target.transform.position, transform.position))
                                 {
-                                    anim.state = "Attack";
-                                    anim.Animate();
+                                    weapon.AttackObject(target, gameObject, "Unit", type);
+                                    if (weapon.fighterUnit && anim.state != "Attack")
+                                    {
+                                        anim.state = "Attack";
+                                        anim.Animate();
+                                    }
                                 }
                                 break;
                         }
@@ -268,7 +271,7 @@ namespace XposeCraft.Core.Faction.Units
                         if (tState == TargetState.Undecided)
                         {
                             BuildingController targetController = target.GetComponent<BuildingController>();
-                            switch (faction.Relations[targetController.FactionIndex].state)
+                            switch (Faction.Relations[targetController.FactionIndex].state)
                             {
                                 case 0:
                                     tState = TargetState.Ally;
@@ -350,9 +353,9 @@ namespace XposeCraft.Core.Faction.Units
 
         public int DetermineRelations(int factionIndex)
         {
-            return faction == null || factionIndex == FactionIndex
+            return Faction == null || factionIndex == FactionIndex
                 ? 3
-                : faction.Relations[factionIndex].state;
+                : Faction.Relations[factionIndex].state;
         }
 
         public void Damage(UnitType nType, int attackDamage)
@@ -374,8 +377,14 @@ namespace XposeCraft.Core.Faction.Units
             health = health - attackDamage;
             if (health <= 0)
             {
-                anim.Die(gameObject);
+                Killed();
             }
+        }
+
+        private void Killed()
+        {
+            anim.Die(gameObject);
+            gui.Killed(gameObject);
         }
 
         public void Select(bool select)
@@ -399,6 +408,7 @@ namespace XposeCraft.Core.Faction.Units
         {
             target = nTarget;
             targetPoint = nTargetPoint;
+            tState = TargetState.Undecided;
             //lastTargetPoint = nTargetPoint;
             switch (nTargetType)
             {

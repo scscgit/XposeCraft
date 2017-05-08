@@ -153,7 +153,9 @@ namespace UnityTest
                 gameObject.AddComponent(t);
             }
 
-            if (gameObject.activeSelf != enable) gameObject.SetActive(enable);
+            // This condition probably returns wrong result, resulting in the test component not being activated
+            //if (gameObject.activeSelf != enable)
+            gameObject.SetActive(enable);
         }
 
         public int CompareTo(ITestComponent obj)

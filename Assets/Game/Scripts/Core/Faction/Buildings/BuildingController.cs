@@ -3,6 +3,7 @@ using UnityEngine.Serialization;
 using XposeCraft.Core.Grids;
 using XposeCraft.Core.Required;
 using XposeCraft.Core.Resources;
+using XposeCraft.GameInternal;
 
 namespace XposeCraft.Core.Faction.Buildings
 {
@@ -44,11 +45,15 @@ namespace XposeCraft.Core.Faction.Buildings
         public GUIManager manager { get; set; }
         bool selected;
         int[] nodeLoc;
-        Faction faction;
         Health healthObj;
         UGrid grid;
         UnitSelection selection;
         ResourceManager resourceManager;
+
+        protected Faction Faction
+        {
+            get { return GameManager.Instance.Factions[FactionIndex]; }
+        }
 
         //bool displayGUI = false;
         //Progress progressObj;
@@ -59,7 +64,6 @@ namespace XposeCraft.Core.Faction.Buildings
             selection = playerManager.GetComponent<UnitSelection>();
             manager = playerManager.GetComponent<GUIManager>();
             gui.type = "Building";
-            faction = manager.faction;
             resourceManager = playerManager.GetComponent<ResourceManager>();
             if (buildingType == BuildingType.ProgressBuilding)
             {
@@ -71,10 +75,10 @@ namespace XposeCraft.Core.Faction.Buildings
                 gui.Awake(gameObject);
                 for (int x = 0; x < techEffect.Length; x++)
                 {
-                    faction.Tech[techEffect[x].index].AddListener(gameObject);
-                    if (faction.Tech[techEffect[x].index].active)
+                    Faction.Tech[techEffect[x].index].AddListener(gameObject);
+                    if (Faction.Tech[techEffect[x].index].active)
                     {
-                        Upgraded(faction.Tech[techEffect[x].index].name);
+                        Upgraded(Faction.Tech[techEffect[x].index].name);
                     }
                 }
             }
@@ -107,11 +111,11 @@ namespace XposeCraft.Core.Faction.Buildings
             }
             if (unitProduction.canProduce)
             {
-                unitProduction.Produce(faction, FactionIndex, grid, gridI);
+                unitProduction.Produce(Faction, FactionIndex, grid, gridI);
             }
             if (techProduction.canProduce)
             {
-                techProduction.Produce(faction);
+                techProduction.Produce(Faction);
             }
         }
 
@@ -126,10 +130,11 @@ namespace XposeCraft.Core.Faction.Buildings
         /// <returns>Instance of the new completed building.</returns>
         public GameObject Place()
         {
-            GameObject obj = Instantiate(nextBuild, transform.position, Quaternion.identity) as GameObject;
+            GameObject obj = Instantiate(nextBuild, transform.position, Quaternion.identity);
             BuildingController build = obj.GetComponent<BuildingController>();
             build.building = building;
             build.loc = loc;
+            build.FactionIndex = FactionIndex;
             Destroy(gameObject);
             return obj;
         }
@@ -153,9 +158,15 @@ namespace XposeCraft.Core.Faction.Buildings
             health = health - damage;
             if (health <= 0)
             {
-                building.OpenPoints(grid, gridI, loc);
-                Destroy(gameObject);
+                Killed();
             }
+        }
+
+        private void Killed()
+        {
+            building.OpenPoints(grid, gridI, loc);
+            Destroy(gameObject);
+            gui.Killed(gameObject);
         }
 
         public void DisplayHealth()
@@ -204,7 +215,7 @@ namespace XposeCraft.Core.Faction.Buildings
             y1 = 0;
             for (int x = 0; x < techProduction.techs.Length; x++)
             {
-                if (!techProduction.techs[x].canProduce || faction.Tech[techProduction.techs[x].index].beingProduced)
+                if (!techProduction.techs[x].canProduce || Faction.Tech[techProduction.techs[x].index].beingProduced)
                 {
                     continue;
                 }
@@ -253,7 +264,7 @@ namespace XposeCraft.Core.Faction.Buildings
                 if (bGUI.jobsGUI.Display(
                     x1, y1, techProduction.jobs[x].customName, techProduction.jobs[x].customTexture, ratioX, ratioY))
                 {
-                    techProduction.CancelProduction(x, faction, resourceManager);
+                    techProduction.CancelProduction(x, Faction, resourceManager);
                 }
                 if (bGUI.jobsGUI.contains)
                 {

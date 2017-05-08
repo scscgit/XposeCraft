@@ -35,7 +35,7 @@ namespace XposeCraft.Core.Misc
                     GameObject clone = Instantiate(
                         obj,
                         new Vector3(hit.point.x, hit.point.y + 1, hit.point.z),
-                        Quaternion.identity) as GameObject;
+                        Quaternion.identity);
                     clone.name = objName + " " + y;
                     clone.transform.parent = parent.transform;
                     y++;

@@ -16,10 +16,10 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000011858281930}
-  - 114: {fileID: 114000010290051196}
+  - component: {fileID: 4000011858281930}
+  - component: {fileID: 114000010290051196}
   m_Layer: 0
   m_Name: Faction Manager
   m_TagString: Untagged
@@ -32,10 +32,26 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000012241178262}
-  - 114: {fileID: 114000012441688350}
+  - component: {fileID: 4000012241178262}
+  - component: {fileID: 114000012441688350}
+  m_Layer: 0
+  m_Name: Red
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1247943842749506
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4169727695734758}
+  - component: {fileID: 114561025823093686}
   m_Layer: 0
   m_Name: Green
   m_TagString: Untagged
@@ -52,24 +68,38 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
+  - {fileID: 4169727695734758}
   - {fileID: 4000012241178262}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000012241178262
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013328249128}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4000011858281930}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4169727695734758
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1247943842749506}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011858281930}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114000010290051196
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -83,6 +113,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SelectionTexture: {fileID: 2800000, guid: 716ccbe73fcbaff4eb7c46ce1399a09d, type: 3}
   FactionList:
+  - {fileID: 1247943842749506}
   - {fileID: 1000013328249128}
   UnitTypes: []
 --- !u!114 &114000012441688350
@@ -97,7 +128,58 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Relations:
+  - state: 2
   - state: 3
+  UnitList:
+  - obj: {fileID: 1000013194072380, guid: 7f050e5e6d3f94e42bd1ede82fa86849, type: 2}
+    cost: 
+    technologyEffect: 
+    technologyUpgrade: []
+    available: 0
+  - obj: {fileID: 1000012727340272, guid: 2b19777a5a42be44e903619f45f1a941, type: 2}
+    cost: 
+    technologyEffect: 
+    technologyUpgrade: []
+    available: 0
+  BuildingList:
+  - autoBuild: 0
+    tempObj: {fileID: 1000012642638208, guid: 9ff48ade0aac8cb4ba49dd2c0365f861, type: 2}
+    progressObj: {fileID: 1000013099823766, guid: b754638e561c2b24fab3678d417eb6b2,
+      type: 2}
+    obj: {fileID: 1000012185838616, guid: 71d4eacea24b0ed4baa984dfdc2f9c51, type: 2}
+    cost: 2c0100000000000000000000
+    available: 1
+    closeWidth: 4
+    closeLength: 4
+    closePoints: 010000000100000001000000010000000100000001000000010000000100000001000000010000000200000002000000020000000200000002000000020000000200000001000000010000000200000002000000020000000200000002000000020000000200000001000000010000000200000002000000020000000200000002000000020000000200000001000000010000000200000002000000020000000200000002000000020000000200000001000000010000000200000002000000020000000200000002000000020000000200000001000000010000000200000002000000020000000200000002000000020000000200000001000000010000000200000002000000020000000200000002000000020000000200000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+    description: Main Base
+  - autoBuild: 0
+    tempObj: {fileID: 1000010433034664, guid: 7ebf1e7299f4d62479bf199b7072b7d0, type: 2}
+    progressObj: {fileID: 1000013646490096, guid: 472a71a03ae094e46bc03f91e2b8ccd8,
+      type: 2}
+    obj: {fileID: 1000011171905086, guid: 198f8f2ec110f1d45b53821cfddab293, type: 2}
+    cost: 640000000000000000000000
+    available: 1
+    closeWidth: 4
+    closeLength: 4
+    closePoints: 010000000100000001000000010000000100000001000000010000000100000001000000010000000200000002000000020000000200000002000000020000000200000001000000010000000200000002000000020000000200000002000000020000000200000001000000010000000200000002000000020000000200000002000000020000000200000001000000010000000200000002000000020000000200000002000000020000000200000001000000010000000200000002000000020000000200000002000000020000000200000001000000010000000200000002000000020000000200000002000000020000000200000001000000010000000200000002000000020000000200000002000000020000000200000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+    description: Army Factory
+  Tech: []
+  Color: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &114561025823093686
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1247943842749506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb1b05d0b2933c74d9a2826bff7e5604, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Relations:
+  - state: 3
+  - state: 2
   UnitList:
   - obj: {fileID: 1000013194072380, guid: 7f050e5e6d3f94e42bd1ede82fa86849, type: 2}
     cost: 

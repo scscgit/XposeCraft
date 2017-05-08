@@ -16,9 +16,9 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000013502612088}
+  - component: {fileID: 4000013502612088}
   m_Layer: 0
   m_Name: HelidroneStation
   m_TagString: Untagged
@@ -31,11 +31,11 @@ GameObject:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000014106651298}
-  - 33: {fileID: 33000010879607196}
-  - 23: {fileID: 23000012092138232}
+  - component: {fileID: 4000014106651298}
+  - component: {fileID: 33000010879607196}
+  - component: {fileID: 23000012092138232}
   m_Layer: 0
   m_Name: mesh01
   m_TagString: Untagged
@@ -48,12 +48,12 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000011876825898}
-  - 54: {fileID: 54000010299135818}
-  - 65: {fileID: 65000011122738016}
-  - 114: {fileID: 114000013640978358}
+  - component: {fileID: 4000011876825898}
+  - component: {fileID: 54000010299135818}
+  - component: {fileID: 65000011122738016}
+  - component: {fileID: 114000013640978358}
   m_Layer: 11
   m_Name: Progress HelidroneStation
   m_TagString: Building
@@ -70,11 +70,11 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 4000013502612088}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000013502612088
 Transform:
   m_ObjectHideFlags: 1
@@ -84,11 +84,11 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2, y: 0.22, z: 7.7}
   m_LocalScale: {x: 2, y: 0.5, z: 2}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 4000014106651298}
   m_Father: {fileID: 4000011876825898}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000014106651298
 Transform:
   m_ObjectHideFlags: 1
@@ -98,10 +98,10 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000013502612088}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &23000012092138232
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -116,7 +116,9 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: c4f4bfba02d46684692ac456573be971, type: 2}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
@@ -124,12 +126,13 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33000010879607196
 MeshFilter:

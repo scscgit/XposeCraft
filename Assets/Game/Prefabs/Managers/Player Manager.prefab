@@ -16,13 +16,13 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000011854467232}
-  - 20: {fileID: 20000013609079512}
-  - 92: {fileID: 92000013095594052}
-  - 124: {fileID: 124000013910573518}
-  - 81: {fileID: 81000010374760108}
+  - component: {fileID: 4000011854467232}
+  - component: {fileID: 20000013609079512}
+  - component: {fileID: 92000013095594052}
+  - component: {fileID: 124000013910573518}
+  - component: {fileID: 81000010374760108}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -35,15 +35,15 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000010171155422}
-  - 114: {fileID: 114000012604824786}
-  - 114: {fileID: 114000011157487732}
-  - 114: {fileID: 114000011557012408}
-  - 114: {fileID: 114000011972735642}
-  - 114: {fileID: 114000013035803882}
-  - 114: {fileID: 114000012601416842}
+  - component: {fileID: 4000010171155422}
+  - component: {fileID: 114000012604824786}
+  - component: {fileID: 114000011157487732}
+  - component: {fileID: 114000011557012408}
+  - component: {fileID: 114000011972735642}
+  - component: {fileID: 114000013035803882}
+  - component: {fileID: 114000012601416842}
   m_Layer: 0
   m_Name: Player Manager
   m_TagString: Untagged
@@ -56,10 +56,10 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000010646430844}
-  - 114: {fileID: 114000010438468564}
+  - component: {fileID: 4000010646430844}
+  - component: {fileID: 114000010438468564}
   m_Layer: 0
   m_Name: MiniMap
   m_TagString: Untagged
@@ -76,12 +76,12 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 80, z: -50}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 4000011854467232}
   - {fileID: 4000010646430844}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000010646430844
 Transform:
   m_ObjectHideFlags: 1
@@ -91,10 +91,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000010171155422}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000011854467232
 Transform:
   m_ObjectHideFlags: 1
@@ -104,10 +104,10 @@ Transform:
   m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000010171155422}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
 --- !u!20 &20000013609079512
 Camera:
   m_ObjectHideFlags: 1
@@ -138,6 +138,8 @@ Camera:
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 0
+  m_AllowMSAA: 1
+  m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
@@ -253,6 +255,7 @@ MonoBehaviour:
     amount: 10000
     texture: {fileID: 0}
   dropOffPoints: []
+  dropOffTypes: []
   dropOffAmount: 0
 --- !u!114 &114000012601416842
 MonoBehaviour:

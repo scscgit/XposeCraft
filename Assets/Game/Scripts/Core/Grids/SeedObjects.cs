@@ -41,7 +41,7 @@ namespace XposeCraft.Core.Grids
                             viable = true;
                         }
                     }
-                    GameObject clone = Instantiate(seed.obj, points[loc].loc, Quaternion.identity) as GameObject;
+                    GameObject clone = Instantiate(seed.obj, points[loc].loc, Quaternion.identity);
                     clone.transform.parent = folder.transform;
                     clone.name = seed.obj.name;
                     points[loc].state = 2;

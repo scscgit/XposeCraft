@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using XposeCraft.Core.Faction;
 using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Fog_Of_War;
 using XposeCraft.Core.Grids;
@@ -48,6 +49,7 @@ namespace XposeCraft.GameInternal
         public Fog Fog { get; private set; }
         public AStarManager AStarManager { get; private set; }
         public ResourceManager ResourceManager { get; private set; }
+        public Faction[] Factions { get; private set; }
 
         public Grid Grid
         {
@@ -68,6 +70,14 @@ namespace XposeCraft.GameInternal
             Fog = GameObject.Find(Fog.ScriptName).GetComponent<Fog>();
             AStarManager = GameObject.Find(AStarManager.ScriptName).GetComponent<AStarManager>();
             ResourceManager = GameObject.Find("Player Manager").GetComponent<ResourceManager>();
+            var factionList = GameObject.Find("Faction Manager")
+                .GetComponent<FactionManager>()
+                .FactionList;
+            Factions = new Faction[factionList.Length];
+            for (var factionIndex = 0; factionIndex < factionList.Length; factionIndex++)
+            {
+                Factions[factionIndex] = factionList[factionIndex].GetComponent<Faction>();
+            }
         }
 
         private void OnEnable()
@@ -89,7 +99,7 @@ namespace XposeCraft.GameInternal
                 // Spawn starting Bases and Workers
                 Player.CurrentPlayer = player;
                 Actor.Create<BaseCenter>(
-                    BuildingPlacement.InstantiateProgressBuilding(
+                    BuildingHelper.InstantiateProgressBuilding(
                             BuildingHelper.FindBuildingInFaction(BuildingType.BaseCenter, null),
                             BaseCenterProgressPrefab,
                             player.FactionIndex,
@@ -102,12 +112,12 @@ namespace XposeCraft.GameInternal
                 for (var workerIndex = 0; workerIndex < StartingWorkers; workerIndex++)
                 {
                     Actor.Create<Worker>(
-                        (GameObject) Instantiate(
+                        UnitHelper.InstantiateUnit(
                             WorkerPrefab,
                             // Workers will be spawned near the first Base
                             PositionHelper.PositionToLocation(((BaseCenter) player.Buildings[0]).SpawnPosition),
-                            Quaternion.identity)
-                        , player);
+                            player.FactionIndex),
+                        player);
                 }
 
                 // Initialize Resources to use the shared list

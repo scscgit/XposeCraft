@@ -1,8 +1,8 @@
 using System;
-using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using UnityEngine;
 
 namespace XposeCraft.Collections
@@ -333,7 +333,7 @@ namespace XposeCraft.Collections
 
         private static class PrimeHelper
         {
-            public static readonly int[] Primes = new int[]
+            public static readonly int[] Primes =
             {
                 3,
                 7,
@@ -413,7 +413,7 @@ namespace XposeCraft.Collections
             {
                 if ((candidate & 1) != 0)
                 {
-                    int num = (int) Math.Sqrt((double) candidate);
+                    int num = (int) Math.Sqrt(candidate);
                     for (int i = 3; i <= num; i += 2)
                     {
                         if (candidate % i == 0)
@@ -431,15 +431,15 @@ namespace XposeCraft.Collections
                 if (min < 0)
                     throw new ArgumentException("min < 0");
 
-                for (int i = 0; i < PrimeHelper.Primes.Length; i++)
+                for (int i = 0; i < Primes.Length; i++)
                 {
-                    int prime = PrimeHelper.Primes[i];
+                    int prime = Primes[i];
                     if (prime >= min)
                         return prime;
                 }
                 for (int i = min | 1; i < 2147483647; i += 2)
                 {
-                    if (PrimeHelper.IsPrime(i) && (i - 1) % 101 != 0)
+                    if (IsPrime(i) && (i - 1) % 101 != 0)
                         return i;
                 }
                 return min;
@@ -452,7 +452,7 @@ namespace XposeCraft.Collections
                 {
                     return 2146435069;
                 }
-                return PrimeHelper.GetPrime(num);
+                return GetPrime(num);
             }
         }
 

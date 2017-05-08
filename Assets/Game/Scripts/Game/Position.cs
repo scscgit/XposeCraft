@@ -1,9 +1,8 @@
 using System;
 using UnityEngine;
-using XposeCraft.Core.Faction.Buildings;
+using XposeCraft.Game.Enums;
 using XposeCraft.GameInternal;
 using XposeCraft.GameInternal.Helpers;
-using BuildingType = XposeCraft.Game.Enums.BuildingType;
 
 namespace XposeCraft.Game
 {
@@ -146,7 +145,7 @@ namespace XposeCraft.Game
         /// <returns>True if the building can be placed on the Position.</returns>
         public bool IsValidPlacement(BuildingType buildingType)
         {
-            return BuildingPlacement.IsValidPlacement(
+            return BuildingHelper.IsValidPlacement(
                 BuildingHelper.FindBuildingInFaction(buildingType, null), this, Location, true);
         }
 

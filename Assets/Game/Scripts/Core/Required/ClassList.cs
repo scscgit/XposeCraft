@@ -9,6 +9,7 @@ using XposeCraft.Core.Grids;
 using XposeCraft.Core.Resources;
 using XposeCraft.Game;
 using XposeCraft.GameInternal;
+using XposeCraft.GameInternal.Helpers;
 using XposeCraft.UI.MiniMap;
 using Object = UnityEngine.Object;
 
@@ -42,10 +43,14 @@ namespace XposeCraft.Core.Required
                     target.GetComponent<BuildingController>().Damage(selfType, attackDamage);
                     break;
             }
+            lastAttackTime = Time.time;
+            if (attackObj == null)
+            {
+                return;
+            }
             attackObj.transform.position = self.transform.position;
             attackObj.SetActive(true);
             attackObj.SendMessage("Attack", target, SendMessageOptions.DontRequireReceiver);
-            lastAttackTime = Time.time;
         }
 
         public bool InRange(Vector3 target, Vector3 self)
@@ -349,7 +354,10 @@ namespace XposeCraft.Core.Required
 
         public void Awake(GameObject obj)
         {
-            select = GameObject.Find("Player Manager").GetComponent<UnitSelection>();
+            if (select == null)
+            {
+                select = GameObject.Find("Player Manager").GetComponent<UnitSelection>();
+            }
             switch (type)
             {
                 case "Unit":
@@ -357,6 +365,23 @@ namespace XposeCraft.Core.Required
                     break;
                 case "Building":
                     select.AddBuilding(obj);
+                    break;
+            }
+        }
+
+        public void Killed(GameObject obj)
+        {
+            if (select == null)
+            {
+                select = GameObject.Find("Player Manager").GetComponent<UnitSelection>();
+            }
+            switch (type)
+            {
+                case "Unit":
+                    select.RemoveUnit(obj);
+                    break;
+                case "Building":
+                    select.RemoveBuilding(obj);
                     break;
             }
         }
@@ -1269,7 +1294,7 @@ namespace XposeCraft.Core.Required
             {
                 UnitController script = obj.GetComponent<UnitController>();
                 GameObject rObj =
-                    Object.Instantiate(replacementObject, obj.transform.position, obj.transform.rotation) as GameObject;
+                    Object.Instantiate(replacementObject, obj.transform.position, obj.transform.rotation);
                 UnitController rScript = rObj.GetComponent<UnitController>();
                 if (rScript)
                 {
@@ -1433,15 +1458,10 @@ namespace XposeCraft.Core.Required
                 {
                     continue;
                 }
-                Vector3 loc =
-                    grid.DetermineNearestPoint(buildLoc.transform.position, buildLoc.transform.position, gridI);
-                GameObject obj =
-                    Object.Instantiate(faction.UnitList[jobs[x].UnitIndex].obj, loc, Quaternion.identity) as GameObject;
-                UnitController script = obj.GetComponent<UnitController>();
-                if (script)
-                {
-                    script.FactionIndex = factionIndex;
-                }
+                UnitHelper.InstantiateUnit(
+                    faction.UnitList[jobs[x].UnitIndex].obj,
+                    grid.DetermineNearestPoint(buildLoc.transform.position, buildLoc.transform.position, gridI),
+                    factionIndex);
                 jobs.RemoveAt(x);
                 x--;
                 jobsAmount--;

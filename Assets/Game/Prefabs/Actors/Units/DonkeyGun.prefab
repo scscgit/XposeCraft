@@ -16,11 +16,11 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000010231209520}
-  - 33: {fileID: 33000010041958954}
-  - 23: {fileID: 23000010555932110}
+  - component: {fileID: 4000010231209520}
+  - component: {fileID: 33000010041958954}
+  - component: {fileID: 23000010555932110}
   m_Layer: 0
   m_Name: DonkeyGun
   m_TagString: Untagged
@@ -33,17 +33,17 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000013010930310}
-  - 95: {fileID: 95000012441679826}
-  - 54: {fileID: 54000010769329186}
-  - 65: {fileID: 65000012495510420}
-  - 82: {fileID: 82000010559592710}
-  - 114: {fileID: 114000011998692552}
-  - 114: {fileID: 114000013558981164}
-  - 114: {fileID: 114000013147277468}
-  - 114: {fileID: 114000014187389810}
+  - component: {fileID: 4000013010930310}
+  - component: {fileID: 95000012441679826}
+  - component: {fileID: 54000010769329186}
+  - component: {fileID: 65000012495510420}
+  - component: {fileID: 82000010559592710}
+  - component: {fileID: 114000011998692552}
+  - component: {fileID: 114000013558981164}
+  - component: {fileID: 114000013147277468}
+  - component: {fileID: 114000014187389810}
   m_Layer: 9
   m_Name: DonkeyGun
   m_TagString: Unit
@@ -60,10 +60,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0, y: -0.020624207, z: 0}
   m_LocalScale: {x: 0.99999905, y: 0.99999905, z: 0.99999905}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000013010930310}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4000013010930310
 Transform:
   m_ObjectHideFlags: 1
@@ -73,11 +73,11 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 4000010231209520}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &23000010555932110
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -103,7 +103,9 @@ MeshRenderer:
   - {fileID: 2100000, guid: f6f19eb721a93274a90aff120f1c356c, type: 2}
   - {fileID: 2100000, guid: a412b045cc768f4428b1b7d8746a8f8d, type: 2}
   - {fileID: 2100000, guid: 0eb04770d80249044a125e8a7ed34046, type: 2}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
@@ -111,12 +113,13 @@ MeshRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 0
+  m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33000010041958954
 MeshFilter:
@@ -168,6 +171,7 @@ AudioSource:
   Loop: 0
   Mute: 0
   Spatialize: 0
+  SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
@@ -180,12 +184,14 @@ AudioSource:
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - time: 1
+    - serializedVersion: 2
+      time: 1
       value: 0
       inSlope: 0
       outSlope: 0
@@ -196,7 +202,8 @@ AudioSource:
   panLevelCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 0
       inSlope: 0
       outSlope: 0
@@ -207,7 +214,8 @@ AudioSource:
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 0
       inSlope: 0
       outSlope: 0
@@ -218,7 +226,8 @@ AudioSource:
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 1
       inSlope: 0
       outSlope: 0
@@ -260,7 +269,6 @@ MonoBehaviour:
   gridI: 0
   myPath:
     list: 
-    cost: 0
     color: {r: 1, g: 1, b: 1, a: 1}
     displayPath: 0
   depth: 0

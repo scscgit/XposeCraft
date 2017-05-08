@@ -4,18 +4,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEngine;
 using UnityTest.IntegrationTestRunner;
 using System.IO;
 using UnityEngine.SceneManagement;
+using XposeCraft.GameInternal;
 
 namespace UnityTest
 {
     [Serializable]
+    [ExecuteInEditMode]
     public class TestRunner : MonoBehaviour
     {
-        static private int TestSceneNumber = 0;
+        public static bool ApplicationIsPlaying { get; set; }
+        static private int TestSceneNumber;
         static private readonly TestResultRenderer k_ResultRenderer = new TestResultRenderer();
 
         public TestComponent currentTest;
@@ -27,8 +29,7 @@ namespace UnityTest
             get
             {
 #if !IMITATE_BATCH_MODE
-                //if (Application.isEditor)
-                if (Application.isEditor && !IsBatchMode())
+                if (Application.isEditor)
                     return true;
 #endif
                 return false;
@@ -66,6 +67,9 @@ namespace UnityTest
 
         public void Start()
         {
+            // Preventing OnDestroy call with invalid internal state
+            currentTest = null;
+
             if (isInitializedByRunner) return;
 
             if (m_Configurator.sendResultsOverNetwork)
@@ -137,6 +141,11 @@ namespace UnityTest
 
         public void Update()
         {
+            ApplicationIsPlaying = Application.isPlaying;
+            if (!ApplicationIsPlaying)
+            {
+                return;
+            }
             if (m_ReadyToRun  && Time.frameCount > 1)
             {
                 m_ReadyToRun = false;
@@ -343,6 +352,7 @@ namespace UnityTest
 
             m_StartTime = Time.time;
             currentTest = m_TestsProvider.GetNextTest() as TestComponent;
+            Log.d(this, "Starting a new test component " + (currentTest == null ? "null " : currentTest.name));
 
             var testResult = m_ResultList.Single(result => result.TestComponent == currentTest);
 

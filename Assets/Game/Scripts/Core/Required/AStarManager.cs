@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using XposeCraft.Core.Faction.Units;
 using XposeCraft.GameInternal;
+using Object = UnityEngine.Object;
 #if UNITY_EDITOR
 using UnityEditor.Events;
 
@@ -14,7 +15,7 @@ namespace XposeCraft.Core.Required
 {
     public class AStarManager : MonoBehaviour
     {
-        public class PathFoundArguments : UnityEngine.Object
+        public class PathFoundArguments : Object
         {
             public APath APath;
             public GameObject GameObject;

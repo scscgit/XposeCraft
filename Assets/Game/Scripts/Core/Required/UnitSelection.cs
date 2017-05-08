@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -95,6 +96,10 @@ namespace XposeCraft.Core.Required
                 map = obj.GetComponent<MiniMap>();
             }
             //test = Camera.main.GetComponent<GUILayer>();
+            curSelected = new List<GameObject>();
+            curSelectedS = new List<UnitController>();
+            curBuildSelected = new List<GameObject>();
+            curBuildSelectedS = new List<BuildingController>();
         }
 
         public void Update()
@@ -442,6 +447,10 @@ namespace XposeCraft.Core.Required
         public void AddUnit(GameObject obj)
         {
             var unitController = obj.GetComponent<UnitController>();
+            if (unitController == null)
+            {
+                throw new Exception("Unit with a null controller has attempted to be registered");
+            }
             if (unitController.FactionIndex == FactionIndex)
             {
                 _unitList.Add(unitController);
@@ -498,7 +507,12 @@ namespace XposeCraft.Core.Required
 
         public void AddBuilding(GameObject obj)
         {
-            _buildingList.Add(obj.GetComponent<BuildingController>());
+            var buildingController = obj.GetComponent<BuildingController>();
+            if (buildingController == null)
+            {
+                throw new Exception("Building with a null controller has attempted to be registered");
+            }
+            _buildingList.Add(buildingController);
             buildingListLength++;
         }
 
