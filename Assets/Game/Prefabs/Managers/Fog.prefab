@@ -54,6 +54,7 @@ MonoBehaviour:
   width: 250
   length: 250
   disp: 2
+  FactionIndexDisplay: 0
   startPos: {x: -250, y: 0, z: -250}
   revealed: {r: 0, g: 0, b: 0, a: 0}
   visited: {r: 0, g: 0, b: 0, a: 0.409}

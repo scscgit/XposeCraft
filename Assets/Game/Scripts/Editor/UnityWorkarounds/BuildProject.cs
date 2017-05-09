@@ -90,6 +90,8 @@ namespace XposeCraft.UnityWorkarounds
                 Debug.LogError(buildError);
             }
             Test();
+            // Travis CI debugging test
+            EditorApplication.Exit(2);
         }
 
         /// <summary>

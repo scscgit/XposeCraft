@@ -466,6 +466,13 @@ namespace XposeCraft.Core.Required
                 {
                     _unitList.RemoveAt(x);
                     unitListLength--;
+                    if (curSelected.Contains(obj))
+                    {
+                        var selectedIndex = curSelected.IndexOf(obj);
+                        curSelected.RemoveAt(selectedIndex);
+                        curSelectedS.RemoveAt(selectedIndex);
+                        curSelectedLength--;
+                    }
                     break;
                 }
             }
@@ -524,6 +531,13 @@ namespace XposeCraft.Core.Required
                 {
                     _buildingList.RemoveAt(x);
                     buildingListLength--;
+                    if (curBuildSelected.Contains(obj))
+                    {
+                        var selectedIndex = curBuildSelected.IndexOf(obj);
+                        curBuildSelected.RemoveAt(selectedIndex);
+                        curBuildSelectedS.RemoveAt(selectedIndex);
+                        curBuildSelectedLength--;
+                    }
                     break;
                 }
             }

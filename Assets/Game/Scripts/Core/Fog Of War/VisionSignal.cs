@@ -1,4 +1,5 @@
 using UnityEngine;
+using XposeCraft.GameInternal;
 
 namespace XposeCraft.Core.Fog_Of_War
 {
@@ -11,27 +12,25 @@ namespace XposeCraft.Core.Fog_Of_War
         public int radius = 5;
         public int upwardSightHeight = 10;
         public int downwardSightHeight = 10;
-        bool quitting;
+        bool _quitting;
 
-        void OnEnable()
+        public void OnEnable()
         {
-            GameObject.Find("Fog")
-                .GetComponent<Fog>()
-                .AddAgent(gameObject, radius, upwardSightHeight, downwardSightHeight, this);
+            GameManager.Instance.Fog.AddSignalAgent(gameObject, radius, upwardSightHeight, downwardSightHeight, this);
         }
 
         private void OnApplicationQuit()
         {
-            quitting = true;
+            _quitting = true;
         }
 
-        private void OnDisable()
+        public void OnDisable()
         {
-            if (quitting)
+            if (_quitting)
             {
                 return;
             }
-            GameObject.Find("Fog").GetComponent<Fog>().RemoveAgent(gameObject);
+            GameManager.Instance.Fog.RemoveSignalAgent(gameObject);
         }
     }
 }

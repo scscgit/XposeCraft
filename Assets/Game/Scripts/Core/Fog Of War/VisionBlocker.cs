@@ -1,4 +1,5 @@
 using UnityEngine;
+using XposeCraft.GameInternal;
 
 namespace XposeCraft.Core.Fog_Of_War
 {
@@ -13,7 +14,7 @@ namespace XposeCraft.Core.Fog_Of_War
 
         void Start()
         {
-            GameObject.Find("Fog").GetComponent<Fog>().ClosePoints(radius, transform.position, height);
+            GameManager.Instance.Fog.ClosePoints(radius, transform.position, height);
         }
     }
 }

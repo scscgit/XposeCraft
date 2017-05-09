@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Serialization;
+using XposeCraft.Core.Fog_Of_War;
 using XposeCraft.Core.Grids;
 using XposeCraft.Core.Required;
 using XposeCraft.Core.Resources;
@@ -134,7 +135,17 @@ namespace XposeCraft.Core.Faction.Buildings
             BuildingController build = obj.GetComponent<BuildingController>();
             build.building = building;
             build.loc = loc;
+            // Changes the Faction to a correct one, removing previous vision registration initialized during start
+            var signal = obj.GetComponent<VisionSignal>();
+            if (signal)
+            {
+                signal.OnDisable();
+            }
             build.FactionIndex = FactionIndex;
+            if (signal)
+            {
+                signal.OnEnable();
+            }
             Destroy(gameObject);
             return obj;
         }

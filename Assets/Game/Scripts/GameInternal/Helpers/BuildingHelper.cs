@@ -3,6 +3,7 @@ using System.ComponentModel;
 using UnityEngine;
 using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Faction.Units;
+using XposeCraft.Core.Fog_Of_War;
 using XposeCraft.Game;
 using XposeCraft.Game.Actors.Buildings;
 using Building = XposeCraft.Core.Required.Building;
@@ -66,7 +67,7 @@ namespace XposeCraft.GameInternal.Helpers
             }
         }
 
-        public static GameObject InstantiateProgressBuilding(
+        public static BuildingController InstantiateProgressBuilding(
             Building building, GameObject buildingPrefab, int factionIndex, Position position, Quaternion rotation)
         {
             // Placement validation is done redundantly twice, because this can be called directly too
@@ -86,8 +87,18 @@ namespace XposeCraft.GameInternal.Helpers
             BuildingController script = buildingObject.GetComponent<BuildingController>();
             script.building = building;
             script.loc = position.PointLocation;
+            // Changes the Faction to a correct one, removing previous vision registration initialized during start
+            var signal = buildingObject.GetComponent<VisionSignal>();
+            if (signal)
+            {
+                signal.OnDisable();
+            }
             script.FactionIndex = factionIndex;
-            return buildingObject;
+            if (signal)
+            {
+                signal.OnEnable();
+            }
+            return script;
         }
 
         public static void CheckValidPlacement(

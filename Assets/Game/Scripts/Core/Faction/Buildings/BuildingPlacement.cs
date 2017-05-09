@@ -219,12 +219,14 @@ namespace XposeCraft.Core.Faction.Buildings
             if (building.autoBuild)
             {
                 buildingObject = BuildingHelper.InstantiateProgressBuilding(
-                    building, building.obj, factionIndex, position, rotation);
+                        building, building.obj, factionIndex, position, rotation)
+                    .gameObject;
             }
             else
             {
                 buildingObject = BuildingHelper.InstantiateProgressBuilding(
-                    building, building.progressObj, factionIndex, position, rotation);
+                        building, building.progressObj, factionIndex, position, rotation)
+                    .gameObject;
                 UnitSelection.SetTarget(builderUnits, buildingObject, buildingObject.transform.position);
             }
             return buildingObject;

@@ -1,4 +1,5 @@
 using UnityEngine;
+using XposeCraft.GameInternal;
 using XposeCraft.UI.Cursor;
 
 namespace XposeCraft.Core.Fog_Of_War
@@ -18,10 +19,10 @@ namespace XposeCraft.Core.Fog_Of_War
         public Vector2[] anchors;
         CursorObject cursorObj;
         public int curState;
+        private bool _quitting;
 
         void Start()
         {
-            GameObject.Find("Fog").GetComponent<Fog>().AddRenderer(gameObject, this);
             int matAmount = 0;
             for (int x = 0; x < renderers.Length; x++)
             {
@@ -45,6 +46,25 @@ namespace XposeCraft.Core.Fog_Of_War
                     hideCursorIcon = false;
                 }
             }
+        }
+
+        public void OnEnable()
+        {
+            GameManager.Instance.Fog.AddRenderer(gameObject, this);
+        }
+
+        private void OnApplicationQuit()
+        {
+            _quitting = true;
+        }
+
+        public void OnDisable()
+        {
+            if (_quitting)
+            {
+                return;
+            }
+            GameManager.Instance.Fog.RemoveRenderer(gameObject);
         }
 
         public void SetRenderer(int state)

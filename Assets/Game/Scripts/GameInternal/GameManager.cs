@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using XposeCraft.Core.Faction;
-using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Fog_Of_War;
 using XposeCraft.Core.Grids;
 using XposeCraft.Core.Required;
@@ -27,7 +26,7 @@ namespace XposeCraft.GameInternal
 
         public static GameManager Instance
         {
-            get { return _instance; }
+            get { return _instance ?? (_instance = GameObject.Find(ScriptName).GetComponent<GameManager>()); }
         }
 
         public Player[] Players;
@@ -105,7 +104,6 @@ namespace XposeCraft.GameInternal
                             player.FactionIndex,
                             player.MyBase.Center,
                             Quaternion.identity)
-                        .GetComponent<BuildingController>()
                         .Place()
                         .gameObject
                     , player);

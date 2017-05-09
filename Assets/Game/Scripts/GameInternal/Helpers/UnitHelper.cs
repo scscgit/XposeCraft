@@ -1,5 +1,6 @@
 using UnityEngine;
 using XposeCraft.Core.Faction.Units;
+using XposeCraft.Core.Fog_Of_War;
 
 namespace XposeCraft.GameInternal.Helpers
 {
@@ -11,7 +12,17 @@ namespace XposeCraft.GameInternal.Helpers
             var script = obj.GetComponent<UnitController>();
             if (script)
             {
+                // Changes the Faction to a correct one, removing previous vision registration initialized during start
+                var signal = script.GetComponent<VisionSignal>();
+                if (signal)
+                {
+                    signal.OnDisable();
+                }
                 script.FactionIndex = factionIndex;
+                if (signal)
+                {
+                    signal.OnEnable();
+                }
             }
             return obj;
         }
