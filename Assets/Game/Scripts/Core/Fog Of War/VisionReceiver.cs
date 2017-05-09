@@ -4,15 +4,22 @@ using XposeCraft.UI.Cursor;
 
 namespace XposeCraft.Core.Fog_Of_War
 {
+    public enum VisionState
+    {
+        Vision = 0,
+        Discovered = 1,
+        Undiscovered = 2
+    }
+
     public class VisionReceiver : MonoBehaviour
     {
         // This code determines how a unit is displayed when in the In Vision, Discovered, and Undiscovered areas
         // The pastVisibleMat is displayed when the object has been seen at one time but not at this moment
         // The defaultMat is used for the unit if they are within vision at that time
 
-        public MeshRenderer[] renderers;
+        public Renderer[] renderers;
         public Color[] defaultMat;
-        public Color[] pastVisibleMat = {Color.gray, Color.gray};
+        public Color[] pastVisibleMat = {Color.gray};
         public bool hideObjectWhenNotSeen;
         public bool hideCursorIcon = true;
         public bool hideObject = true;
@@ -21,29 +28,38 @@ namespace XposeCraft.Core.Fog_Of_War
         public int curState;
         private bool _quitting;
 
-        void Start()
+        private void Awake()
         {
             int matAmount = 0;
             for (int x = 0; x < renderers.Length; x++)
             {
                 matAmount += renderers[x].materials.Length;
             }
-            defaultMat = new Color[matAmount];
+            if (defaultMat.Length < matAmount)
+            {
+                defaultMat = new Color[matAmount];
+                InitializeMaterialColors(defaultMat);
+            }
+            if (pastVisibleMat.Length < matAmount)
+            {
+                pastVisibleMat = new Color[matAmount];
+                InitializeMaterialColors(pastVisibleMat);
+            }
+            if (hideCursorIcon)
+            {
+                cursorObj = gameObject.GetComponent<CursorObject>();
+            }
+        }
+
+        private void InitializeMaterialColors(Color[] materialColors)
+        {
             int z = 0;
             for (int x = 0; x < renderers.Length; x++)
             {
                 for (int y = 0; y < renderers[x].materials.Length; y++)
                 {
-                    defaultMat[z] = renderers[x].materials[y].color;
+                    materialColors[z] = renderers[x].materials[y].color;
                     z++;
-                }
-            }
-            if (hideCursorIcon)
-            {
-                cursorObj = gameObject.GetComponent<CursorObject>();
-                if (cursorObj == null)
-                {
-                    hideCursorIcon = false;
                 }
             }
         }
@@ -82,7 +98,7 @@ namespace XposeCraft.Core.Fog_Of_War
                         }
                         renderers[x].material.color = defaultMat[x];
                         renderers[x].enabled = true;
-                        if (hideCursorIcon)
+                        if (hideCursorIcon && cursorObj != null)
                         {
                             cursorObj.enabled = true;
                         }
@@ -101,7 +117,7 @@ namespace XposeCraft.Core.Fog_Of_War
                             renderers[x].material.color = pastVisibleMat[x];
                         }
                         renderers[x].enabled = !hideObjectWhenNotSeen;
-                        if (hideCursorIcon)
+                        if (hideCursorIcon && cursorObj != null)
                         {
                             cursorObj.enabled = true;
                         }
@@ -119,7 +135,7 @@ namespace XposeCraft.Core.Fog_Of_War
                         {
                             renderers[x].enabled = false;
                         }
-                        if (hideCursorIcon)
+                        if (hideCursorIcon && cursorObj != null)
                         {
                             cursorObj.enabled = false;
                         }

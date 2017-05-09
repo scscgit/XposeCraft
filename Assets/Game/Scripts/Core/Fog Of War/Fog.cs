@@ -4,13 +4,15 @@ using System.Threading;
 using UnityEngine;
 using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Faction.Units;
+using XposeCraft.Game.Actors.Buildings;
+using XposeCraft.Game.Actors.Units;
 using XposeCraft.GameInternal;
 using XposeCraft.UI.MiniMap;
 
 namespace XposeCraft.Core.Fog_Of_War
 {
     [Serializable]
-    internal class SignalAgents
+    public class SignalAgents
     {
         public List<GameObject> agents;
         public List<int> agentsRadius;
@@ -18,6 +20,7 @@ namespace XposeCraft.Core.Fog_Of_War
         public List<float> agentsDSlope;
         public List<Transform> agentsT;
         public int agentsAmount;
+        public int FactionIndex;
 
         public SignalAgents()
         {
@@ -55,13 +58,14 @@ namespace XposeCraft.Core.Fog_Of_War
     }
 
     [Serializable]
-    internal class HiddenAgents
+    public class HiddenAgents
     {
         public List<GameObject> hiddenAgent;
         public List<VisionReceiver> hiddenRend;
         public List<Transform> hiddenAgentT;
         public int[] hideSetting;
         public int hideAmount;
+        public int FactionIndex;
 
         public HiddenAgents()
         {
@@ -89,6 +93,11 @@ namespace XposeCraft.Core.Fog_Of_War
 
         public void Remove(GameObject obj)
         {
+            if (!hiddenAgent.Contains(obj))
+            {
+                // Exceptions of visibility like having the same faction can cause this to be called without any need
+                return;
+            }
             Remove(hiddenAgent.IndexOf(obj));
         }
 
@@ -96,7 +105,35 @@ namespace XposeCraft.Core.Fog_Of_War
         {
             for (int x = 0; x < hideAmount; x++)
             {
-                hiddenRend[x].SetRenderer(hideSetting[x]);
+                var previousState = hiddenRend[x].curState;
+                var newState = hideSetting[x];
+                if (previousState == newState)
+                {
+                    continue;
+                }
+                hiddenRend[x].SetRenderer(newState);
+                // Notifies Players about the change
+                if (!GameManager.Instance.ActorLookup.ContainsKey(hiddenAgent[x]))
+                {
+                    // If the lookup fails, it is because the game is still initializing. Events arent required here
+                    return;
+                }
+                var actor = GameManager.Instance.ActorLookup[hiddenAgent[x]];
+                var owner = GameManager.Instance.FindPlayerOfActor(actor);
+                foreach (var enemyFactionIndex in owner.Faction.EnemyFactionIndexes())
+                {
+                    foreach (var player in GameManager.Instance.Players)
+                    {
+                        if (player.FactionIndex == enemyFactionIndex)
+                        {
+                            player.EnemyVisibilityChanged(actor, previousState, newState);
+                        }
+                    }
+                }
+                foreach (var faction in GameManager.Instance.Factions)
+                {
+                    faction.EnemyFactionIndexes();
+                }
             }
         }
     }
@@ -226,8 +263,8 @@ namespace XposeCraft.Core.Fog_Of_War
             _hiddenAgentsFactions = new HiddenAgents[factions];
             for (var factionIndex = 0; factionIndex < factions; factionIndex++)
             {
-                _signalAgentsFactions[factionIndex] = new SignalAgents();
-                _hiddenAgentsFactions[factionIndex] = new HiddenAgents();
+                _signalAgentsFactions[factionIndex] = new SignalAgents {FactionIndex = factionIndex};
+                _hiddenAgentsFactions[factionIndex] = new HiddenAgents {FactionIndex = factionIndex};
             }
         }
 
@@ -529,8 +566,31 @@ namespace XposeCraft.Core.Fog_Of_War
 
         public void AddRenderer(GameObject obj, VisionReceiver receiver)
         {
+            int ownerFaction;
+            var unit = obj.GetComponent<UnitController>();
+            if (unit != null)
+            {
+                ownerFaction = unit.FactionIndex;
+            }
+            else
+            {
+                var building = obj.GetComponent<BuildingController>();
+                if (building != null)
+                {
+                    ownerFaction = building.FactionIndex;
+                }
+                else
+                {
+                    throw new Exception("Actor cannot determine its faction index for visibility exception purposes");
+                }
+            }
             for (var factionIndex = 0; factionIndex < GameManager.Instance.Factions.Length; factionIndex++)
             {
+                if (factionIndex == ownerFaction)
+                {
+                    // Player that owns the unit will not be included in its hiding
+                    continue;
+                }
                 _hiddenAgentsFactions[factionIndex].Add(obj, receiver);
             }
         }

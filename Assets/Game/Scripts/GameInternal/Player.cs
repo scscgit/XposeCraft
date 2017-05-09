@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using XposeCraft.Collections;
 using XposeCraft.Core.Faction;
+using XposeCraft.Core.Fog_Of_War;
+using XposeCraft.Game;
+using XposeCraft.Game.Actors;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Resources;
 using XposeCraft.Game.Actors.Units;
@@ -67,5 +70,40 @@ namespace XposeCraft.GameInternal
         // Currencies of the Player. (TODO)
 
         public int Minerals = 80;
+
+        public void EnemyVisibilityChanged(Actor actor, int previousState, int newState)
+        {
+            if (
+                previousState != (int) VisionState.Undiscovered && previousState != (int) VisionState.Discovered
+                || newState != (int) VisionState.Vision)
+            {
+                // Losing visibility does not currently trigger an event
+                return;
+            }
+
+            var unit = actor as IUnit;
+            if (unit != null)
+            {
+                GameManager.Instance.FiredEvent(
+                    this,
+                    EventType.EnemyUnitsOnSight,
+                    new Arguments
+                    {
+                        EnemyUnits = new[] {unit}
+                    });
+                return;
+            }
+            var building = actor as IBuilding;
+            if (building != null)
+            {
+                GameManager.Instance.FiredEvent(
+                    this,
+                    EventType.EnemyBuildingsOnSight,
+                    new Arguments
+                    {
+                        EnemyBuildings = new[] {building}
+                    });
+            }
+        }
     }
 }

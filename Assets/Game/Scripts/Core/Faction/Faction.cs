@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 using XposeCraft.Core.Required;
@@ -12,5 +13,18 @@ namespace XposeCraft.Core.Faction
         [FormerlySerializedAs("buildingList")] public Building[] BuildingList = new Building[0];
         [FormerlySerializedAs("tech")] public Technology[] Tech = new Technology[0];
         [FormerlySerializedAs("color")] public Color Color;
+
+        public int[] EnemyFactionIndexes()
+        {
+            var enemies = new List<int>();
+            for (var factionIndex = 0; factionIndex < Relations.Length; factionIndex++)
+            {
+                if (Relations[factionIndex].state == 2)
+                {
+                    enemies.Add(factionIndex);
+                }
+            }
+            return enemies.ToArray();
+        }
     }
 }

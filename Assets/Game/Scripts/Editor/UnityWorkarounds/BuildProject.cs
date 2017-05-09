@@ -90,8 +90,6 @@ namespace XposeCraft.UnityWorkarounds
                 Debug.LogError(buildError);
             }
             Test();
-            // Travis CI debugging test
-            EditorApplication.Exit(2);
         }
 
         /// <summary>
@@ -108,6 +106,9 @@ namespace XposeCraft.UnityWorkarounds
 
         private static void TestAfterPlaying()
         {
+            // Travis CI debugging test
+            EditorApplication.Exit(2);
+
             var allTestComponents = TestComponent.FindAllTestsOnScene().ToList();
             var dynamicTests = allTestComponents.Where(t => t.dynamic).ToList();
             var dynamicTestsToRun = dynamicTests.Select(c => c.dynamicTypeName).ToList();

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using XposeCraft.Collections;
 using XposeCraft.Core.Faction;
 using XposeCraft.Core.Fog_Of_War;
 using XposeCraft.Core.Grids;
@@ -12,14 +13,21 @@ using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Resources;
 using XposeCraft.Game.Actors.Units;
 using XposeCraft.GameInternal.Helpers;
+using Building = XposeCraft.Game.Actors.Buildings.Building;
 using BuildingType = XposeCraft.Game.Enums.BuildingType;
 using Event = XposeCraft.Game.Event;
 using EventType = XposeCraft.Game.Enums.EventType;
+using Unit = XposeCraft.Game.Actors.Units.Unit;
 
 namespace XposeCraft.GameInternal
 {
     public class GameManager : MonoBehaviour
     {
+        [Serializable]
+        public class ActorLookupDictionary : SerializableDictionary2<GameObject, Actor>
+        {
+        }
+
         public const string ScriptName = "Game Manager";
 
         private static GameManager _instance;
@@ -55,6 +63,8 @@ namespace XposeCraft.GameInternal
             get { return UGrid.grids[UGrid.index]; }
         }
 
+        public ActorLookupDictionary ActorLookup { get; private set; }
+
         private void OnDrawGizmos()
         {
             if (name != ScriptName)
@@ -77,6 +87,7 @@ namespace XposeCraft.GameInternal
             {
                 Factions[factionIndex] = factionList[factionIndex].GetComponent<Faction>();
             }
+            ActorLookup = new ActorLookupDictionary();
         }
 
         private void OnEnable()
@@ -144,6 +155,10 @@ namespace XposeCraft.GameInternal
                                         "Maybe the Controller Script wasn't initialized by creating Actor?");
                 }
                 Player.CurrentPlayer = player;
+                Log.d("Event " + eventType + " fired with "
+                      + (!player.RegisteredEvents.ContainsKey(eventType)
+                          ? "no"
+                          : player.RegisteredEvents[eventType].Count.ToString()) + " listeners");
                 if (!player.RegisteredEvents.ContainsKey(eventType))
                 {
                     return;
@@ -164,6 +179,24 @@ namespace XposeCraft.GameInternal
             {
                 FiredEvent(player, eventType, args);
             }
+        }
+
+        public Player FindPlayerOfActor(Actor actor)
+        {
+            foreach (var player in Players)
+            {
+                var unit = actor as Unit;
+                if (unit != null && player.Units.Contains(unit))
+                {
+                    return player;
+                }
+                var building = actor as Building;
+                if (building != null && player.Buildings.Contains(building))
+                {
+                    return player;
+                }
+            }
+            throw new Exception("Actor is not located in model of any Player");
         }
     }
 }
