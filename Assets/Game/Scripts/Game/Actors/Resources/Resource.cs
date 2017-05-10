@@ -9,9 +9,6 @@ namespace XposeCraft.Game.Actors.Resources
 {
     public abstract class Resource : Actor, IResource
     {
-        /// <summary>
-        /// Internal method, do not use.
-        /// </summary>
         public void GatherByWorker(List<UnitController> builderUnits)
         {
             UnitSelection.SetTarget(builderUnits, GameObject, GameObject.transform.position);

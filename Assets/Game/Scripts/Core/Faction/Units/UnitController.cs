@@ -5,6 +5,7 @@ using XposeCraft.Core.Fog_Of_War;
 using XposeCraft.Core.Required;
 using XposeCraft.Core.Resources;
 using XposeCraft.Game;
+using XposeCraft.Game.Control;
 using XposeCraft.GameInternal;
 using XposeCraft.GameInternal.Helpers;
 using XposeCraft.UI.MiniMap;
@@ -45,6 +46,7 @@ namespace XposeCraft.Core.Faction.Units
         public Vector3 targetPoint;
         public int size = 1;
         Health healthObj;
+        internal UnitActionQueue.UnitActionDequeue _actionDequeue { get; set; }
 
         protected Faction Faction
         {
@@ -145,6 +147,7 @@ namespace XposeCraft.Core.Faction.Units
                         anim.state = "Idle";
                         anim.Animate();
                     }
+                    ProcessActionQueue();
                     break;
                 case Target.Resource:
                     if (resource.source == null || resource.source.gameObject != target)
@@ -167,6 +170,7 @@ namespace XposeCraft.Core.Faction.Units
                         if (!resource.Gather(this, gameObject))
                         {
                             ResetTarget();
+                            ProcessActionQueue();
                         }
                     }
                     else if (anim.state != "Move")
@@ -250,6 +254,7 @@ namespace XposeCraft.Core.Faction.Units
                     if (movement.pathComplete)
                     {
                         ResetTarget();
+                        ProcessActionQueue();
                     }
                     else if (anim.state != "Move")
                     {
@@ -349,6 +354,15 @@ namespace XposeCraft.Core.Faction.Units
                     }
                     break;
             }
+        }
+
+        private void ProcessActionQueue()
+        {
+            if (_actionDequeue == null)
+            {
+                return;
+            }
+            _actionDequeue.Dequeue();
         }
 
         public int DetermineRelations(int factionIndex)

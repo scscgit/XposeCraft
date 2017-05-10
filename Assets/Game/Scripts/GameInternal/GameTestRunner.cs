@@ -8,6 +8,8 @@ using XposeCraft.Game;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Resources.Minerals;
 using XposeCraft.Game.Actors.Units;
+using XposeCraft.Game.Control;
+using XposeCraft.Game.Control.GameActions;
 using XposeCraft.Game.Enums;
 using XposeCraft.Game.Helpers;
 using XposeCraft.Test;
@@ -45,8 +47,10 @@ namespace XposeCraft.GameInternal
             Log.i("*** " + typeof(GameTestRunner).Name + ".RunTests called ***");
 
             // Test for each Player
-            foreach (var player in GameManager.Instance.Players)
+            for (var playerIndex = 0; playerIndex < GameManager.Instance.Players.Length; playerIndex++)
             {
+                var player = GameManager.Instance.Players[playerIndex];
+
                 // Player state initialization
                 Player.CurrentPlayer = player;
                 Log.i(this, "Switching tested Player to " + player.name);
@@ -55,7 +59,15 @@ namespace XposeCraft.GameInternal
                 SelfTests();
 
                 // Temporary Example Test
-                ExampleTest();
+                switch (playerIndex)
+                {
+                    case 0:
+                        ExampleTestUnitQueue();
+                        break;
+                    default:
+                        ExampleTestBuilding();
+                        break;
+                }
 
                 // Game bot run
                 RunPlayerTests();
@@ -120,7 +132,40 @@ namespace XposeCraft.GameInternal
             Assert.AreEqual(center.PointLocation, new Position(center.X, center.Y).PointLocation);
         }
 
-        public void ExampleTest()
+        public void ExampleTestUnitQueue()
+        {
+            var workers = UnitHelper.GetUnitsAsList<Worker>();
+            workers[0]
+                .MoveTo(PlaceType.MyBase.Left)
+                .After(new CustomFunction(() =>
+                    workers[0].CreateBuilding(BuildingType.BaseCenter, PlaceType.MyBase.Left)))
+                .After(new Move(PlaceType.MyBase.Right))
+                .After(new GatherResource(ResourceHelper.GetNearestResourceTo<Mineral>(workers[0])))
+                .After(new CustomFunction(() =>
+                    workers[0].CreateBuilding(BuildingType.BaseCenter, PlaceType.MyBase.Right)));
+
+            var enemyBaseMovement = new Move(PlaceType.EnemyBase.Center);
+            workers[1]
+                .MoveTo(PlaceType.EnemyBase.UnderRamp)
+                .After(enemyBaseMovement);
+            workers[2].ActionQueue = new UnitActionQueue(enemyBaseMovement);
+
+            Event.Register(EventType.EnemyBuildingsOnSight, args =>
+            {
+                if (args.EnemyBuildings[0] is BaseCenter)
+                {
+                    Log.i("Found enemy base, returning");
+                    workers[1].MoveTo(PlaceType.MyBase.Center);
+                    workers[2].MoveTo(PlaceType.MyBase.Center);
+                }
+                else
+                {
+                    Log.i("Found building " + args.EnemyBuildings[0].GetType());
+                }
+            });
+        }
+
+        public void ExampleTestBuilding()
         {
             var workers = UnitHelper.GetUnitsAsList<Worker>();
             workers[0].CreateBuilding(BuildingType.NubianArmory, PlaceType.MyBase.Right);

@@ -144,11 +144,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1489743461}
     m_Modifications:
-    - target: {fileID: 114000012748735766, guid: c7d4622598e10ca448a15f060738561b,
-        type: 2}
-      propertyPath: Players.Array.size
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 4000010261327824, guid: c7d4622598e10ca448a15f060738561b, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -191,11 +186,6 @@ Prefab:
       propertyPath: Players.Array.data[1]
       value: 
       objectReference: {fileID: 1805429824}
-    - target: {fileID: 114000012748735766, guid: c7d4622598e10ca448a15f060738561b,
-        type: 2}
-      propertyPath: Players.Array.data[2]
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c7d4622598e10ca448a15f060738561b, type: 2}
   m_IsPrefabParent: 0
@@ -237,11 +227,6 @@ Prefab:
     - target: {fileID: 4000010171155422, guid: 758e1132d574cf143bb905d0d42c24af, type: 2}
       propertyPath: m_RootOrder
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114000012604824786, guid: 758e1132d574cf143bb905d0d42c24af,
-        type: 2}
-      propertyPath: scrollSpeed
-      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 758e1132d574cf143bb905d0d42c24af, type: 2}

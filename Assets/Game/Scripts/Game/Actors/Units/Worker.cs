@@ -15,7 +15,10 @@ namespace XposeCraft.Game.Actors.Units
     /// </summary>
     public class Worker : Unit
     {
-        public IResource Gathering { get; private set; }
+        /// <summary>
+        /// Currently gathered resource, null if the Worker is not currently gathering anything.
+        /// </summary>
+        public IResource Gathering { get; internal set; }
 
         /// <summary>
         /// Send the Worker to gather a resource.
@@ -63,7 +66,7 @@ namespace XposeCraft.Game.Actors.Units
             {
                 return false;
             }
-            building.FinishBuildingByWorker(new List<UnitController> {UnitController});
+            building.FinishBuildingByWorker(UnitController);
             return true;
         }
 

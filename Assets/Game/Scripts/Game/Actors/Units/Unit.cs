@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using XposeCraft.Core.Faction.Units;
+using XposeCraft.Core.Required;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Control;
 using XposeCraft.Game.Control.GameActions;
@@ -9,7 +11,36 @@ namespace XposeCraft.Game.Actors.Units
 {
     public abstract class Unit : Actor, IUnit
     {
-        public UnitActionQueue ActionQueue { get; set; }
+        private UnitActionQueue _actionQueue;
+
+        public UnitActionQueue ActionQueue
+        {
+            get { return _actionQueue; }
+            set
+            {
+                // Cancels the previous pending action by finishing it
+                if (UnitController._actionDequeue != null)
+                {
+                    UnitController._actionDequeue.Finished();
+                }
+                // Initializes the callback mechanism in the controller
+                _actionQueue = value;
+                UnitController._actionDequeue =
+                    new UnitActionQueue.UnitActionDequeue(this, UnitController, _actionQueue);
+                UnitController._actionDequeue.Dequeue();
+            }
+        }
+
+        public void AttackedByUnit(UnitController attackerUnit)
+        {
+            if (GameManager.Instance.Factions[UnitController.FactionIndex]
+                    .Relations[attackerUnit.FactionIndex]
+                    .state != 2)
+            {
+                throw new Exception("The target Unit is not enemy, so it cannot be attacked");
+            }
+            UnitSelection.SetTarget(new List<UnitController> {attackerUnit}, GameObject, GameObject.transform.position);
+        }
 
         public int Health
         {

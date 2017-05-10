@@ -13,7 +13,6 @@ export target="win"
 export options="none"
 /Applications/Unity/Unity.app/Contents/MacOS/Unity \
   -batchmode \
-  -nographics \
   -silent-crashes \
   -logFile $(pwd)/unity.log \
   -projectPath $(pwd) \
@@ -26,7 +25,6 @@ export target="osx"
 export options="none"
 /Applications/Unity/Unity.app/Contents/MacOS/Unity \
   -batchmode \
-  -nographics \
   -silent-crashes \
   -logFile $(pwd)/unity.log \
   -projectPath $(pwd) \
@@ -39,7 +37,6 @@ export target="linux"
 export options="none"
 /Applications/Unity/Unity.app/Contents/MacOS/Unity \
   -batchmode \
-  -nographics \
   -silent-crashes \
   -logFile $(pwd)/unity.log \
   -projectPath $(pwd) \

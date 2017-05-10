@@ -1,3 +1,4 @@
+using XposeCraft.Core.Faction.Units;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Control;
 
@@ -5,6 +6,11 @@ namespace XposeCraft.Game.Actors.Units
 {
     public interface IUnit : IActor
     {
+        /// <summary>
+        /// Internal method, do not use.
+        /// </summary>
+        void AttackedByUnit(UnitController attackerUnit);
+
         /// <summary>
         /// Current health of the Unit, 0 means dead. Maximum value is represented by MaxHealth field.
         /// </summary>

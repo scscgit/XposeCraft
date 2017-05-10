@@ -15,7 +15,7 @@ namespace XposeCraft.Game.Actors.Buildings
 
         public bool Finished
         {
-            get { return BuildingController.buildingType.Equals(BuildingType.CompleteBuilding); }
+            get { return BuildingController.buildingType == BuildingType.CompleteBuilding; }
         }
 
         public float Progress
@@ -23,12 +23,26 @@ namespace XposeCraft.Game.Actors.Buildings
             get { return BuildingController.progressCur / BuildingController.progressReq; }
         }
 
-        /// <summary>
-        /// Internal method, do not use.
-        /// </summary>
-        public void FinishBuildingByWorker(List<UnitController> builderUnits)
+        public void AttackedByUnit(UnitController attackerUnit)
         {
-            UnitSelection.SetTarget(builderUnits, GameObject, GameObject.transform.position);
+            if (GameManager.Instance.Factions[BuildingController.FactionIndex]
+                    .Relations[attackerUnit.FactionIndex]
+                    .state != 2)
+            {
+                throw new Exception("The target Building is not enemy, so it cannot be attacked");
+            }
+            UnitSelection.SetTarget(new List<UnitController> {attackerUnit}, GameObject, GameObject.transform.position);
+        }
+
+        public void FinishBuildingByWorker(UnitController builderUnit)
+        {
+            if (GameManager.Instance.Factions[BuildingController.FactionIndex]
+                    .Relations[builderUnit.FactionIndex]
+                    .state == 2)
+            {
+                throw new Exception("The target Building belongs to an enemy, so a worker cannot be construct it");
+            }
+            UnitSelection.SetTarget(new List<UnitController> {builderUnit}, GameObject, GameObject.transform.position);
         }
 
         protected bool CreateUnit(UnitType type)

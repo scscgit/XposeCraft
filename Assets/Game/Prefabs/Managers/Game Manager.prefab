@@ -54,7 +54,6 @@ MonoBehaviour:
   Players:
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
   BaseCenterProgressPrefab: {fileID: 1000013099823766, guid: b754638e561c2b24fab3678d417eb6b2,
     type: 2}
   WorkerPrefab: {fileID: 1000013194072380, guid: 7f050e5e6d3f94e42bd1ede82fa86849,

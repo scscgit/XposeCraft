@@ -171,6 +171,7 @@ namespace XposeCraft.Core.Fog_Of_War
         //int[] fogState = new int[0];
 
         public int FactionIndexDisplay;
+        private int _previousFactionIndexDisplay;
         public Vector3 startPos = Vector3.zero;
         Color32[] fogColor;
         float[] fogHeight;
@@ -318,9 +319,13 @@ namespace XposeCraft.Core.Fog_Of_War
             fog.Apply(false);
 
             // Redundant visibility enabling, that will match owned units too, only for dynamic faction switch purpose
-            foreach (var hiddenAgents in _hiddenAgentsFactions)
+            if (_previousFactionIndexDisplay != FactionIndexDisplay)
             {
-                hiddenAgents.DisplayAll();
+                foreach (var hiddenAgents in _hiddenAgentsFactions)
+                {
+                    hiddenAgents.DisplayAll();
+                }
+                _previousFactionIndexDisplay = FactionIndexDisplay;
             }
             // And we set the hidden objects as they should be seen by the displayed faction
             _hiddenAgentsFactions[FactionIndexDisplay].SetRenderers();

@@ -52,6 +52,7 @@ namespace XposeCraft.GameInternal
             get { return _firedEventLock ?? (_firedEventLock = new object()); }
         }
 
+        public Terrain Terrain { get; private set; }
         public UGrid UGrid { get; private set; }
         public Fog Fog { get; private set; }
         public AStarManager AStarManager { get; private set; }
@@ -75,6 +76,7 @@ namespace XposeCraft.GameInternal
 
         private void Awake()
         {
+            Terrain = GameObject.Find("BasicTerrain").GetComponent<Terrain>();
             UGrid = GameObject.Find(UGrid.ScriptName).GetComponent<UGrid>();
             Fog = GameObject.Find(Fog.ScriptName).GetComponent<Fog>();
             AStarManager = GameObject.Find(AStarManager.ScriptName).GetComponent<AStarManager>();
@@ -131,6 +133,18 @@ namespace XposeCraft.GameInternal
 
                 // Initialize Resources to use the shared list
                 player.Resources = resources;
+
+                // Initialize (single) enemy player for each of them
+                var enemyFactionIndex = player.Faction.EnemyFactionIndexes()[0];
+                foreach (var enemyPlayer in Players)
+                {
+                    if (enemyPlayer.FactionIndex != enemyFactionIndex)
+                    {
+                        continue;
+                    }
+                    player.EnemyBase = enemyPlayer.MyBase;
+                    break;
+                }
             }
         }
 
