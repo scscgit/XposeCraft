@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.Serialization;
-using XposeCraft.Core.Fog_Of_War;
 using XposeCraft.Core.Grids;
 using XposeCraft.Core.Required;
 using XposeCraft.Core.Resources;
 using XposeCraft.GameInternal;
+using BuildingHelper = XposeCraft.GameInternal.Helpers.BuildingHelper;
 
 namespace XposeCraft.Core.Faction.Buildings
 {
@@ -131,23 +131,10 @@ namespace XposeCraft.Core.Faction.Buildings
         /// <returns>Instance of the new completed building.</returns>
         public GameObject Place()
         {
-            GameObject obj = Instantiate(nextBuild, transform.position, Quaternion.identity);
-            BuildingController build = obj.GetComponent<BuildingController>();
-            build.building = building;
-            build.loc = loc;
-            // Changes the Faction to a correct one, removing previous vision registration initialized during start
-            var signal = obj.GetComponent<VisionSignal>();
-            if (signal)
-            {
-                signal.OnDisable();
-            }
-            build.FactionIndex = FactionIndex;
-            if (signal)
-            {
-                signal.OnEnable();
-            }
+            var placedBuilding = BuildingHelper.InstantiateFinishedBuilding(
+                building, nextBuild, transform.position, loc, FactionIndex);
             Destroy(gameObject);
-            return obj;
+            return placedBuilding.gameObject;
         }
 
         public void Damage(UnitType nType, int damage)

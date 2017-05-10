@@ -4,8 +4,6 @@ using System.Threading;
 using UnityEngine;
 using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Faction.Units;
-using XposeCraft.Game.Actors.Buildings;
-using XposeCraft.Game.Actors.Units;
 using XposeCraft.GameInternal;
 using XposeCraft.UI.MiniMap;
 
@@ -101,12 +99,20 @@ namespace XposeCraft.Core.Fog_Of_War
             Remove(hiddenAgent.IndexOf(obj));
         }
 
+        public void DisplayAll()
+        {
+            for (int x = 0; x < hideAmount; x++)
+            {
+                hiddenRend[x].SetRenderer(VisionReceiver.VisionState.Vision);
+            }
+        }
+
         public void SetRenderers()
         {
             for (int x = 0; x < hideAmount; x++)
             {
                 var previousState = hiddenRend[x].curState;
-                var newState = hideSetting[x];
+                var newState = (VisionReceiver.VisionState) hideSetting[x];
                 if (previousState == newState)
                 {
                     continue;
@@ -116,7 +122,7 @@ namespace XposeCraft.Core.Fog_Of_War
                 if (!GameManager.Instance.ActorLookup.ContainsKey(hiddenAgent[x]))
                 {
                     // If the lookup fails, it is because the game is still initializing. Events arent required here
-                    return;
+                    continue;
                 }
                 var actor = GameManager.Instance.ActorLookup[hiddenAgent[x]];
                 var owner = GameManager.Instance.FindPlayerOfActor(actor);
@@ -129,10 +135,6 @@ namespace XposeCraft.Core.Fog_Of_War
                             player.EnemyVisibilityChanged(actor, previousState, newState);
                         }
                     }
-                }
-                foreach (var faction in GameManager.Instance.Factions)
-                {
-                    faction.EnemyFactionIndexes();
                 }
             }
         }
@@ -230,13 +232,10 @@ namespace XposeCraft.Core.Fog_Of_War
                 }
             }
             fog.Apply();
-            if (map == null)
+            var miniMapObj = GameObject.Find("MiniMap");
+            if (miniMapObj)
             {
-                GameObject obj = GameObject.Find("MiniMap");
-                if (obj)
-                {
-                    map = obj.GetComponent<MiniMap>();
-                }
+                map = miniMapObj.GetComponent<MiniMap>();
             }
             if (map)
             {
@@ -318,7 +317,12 @@ namespace XposeCraft.Core.Fog_Of_War
             fog.SetPixels32(fogColor);
             fog.Apply(false);
 
-            // And we set the hidden objects
+            // Redundant visibility enabling, that will match owned units too, only for dynamic faction switch purpose
+            foreach (var hiddenAgents in _hiddenAgentsFactions)
+            {
+                hiddenAgents.DisplayAll();
+            }
+            // And we set the hidden objects as they should be seen by the displayed faction
             _hiddenAgentsFactions[FactionIndexDisplay].SetRenderers();
         }
 
@@ -479,7 +483,7 @@ namespace XposeCraft.Core.Fog_Of_War
                     }
                 }
                 numerator += shortest;
-                if (!(numerator < longest))
+                if (numerator >= longest)
                 {
                     numerator -= longest;
                     x += dx1;

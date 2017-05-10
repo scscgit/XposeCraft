@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using XposeCraft.Collections;
 using XposeCraft.Core.Faction;
-using XposeCraft.Core.Fog_Of_War;
 using XposeCraft.Game;
 using XposeCraft.Game.Actors;
 using XposeCraft.Game.Actors.Buildings;
@@ -12,6 +11,7 @@ using XposeCraft.Game.Actors.Units;
 using XposeCraft.Game.Enums;
 using Event = XposeCraft.Game.Event;
 using EventType = XposeCraft.Game.Enums.EventType;
+using VisionState = XposeCraft.Core.Fog_Of_War.VisionReceiver.VisionState;
 
 namespace XposeCraft.GameInternal
 {
@@ -71,11 +71,10 @@ namespace XposeCraft.GameInternal
 
         public int Minerals = 80;
 
-        public void EnemyVisibilityChanged(Actor actor, int previousState, int newState)
+        public void EnemyVisibilityChanged(Actor actor, VisionState previousState, VisionState newState)
         {
-            if (
-                previousState != (int) VisionState.Undiscovered && previousState != (int) VisionState.Discovered
-                || newState != (int) VisionState.Vision)
+            if (previousState != VisionState.Undiscovered && previousState != VisionState.Discovered
+                || newState != VisionState.Vision)
             {
                 // Losing visibility does not currently trigger an event
                 return;

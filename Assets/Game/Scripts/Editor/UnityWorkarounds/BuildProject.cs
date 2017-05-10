@@ -65,6 +65,9 @@ namespace XposeCraft.UnityWorkarounds
             // Direct method call is not sufficient, otherwise it seems to be executing before the switch
             PlayerPrefs.SetInt("testAfterPlayingReady", 0);
             EditorApplication.playmodeStateChanged += TestAfterPlaying;
+
+            // Travis CI debugging test
+            EditorApplication.Exit(2);
         }
 
         private static readonly string[] BuildScenes =
@@ -106,9 +109,6 @@ namespace XposeCraft.UnityWorkarounds
 
         private static void TestAfterPlaying()
         {
-            // Travis CI debugging test
-            EditorApplication.Exit(2);
-
             var allTestComponents = TestComponent.FindAllTestsOnScene().ToList();
             var dynamicTests = allTestComponents.Where(t => t.dynamic).ToList();
             var dynamicTestsToRun = dynamicTests.Select(c => c.dynamicTypeName).ToList();

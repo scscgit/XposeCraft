@@ -83,22 +83,43 @@ namespace XposeCraft.GameInternal.Helpers
                 throw;
             }
             building.ClosePoints(GameManager.Instance.Grid, position.PointLocation);
-            GameObject buildingObject = Object.Instantiate(buildingPrefab, location, rotation);
-            BuildingController script = buildingObject.GetComponent<BuildingController>();
+            return InstantiateFinishedBuilding(
+                building, buildingPrefab, location, position.PointLocation, factionIndex);
+        }
+
+        public static BuildingController InstantiateFinishedBuilding(
+            Building building, GameObject finishedBuildingPrefab, Vector3 transformPosition, int loc, int factionIndex)
+        {
+            var obj = Object.Instantiate(finishedBuildingPrefab, transformPosition, Quaternion.identity);
+            var script = obj.GetComponent<BuildingController>();
             script.building = building;
-            script.loc = position.PointLocation;
+            script.loc = loc;
+            ChangeBuildingFaction(script, factionIndex);
+            return script;
+        }
+
+        private static void ChangeBuildingFaction(BuildingController buildingController, int factionIndex)
+        {
             // Changes the Faction to a correct one, removing previous vision registration initialized during start
-            var signal = buildingObject.GetComponent<VisionSignal>();
+            var signal = buildingController.GetComponent<VisionSignal>();
+            var receiver = buildingController.GetComponent<VisionReceiver>();
             if (signal)
             {
                 signal.OnDisable();
             }
-            script.FactionIndex = factionIndex;
+            if (receiver)
+            {
+                receiver.OnDisable();
+            }
+            buildingController.FactionIndex = factionIndex;
             if (signal)
             {
                 signal.OnEnable();
             }
-            return script;
+            if (receiver)
+            {
+                receiver.OnEnable();
+            }
         }
 
         public static void CheckValidPlacement(

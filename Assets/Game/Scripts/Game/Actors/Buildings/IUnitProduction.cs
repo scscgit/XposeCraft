@@ -1,4 +1,4 @@
-﻿using XposeCraft.Game.Enums;
+using XposeCraft.Game.Enums;
 
 namespace XposeCraft.Game.Actors.Buildings
 {

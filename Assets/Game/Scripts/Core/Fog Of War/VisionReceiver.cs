@@ -4,15 +4,15 @@ using XposeCraft.UI.Cursor;
 
 namespace XposeCraft.Core.Fog_Of_War
 {
-    public enum VisionState
-    {
-        Vision = 0,
-        Discovered = 1,
-        Undiscovered = 2
-    }
-
     public class VisionReceiver : MonoBehaviour
     {
+        public enum VisionState
+        {
+            Vision = 0,
+            Discovered = 1,
+            Undiscovered = 2
+        }
+
         // This code determines how a unit is displayed when in the In Vision, Discovered, and Undiscovered areas
         // The pastVisibleMat is displayed when the object has been seen at one time but not at this moment
         // The defaultMat is used for the unit if they are within vision at that time
@@ -25,7 +25,7 @@ namespace XposeCraft.Core.Fog_Of_War
         public bool hideObject = true;
         public Vector2[] anchors;
         CursorObject cursorObj;
-        public int curState;
+        public VisionState curState;
         private bool _quitting;
 
         private void Awake()
@@ -83,13 +83,13 @@ namespace XposeCraft.Core.Fog_Of_War
             GameManager.Instance.Fog.RemoveRenderer(gameObject);
         }
 
-        public void SetRenderer(int state)
+        public void SetRenderer(VisionState state)
         {
             curState = state;
             switch (state)
             {
                 // In Vision
-                case 0:
+                case VisionState.Vision:
                     for (int x = 0; x < renderers.Length; x++)
                     {
                         if (x == 0 && renderers[x].material.color == defaultMat[x] && renderers[x].enabled)
@@ -105,7 +105,7 @@ namespace XposeCraft.Core.Fog_Of_War
                     }
                     break;
                 // Discovered
-                case 1:
+                case VisionState.Discovered:
                     for (int x = 0; x < renderers.Length; x++)
                     {
                         if (x == 0 && renderers[x].material.color == pastVisibleMat[x] && renderers[x].enabled)
@@ -124,7 +124,7 @@ namespace XposeCraft.Core.Fog_Of_War
                     }
                     break;
                 // Undiscovered
-                default:
+                case VisionState.Undiscovered:
                     for (int x = 0; x < renderers.Length; x++)
                     {
                         if (x == 0 && !renderers[x].enabled)

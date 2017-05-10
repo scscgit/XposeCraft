@@ -9,14 +9,14 @@ namespace XposeCraft.GameInternal
             Debug,
             Info,
             Warning,
-            Error,
+            Error
         }
 
         public static LogLevel Level = LogLevel.Debug;
 
         public static void d(object context, object message)
         {
-            d(context + ": " + message);
+            d(string.Format("{0}: {1}", context, message));
         }
 
         public static void d(object message)
@@ -30,7 +30,7 @@ namespace XposeCraft.GameInternal
 
         public static void i(object context, object message)
         {
-            i(context + ": " + message);
+            i(string.Format("{0}: {1}", context, message));
         }
 
         public static void i(object message)
@@ -48,7 +48,7 @@ namespace XposeCraft.GameInternal
             {
                 return;
             }
-            Debug.LogWarning(context + ": WARNING! " + message);
+            Debug.LogWarning(string.Format("{0}: WARNING! {1}", context, message));
         }
 
         public static void w(object message)
@@ -57,7 +57,7 @@ namespace XposeCraft.GameInternal
             {
                 return;
             }
-            Debug.LogWarning("WARNING! " + message);
+            Debug.LogWarning(string.Format("WARNING! {0}", message));
         }
 
         public static void e(object context, object message)
@@ -66,7 +66,7 @@ namespace XposeCraft.GameInternal
             {
                 return;
             }
-            Debug.LogError(context + ": ERROR!!! " + message);
+            Debug.LogError(string.Format("{0}: ERROR!!! {1}", context, message));
         }
 
         public static void e(object message)
@@ -75,7 +75,7 @@ namespace XposeCraft.GameInternal
             {
                 return;
             }
-            Debug.LogError("ERROR!!! " + message);
+            Debug.LogError(string.Format("ERROR!!! {0}", message));
         }
     }
 }

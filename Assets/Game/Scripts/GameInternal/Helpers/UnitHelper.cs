@@ -10,21 +10,32 @@ namespace XposeCraft.GameInternal.Helpers
         {
             var obj = Object.Instantiate(prefab, location, Quaternion.identity);
             var script = obj.GetComponent<UnitController>();
-            if (script)
-            {
-                // Changes the Faction to a correct one, removing previous vision registration initialized during start
-                var signal = script.GetComponent<VisionSignal>();
-                if (signal)
-                {
-                    signal.OnDisable();
-                }
-                script.FactionIndex = factionIndex;
-                if (signal)
-                {
-                    signal.OnEnable();
-                }
-            }
+            ChangeUnitFaction(script, factionIndex);
             return obj;
+        }
+
+        private static void ChangeUnitFaction(UnitController unitController, int factionIndex)
+        {
+            // Changes the Faction to a correct one, removing previous vision registration initialized during start
+            var signal = unitController.GetComponent<VisionSignal>();
+            var receiver = unitController.GetComponent<VisionReceiver>();
+            if (signal)
+            {
+                signal.OnDisable();
+            }
+            if (receiver)
+            {
+                receiver.OnDisable();
+            }
+            unitController.FactionIndex = factionIndex;
+            if (signal)
+            {
+                signal.OnEnable();
+            }
+            if (receiver)
+            {
+                receiver.OnEnable();
+            }
         }
     }
 }

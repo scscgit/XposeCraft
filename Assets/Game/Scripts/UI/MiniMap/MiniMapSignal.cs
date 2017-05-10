@@ -25,7 +25,7 @@ namespace XposeCraft.UI.MiniMap
         //If the renderer is disabled, the minimap icon will not show up
         void FixedUpdate()
         {
-            display = receiver == null || receiver.curState < 2;
+            display = receiver == null || receiver.curState != VisionReceiver.VisionState.Undiscovered;
         }
     }
 }
