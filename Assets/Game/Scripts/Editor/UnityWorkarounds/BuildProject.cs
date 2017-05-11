@@ -65,9 +65,6 @@ namespace XposeCraft.UnityWorkarounds
             // Direct method call is not sufficient, otherwise it seems to be executing before the switch
             PlayerPrefs.SetInt("testAfterPlayingReady", 0);
             EditorApplication.playmodeStateChanged += TestAfterPlaying;
-
-            // Travis CI debugging test
-            EditorApplication.Exit(2);
         }
 
         private static readonly string[] BuildScenes =
@@ -92,17 +89,18 @@ namespace XposeCraft.UnityWorkarounds
             {
                 Debug.LogError(buildError);
             }
-            Test();
+            //Test();
         }
 
         /// <summary>
         /// Run tests after combining and opening the scenes.
         /// </summary>
-        [MenuItem("Unity Test Tools/Test XposeCraft")]
+        [Obsolete]
+        //[MenuItem("Unity Test Tools/Test XposeCraft")]
         public static void Test()
         {
             CleanTestRunner();
-            OpenScenes(TestScenes);
+            //OpenScenes(TestScenes);
             PlayerPrefs.SetInt("testAfterPlayingReady", 1);
             EditorApplication.isPlaying = true;
         }

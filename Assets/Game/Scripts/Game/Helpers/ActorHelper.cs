@@ -3,9 +3,13 @@ using XposeCraft.Game.Actors;
 
 namespace XposeCraft.Game.Helpers
 {
+    /// <summary>
+    /// Provides easy access for operations, that may be complicated or impossible by using direct API of other classes.
+    /// </summary>
+    /// <typeparam name="TForActorHelper">Type of Actors for which the Helper provides functions.</typeparam>
     public abstract class ActorHelper<TForActorHelper> where TForActorHelper : IActor
     {
-        public delegate void ForEachAction<in TActor>(TActor unit);
+        protected delegate void ForEachAction<in TActor>(TActor unit);
 
         private static readonly object ForEachLock = new object();
 
@@ -15,7 +19,7 @@ namespace XposeCraft.Game.Helpers
         {
             lock (ForEachLock)
             {
-                foreach (TFromActor unit in from)
+                foreach (var unit in from)
                 {
                     if (unit is TActor)
                     {

@@ -19,7 +19,7 @@ namespace XposeCraft.Test.TestExamples
         public void EconomyStage(Action startNextStage)
         {
             // Game started, the first worker will get to work
-            Worker firstWorker = UnitHelper.GetUnits<Worker>()[0];
+            Worker firstWorker = UnitHelper.GetMyUnits<Worker>()[0];
             firstWorker.SendGather(ResourceHelper.GetNearestResourceTo<Mineral>(firstWorker));
 
             EventForCreatingAnother();
@@ -51,7 +51,7 @@ namespace XposeCraft.Test.TestExamples
 
                 // This event will work only while there are not enough workers.
                 // After that, minerals will be left to go over 150.
-                if (UnitHelper.GetUnits<Worker>().Length >= 5)
+                if (UnitHelper.GetMyUnits<Worker>().Length >= 5)
                 {
                     argsA.ThisEvent.UnregisterEvent();
                 }

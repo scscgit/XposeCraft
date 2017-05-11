@@ -9,12 +9,15 @@ namespace XposeCraft.Game.Actors.Resources
 {
     public abstract class Resource : Actor, IResource
     {
-        public void GatherByWorker(List<UnitController> builderUnits)
+        /// <summary>
+        /// Internal method, do not use.
+        /// </summary>
+        internal void GatherByWorker(List<UnitController> builderUnits)
         {
             UnitSelection.SetTarget(builderUnits, GameObject, GameObject.transform.position);
         }
 
-        public static T CreateResourceActor<T>(GameObject gameObject) where T : Resource
+        internal static T CreateResourceActor<T>(GameObject gameObject) where T : Resource
         {
             Type type;
             switch (gameObject.name)

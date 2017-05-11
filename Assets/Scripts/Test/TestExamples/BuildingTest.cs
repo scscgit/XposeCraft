@@ -22,7 +22,7 @@ namespace XposeCraft.Test.TestExamples
         /// <returns>A bored worker</returns>
         private Worker FindWorkerThatGathers()
         {
-            foreach (Worker worker in UnitHelper.GetUnits<Worker>())
+            foreach (Worker worker in UnitHelper.GetMyUnits<Worker>())
             {
                 if (worker.Gathering != null)
                 {
@@ -30,7 +30,7 @@ namespace XposeCraft.Test.TestExamples
                 }
             }
             // First one by default if all have work, a bad workaround
-            return UnitHelper.GetUnits<Worker>()[0];
+            return UnitHelper.GetMyUnits<Worker>()[0];
         }
 
         public void BuildingStage(Action startNextStage)

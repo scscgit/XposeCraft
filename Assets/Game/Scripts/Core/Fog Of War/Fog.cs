@@ -62,6 +62,7 @@ namespace XposeCraft.Core.Fog_Of_War
         public List<VisionReceiver> hiddenRend;
         public List<Transform> hiddenAgentT;
         public int[] hideSetting;
+        public bool hideSettingCalculated;
         public int hideAmount;
         public int FactionIndex;
 
@@ -78,6 +79,7 @@ namespace XposeCraft.Core.Fog_Of_War
             hiddenRend.Add(receiver);
             hiddenAgentT.Add(gameObject.GetComponent<Transform>());
             hideSetting = new int[hideAmount + 1];
+            hideSettingCalculated = false;
             hideAmount++;
         }
 
@@ -171,7 +173,7 @@ namespace XposeCraft.Core.Fog_Of_War
         //int[] fogState = new int[0];
 
         public int FactionIndexDisplay;
-        private int _previousFactionIndexDisplay;
+        private int? _previousFactionIndexDisplay;
         public Vector3 startPos = Vector3.zero;
         Color32[] fogColor;
         float[] fogHeight;
@@ -254,10 +256,6 @@ namespace XposeCraft.Core.Fog_Of_War
                     fogHeight[x + y * width] = hit.point.y;
                 }
             }
-        }
-
-        private void Start()
-        {
             var factions = GameManager.Instance.Factions.Length;
             _signalAgentsFactions = new SignalAgents[factions];
             _hiddenAgentsFactions = new HiddenAgents[factions];
@@ -319,6 +317,7 @@ namespace XposeCraft.Core.Fog_Of_War
             fog.Apply(false);
 
             // Redundant visibility enabling, that will match owned units too, only for dynamic faction switch purpose
+            // This happens before the game start too, in order to set the friendly units to visible
             if (_previousFactionIndexDisplay != FactionIndexDisplay)
             {
                 foreach (var hiddenAgents in _hiddenAgentsFactions)
@@ -328,6 +327,12 @@ namespace XposeCraft.Core.Fog_Of_War
                 _previousFactionIndexDisplay = FactionIndexDisplay;
             }
             // And we set the hidden objects as they should be seen by the displayed faction
+            // We don't make the calculations when not needed though
+            // Critically important is not to run on empty array, as that would trigger events based on default states
+            if (!_hiddenAgentsFactions[FactionIndexDisplay].hideSettingCalculated)
+            {
+                return;
+            }
             _hiddenAgentsFactions[FactionIndexDisplay].SetRenderers();
         }
 
@@ -369,6 +374,7 @@ namespace XposeCraft.Core.Fog_Of_War
             }
             try
             {
+                // TODO: this will probably need to be under foreach Factions loop too, multi-dimensional locA and locH
                 for (int x = 0; x < _signalAgentsFactions[FactionIndexDisplay].agentsAmount; x++)
                 {
                     if (x >= locA.Length)
@@ -544,6 +550,7 @@ namespace XposeCraft.Core.Fog_Of_War
                 }
                 _hiddenAgentsFactions[factionIndex].hideSetting[x] = setting;
             }
+            _hiddenAgentsFactions[factionIndex].hideSettingCalculated = true;
         }
 
         public void AddSignalAgent(GameObject obj, int sight, float uslope, float dslope, VisionSignal signal)

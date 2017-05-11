@@ -40,7 +40,7 @@ namespace XposeCraft.Game.Actors
         /// <param name="playerOwner">Player that owns the Unit and should be used as its context.</param>
         /// <typeparam name="T">Subclass type.</typeparam>
         /// <returns>New instance of an Actor.</returns>
-        public static T Create<T>(GameObject gameObject, Player playerOwner) where T : Actor
+        internal static T Create<T>(GameObject gameObject, Player playerOwner) where T : Actor
         {
             return Create<T>(typeof(T), gameObject, playerOwner);
         }
@@ -48,13 +48,18 @@ namespace XposeCraft.Game.Actors
         /// <summary>
         /// Internal method, do not use directly.
         /// </summary>
-        public static T Create<T>(Type type, GameObject gameObject, Player playerOwner) where T : Actor
+        internal static T Create<T>(Type type, GameObject gameObject, Player playerOwner) where T : Actor
         {
             if (!typeof(T).IsAssignableFrom(type))
             {
                 throw new InvalidOperationException("T does not match type parameter");
             }
             var instance = (T) CreateInstance(type);
+            if (gameObject != null && playerOwner != null)
+            {
+                // Player signs the name of Game Object for cosmetic purposes
+                gameObject.name += " " + playerOwner.name;
+            }
             instance.GameObject = gameObject;
             instance.Initialize(playerOwner);
             var building = instance as Building;

@@ -25,7 +25,7 @@ namespace XposeCraft.Core.Fog_Of_War
         public bool hideObject = true;
         public Vector2[] anchors;
         CursorObject cursorObj;
-        public VisionState curState;
+        public VisionState curState = VisionState.Vision;
         private bool _quitting;
 
         private void Awake()

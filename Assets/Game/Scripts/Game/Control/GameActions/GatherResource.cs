@@ -28,7 +28,7 @@ namespace XposeCraft.Game.Control.GameActions
                 throw new Exception(typeof(GatherResource) + " Action was invoked on non-Worker unit, this is invalid");
             }
             worker.Gathering = Gathering;
-            Gathering.GatherByWorker(new List<UnitController> {unitController});
+            ((Resource) Gathering).GatherByWorker(new List<UnitController> {unitController});
             return true;
         }
 

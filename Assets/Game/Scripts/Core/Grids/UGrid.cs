@@ -74,6 +74,11 @@ namespace XposeCraft.Core.Grids
 
         void OnDisable()
         {
+            if (grids[index] == null)
+            {
+                // This caused an issue with static method probably executed too soon
+                return;
+            }
             // Storing a local choice of displaying the Grid
             EditorPrefs.SetBool("XposeCraft_UGrid_DisplayGrid", grids[index].displayGrid);
             EditorPrefs.SetBool("XposeCraft_UGrid_DisplayLines", grids[index].displayLines);

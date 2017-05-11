@@ -23,7 +23,10 @@ namespace XposeCraft.Game.Actors.Buildings
             get { return BuildingController.progressCur / BuildingController.progressReq; }
         }
 
-        public void AttackedByUnit(UnitController attackerUnit)
+        /// <summary>
+        /// Internal method, do not use.
+        /// </summary>
+        internal void AttackedByUnit(UnitController attackerUnit)
         {
             if (GameManager.Instance.Factions[BuildingController.FactionIndex]
                     .Relations[attackerUnit.FactionIndex]
@@ -34,7 +37,10 @@ namespace XposeCraft.Game.Actors.Buildings
             UnitSelection.SetTarget(new List<UnitController> {attackerUnit}, GameObject, GameObject.transform.position);
         }
 
-        public void FinishBuildingByWorker(UnitController builderUnit)
+        /// <summary>
+        /// Internal method, do not use.
+        /// </summary>
+        internal void FinishBuildingByWorker(UnitController builderUnit)
         {
             if (GameManager.Instance.Factions[BuildingController.FactionIndex]
                     .Relations[builderUnit.FactionIndex]

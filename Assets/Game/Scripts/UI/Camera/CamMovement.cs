@@ -14,7 +14,7 @@ namespace XposeCraft.UI.Camera
         public Rect movementBorders;
         public Rect mouseBorders;
 
-        void FixedUpdate()
+        void Update()
         {
             moveSpeedCur = new Vector2();
             MouseBorderMovement();
@@ -85,6 +85,10 @@ namespace XposeCraft.UI.Camera
         {
             float amount;
             float scroll = Input.GetAxis("Mouse ScrollWheel");
+            if (scrollCur < 0)
+            {
+                scroll *= 2;
+            }
             if (scroll * scrollSpeed + scrollCur > scrollMinMax.y)
             {
                 amount = scrollMinMax.y - scrollCur;

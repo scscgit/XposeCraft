@@ -62,3 +62,4 @@ MonoBehaviour:
   Debug: 1
   DisplayAllHealthBars: 1
   DisplayOnlyDamagedHealthBars: 1
+  LogLevel: 1

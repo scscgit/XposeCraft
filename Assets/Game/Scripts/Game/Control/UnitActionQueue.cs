@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using XposeCraft.Core.Faction.Units;
 using XposeCraft.Game.Actors.Units;
@@ -48,13 +49,36 @@ namespace XposeCraft.Game.Control
                 _currentAction = _unitActionQueue._queue.Peek();
                 // Player context is needed for all asynchronous actions
                 Player.CurrentPlayer = _unitController.PlayerOwner;
-                if (!_currentAction.Progress(_unit, _unitController))
+                try
                 {
-                    return;
+                    if (!_currentAction.Progress(_unit, _unitController))
+                    {
+                        return;
+                    }
+                    Remove();
                 }
+                catch (Exception)
+                {
+                    // If the progress failed because of an exception, it mustn't block the queue (debugging purposes)
+                    Remove();
+                    throw;
+                }
+            }
+
+            private void Remove()
+            {
                 Log.d(string.Format("Unit {0} dequeued {1} action", _unitController.name, _currentAction.GetType()));
                 _unitActionQueue._queue.Dequeue();
             }
+        }
+
+        /// <summary>
+        /// If true, attempt at executing an Action with a dead Unit will throw a <see cref="UnitDeadException"></see>.
+        /// </summary>
+        public static bool ExceptionOnDeadUnitAction
+        {
+            get { return Player.CurrentPlayer.ExceptionOnDeadUnitAction; }
+            set { Player.CurrentPlayer.ExceptionOnDeadUnitAction = value; }
         }
 
         private Queue<IGameAction> _queue = new Queue<IGameAction>();

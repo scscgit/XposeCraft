@@ -374,7 +374,11 @@ namespace UnityTest
 
         private void FinishTest(TestResult.ResultType result)
         {
-            m_TestsProvider.FinishTest(currentTest);
+            // Hot-swap can cause the test provider to be lost
+            if (m_TestsProvider != null)
+            {
+                m_TestsProvider.FinishTest(currentTest);
+            }
             var testResult = m_ResultList.Single(t => t.GameObject == currentTest.gameObject);
             testResult.resultType = result;
             testResult.duration = Time.time - m_StartTime;

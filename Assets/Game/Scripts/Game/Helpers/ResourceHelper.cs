@@ -2,12 +2,20 @@ using System.Collections.Generic;
 using System.Linq;
 using XposeCraft.Game.Actors;
 using XposeCraft.Game.Actors.Resources;
+using XposeCraft.Game.Actors.Units;
 using XposeCraft.GameInternal;
 
 namespace XposeCraft.Game.Helpers
 {
+    /// <summary>
+    /// Helper class providing static methods for example to find <see cref="IResource"/> instances in the world.
+    /// <inheritdoc cref="ActorHelper{TForActorHelper}"/>
+    /// </summary>
     public sealed class ResourceHelper : ActorHelper<IResource>
     {
+        /// <inheritdoc cref="GetResources{TResource}"/>
+        /// <typeparam name="TResource">Type of the Resource to be searched for.</typeparam>
+        /// <returns>List of resources.</returns>
         public static IList<TResource> GetResourcesAsList<TResource>() where TResource : IResource
         {
             var list = new List<TResource>();
@@ -15,14 +23,26 @@ namespace XposeCraft.Game.Helpers
             return list;
         }
 
+        /// <summary>
+        /// Finds all Resources in the world, that are available to the Player.
+        /// They can be collected by any <see cref="Worker"/>.
+        /// </summary>
+        /// <typeparam name="TResource">Type of the Resource to be searched for.</typeparam>
+        /// <returns>Array of resources.</returns>
         public static TResource[] GetResources<TResource>() where TResource : IResource
         {
             return GetResourcesAsList<TResource>().ToArray();
         }
 
+        /// <summary>
+        /// Finds a closest available Resource to an Actor.
+        /// </summary>
+        /// <param name="actor">Actor whose Position will used for the search reference.</param>
+        /// <typeparam name="TResource">Type of the Resource to be searched for.</typeparam>
+        /// <returns>A closest Resource.</returns>
         public static TResource GetNearestResourceTo<TResource>(IActor actor) where TResource : IResource
         {
-            TResource closestResource = default(TResource);
+            var closestResource = default(TResource);
             ForEach<TResource, Resource>(resource =>
             {
                 if (closestResource == null

@@ -1,6 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityTest;
 using XposeCraft.Collections;
 using XposeCraft.Core.Faction;
 using XposeCraft.Core.Fog_Of_War;
@@ -34,7 +38,11 @@ namespace XposeCraft.GameInternal
 
         public static GameManager Instance
         {
-            get { return _instance ?? (_instance = GameObject.Find(ScriptName).GetComponent<GameManager>()); }
+            get
+            {
+                return _instance
+                       ?? (_instance = GameObject.Find(ScriptName).GetComponent<GameManager>().Initialize());
+            }
         }
 
         public Player[] Players;
@@ -44,6 +52,7 @@ namespace XposeCraft.GameInternal
         public bool Debug;
         public bool DisplayAllHealthBars;
         public bool DisplayOnlyDamagedHealthBars;
+        public Log.LogLevel LogLevel = Log.LogLevel.Debug;
 
         private object _firedEventLock;
 
@@ -76,6 +85,16 @@ namespace XposeCraft.GameInternal
 
         private void Awake()
         {
+            Initialize();
+        }
+
+        private GameManager Initialize()
+        {
+            if (_instance != null)
+            {
+                return _instance;
+            }
+            _instance = this;
             Terrain = GameObject.Find("BasicTerrain").GetComponent<Terrain>();
             UGrid = GameObject.Find(UGrid.ScriptName).GetComponent<UGrid>();
             Fog = GameObject.Find(Fog.ScriptName).GetComponent<Fog>();
@@ -90,6 +109,7 @@ namespace XposeCraft.GameInternal
                 Factions[factionIndex] = factionList[factionIndex].GetComponent<Faction>();
             }
             ActorLookup = new ActorLookupDictionary();
+            return this;
         }
 
         private void OnEnable()
@@ -146,6 +166,40 @@ namespace XposeCraft.GameInternal
                     break;
                 }
             }
+
+            // Start the Test (build workaround)
+            StartCoroutine(RunAutomationTest(SceneManager.LoadSceneAsync("AutomationTest", LoadSceneMode.Additive)));
+        }
+
+        [Obsolete]
+        private IEnumerator LoadAutomationTest(AsyncOperation waitFor)
+        {
+            while (!waitFor.isDone)
+            {
+                yield return null;
+            }
+            StartCoroutine(RunAutomationTest(SceneManager.LoadSceneAsync("AutomationTest", LoadSceneMode.Additive)));
+        }
+
+        private IEnumerator RunAutomationTest(AsyncOperation waitFor)
+        {
+            while (!waitFor.isDone)
+            {
+                yield return null;
+            }
+            var allTestComponents = SceneManager.GetSceneByName("AutomationTest")
+                .GetRootGameObjects()
+                .ToList()
+                .ConvertAll(obj => obj.GetComponent<TestComponent>())
+                .FindAll(component => component != null);
+
+            var dynamicTests = allTestComponents.Where(t => t.dynamic).ToList();
+            var dynamicTestsToRun = dynamicTests.Select(c => c.dynamicTypeName).ToList();
+            allTestComponents.RemoveAll(dynamicTests.Contains);
+
+            TestComponent.DisableAllTests();
+            var testRunner = TestRunner.GetTestRunner();
+            testRunner.InitRunner(allTestComponents, dynamicTestsToRun);
         }
 
         private void Update()
@@ -181,6 +235,13 @@ namespace XposeCraft.GameInternal
                 var events = new List<Event>(player.RegisteredEvents[eventType]);
                 foreach (var registeredEvent in events)
                 {
+                    // If the function is missing, most likely for hot-swap reasons, it will get unregistered
+                    if (registeredEvent.Function == null)
+                    {
+                        Log.d(this, "Registered event " + registeredEvent.GameEvent + " didn't have any function");
+                        registeredEvent.UnregisterEvent();
+                        continue;
+                    }
                     registeredEvent.Function(new Arguments(args, registeredEvent));
                 }
             }

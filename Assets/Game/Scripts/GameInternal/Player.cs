@@ -67,19 +67,37 @@ namespace XposeCraft.GameInternal
         public List<Building> Buildings;
         public List<Resource> Resources;
 
+        public List<Unit> EnemyVisibleUnits;
+        public List<Building> EnemyVisibleBuildings;
+
         // Currencies of the Player. (TODO)
 
         public int Minerals = 80;
 
+        // Run-time configuration of the Player
+
+        private bool _exceptionOnDeadUnitAction = true;
+
+        public bool ExceptionOnDeadUnitAction
+        {
+            get { return _exceptionOnDeadUnitAction; }
+            set { _exceptionOnDeadUnitAction = value; }
+        }
+
         public void EnemyVisibilityChanged(Actor actor, VisionState previousState, VisionState newState)
         {
-            if (previousState != VisionState.Undiscovered && previousState != VisionState.Discovered
-                || newState != VisionState.Vision)
+            if (previousState == VisionState.Vision && newState != VisionState.Vision)
             {
-                // Losing visibility does not currently trigger an event
-                return;
+                EnemyHidden(actor, newState);
             }
+            else if (previousState == VisionState.Undiscovered || previousState == VisionState.Discovered)
+            {
+                EnemyTurnedToVisible(actor);
+            }
+        }
 
+        private void EnemyTurnedToVisible(Actor actor)
+        {
             var unit = actor as IUnit;
             if (unit != null)
             {
@@ -90,6 +108,7 @@ namespace XposeCraft.GameInternal
                     {
                         EnemyUnits = new[] {unit}
                     });
+                EnemyVisibleUnits.Add((Unit) unit);
                 return;
             }
             var building = actor as IBuilding;
@@ -102,6 +121,22 @@ namespace XposeCraft.GameInternal
                     {
                         EnemyBuildings = new[] {building}
                     });
+                EnemyVisibleBuildings.Add((Building) building);
+            }
+        }
+
+        private void EnemyHidden(Actor actor, VisionState newState)
+        {
+            var unit = actor as IUnit;
+            if (unit != null)
+            {
+                EnemyVisibleUnits.Remove((Unit) unit);
+                return;
+            }
+            var building = actor as IBuilding;
+            if (building != null && newState == VisionState.Undiscovered)
+            {
+                EnemyVisibleBuildings.Remove((Building) building);
             }
         }
     }

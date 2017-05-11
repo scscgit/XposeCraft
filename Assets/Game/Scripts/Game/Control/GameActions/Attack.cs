@@ -39,19 +39,20 @@ namespace XposeCraft.Game.Control.GameActions
             {
                 return false;
             }
-            var targetUnit = Target as IUnit;
+            var targetUnit = Target as Unit;
             if (targetUnit != null)
             {
                 targetUnit.AttackedByUnit(unitController);
                 return true;
             }
-            var targetBuilding = Target as IBuilding;
-            if (targetBuilding != null)
+            var targetBuilding = Target as Building;
+            if (targetBuilding == null)
             {
-                targetBuilding.AttackedByUnit(unitController);
-                return true;
+                throw new Exception(
+                    "Fatal error, constructor hasn't properly asserted that Target is Unit or Building");
             }
-            throw new Exception("Fatal error, constructor hasn't properly asserted that Target is Unit or Building");
+            targetBuilding.AttackedByUnit(unitController);
+            return true;
         }
     }
 }

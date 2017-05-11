@@ -4,6 +4,8 @@ using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Faction.Units;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Resources;
+using XposeCraft.Game.Control;
+using XposeCraft.Game.Control.GameActions;
 using XposeCraft.GameInternal;
 using XposeCraft.GameInternal.Helpers;
 using BuildingType = XposeCraft.Game.Enums.BuildingType;
@@ -22,14 +24,12 @@ namespace XposeCraft.Game.Actors.Units
 
         /// <summary>
         /// Send the Worker to gather a resource.
+        /// <see cref="XposeCraft.Game.Helpers.ResourceHelper"/> provides various methods to find some.
         /// </summary>
         /// <param name="resource">Resource to be gathered.</param>
         public void SendGather(IResource resource)
         {
-            // TODO: override ReplaceActionQueue to set Gathering back to null; make Gathering an action
-            StopGathering();
-            Gathering = resource;
-            resource.GatherByWorker(new List<UnitController> {UnitController});
+            ActionQueue = new UnitActionQueue(new GatherResource(resource));
         }
 
         // TODO:
@@ -66,7 +66,7 @@ namespace XposeCraft.Game.Actors.Units
             {
                 return false;
             }
-            building.FinishBuildingByWorker(UnitController);
+            ((Building) building).FinishBuildingByWorker(UnitController);
             return true;
         }
 

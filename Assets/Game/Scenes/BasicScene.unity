@@ -789,6 +789,8 @@ MonoBehaviour:
   Units: []
   Buildings: []
   Resources: []
+  EnemyVisibleUnits: []
+  EnemyVisibleBuildings: []
   Minerals: 80
 --- !u!1 &1355207518
 GameObject:
@@ -1117,6 +1119,8 @@ MonoBehaviour:
   Units: []
   Buildings: []
   Resources: []
+  EnemyVisibleUnits: []
+  EnemyVisibleBuildings: []
   Minerals: 80
 --- !u!1001 &1641735590
 Prefab:
@@ -1431,6 +1435,8 @@ MonoBehaviour:
   Units: []
   Buildings: []
   Resources: []
+  EnemyVisibleUnits: []
+  EnemyVisibleBuildings: []
   Minerals: 80
 --- !u!1 &1808043854
 GameObject:

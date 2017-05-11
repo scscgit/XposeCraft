@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Threading;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Assertions;
 using XposeCraft.Game;
@@ -36,7 +35,6 @@ namespace XposeCraft.GameInternal
 
         private void Start()
         {
-            Log.Level = Log.LogLevel.Info;
             RunTests();
         }
 
@@ -93,26 +91,27 @@ namespace XposeCraft.GameInternal
                 Log.e("Integration test failed");
                 if (SystemInfo.graphicsDeviceID == 0)
                 {
-                    EditorApplication.Exit(1);
+                    //EditorApplication.Exit(1);
+                    throw new Exception("Integration test failed");
                 }
                 else
                 {
                     Application.Quit();
-                    EditorApplication.isPaused = true;
                     Failed = false;
                 }
             }
             else if (Passed)
             {
-                Log.i("Quitting the application");
+                Log.i("Integration test passed");
                 if (SystemInfo.graphicsDeviceID == 0)
                 {
-                    EditorApplication.Exit(0);
+                    //EditorApplication.Exit(0);
+                    Application.Quit();
+                    throw new Exception("Could not quit the game");
                 }
                 else
                 {
                     Application.Quit();
-                    EditorApplication.isPaused = true;
                     Passed = false;
                 }
             }
@@ -124,8 +123,8 @@ namespace XposeCraft.GameInternal
             Assert.AreEqual(1, BuildingHelper.GetBuildings<IBuilding>().Length);
             Assert.AreEqual(1, BuildingHelper.GetBuildings<BaseCenter>().Length);
             var units = GameManager.Instance.StartingWorkers;
-            Assert.AreEqual(units, UnitHelper.GetUnits<IUnit>().Length);
-            Assert.AreEqual(units, UnitHelper.GetUnits<Worker>().Length);
+            Assert.AreEqual(units, UnitHelper.GetMyUnits<IUnit>().Length);
+            Assert.AreEqual(units, UnitHelper.GetMyUnits<Worker>().Length);
 
             // Position Grid coordinate calculation Unit Test
             var center = PlaceType.MyBase.Center;
@@ -134,7 +133,7 @@ namespace XposeCraft.GameInternal
 
         public void ExampleTestUnitQueue()
         {
-            var workers = UnitHelper.GetUnitsAsList<Worker>();
+            var workers = UnitHelper.GetMyUnitsAsList<Worker>();
             workers[0]
                 .MoveTo(PlaceType.MyBase.Left)
                 .After(new CustomFunction(() =>
@@ -167,7 +166,7 @@ namespace XposeCraft.GameInternal
 
         public void ExampleTestBuilding()
         {
-            var workers = UnitHelper.GetUnitsAsList<Worker>();
+            var workers = UnitHelper.GetMyUnitsAsList<Worker>();
             workers[0].CreateBuilding(BuildingType.NubianArmory, PlaceType.MyBase.Right);
             StartCoroutine(RunAfterSeconds(1, () =>
             {

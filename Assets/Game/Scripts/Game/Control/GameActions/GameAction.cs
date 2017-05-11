@@ -7,7 +7,15 @@ namespace XposeCraft.Game.Control.GameActions
     {
         public virtual bool Progress(IUnit unit, UnitController unitController)
         {
-            return true;
+            if (unitController != null)
+            {
+                return true;
+            }
+            if (UnitActionQueue.ExceptionOnDeadUnitAction)
+            {
+                throw new UnitDeadException();
+            }
+            return false;
         }
 
         public virtual void OnFinish(IUnit unit, UnitController unitController)

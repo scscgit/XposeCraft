@@ -31,7 +31,10 @@ namespace XposeCraft.Game.Actors.Units
             }
         }
 
-        public void AttackedByUnit(UnitController attackerUnit)
+        /// <summary>
+        /// Internal method, do not use.
+        /// </summary>
+        internal void AttackedByUnit(UnitController attackerUnit)
         {
             if (GameManager.Instance.Factions[UnitController.FactionIndex]
                     .Relations[attackerUnit.FactionIndex]

@@ -22,10 +22,10 @@ namespace XposeCraft.Test.TestExamples
             // Plan individual unit attacks or a return when meeting too many units
             Event.Register(EventType.EnemyUnitsOnSight, args =>
             {
-                if (args.EnemyUnits.Length > UnitHelper.GetUnits<IUnit>().Length)
+                if (args.EnemyUnits.Length > UnitHelper.GetMyUnits<IUnit>().Length)
                 {
                     // Too many enemies, return back
-                    foreach (IUnit unit in UnitHelper.GetUnits<IUnit>())
+                    foreach (IUnit unit in UnitHelper.GetMyUnits<IUnit>())
                     {
                         unit.MoveTo(PlaceType.MyBase.Center);
                     }
@@ -37,7 +37,7 @@ namespace XposeCraft.Test.TestExamples
                     {
                         queue.After(new Attack(enemy));
                     }
-                    foreach (IUnit unit in UnitHelper.GetUnits<IUnit>())
+                    foreach (IUnit unit in UnitHelper.GetMyUnits<IUnit>())
                     {
                         unit.ActionQueue = queue;
                     }
@@ -56,7 +56,7 @@ namespace XposeCraft.Test.TestExamples
 
         void GoAttack()
         {
-            var myUnits = UnitHelper.GetUnits<IUnit>();
+            var myUnits = UnitHelper.GetMyUnits<IUnit>();
             // TODO: decide if units can do this or just after ForEach
             Array.ForEach(myUnits, unit =>
             {
@@ -110,7 +110,7 @@ namespace XposeCraft.Test.TestExamples
             {
                 // TODO: my unit does not necessarily have to be a unit, even building can see a building
                 var enemies = args.EnemyBuildings;
-                foreach (IUnit unit in UnitHelper.GetUnits<IUnit>())
+                foreach (IUnit unit in UnitHelper.GetMyUnits<IUnit>())
                 {
                     foreach (IBuilding enemy in enemies)
                     {
