@@ -115,6 +115,8 @@ namespace XposeCraft.GameInternal
         {
             // Initialize singleton on wake up after hot-swap, because lazy initialization from other thread is illegal
             _instance = this;
+            // Log cannot safely access the Game Manager during moments like deserialization
+            Log.Level = LogLevel;
         }
 
         private void Start()
@@ -238,6 +240,8 @@ namespace XposeCraft.GameInternal
 
         /// <summary>
         /// Fires an Event for the Player to run his registered actions.
+        /// This can only be called indirectly from the Game Core (controllers),
+        /// as the Player's context mustn't change during the event handler execution.
         /// TODO: if Arguments get reused between multiple players, do a deep clone.
         /// </summary>
         /// <param name="player">Context of the Model to be used.</param>

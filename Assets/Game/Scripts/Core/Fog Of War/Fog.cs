@@ -4,6 +4,7 @@ using System.Threading;
 using UnityEngine;
 using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Faction.Units;
+using XposeCraft.Game.Actors;
 using XposeCraft.GameInternal;
 using XposeCraft.UI.MiniMap;
 
@@ -19,6 +20,11 @@ namespace XposeCraft.Core.Fog_Of_War
         public List<Transform> agentsT;
         public int agentsAmount;
         public int FactionIndex;
+
+        /// <summary>
+        /// List of all positions seen by an agent. Array index represents an agent, list enumerates locations.
+        /// </summary>
+        public List<int>[] LocationsSeenTemporary;
 
         public SignalAgents()
         {
@@ -61,7 +67,8 @@ namespace XposeCraft.Core.Fog_Of_War
         public List<GameObject> hiddenAgent;
         public List<VisionReceiver> hiddenRend;
         public List<Transform> hiddenAgentT;
-        public int[] hideSetting;
+        public int[] hideNextSetting;
+        public int[] hideCurrentSetting;
         public bool hideSettingCalculated;
         public int hideAmount;
         public int FactionIndex;
@@ -78,7 +85,8 @@ namespace XposeCraft.Core.Fog_Of_War
             hiddenAgent.Add(gameObject);
             hiddenRend.Add(receiver);
             hiddenAgentT.Add(gameObject.GetComponent<Transform>());
-            hideSetting = new int[hideAmount + 1];
+            hideNextSetting = new int[hideAmount + 1];
+            hideCurrentSetting = new int[hideAmount + 1];
             hideSettingCalculated = false;
             hideAmount++;
         }
@@ -106,20 +114,39 @@ namespace XposeCraft.Core.Fog_Of_War
             for (int x = 0; x < hideAmount; x++)
             {
                 hiddenRend[x].SetRenderer(VisionReceiver.VisionState.Vision);
+                hideCurrentSetting[x] = (int) VisionReceiver.VisionState.Vision;
             }
         }
 
-        public void SetRenderers()
+        public void SetRenderers(bool renderOnScreen, Fog fog, SignalAgents signalAgents)
         {
             for (int x = 0; x < hideAmount; x++)
             {
-                var previousState = hiddenRend[x].curState;
-                var newState = (VisionReceiver.VisionState) hideSetting[x];
+                var previousState = (VisionReceiver.VisionState) hideCurrentSetting[x];
+                var newState = (VisionReceiver.VisionState) hideNextSetting[x];
                 if (previousState == newState)
                 {
                     continue;
                 }
-                hiddenRend[x].SetRenderer(newState);
+                if (renderOnScreen)
+                {
+                    hiddenRend[x].SetRenderer(newState);
+                }
+                hideCurrentSetting[x] = hideNextSetting[x];
+                // Find all agents that saw the change in state
+                var agentIndexesSawChange = new List<int>();
+                var location = fog.DetermineLocInteger(hiddenAgentT[x].position);
+                for (var agentIndex = 0; agentIndex < signalAgents.LocationsSeenTemporary.Length; agentIndex++)
+                {
+                    var agentSeenPositions = signalAgents.LocationsSeenTemporary[agentIndex];
+                    if (agentSeenPositions.Contains(location))
+                    {
+                        agentIndexesSawChange.Add(agentIndex);
+                    }
+                }
+                var agentActorsSawChange = new List<Actor>();
+                agentIndexesSawChange.ForEach(agentIndex => agentActorsSawChange.Add(
+                    GameManager.Instance.ActorLookup[signalAgents.agents[agentIndex]]));
                 // Notifies Players about the change
                 if (!GameManager.Instance.ActorLookup.ContainsKey(hiddenAgent[x]))
                 {
@@ -134,7 +161,7 @@ namespace XposeCraft.Core.Fog_Of_War
                     {
                         if (player.FactionIndex == enemyFactionIndex)
                         {
-                            player.EnemyVisibilityChanged(actor, previousState, newState);
+                            player.EnemyVisibilityChanged(actor, agentActorsSawChange, previousState, newState);
                         }
                     }
                 }
@@ -330,7 +357,11 @@ namespace XposeCraft.Core.Fog_Of_War
             {
                 return;
             }
-            _hiddenAgentsFactions[FactionIndexDisplay].SetRenderers();
+            for (var factionIndex = 0; factionIndex < GameManager.Instance.Factions.Length; factionIndex++)
+            {
+                _hiddenAgentsFactions[factionIndex]
+                    .SetRenderers(factionIndex == FactionIndexDisplay, this, _signalAgentsFactions[factionIndex]);
+            }
         }
 
         private void CopyAgentLocations()
@@ -416,17 +447,29 @@ namespace XposeCraft.Core.Fog_Of_War
                     }
 
                     // Display signal agents in the Fog
-                    var signalAgentsAmount = _signalAgentsFactions[factionIndex].agentsAmount;
-                    for (var signalAgentIndex = 0; signalAgentIndex < signalAgentsAmount; signalAgentIndex++)
+                    var signalAgents = _signalAgentsFactions[factionIndex];
+                    signalAgents.LocationsSeenTemporary = new List<int>[signalAgents.agentsAmount];
+                    var locationsSeenTemporary = signalAgents.LocationsSeenTemporary;
+                    for (var signalAgentIndex = 0; signalAgentIndex < signalAgents.agentsAmount; signalAgentIndex++)
                     {
+                        // For an unknown reason, this didn't work if used just as a for condition
+                        if (signalAgentIndex >= _signalAgentsFactionLocations[factionIndex].Length)
+                        {
+                            break;
+                        }
+                        locationsSeenTemporary[signalAgentIndex] = new List<int>();
                         ModifyFogBySignalAgent(
-                            factionIndex, ref signalAgentIndex, ref fogVisionTemporary, ref fogColorTemporary);
+                            factionIndex, signalAgentIndex, ref fogVisionTemporary, ref fogColorTemporary);
                     }
 
                     // Update hidden agents based on the Fog
                     var hiddenAgentsAmount = _hiddenAgentsFactions[factionIndex].hideAmount;
                     for (var hiddenAgentIndex = 0; hiddenAgentIndex < hiddenAgentsAmount; hiddenAgentIndex++)
                     {
+                        if (hiddenAgentIndex >= _hiddenAgentsFactionLocations[factionIndex].Length)
+                        {
+                            break;
+                        }
                         CheckRenderer(fogVisionTemporary, factionIndex, hiddenAgentIndex);
                     }
 
@@ -498,36 +541,34 @@ namespace XposeCraft.Core.Fog_Of_War
         }
 
         private void ModifyFogBySignalAgent(
-            int factionIndex, ref int agentIndex, ref int[] fogVisionTemporary, ref Color32[] fogColorTemporary)
+            int factionIndex, int agentIndex, ref int[] fogVisionTemporary, ref Color32[] fogColorTemporary)
         {
-            if (agentIndex >= _signalAgentsFactionLocations[factionIndex].Length)
-            {
-                return;
-            }
+            var signalAgents = _signalAgentsFactions[factionIndex];
             var location = _signalAgentsFactionLocations[factionIndex][agentIndex];
             Vector2 loc = DetermineLoc(location);
-            int rad = _signalAgentsFactions[factionIndex].agentsRadius[agentIndex];
+            int rad = signalAgents.agentsRadius[agentIndex];
             int locX = (int) loc.x;
             int locY = (int) loc.y;
-            float uslope = _signalAgentsFactions[factionIndex].agentsUSlope[agentIndex];
-            float dslope = _signalAgentsFactions[factionIndex].agentsDSlope[agentIndex];
+            float uslope = signalAgents.agentsUSlope[agentIndex];
+            float dslope = signalAgents.agentsDSlope[agentIndex];
             for (int z = -rad; z <= rad; z++)
             {
                 Line(locX, locY, locX + z, locY - rad, rad, ref fogVisionTemporary, ref fogColorTemporary,
-                    _fogFactionColor[factionIndex], location.y, uslope, dslope);
+                    _fogFactionColor[factionIndex], location.y, uslope, dslope, agentIndex, signalAgents);
                 Line(locX, locY, locX + z, locY + rad, rad, ref fogVisionTemporary, ref fogColorTemporary,
-                    _fogFactionColor[factionIndex], location.y, uslope, dslope);
+                    _fogFactionColor[factionIndex], location.y, uslope, dslope, agentIndex, signalAgents);
                 Line(locX, locY, locX - rad, locY + z, rad, ref fogVisionTemporary, ref fogColorTemporary,
-                    _fogFactionColor[factionIndex], location.y, uslope, dslope);
+                    _fogFactionColor[factionIndex], location.y, uslope, dslope, agentIndex, signalAgents);
                 Line(locX, locY, locX + rad, locY + z, rad, ref fogVisionTemporary, ref fogColorTemporary,
-                    _fogFactionColor[factionIndex], location.y, uslope, dslope);
+                    _fogFactionColor[factionIndex], location.y, uslope, dslope, agentIndex, signalAgents);
             }
         }
 
         // Bresenham's Line Algorithm at work for shadow casting
         private void Line(
             int x, int y, int x2, int y2, int radius, ref int[] fogVisionTemporary, ref Color32[] fogColorTemporary,
-            Color32[] fogColor, float locY, float upwardSlopeHeight, float downwardSlopeHeight)
+            Color32[] fogColor, float locY, float upwardSlopeHeight, float downwardSlopeHeight, int agentIndex,
+            SignalAgents signalAgents)
         {
             int orPosX = x;
             int orPosY = y;
@@ -560,8 +601,9 @@ namespace XposeCraft.Core.Fog_Of_War
                     {
                         if (fogHeight[x + y * width] == -1)
                         {
-                            fogVisionTemporary[x + y * width] = 0;
-                            fogColorTemporary[x + y * width] = LerpColor(fogColor[x + y * width]);
+                            MarkVisible(
+                                x, y, agentIndex, signalAgents, ref fogVisionTemporary, ref fogColorTemporary,
+                                fogColor);
                             break;
                         }
                         if (dist < radius * radius - 2)
@@ -570,25 +612,29 @@ namespace XposeCraft.Core.Fog_Of_War
                             {
                                 if (locY - fogHeight[x + y * width] <= downwardSlopeHeight)
                                 {
-                                    fogVisionTemporary[x + y * width] = 0;
-                                    fogColorTemporary[x + y * width] = LerpColor(fogColor[x + y * width]);
+                                    MarkVisible(
+                                        x, y, agentIndex, signalAgents, ref fogVisionTemporary, ref fogColorTemporary,
+                                        fogColor);
                                 }
                                 else
                                 {
-                                    fogVisionTemporary[x + y * width] = 0;
-                                    fogColorTemporary[x + y * width] = LerpColor(fogColor[x + y * width]);
+                                    MarkVisible(
+                                        x, y, agentIndex, signalAgents, ref fogVisionTemporary, ref fogColorTemporary,
+                                        fogColor);
                                     break;
                                 }
                             }
                             else if (fogHeight[x + y * width] - locY <= upwardSlopeHeight)
                             {
-                                fogVisionTemporary[x + y * width] = 0;
-                                fogColorTemporary[x + y * width] = LerpColor(fogColor[x + y * width]);
+                                MarkVisible(
+                                    x, y, agentIndex, signalAgents, ref fogVisionTemporary, ref fogColorTemporary,
+                                    fogColor);
                             }
                             else
                             {
-                                fogVisionTemporary[x + y * width] = 0;
-                                fogColorTemporary[x + y * width] = LerpColor(fogColor[x + y * width]);
+                                MarkVisible(
+                                    x, y, agentIndex, signalAgents, ref fogVisionTemporary, ref fogColorTemporary,
+                                    fogColor);
                                 break;
                             }
                         }
@@ -613,6 +659,15 @@ namespace XposeCraft.Core.Fog_Of_War
             }
         }
 
+        private void MarkVisible(
+            int x, int y, int byAgentIndex, SignalAgents signalAgents, ref int[] fogVisionTemporary,
+            ref Color32[] fogColorTemporary, Color32[] fogColor)
+        {
+            fogVisionTemporary[x + y * width] = 0;
+            fogColorTemporary[x + y * width] = LerpColor(fogColor[x + y * width]);
+            signalAgents.LocationsSeenTemporary[byAgentIndex].Add(x + y * width);
+        }
+
         // A function to lerp the alpha values between two colors for the fade effect
         private Color32 LerpColor(Color32 curColor)
         {
@@ -627,32 +682,28 @@ namespace XposeCraft.Core.Fog_Of_War
             return rColor;
         }
 
-        private void CheckRenderer(int[] fogVision, int factionIndex, int hiddenAgentIndex)
+        private void CheckRenderer(int[] fogVisionTemporary, int factionIndex, int hiddenAgentIndex)
         {
-            if (hiddenAgentIndex >= _hiddenAgentsFactionLocations[factionIndex].Length)
-            {
-                return;
-            }
             var location = _hiddenAgentsFactionLocations[factionIndex][hiddenAgentIndex];
             Vector2 loc = DetermineLoc(location);
             int setting = 2;
-            setting = fogVision[(int) (loc.x + loc.y * width)];
+            setting = fogVisionTemporary[(int) (loc.x + loc.y * width)];
             var hiddenRenderer = _hiddenAgentsFactions[factionIndex].hiddenRend[hiddenAgentIndex];
             if (setting != 0)
             {
                 for (int y = 0; y < hiddenRenderer.anchors.Length; y++)
                 {
-                    if (fogVision[
+                    if (fogVisionTemporary[
                             (int) (loc.x + hiddenRenderer.anchors[y].x +
                                    (loc.y + hiddenRenderer.anchors[y].y) * width)] < setting)
                     {
-                        setting = fogVision[
+                        setting = fogVisionTemporary[
                             (int) (loc.x + hiddenRenderer.anchors[y].x +
                                    (loc.y + hiddenRenderer.anchors[y].y) * width)];
                     }
                 }
             }
-            _hiddenAgentsFactions[factionIndex].hideSetting[hiddenAgentIndex] = setting;
+            _hiddenAgentsFactions[factionIndex].hideNextSetting[hiddenAgentIndex] = setting;
         }
 
         public void AddSignalAgent(GameObject obj, int sight, float uslope, float dslope, VisionSignal signal)
@@ -722,7 +773,14 @@ namespace XposeCraft.Core.Fog_Of_War
             }
         }
 
-        private Vector2 DetermineLoc(Vector3 loc)
+        public int DetermineLocInteger(Vector3 loc)
+        {
+            var location = DetermineLoc(loc);
+            return (int) (location.x + location.y * width);
+        }
+
+
+        public Vector2 DetermineLoc(Vector3 loc)
         {
             float xLoc = loc.x - startPos.x;
             float yLoc = loc.z - startPos.z;

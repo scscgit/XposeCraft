@@ -12,9 +12,12 @@ namespace XposeCraft.GameInternal
             Error
         }
 
+        private static LogLevel _level = LogLevel.Debug;
+
         public static LogLevel Level
         {
-            get { return GameManager.Instance.LogLevel; }
+            get { return _level; }
+            internal set { _level = value; }
         }
 
         public static void d(object context, object message)

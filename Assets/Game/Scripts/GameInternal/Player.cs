@@ -84,56 +84,63 @@ namespace XposeCraft.GameInternal
             set { _exceptionOnDeadUnitAction = value; }
         }
 
-        public void EnemyVisibilityChanged(Actor actor, VisionState previousState, VisionState newState)
+        public void EnemyVisibilityChanged(
+            Actor enemyActor, List<Actor> actorsSawChange, VisionState previousState, VisionState newState)
         {
             if (previousState == VisionState.Vision && newState != VisionState.Vision)
             {
-                EnemyHidden(actor, newState);
+                EnemyHidden(enemyActor, newState);
             }
             else if (previousState == VisionState.Undiscovered || previousState == VisionState.Discovered)
             {
-                EnemyTurnedToVisible(actor);
+                EnemyTurnedToVisible(enemyActor, actorsSawChange);
             }
         }
 
-        private void EnemyTurnedToVisible(Actor actor)
+        private void EnemyTurnedToVisible(Actor enemyActor, List<Actor> myActorsSaw)
         {
-            var unit = actor as IUnit;
-            if (unit != null)
+            // Only the first detection matters, as it is about visibility state "change"
+            var myActor = myActorsSaw.Count == 0 ? null : myActorsSaw[0];
+            var enemyUnit = enemyActor as IUnit;
+            if (enemyUnit != null)
             {
                 GameManager.Instance.FiredEvent(
                     this,
                     EventType.EnemyUnitsOnSight,
                     new Arguments
                     {
-                        EnemyUnits = new[] {unit}
+                        MyUnit = myActor as IUnit,
+                        MyBuilding = myActor as IBuilding,
+                        EnemyUnits = new[] {enemyUnit}
                     });
-                EnemyVisibleUnits.Add((Unit) unit);
+                EnemyVisibleUnits.Add((Unit) enemyUnit);
                 return;
             }
-            var building = actor as IBuilding;
-            if (building != null)
+            var enemyBuilding = enemyActor as IBuilding;
+            if (enemyBuilding != null)
             {
                 GameManager.Instance.FiredEvent(
                     this,
                     EventType.EnemyBuildingsOnSight,
                     new Arguments
                     {
-                        EnemyBuildings = new[] {building}
+                        MyUnit = myActor as IUnit,
+                        MyBuilding = myActor as IBuilding,
+                        EnemyBuildings = new[] {enemyBuilding}
                     });
-                EnemyVisibleBuildings.Add((Building) building);
+                EnemyVisibleBuildings.Add((Building) enemyBuilding);
             }
         }
 
-        private void EnemyHidden(Actor actor, VisionState newState)
+        private void EnemyHidden(Actor enemyActor, VisionState newState)
         {
-            var unit = actor as IUnit;
+            var unit = enemyActor as IUnit;
             if (unit != null)
             {
                 EnemyVisibleUnits.Remove((Unit) unit);
                 return;
             }
-            var building = actor as IBuilding;
+            var building = enemyActor as IBuilding;
             if (building != null && newState == VisionState.Undiscovered)
             {
                 EnemyVisibleBuildings.Remove((Building) building);

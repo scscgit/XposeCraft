@@ -111,17 +111,16 @@ namespace XposeCraft.GameInternal
 
             var enemyBaseMovement = new Move(PlaceType.EnemyBase.Center);
             workers[1]
-                .MoveTo(PlaceType.EnemyBase.UnderRamp)
+                .MoveTo(PlaceType.EnemyBase.UnderRampRight)
                 .After(enemyBaseMovement);
             workers[2].ActionQueue = new UnitActionQueue(enemyBaseMovement);
 
             Event.Register(EventType.EnemyBuildingsOnSight, args =>
             {
-                if (args.EnemyBuildings[0] is BaseCenter)
+                if (args.EnemyBuildings[0] is BaseCenter & args.MyUnit != null)
                 {
                     Log.i("Found enemy base, returning");
-                    workers[1].MoveTo(PlaceType.MyBase.Center);
-                    workers[2].MoveTo(PlaceType.MyBase.Center);
+                    args.MyUnit.MoveTo(PlaceType.MyBase.Center);
                 }
                 else
                 {

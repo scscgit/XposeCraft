@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using UnityEngine;
+using XposeCraft.GameInternal;
 
 namespace XposeCraft.Collections
 {
@@ -53,7 +54,14 @@ namespace XposeCraft.Collections
 
             for (var i = 0; i < _serializedCount; ++i)
             {
-                Add(_serializedKeys[i], _serializedValues[i]);
+                try
+                {
+                    Add(_serializedKeys[i], _serializedValues[i]);
+                }
+                catch (Exception e)
+                {
+                    Log.e(this, e.Message);
+                }
             }
 
             _serializedKeys.Clear();

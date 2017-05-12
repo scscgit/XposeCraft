@@ -767,8 +767,10 @@ MonoBehaviour:
       _pointLocation: 21886
     Back:
       _pointLocation: 17911
-    UnderRamp:
-      _pointLocation: 0
+    UnderRampLeft:
+      _pointLocation: 29658
+    UnderRampRight:
+      _pointLocation: 9944
   EnemyBase:
     Center:
       _pointLocation: 0
@@ -780,7 +782,9 @@ MonoBehaviour:
       _pointLocation: 0
     Back:
       _pointLocation: 0
-    UnderRamp:
+    UnderRampLeft:
+      _pointLocation: 0
+    UnderRampRight:
       _pointLocation: 0
   RegisteredEvents:
     _serializedKeys: 
@@ -1097,8 +1101,10 @@ MonoBehaviour:
       _pointLocation: 12861
     Back:
       _pointLocation: 7670
-    UnderRamp:
-      _pointLocation: 19039
+    UnderRampLeft:
+      _pointLocation: 18624
+    UnderRampRight:
+      _pointLocation: 19651
   EnemyBase:
     Center:
       _pointLocation: 0
@@ -1110,7 +1116,9 @@ MonoBehaviour:
       _pointLocation: 0
     Back:
       _pointLocation: 0
-    UnderRamp:
+    UnderRampLeft:
+      _pointLocation: 0
+    UnderRampRight:
       _pointLocation: 0
   RegisteredEvents:
     _serializedKeys: 
@@ -1413,8 +1421,10 @@ MonoBehaviour:
       _pointLocation: 27139
     Back:
       _pointLocation: 32529
-    UnderRamp:
-      _pointLocation: 20961
+    UnderRampLeft:
+      _pointLocation: 21575
+    UnderRampRight:
+      _pointLocation: 20947
   EnemyBase:
     Center:
       _pointLocation: 0
@@ -1426,7 +1436,9 @@ MonoBehaviour:
       _pointLocation: 0
     Back:
       _pointLocation: 0
-    UnderRamp:
+    UnderRampLeft:
+      _pointLocation: 0
+    UnderRampRight:
       _pointLocation: 0
   RegisteredEvents:
     _serializedKeys: 

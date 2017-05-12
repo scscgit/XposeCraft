@@ -12,7 +12,7 @@ namespace XposeCraft.Game
     public class Arguments
     {
         /// <summary>
-        /// Before running the function, the instance to this current even will be returned here and can be used,
+        /// Before running the function, the instance to this current Event will be returned here and can be used,
         /// for example, to unregister it after the run.
         /// </summary>
         public Event ThisEvent { get; set; }
@@ -22,13 +22,31 @@ namespace XposeCraft.Game
 
         // Game resources
 
+        /// <summary>
+        /// Minerals available to the Player.
+        /// </summary>
         public int Minerals { get; set; }
 
         // Actors
 
+        /// <summary>
+        /// My Unit related to the Event.
+        /// </summary>
         public IUnit MyUnit { get; set; }
+
+        /// <summary>
+        /// My Building related to the Event.
+        /// </summary>
         public IBuilding MyBuilding { get; set; }
+
+        /// <summary>
+        /// Enemy Units related to the Event.
+        /// </summary>
         public IUnit[] EnemyUnits { get; set; }
+
+        /// <summary>
+        /// Enemy Buildings related to the Event.
+        /// </summary>
         public IBuilding[] EnemyBuildings { get; set; }
 
         public Arguments()

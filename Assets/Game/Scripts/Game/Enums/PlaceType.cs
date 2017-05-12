@@ -11,7 +11,8 @@ namespace XposeCraft.Game.Enums
         public Position Right;
         public Position Front;
         public Position Back;
-        public Position UnderRamp;
+        public Position UnderRampLeft;
+        public Position UnderRampRight;
 
         public static PlaceType MyBase
         {
@@ -30,7 +31,8 @@ namespace XposeCraft.Game.Enums
             Right = positions[2];
             Front = positions[3];
             Back = positions[4];
-            UnderRamp = positions[5];
+            UnderRampLeft = positions[5];
+            UnderRampRight = positions[6];
         }
     }
 }
