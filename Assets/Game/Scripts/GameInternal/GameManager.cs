@@ -73,7 +73,7 @@ namespace XposeCraft.GameInternal
             get { return UGrid.grids[UGrid.index]; }
         }
 
-        public ActorLookupDictionary ActorLookup { get; private set; }
+        public ActorLookupDictionary ActorLookup;
 
         private void OnDrawGizmos()
         {
@@ -108,7 +108,6 @@ namespace XposeCraft.GameInternal
             {
                 Factions[factionIndex] = factionList[factionIndex].GetComponent<Faction>();
             }
-            ActorLookup = new ActorLookupDictionary();
             return this;
         }
 
@@ -168,15 +167,11 @@ namespace XposeCraft.GameInternal
             }
 
             // Start the Test (build workaround)
-            StartCoroutine(RunAutomationTest(SceneManager.LoadSceneAsync("AutomationTest", LoadSceneMode.Additive)));
-        }
-
-        [Obsolete]
-        private IEnumerator LoadAutomationTest(AsyncOperation waitFor)
-        {
-            while (!waitFor.isDone)
+            var automationTestScene = SceneManager.GetSceneByName("AutomationTest");
+            if (SceneManager.GetSceneByName("AutomationTest").IsValid())
             {
-                yield return null;
+                RunAutomationTestInScene(automationTestScene);
+                return;
             }
             StartCoroutine(RunAutomationTest(SceneManager.LoadSceneAsync("AutomationTest", LoadSceneMode.Additive)));
         }
@@ -187,7 +182,12 @@ namespace XposeCraft.GameInternal
             {
                 yield return null;
             }
-            var allTestComponents = SceneManager.GetSceneByName("AutomationTest")
+            RunAutomationTestInScene(SceneManager.GetSceneByName("AutomationTest"));
+        }
+
+        private void RunAutomationTestInScene(Scene automationTest)
+        {
+            var allTestComponents = automationTest
                 .GetRootGameObjects()
                 .ToList()
                 .ConvertAll(obj => obj.GetComponent<TestComponent>())
@@ -204,6 +204,36 @@ namespace XposeCraft.GameInternal
 
         private void Update()
         {
+            // Quits the game (or the editor when running from batch) after the test ends; pauses when in Editor
+            if (GameTestRunner.Failed)
+            {
+                Log.e("Integration test failed");
+                if (SystemInfo.graphicsDeviceID == 0)
+                {
+                    //EditorApplication.Exit(1);
+                    throw new Exception("Integration test failed");
+                }
+                else
+                {
+                    Application.Quit();
+                    GameTestRunner.Failed = false;
+                }
+            }
+            else if (GameTestRunner.Passed)
+            {
+                Log.i("Integration test passed");
+                if (SystemInfo.graphicsDeviceID == 0)
+                {
+                    //EditorApplication.Exit(0);
+                    Application.Quit();
+                    throw new Exception("Could not quit the game");
+                }
+                else
+                {
+                    Application.Quit();
+                    GameTestRunner.Passed = false;
+                }
+            }
         }
 
         /// <summary>

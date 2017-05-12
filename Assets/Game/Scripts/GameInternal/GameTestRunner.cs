@@ -83,40 +83,6 @@ namespace XposeCraft.GameInternal
             }));
         }
 
-        private void Update()
-        {
-            // Quits the game (or the editor when running from batch) after the test ends; pauses when in Editor
-            if (Failed)
-            {
-                Log.e("Integration test failed");
-                if (SystemInfo.graphicsDeviceID == 0)
-                {
-                    //EditorApplication.Exit(1);
-                    throw new Exception("Integration test failed");
-                }
-                else
-                {
-                    Application.Quit();
-                    Failed = false;
-                }
-            }
-            else if (Passed)
-            {
-                Log.i("Integration test passed");
-                if (SystemInfo.graphicsDeviceID == 0)
-                {
-                    //EditorApplication.Exit(0);
-                    Application.Quit();
-                    throw new Exception("Could not quit the game");
-                }
-                else
-                {
-                    Application.Quit();
-                    Passed = false;
-                }
-            }
-        }
-
         public void SelfTests()
         {
             // GameManager starting Unit creation

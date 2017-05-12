@@ -63,3 +63,7 @@ MonoBehaviour:
   DisplayAllHealthBars: 1
   DisplayOnlyDamagedHealthBars: 1
   LogLevel: 1
+  ActorLookup:
+    _serializedKeys: []
+    _serializedValues: []
+    _serializedCount: 0
