@@ -1,10 +1,14 @@
 using UnityEngine;
 using UnityEngine.Serialization;
+using XposeCraft.Core.Faction.Units;
 using XposeCraft.Core.Grids;
 using XposeCraft.Core.Required;
 using XposeCraft.Core.Resources;
+using XposeCraft.Game;
+using XposeCraft.Game.Actors.Units;
 using XposeCraft.GameInternal;
 using BuildingHelper = XposeCraft.GameInternal.Helpers.BuildingHelper;
+using EventType = XposeCraft.Game.Enums.EventType;
 
 namespace XposeCraft.Core.Faction.Buildings
 {
@@ -18,6 +22,7 @@ namespace XposeCraft.Core.Faction.Buildings
     [SelectionBase]
     public class BuildingController : MonoBehaviour
     {
+        public Player PlayerOwner;
         public UnitType type;
         public BuildingType buildingType;
         public Building building;
@@ -49,7 +54,12 @@ namespace XposeCraft.Core.Faction.Buildings
         Health healthObj;
         UGrid grid;
         UnitSelection selection;
-        ResourceManager resourceManager;
+        private UnitController _lastBuildBy;
+
+        private ResourceManager resourceManager
+        {
+            get { return GameManager.Instance.ResourceManagerFaction[FactionIndex]; }
+        }
 
         protected Faction Faction
         {
@@ -65,7 +75,6 @@ namespace XposeCraft.Core.Faction.Buildings
             selection = playerManager.GetComponent<UnitSelection>();
             manager = playerManager.GetComponent<GUIManager>();
             gui.type = "Building";
-            resourceManager = playerManager.GetComponent<ResourceManager>();
             if (buildingType == BuildingType.ProgressBuilding)
             {
                 InvokeRepeating("Progress", 0, progressRate);
@@ -93,9 +102,10 @@ namespace XposeCraft.Core.Faction.Buildings
             progressCur = progressCur + progressPerRate;
         }
 
-        public bool RequestBuild(float amount)
+        public bool RequestBuild(float amount, UnitController buildBy)
         {
             progressCur = progressCur + amount;
+            _lastBuildBy = buildBy;
             return true;
         }
 
@@ -112,7 +122,7 @@ namespace XposeCraft.Core.Faction.Buildings
             }
             if (unitProduction.canProduce)
             {
-                unitProduction.Produce(Faction, FactionIndex, grid, gridI);
+                unitProduction.Produce(this, Faction, FactionIndex, grid, gridI);
             }
             if (techProduction.canProduce)
             {
@@ -133,7 +143,23 @@ namespace XposeCraft.Core.Faction.Buildings
         {
             var placedBuilding = BuildingHelper.InstantiateFinishedBuilding(
                 building, nextBuild, transform.position, loc, FactionIndex);
+            if (!GameManager.Instance.ActorLookup.ContainsKey(gameObject))
+            {
+                Destroy(gameObject);
+                return placedBuilding.gameObject;
+            }
+            // The Actor was already created, so it will get updated and used in an event together with the builder
+            var placedActor = (Game.Actors.Buildings.Building) GameManager.Instance.ActorLookup[gameObject];
+            placedActor.Placed(placedBuilding, PlayerOwner);
+            // The ActorLookup gets modified in the process
+            GameManager.Instance.ActorLookup.Remove(gameObject);
+            GameManager.Instance.ActorLookup.Add(placedBuilding.gameObject, placedActor);
             Destroy(gameObject);
+            GameManager.Instance.FiredEvent(PlayerOwner, EventType.BuildingCreated, new Arguments
+            {
+                MyUnit = (IUnit) GameManager.Instance.ActorLookup[_lastBuildBy.gameObject],
+                MyBuilding = placedActor
+            });
             return placedBuilding.gameObject;
         }
 
@@ -193,7 +219,7 @@ namespace XposeCraft.Core.Faction.Buildings
                     ratioX,
                     ratioY))
                 {
-                    unitProduction.StartProduction(x, resourceManager);
+                    unitProduction.StartProduction(x, resourceManager, GameManager.Instance.GUIPlayer);
                 }
                 if (bGUI.unitGUI.contains)
                 {

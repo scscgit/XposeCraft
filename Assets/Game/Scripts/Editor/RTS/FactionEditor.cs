@@ -7,6 +7,7 @@ using XposeCraft.Core.Faction.Units;
 using XposeCraft.Core.Fog_Of_War;
 using XposeCraft.Core.Required;
 using XposeCraft.Core.Resources;
+using XposeCraft.GameInternal;
 using XposeCraft.UI.MiniMap;
 
 namespace XposeCraft.RTS
@@ -1123,29 +1124,21 @@ namespace XposeCraft.RTS
                     {
                         return;
                     }
-                    GameObject resourceManager = GameObject.Find("Player Manager");
-                    if (resourceManager == null)
-                    {
-                        return;
-                    }
-                    ResourceManager rMScript = resourceManager.GetComponent<ResourceManager>();
-                    if (!rMScript)
-                    {
-                        return;
-                    }
-                    if (myTarget.resource.behaviour.Length != rMScript.resourceTypes.Length)
+                    // Current Resource Manager will be used for read-only purposes
+                    ResourceManager resourceManager = GameManager.Instance.CurrentPlayerResourceManager;
+                    if (myTarget.resource.behaviour.Length != resourceManager.resourceTypes.Length)
                     {
                         ModifyUnitGathering(
-                            rMScript.resourceTypes.Length,
+                            resourceManager.resourceTypes.Length,
                             myTarget.resource.behaviour.Length,
                             myTarget);
                     }
                     else
                     {
-                        string[] resourceNames = new string[rMScript.resourceTypes.Length];
+                        string[] resourceNames = new string[resourceManager.resourceTypes.Length];
                         for (int x = 0; x < resourceNames.Length; x++)
                         {
-                            resourceNames[x] = rMScript.resourceTypes[x].name;
+                            resourceNames[x] = resourceManager.resourceTypes[x].name;
                         }
                         if (arraySelect >= resourceNames.Length)
                         {
@@ -1668,8 +1661,7 @@ namespace XposeCraft.RTS
                         }
                         else
                         {
-                            GameObject resourceManager;
-                            ResourceManager rMScript;
+                            ResourceManager resourceManager;
                             switch (index)
                             {
                                 case 0:
@@ -1689,29 +1681,21 @@ namespace XposeCraft.RTS
                                     break;
                                 case 12:
                                     // Resource List
-                                    resourceManager = GameObject.Find("Player Manager");
-                                    if (resourceManager == null)
-                                    {
-                                        break;
-                                    }
-                                    rMScript = resourceManager.GetComponent<ResourceManager>();
-                                    if (!rMScript)
-                                    {
-                                        break;
-                                    }
-                                    if (myTarget.resource.behaviour.Length != rMScript.resourceTypes.Length)
+                                    // Current Resource Manager will be used for read-only purposes
+                                    resourceManager = GameManager.Instance.CurrentPlayerResourceManager;
+                                    if (myTarget.resource.behaviour.Length != resourceManager.resourceTypes.Length)
                                     {
                                         ModifyUnitGathering(
-                                            rMScript.resourceTypes.Length,
+                                            resourceManager.resourceTypes.Length,
                                             myTarget.resource.behaviour.Length,
                                             myTarget);
                                     }
                                     else
                                     {
-                                        string[] resourceNames = new string[rMScript.resourceTypes.Length];
+                                        string[] resourceNames = new string[resourceManager.resourceTypes.Length];
                                         for (int y = 0; y < resourceNames.Length; y++)
                                         {
-                                            resourceNames[y] = rMScript.resourceTypes[y].name;
+                                            resourceNames[y] = resourceManager.resourceTypes[y].name;
                                         }
                                         if (arraySelect >= resourceNames.Length)
                                         {
@@ -1788,29 +1772,21 @@ namespace XposeCraft.RTS
                                     if (index == 13 || index == 14)
                                     {
                                         // Resource List
-                                        resourceManager = GameObject.Find("Player Manager");
-                                        if (resourceManager == null)
-                                        {
-                                            break;
-                                        }
-                                        rMScript = resourceManager.GetComponent<ResourceManager>();
-                                        if (!rMScript)
-                                        {
-                                            break;
-                                        }
-                                        if (myTarget.resource.behaviour.Length != rMScript.resourceTypes.Length)
+                                        // Current Resource Manager will be used for read-only purposes
+                                        resourceManager = GameManager.Instance.CurrentPlayerResourceManager;
+                                        if (myTarget.resource.behaviour.Length != resourceManager.resourceTypes.Length)
                                         {
                                             ModifyUnitGathering(
-                                                rMScript.resourceTypes.Length,
+                                                resourceManager.resourceTypes.Length,
                                                 myTarget.resource.behaviour.Length,
                                                 myTarget);
                                         }
                                         else
                                         {
-                                            string[] resourceNames = new string[rMScript.resourceTypes.Length];
+                                            string[] resourceNames = new string[resourceManager.resourceTypes.Length];
                                             for (int y = 0; y < resourceNames.Length; y++)
                                             {
-                                                resourceNames[y] = rMScript.resourceTypes[y].name;
+                                                resourceNames[y] = resourceManager.resourceTypes[y].name;
                                             }
                                             if (arraySelect >= resourceNames.Length)
                                             {
@@ -2171,7 +2147,8 @@ namespace XposeCraft.RTS
                             progressObj.buildingType = BuildingType.ProgressBuilding;
                         }
                     }
-                    ResourceManager mg = GameObject.Find("Player Manager").GetComponent<ResourceManager>();
+                    // Current Resource Manager will be used for read-only purposes
+                    ResourceManager mg = GameManager.Instance.CurrentPlayerResourceManager;
                     if (targetBuilding.cost.Length != mg.resourceTypes.Length)
                     {
                         targetBuilding.cost = new int[mg.resourceTypes.Length];
@@ -2338,7 +2315,8 @@ namespace XposeCraft.RTS
                                     "Rate : ",
                                     myTarget.unitProduction.units[arraySelect2].rate);
                                 curY += 30;
-                                ResourceManager mg = GameObject.Find("Player Manager").GetComponent<ResourceManager>();
+                                // Current Resource Manager will be used for read-only purposes
+                                ResourceManager mg = GameManager.Instance.CurrentPlayerResourceManager;
                                 if (myTarget.unitProduction.units[arraySelect2].cost.Length != mg.resourceTypes.Length)
                                 {
                                     myTarget.unitProduction.units[arraySelect2].cost = new int[mg.resourceTypes.Length];
@@ -2534,7 +2512,8 @@ namespace XposeCraft.RTS
                                     "Amount : ",
                                     techSelection.amount);
                                 curY += 30;
-                                ResourceManager mg = GameObject.Find("Player Manager").GetComponent<ResourceManager>();
+                                // Current Resource Manager will be used for read-only purposes
+                                ResourceManager mg = GameManager.Instance.CurrentPlayerResourceManager;
                                 if (techSelection.cost.Length != mg.resourceTypes.Length)
                                 {
                                     techSelection.cost = new int[mg.resourceTypes.Length];
@@ -2682,7 +2661,8 @@ namespace XposeCraft.RTS
                     ResourceGenerate gen = targetBuilding.obj.GetComponent<ResourceGenerate>();
                     if (gen != null)
                     {
-                        ResourceManager rm = GameObject.Find("Player Manager").GetComponent<ResourceManager>();
+                        // Current Resource Manager will be used for read-only purposes
+                        ResourceManager rm = GameManager.Instance.CurrentPlayerResourceManager;
                         if (rm != null)
                         {
                             if (gen.resource.Length != rm.resourceTypes.Length)
@@ -2738,7 +2718,8 @@ namespace XposeCraft.RTS
                     ResourceDropOff dropOff = targetBuilding.obj.GetComponent<ResourceDropOff>();
                     if (dropOff != null)
                     {
-                        ResourceManager rm = GameObject.Find("Player Manager").GetComponent<ResourceManager>();
+                        // Current Resource Manager will be used for read-only purposes
+                        ResourceManager rm = GameManager.Instance.CurrentPlayerResourceManager;
                         if (rm != null)
                         {
                             if (dropOff.type.Length != rm.resourceTypes.Length)
@@ -3450,20 +3431,12 @@ namespace XposeCraft.RTS
                                 case 6:
                                 case 12:
                                     // Resource List
-                                    GameObject resourceManager = GameObject.Find("Player Manager");
-                                    if (resourceManager == null)
-                                    {
-                                        break;
-                                    }
-                                    ResourceManager rMScript = resourceManager.GetComponent<ResourceManager>();
-                                    if (!rMScript)
-                                    {
-                                        break;
-                                    }
-                                    string[] resourceNames = new string[rMScript.resourceTypes.Length];
+                                    // Current Resource Manager will be used for read-only purposes
+                                    ResourceManager resourceManager = GameManager.Instance.CurrentPlayerResourceManager;
+                                    string[] resourceNames = new string[resourceManager.resourceTypes.Length];
                                     for (int y = 0; y < resourceNames.Length; y++)
                                     {
-                                        resourceNames[y] = rMScript.resourceTypes[y].name;
+                                        resourceNames[y] = resourceManager.resourceTypes[y].name;
                                     }
                                     if (arraySelect >= resourceNames.Length)
                                     {

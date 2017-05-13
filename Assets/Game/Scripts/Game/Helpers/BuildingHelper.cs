@@ -13,16 +13,16 @@ namespace XposeCraft.Game.Helpers
     /// </summary>
     public sealed class BuildingHelper : ActorHelper<IBuilding>
     {
-        public static IList<TBuilding> GetBuildingsAsList<TBuilding>() where TBuilding : IBuilding
+        public static IList<TBuilding> GetMyBuildingsAsList<TBuilding>() where TBuilding : IBuilding
         {
             var list = new List<TBuilding>();
             ForEach<TBuilding, Building>(building => { list.Add(building); }, Player.CurrentPlayer.Buildings);
             return list;
         }
 
-        public static TBuilding[] GetBuildings<TBuilding>() where TBuilding : IBuilding
+        public static TBuilding[] GetMyBuildings<TBuilding>() where TBuilding : IBuilding
         {
-            return GetBuildingsAsList<TBuilding>().ToArray();
+            return GetMyBuildingsAsList<TBuilding>().ToArray();
         }
 
         /// <inheritdoc cref="GetVisibleEnemyBuildings{TUnit}"/>

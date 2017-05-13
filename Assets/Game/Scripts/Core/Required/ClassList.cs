@@ -8,9 +8,12 @@ using XposeCraft.Core.Faction.Units;
 using XposeCraft.Core.Grids;
 using XposeCraft.Core.Resources;
 using XposeCraft.Game;
+using XposeCraft.Game.Actors;
+using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.GameInternal;
 using XposeCraft.GameInternal.Helpers;
 using XposeCraft.UI.MiniMap;
+using EventType = XposeCraft.Game.Enums.EventType;
 using Object = UnityEngine.Object;
 
 namespace XposeCraft.Core.Required
@@ -184,15 +187,17 @@ namespace XposeCraft.Core.Required
         public ResourceSource source;
         public int sourceIndex;
         public GameObject target;
-        public ResourceManager manager;
         public GameObject nearestDropOff;
+        private UnitController _unitController;
+
+        public ResourceManager manager
+        {
+            get { return GameManager.Instance.ResourceManagerFaction[_unitController.FactionIndex]; }
+        }
 
         public bool Gather(UnitController cont, GameObject obj)
         {
-            if (manager == null)
-            {
-                manager = GameObject.Find("Player Manager").GetComponent<ResourceManager>();
-            }
+            _unitController = cont;
             if (!resourceUnit || source == null)
             {
                 return false;
@@ -279,7 +284,7 @@ namespace XposeCraft.Core.Required
             }
             else
             {
-                Log.e(this, "DropOff target of " + cont.name + " is null");
+                Log.w(this, "DropOff target of " + cont.name + " is null");
             }
             manager.resourceTypes[sourceIndex].amount += behaviour[sourceIndex].carrying;
             behaviour[sourceIndex].carrying = 0;
@@ -311,7 +316,7 @@ namespace XposeCraft.Core.Required
         public BuildBehaviour[] build = new BuildBehaviour[0];
         public BuildingController source;
 
-        public bool Build()
+        public bool Build(UnitController buildBy)
         {
             if (!builderUnit || !build[source.buildIndex].canBuild)
             {
@@ -321,7 +326,7 @@ namespace XposeCraft.Core.Required
             {
                 return true;
             }
-            bool returnVal = source.RequestBuild(build[source.buildIndex].amount);
+            bool returnVal = source.RequestBuild(build[source.buildIndex].amount, buildBy);
             build[source.buildIndex].lastBuild = Time.time;
             return returnVal;
         }
@@ -418,6 +423,7 @@ namespace XposeCraft.Core.Required
     public class ProduceUnit
     {
         [FormerlySerializedAs("groupIndex")] public int UnitIndex;
+        public Player Player;
         public bool canProduce = true;
         public int[] cost = new int[0];
         public Texture customTexture;
@@ -429,8 +435,9 @@ namespace XposeCraft.Core.Required
         float curDur;
         float lastTime;
 
-        public ProduceUnit(ProduceUnit unit)
+        public ProduceUnit(ProduceUnit unit, Player player)
         {
+            Player = player;
             canProduce = unit.canProduce;
             cost = unit.cost;
             customTexture = unit.customTexture;
@@ -1416,15 +1423,15 @@ namespace XposeCraft.Core.Required
         public int productionDistance = 6;
         int curLoc;
 
-        public void StartProduction(int x, ResourceManager resourceManager)
+        public bool StartProduction(int x, ResourceManager resourceManager, Player player)
         {
-            var job = new ProduceUnit(units[x]);
+            var job = new ProduceUnit(units[x], player);
             // If there are available resources, uses them before starting the production, otherwise returns
             for (var index = 0; index < resourceManager.resourceTypes.Length; index++)
             {
                 if (resourceManager.resourceTypes[index].amount < job.cost[index])
                 {
-                    return;
+                    return false;
                 }
             }
             for (var index = 0; index < resourceManager.resourceTypes.Length; index++)
@@ -1436,6 +1443,7 @@ namespace XposeCraft.Core.Required
                 jobs.Add(job);
                 jobsAmount++;
             }
+            return true;
         }
 
         public void CancelProduction(int x, ResourceManager resourceManager)
@@ -1450,7 +1458,8 @@ namespace XposeCraft.Core.Required
             jobsAmount--;
         }
 
-        public void Produce(Faction.Faction faction, int factionIndex, UGrid grid, int gridI)
+        public void Produce(
+            BuildingController buildingController, Faction.Faction faction, int factionIndex, UGrid grid, int gridI)
         {
             for (int x = 0; x < canBuildAtOnce; x++)
             {
@@ -1458,13 +1467,24 @@ namespace XposeCraft.Core.Required
                 {
                     continue;
                 }
-                UnitHelper.InstantiateUnit(
-                    faction.UnitList[jobs[x].UnitIndex].obj,
-                    grid.DetermineNearestPoint(buildLoc.transform.position, buildLoc.transform.position, gridI),
-                    factionIndex);
+                var factionUnit = faction.UnitList[jobs[x].UnitIndex];
+                var player = jobs[x].Player;
+                var actor = Actor.Create<Game.Actors.Units.Unit>(
+                    UnitHelper.DetermineUnitType(UnitHelper.DetermineFactionUnitType(factionUnit)),
+                    UnitHelper.InstantiateUnit(
+                        faction.UnitList[jobs[x].UnitIndex].obj,
+                        grid.DetermineNearestPoint(buildLoc.transform.position, buildLoc.transform.position, gridI),
+                        factionIndex),
+                    player
+                );
                 jobs.RemoveAt(x);
                 x--;
                 jobsAmount--;
+                GameManager.Instance.FiredEvent(player, EventType.UnitProduced, new Arguments
+                {
+                    MyBuilding = (IBuilding) GameManager.Instance.ActorLookup[buildingController.gameObject],
+                    MyUnit = actor
+                });
             }
         }
     }

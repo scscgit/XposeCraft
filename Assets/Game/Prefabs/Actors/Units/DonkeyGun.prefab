@@ -264,7 +264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 907c1687b5023ca4a8ae5376bcb0dbbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 6
   rotateSpeed: 5
   target: {x: 0, y: 0, z: 0}
   gridI: 0
@@ -310,11 +310,11 @@ MonoBehaviour:
     strengths: []
     weaknesses: []
   weapon:
-    fighterUnit: 0
-    attackRate: 0
-    attackRange: 0
-    attackDamage: 0
-    lookRange: 0
+    fighterUnit: 1
+    attackRate: 1
+    attackRange: 20
+    attackDamage: 5
+    lookRange: 40
     attackObj: {fileID: 0}
     attackSphere: {fileID: 0}
     lookSphere: {fileID: 0}
@@ -339,7 +339,6 @@ MonoBehaviour:
     source: {fileID: 0}
     sourceIndex: 0
     target: {fileID: 0}
-    manager: {fileID: 0}
     nearestDropOff: {fileID: 0}
   gui:
     selectObjs: []

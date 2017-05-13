@@ -2919,8 +2919,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: Goblin
-  maxHealth: 100
-  health: 100
+  maxHealth: 50
+  health: 50
   FactionIndex: 0
   type:
     name: Name
@@ -2929,9 +2929,9 @@ MonoBehaviour:
   weapon:
     fighterUnit: 1
     attackRate: 1
-    attackRange: 5
-    attackDamage: 5
-    lookRange: 20
+    attackRange: 6
+    attackDamage: 4
+    lookRange: 40
     attackObj: {fileID: 0}
     attackSphere: {fileID: 4117479548361218}
     lookSphere: {fileID: 4040561656890336}
@@ -2985,7 +2985,6 @@ MonoBehaviour:
     source: {fileID: 0}
     sourceIndex: 0
     target: {fileID: 0}
-    manager: {fileID: 0}
     nearestDropOff: {fileID: 0}
   gui:
     selectObjs: []

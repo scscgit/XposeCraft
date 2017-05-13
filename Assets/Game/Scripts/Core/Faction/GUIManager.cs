@@ -37,7 +37,12 @@ namespace XposeCraft.Core.Faction
         BuildingPlacement place;
         UnitSelection select;
         public Faction faction { get; set; }
-        ResourceManager resourceManager;
+
+        private static ResourceManager ResourceManagerPlayerOnly
+        {
+            get { return GameManager.Instance.CurrentPlayerResourceManager; }
+        }
+
         Vector2 ratio;
         Vector2 lastWindowSize = Vector2.zero;
         public bool mouseOverGUI;
@@ -64,7 +69,6 @@ namespace XposeCraft.Core.Faction
         {
             place = gameObject.GetComponent<BuildingPlacement>();
             select = gameObject.GetComponent<UnitSelection>();
-            resourceManager = gameObject.GetComponent<ResourceManager>();
             miniMap = GameObject.Find("MiniMap").GetComponent<MiniMap>();
             faction = GameObject.Find("Faction Manager")
                 .GetComponent<FactionManager>()
@@ -199,7 +203,7 @@ namespace XposeCraft.Core.Faction
 
             int y = 0;
             int z = 0;
-            for (int x = 0; x < resourceManager.resourceTypes.Length; x++)
+            for (int x = 0; x < ResourceManagerPlayerOnly.resourceTypes.Length; x++)
             {
                 // Displays the Resource and the Amount
                 GUI.Box(new Rect(
@@ -207,7 +211,8 @@ namespace XposeCraft.Core.Faction
                         (resourceSize.y + z * resourceBDisp.y) * ratio.y,
                         resourceSize.width * ratio.x,
                         resourceSize.height * ratio.y),
-                    resourceManager.resourceTypes[x].name + " : " + resourceManager.resourceTypes[x].amount);
+                    ResourceManagerPlayerOnly.resourceTypes[x].name
+                    + " : " + ResourceManagerPlayerOnly.resourceTypes[x].amount);
                 y = y + 1;
                 if (y < RColumnsXRows.x)
                 {

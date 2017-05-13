@@ -2,9 +2,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 using XposeCraft.Core.Required;
+using XposeCraft.Core.Resources;
 
 namespace XposeCraft.Core.Faction
 {
+    [RequireComponent(typeof(ResourceManager))]
     public class Faction : MonoBehaviour
     {
         [FormerlySerializedAs("relations")] public Relation[] Relations = new Relation[0];

@@ -127,7 +127,7 @@ namespace XposeCraft.GameInternal.Helpers
         {
             if (!IsValidPlacement(building, position, location, invalidUnderFog))
             {
-                throw new InvalidOperationException(building + "'s building placement location is invalid");
+                throw new InvalidOperationException(building.obj + "'s building placement location is invalid");
             }
         }
 

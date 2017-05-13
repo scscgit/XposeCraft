@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using XposeCraft.Core.Faction.Units;
-using XposeCraft.Core.Fog_Of_War;
 using XposeCraft.Core.Grids;
 using XposeCraft.Core.Required;
 using XposeCraft.Core.Resources;
@@ -14,9 +13,12 @@ namespace XposeCraft.Core.Faction.Buildings
 {
     public class BuildingPlacement : MonoBehaviour
     {
-        ResourceManager resourceManager;
+        private static ResourceManager ResourceManagerPlayerOnly
+        {
+            get { return GameManager.Instance.CurrentPlayerResourceManager; }
+        }
+
         UnitSelection unitSelect;
-        Fog fog;
         public bool place { get; set; }
         Building build;
         GameObject obj;
@@ -28,18 +30,6 @@ namespace XposeCraft.Core.Faction.Buildings
 
         public void Start()
         {
-            if (resourceManager == null)
-            {
-                resourceManager = gameObject.GetComponent<ResourceManager>();
-            }
-            if (fog == null)
-            {
-                GameObject fogObj = GameObject.Find("Fog");
-                if (fogObj)
-                {
-                    fog = fogObj.GetComponent<Fog>();
-                }
-            }
             if (unitSelect == null)
             {
                 unitSelect = gameObject.GetComponent<UnitSelection>();
@@ -74,7 +64,7 @@ namespace XposeCraft.Core.Faction.Buildings
             }
             for (int x = 0; x < nBuild.cost.Length; x++)
             {
-                if (nBuild.cost[x] > resourceManager.resourceTypes[x].amount)
+                if (nBuild.cost[x] > 0 && nBuild.cost[x] > ResourceManagerPlayerOnly.resourceTypes[x].amount)
                 {
                     return;
                 }
@@ -139,7 +129,7 @@ namespace XposeCraft.Core.Faction.Buildings
             Physics.Raycast(ray, out hit, 10000);
             for (int x = 0; x < build.cost.Length; x++)
             {
-                if (resourceManager.resourceTypes[x].amount - build.cost[x] >= 0)
+                if (build.cost[x] == 0 || ResourceManagerPlayerOnly.resourceTypes[x].amount >= build.cost[x])
                 {
                     continue;
                 }
@@ -172,7 +162,7 @@ namespace XposeCraft.Core.Faction.Buildings
                     factionIndex,
                     new Position(loc),
                     obj.transform.rotation,
-                    resourceManager);
+                    ResourceManagerPlayerOnly);
             }
             catch (InvalidOperationException)
             {
@@ -205,7 +195,7 @@ namespace XposeCraft.Core.Faction.Buildings
             }
             for (int x = 0; x < building.cost.Length; x++)
             {
-                if (resourceManager.resourceTypes[x].amount < building.cost[x])
+                if (building.cost[x] > 0 && resourceManager.resourceTypes[x].amount < building.cost[x])
                 {
                     throw new InvalidOperationException(
                         "Not enough resources for placing the " + building + " building");
@@ -213,7 +203,10 @@ namespace XposeCraft.Core.Faction.Buildings
             }
             for (int x = 0; x < building.cost.Length; x++)
             {
-                resourceManager.resourceTypes[x].amount -= building.cost[x];
+                if (building.cost[x] > 0)
+                {
+                    resourceManager.resourceTypes[x].amount -= building.cost[x];
+                }
             }
             GameObject buildingObject;
             if (building.autoBuild)

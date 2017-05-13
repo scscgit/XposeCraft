@@ -9,6 +9,7 @@ using XposeCraft.Game.Control.GameActions;
 using XposeCraft.GameInternal;
 using XposeCraft.GameInternal.Helpers;
 using BuildingType = XposeCraft.Game.Enums.BuildingType;
+using EventType = XposeCraft.Game.Enums.EventType;
 
 namespace XposeCraft.Game.Actors.Units
 {
@@ -40,7 +41,8 @@ namespace XposeCraft.Game.Actors.Units
         public IBuilding CreateBuilding(BuildingType buildingType, Position position)
         {
             StopGathering();
-            return Create<Building>(
+            var player = Player.CurrentPlayer;
+            var actor = Create<Building>(
                 BuildingHelper.DetermineBuildingType(buildingType),
                 BuildingPlacement.PlaceProgressBuilding(
                     BuildingHelper.FindBuildingInFaction(buildingType, UnitController),
@@ -48,10 +50,17 @@ namespace XposeCraft.Game.Actors.Units
                     UnitController.FactionIndex,
                     position,
                     Quaternion.identity,
-                    GameManager.Instance.ResourceManager
+                    GameManager.Instance.ResourceManagerFaction[UnitController.FactionIndex]
                 ),
-                Player.CurrentPlayer
+                player
             );
+            // TODO: asynchronous after the movement
+            GameManager.Instance.FiredEvent(player, EventType.BuildingStartedConstruction, new Arguments
+            {
+                MyUnit = this,
+                MyBuilding = actor
+            });
+            return actor;
         }
 
         /// <summary>

@@ -4,6 +4,7 @@ using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Faction.Units;
 using XposeCraft.Core.Required;
 using XposeCraft.GameInternal;
+using XposeCraft.GameInternal.Helpers;
 using BuildingType = XposeCraft.Core.Faction.Buildings.BuildingType;
 using UnitType = XposeCraft.Game.Enums.UnitType;
 
@@ -18,9 +19,31 @@ namespace XposeCraft.Game.Actors.Buildings
             get { return BuildingController.buildingType == BuildingType.CompleteBuilding; }
         }
 
-        public float Progress
+        public float ConstructionProgress
         {
             get { return BuildingController.progressCur / BuildingController.progressReq; }
+        }
+
+        protected List<UnitType> CanProduceUnits
+        {
+            get
+            {
+                var canProduceUnits = new List<UnitType>();
+                foreach (var value in Enum.GetValues(typeof(UnitType)))
+                {
+                    var unitType = (UnitType) value;
+                    try
+                    {
+                        UnitHelper.FindUnitIndexInFaction(unitType, BuildingController);
+                        canProduceUnits.Add(unitType);
+                    }
+                    catch (Exception)
+                    {
+                        // Unsupported Unit
+                    }
+                }
+                return canProduceUnits;
+            }
         }
 
         /// <summary>
@@ -51,10 +74,12 @@ namespace XposeCraft.Game.Actors.Buildings
             UnitSelection.SetTarget(new List<UnitController> {builderUnit}, GameObject, GameObject.transform.position);
         }
 
-        protected bool CreateUnit(UnitType type)
+        protected bool ProduceUnit(UnitType unitType)
         {
-            // TODO: add to the queue, event when created
-            return false;
+            return BuildingController.unitProduction.StartProduction(
+                UnitHelper.FindUnitIndexInUnitProduction(unitType, BuildingController.unitProduction),
+                GameManager.Instance.ResourceManagerFaction[BuildingController.FactionIndex],
+                BuildingController.PlayerOwner);
         }
 
         protected int QueuedUnits
@@ -71,10 +96,22 @@ namespace XposeCraft.Game.Actors.Buildings
         {
             base.Initialize(playerOwner);
             BuildingController = GameObject.GetComponent<BuildingController>();
+            BuildingController.PlayerOwner = playerOwner;
             if (!GameObject.CompareTag("Building"))
             {
                 throw new InvalidOperationException("Building Actor has invalid state, GameObject is missing tag");
             }
+        }
+
+        internal void Placed(BuildingController placedBuilding, Player playerOwner)
+        {
+            if (BuildingController == null)
+            {
+                throw new Exception("Cannot be placed by a null controller");
+            }
+            placedBuilding.PlayerOwner = playerOwner;
+            GameObject = placedBuilding.gameObject;
+            BuildingController = placedBuilding;
         }
     }
 }

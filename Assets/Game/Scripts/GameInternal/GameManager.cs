@@ -68,8 +68,13 @@ namespace XposeCraft.GameInternal
         public UGrid UGrid { get; private set; }
         public Fog Fog { get; private set; }
         public AStarManager AStarManager { get; private set; }
-        public ResourceManager ResourceManager { get; private set; }
         public Faction[] Factions { get; private set; }
+        public ResourceManager[] ResourceManagerFaction { get; private set; }
+
+        public ResourceManager CurrentPlayerResourceManager
+        {
+            get { return ResourceManagerFaction[Fog.FactionIndexDisplay]; }
+        }
 
         public Grid Grid
         {
@@ -77,6 +82,23 @@ namespace XposeCraft.GameInternal
         }
 
         public ActorLookupDictionary ActorLookup;
+
+        public Player GUIPlayer
+        {
+            get
+            {
+                // Assuming there will never be shared Faction, in which Players switch their non-API control
+                foreach (var player in Players)
+                {
+                    if (player.FactionIndex == Fog.FactionIndexDisplay)
+                    {
+                        return player;
+                    }
+                }
+                // Failsafe, this is just GUI
+                return Players[0];
+            }
+        }
 
         private void OnDrawGizmos()
         {
@@ -102,14 +124,15 @@ namespace XposeCraft.GameInternal
             UGrid = GameObject.Find(UGrid.ScriptName).GetComponent<UGrid>();
             Fog = GameObject.Find(Fog.ScriptName).GetComponent<Fog>();
             AStarManager = GameObject.Find(AStarManager.ScriptName).GetComponent<AStarManager>();
-            ResourceManager = GameObject.Find("Player Manager").GetComponent<ResourceManager>();
             var factionList = GameObject.Find("Faction Manager")
                 .GetComponent<FactionManager>()
                 .FactionList;
             Factions = new Faction[factionList.Length];
+            ResourceManagerFaction = new ResourceManager[factionList.Length];
             for (var factionIndex = 0; factionIndex < factionList.Length; factionIndex++)
             {
                 Factions[factionIndex] = factionList[factionIndex].GetComponent<Faction>();
+                ResourceManagerFaction[factionIndex] = Factions[factionIndex].GetComponent<ResourceManager>();
             }
             return this;
         }
@@ -279,6 +302,8 @@ namespace XposeCraft.GameInternal
                         registeredEvent.UnregisterEvent();
                         continue;
                     }
+                    // Minerals can be always initialized deterministically based on the Player
+                    args.Minerals = ResourceHelper.GetMinerals(ResourceManagerFaction[player.FactionIndex]);
                     registeredEvent.Function(new Arguments(args, registeredEvent));
                 }
             }

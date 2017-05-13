@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using XposeCraft.Game.Enums;
 using XposeCraft.GameInternal;
@@ -28,9 +29,14 @@ namespace XposeCraft.Game.Actors.Buildings
             }
         }
 
-        public new bool CreateUnit(UnitType type)
+        public new List<UnitType> CanProduceUnits
         {
-            return base.CreateUnit(type);
+            get { return base.CanProduceUnits; }
+        }
+
+        public new bool ProduceUnit(UnitType unitType)
+        {
+            return base.ProduceUnit(unitType);
         }
 
         public new int QueuedUnits

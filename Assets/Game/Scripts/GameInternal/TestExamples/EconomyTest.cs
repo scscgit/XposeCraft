@@ -18,8 +18,11 @@ namespace XposeCraft.GameInternal.TestExamples
         public void EconomyStage(Action startNextStage)
         {
             // Game started, the first worker will get to work
-            Worker firstWorker = UnitHelper.GetMyUnits<Worker>()[0];
-            firstWorker.SendGather(ResourceHelper.GetNearestMineralTo(firstWorker));
+            Worker[] firstWorkers = UnitHelper.GetMyUnits<Worker>();
+            foreach (Worker worker in firstWorkers)
+            {
+                worker.SendGather(ResourceHelper.GetNearestMineralTo(worker));
+            }
 
             EventForCreatingAnother();
             startNextStage();
@@ -29,16 +32,16 @@ namespace XposeCraft.GameInternal.TestExamples
         {
             Event.Register(EventType.MineralsChanged, argsA =>
             {
-                if (argsA.Minerals > 50)
+                if (argsA.Minerals >= 50)
                 {
                     // After he collected minerals, another worker will be built
-                    var baseCenter = BuildingHelper.GetBuildings<BaseCenter>()[0];
-                    baseCenter.CreateUnit(UnitType.Worker);
+                    var baseCenter = BuildingHelper.GetMyBuildings<BaseCenter>()[0];
+                    baseCenter.ProduceUnit(UnitType.Worker);
 
                     // After creating (it means after few seconds), he will need to go gather too
-                    Event.Register(EventType.UnitCreated, argsB =>
+                    Event.Register(EventType.UnitProduced, argsB =>
                     {
-                        if (argsB.MyUnit.GetType() == typeof(Worker))
+                        if (argsB.MyUnit is Worker)
                         {
                             Worker worker = (Worker) argsB.MyUnit;
                             worker.SendGather(ResourceHelper.GetNearestMineralTo(worker));
@@ -46,7 +49,6 @@ namespace XposeCraft.GameInternal.TestExamples
                         }
                     });
                 }
-                argsA.ThisEvent.UnregisterEvent();
 
                 // This event will work only while there are not enough workers.
                 // After that, minerals will be left to go over 150.

@@ -154,7 +154,7 @@ namespace XposeCraft.Core.Fog_Of_War
                     catch (Exception e)
                     {
                         // Accessing index of agentSeenPositions caused a crash, there may be a hazard
-                        Log.e(e.Message);
+                        Log.w("LocationsSeenTemporary problem: " + e.Message);
                     }
                 }
                 var agentActorsSawChange = new List<Actor>();

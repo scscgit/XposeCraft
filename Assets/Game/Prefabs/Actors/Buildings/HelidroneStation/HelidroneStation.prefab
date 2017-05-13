@@ -554,6 +554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41005d3ab5c4f734bb377328f81383f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerOwner: {fileID: 0}
   type:
     name: Name
     strengths: []
@@ -578,11 +579,12 @@ MonoBehaviour:
     canProduce: 1
     units:
     - UnitIndex: 0
+      Player: {fileID: 0}
       canProduce: 1
-      cost: 320000000000000000000000
+      cost: 32000000
       customTexture: {fileID: 0}
       customName: Goblin
-      dur: 2
+      dur: 15
       rate: 1
       amount: 1
       description: Worker

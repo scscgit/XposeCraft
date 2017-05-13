@@ -8,7 +8,7 @@ namespace XposeCraft.GameInternal.Helpers
         public static int GetMinerals(ResourceManager resourceManager)
         {
             var resource = resourceManager.resourceTypes[0];
-            Debug.Assert(resource.name.Equals("Rock"));
+            Debug.Assert(resource.name.Equals("Minerals"));
             return resource.amount;
         }
     }

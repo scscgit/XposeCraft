@@ -340,6 +340,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41005d3ab5c4f734bb377328f81383f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerOwner: {fileID: 0}
   type:
     name: Name
     strengths: []
@@ -364,11 +365,12 @@ MonoBehaviour:
     canProduce: 1
     units:
     - UnitIndex: 1
+      Player: {fileID: 0}
       canProduce: 1
-      cost: 4b0000000000000000000000
+      cost: 4b000000
       customTexture: {fileID: 0}
       customName: DonkeyGun
-      dur: 5
+      dur: 25
       rate: 1
       amount: 1
       description: Fighter

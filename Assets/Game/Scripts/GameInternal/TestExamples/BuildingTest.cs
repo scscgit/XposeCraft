@@ -37,11 +37,12 @@ namespace XposeCraft.GameInternal.TestExamples
             // A first building
             Event.Register(EventType.MineralsChanged, args =>
             {
-                if (args.Minerals > 150)
+                if (args.Minerals >= 100)
                 {
-                    var baseCenter = BuildingHelper.GetBuildings<BaseCenter>()[0];
+                    var baseCenter = BuildingHelper.GetMyBuildings<BaseCenter>()[0];
                     var position = BuildingHelper.ClosestEmptySpaceTo(baseCenter, BuildingType.NubianArmory);
-                    FindWorkerThatGathers().CreateBuilding(BuildingType.NubianArmory, position);
+                    IBuilding building = FindWorkerThatGathers().CreateBuilding(BuildingType.NubianArmory, position);
+                    FindWorkerThatGathers().FinishBuiding(building);
 
                     // We only need one army production building for now
                     args.ThisEvent.UnregisterEvent();
@@ -51,11 +52,9 @@ namespace XposeCraft.GameInternal.TestExamples
             // Worker will return to work afterwards
             Event.Register(EventType.BuildingCreated, args =>
             {
-                if (
-                    args.MyBuilding.GetType() == typeof(NubianArmory)
+                if (args.MyBuilding is NubianArmory
                     &&
-                    args.MyUnit.GetType() == typeof(Worker)
-                )
+                    args.MyUnit is Worker)
                 {
                     var worker = (Worker) args.MyUnit;
                     worker.SendGather(ResourceHelper.GetNearestMineralTo(worker));
@@ -71,9 +70,9 @@ namespace XposeCraft.GameInternal.TestExamples
             {
                 if (args.Minerals > 100)
                 {
-                    foreach (NubianArmory armory in BuildingHelper.GetBuildings<NubianArmory>())
+                    foreach (NubianArmory armory in BuildingHelper.GetMyBuildings<NubianArmory>())
                     {
-                        if (armory.CreateUnit(UnitType.DonkeyGun))
+                        if (armory.ProduceUnit(UnitType.DonkeyGun))
                         {
                             if (MyBot.Army++ >= 5)
                             {

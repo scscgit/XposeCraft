@@ -59,21 +59,18 @@ namespace XposeCraft.GameInternal
                 switch (playerIndex)
                 {
                     case 0:
-                        RunPlayerTest();
+                        try
+                        {
+                            RunPlayerTest();
+                        }
+                        catch (Exception)
+                        {
+                            player.Lost(Player.LoseReason.ExceptionThrown);
+                            throw;
+                        }
                         break;
                     default:
-                        switch (UnityEngine.Random.Range(0, 3))
-                        {
-                            case 0:
-                                DebugTestBuilding();
-                                break;
-                            case 1:
-                                DebugTestUnitQueue();
-                                break;
-                            case 2:
-                                RunEnemyPlayerExampleTest();
-                                break;
-                        }
+                        RunEnemyPlayerExampleTest();
                         break;
                 }
 
@@ -97,8 +94,8 @@ namespace XposeCraft.GameInternal
         public void SelfTests()
         {
             // GameManager starting Unit creation
-            Assert.AreEqual(1, BuildingHelper.GetBuildings<IBuilding>().Length);
-            Assert.AreEqual(1, BuildingHelper.GetBuildings<BaseCenter>().Length);
+            Assert.AreEqual(1, BuildingHelper.GetMyBuildings<IBuilding>().Length);
+            Assert.AreEqual(1, BuildingHelper.GetMyBuildings<BaseCenter>().Length);
             var units = GameManager.Instance.StartingWorkers;
             Assert.AreEqual(units, UnitHelper.GetMyUnits<IUnit>().Length);
             Assert.AreEqual(units, UnitHelper.GetMyUnits<Worker>().Length);

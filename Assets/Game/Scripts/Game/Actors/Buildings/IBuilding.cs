@@ -3,10 +3,13 @@ namespace XposeCraft.Game.Actors.Buildings
     public interface IBuilding : IActor
     {
         /// <summary>
-        /// Is true if the building is already finished, which means its construction is not in a progress.
+        /// True if the Building is already fully constructed, which means the construction is not in a progress.
         /// </summary>
         bool Finished { get; }
 
-        float Progress { get; }
+        /// <summary>
+        /// Percentage progress of the Building construction with values between 0 and 1.
+        /// </summary>
+        float ConstructionProgress { get; }
     }
 }

@@ -6,7 +6,8 @@ namespace XposeCraft.Game.Enums
     public enum EventType
     {
         MineralsChanged,
-        UnitCreated,
+        UnitProduced,
+        BuildingStartedConstruction,
         BuildingCreated,
         EnemyUnitsOnSight,
         EnemyBuildingsOnSight,

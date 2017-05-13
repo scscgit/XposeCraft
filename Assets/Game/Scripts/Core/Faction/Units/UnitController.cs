@@ -7,7 +7,6 @@ using XposeCraft.Core.Resources;
 using XposeCraft.Game;
 using XposeCraft.Game.Control;
 using XposeCraft.GameInternal;
-using XposeCraft.GameInternal.Helpers;
 using XposeCraft.UI.MiniMap;
 using EventType = XposeCraft.Game.Enums.EventType;
 using Unit = XposeCraft.Game.Actors.Units.Unit;
@@ -299,7 +298,8 @@ namespace XposeCraft.Core.Faction.Units
                                 {
                                     build.source = target.GetComponent<BuildingController>();
                                 }
-                                else if (build.source.buildingType == BuildingType.ProgressBuilding && build.Build())
+                                else if (build.source.buildingType == BuildingType.ProgressBuilding
+                                         && build.Build(this))
                                 {
                                     if (anim.state != "Build")
                                     {
@@ -342,8 +342,7 @@ namespace XposeCraft.Core.Faction.Units
                         resource.DropOff(this);
                         var args = new Arguments
                         {
-                            MyUnit = UnitActor,
-                            Minerals = ResourceHelper.GetMinerals(resource.manager)
+                            MyUnit = UnitActor
                         };
                         GameManager.Instance.FiredEvent(PlayerOwner, EventType.MineralsChanged, args);
                     }

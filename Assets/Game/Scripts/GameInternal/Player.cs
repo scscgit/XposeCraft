@@ -21,6 +21,16 @@ namespace XposeCraft.GameInternal
     /// </summary>
     public class Player : MonoBehaviour
     {
+        /// <summary>
+        /// Reason of losing.
+        /// </summary>
+        public enum LoseReason
+        {
+            ExceptionThrown,
+            AllBuildingsDestroyed,
+            TimeoutStalemate
+        }
+
         // Unity hot-swap serialization workarounds.
 
         [Serializable]
@@ -145,6 +155,26 @@ namespace XposeCraft.GameInternal
             {
                 EnemyVisibleBuildings.Remove((Building) building);
             }
+        }
+
+        public void Lost(LoseReason loseReason)
+        {
+            switch (loseReason)
+            {
+                case LoseReason.ExceptionThrown:
+                    Log.e("Lost, because an exception was thrown");
+                    break;
+                case LoseReason.AllBuildingsDestroyed:
+                    Log.e("Lost, because all your buildings were destroyed");
+                    break;
+                case LoseReason.TimeoutStalemate:
+                    Log.e("Stalemate, lost because of a game timeout");
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("loseReason", loseReason, null);
+            }
+            GameTestRunner.Failed = true;
+            // TODO: this causes enemies to Win (if no remaining players)
         }
     }
 }

@@ -1,6 +1,10 @@
 using System;
+using System.Collections.Generic;
 using XposeCraft.Core.Faction.Units;
+using XposeCraft.Core.Required;
 using XposeCraft.Game.Actors.Units;
+using XposeCraft.GameInternal;
+using XposeCraft.GameInternal.Helpers;
 
 namespace XposeCraft.Game.Control.GameActions
 {
@@ -22,8 +26,14 @@ namespace XposeCraft.Game.Control.GameActions
             {
                 return false;
             }
+            // Move
+            UnitSelection.SetTarget(
+                new List<UnitController> {unitController},
+                GameManager.Instance.Terrain.gameObject,
+                PositionHelper.PositionToLocation(Where));
             // TODO: implementing this will also solve the issue of finding MyUnit argument of an enemy detection event
-            throw new NotImplementedException();
+            Log.e("The AttackMove feature is not implemented yet, applying Move");
+            return true;
         }
     }
 }

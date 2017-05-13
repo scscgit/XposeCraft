@@ -16,7 +16,7 @@ namespace XposeCraft.Game.Actors
         protected GameObject GameObject
         {
             get { return _gameObject; }
-            private set { _gameObject = value; }
+            set { _gameObject = value; }
         }
 
         /// <summary>

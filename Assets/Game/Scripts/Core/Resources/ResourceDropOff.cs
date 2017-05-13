@@ -1,4 +1,7 @@
+using System;
 using UnityEngine;
+using XposeCraft.Core.Faction.Buildings;
+using XposeCraft.GameInternal;
 
 namespace XposeCraft.Core.Resources
 {
@@ -10,7 +13,13 @@ namespace XposeCraft.Core.Resources
         {
             var typeList = new ResourceManager.BoolList();
             typeList.AddRange(type);
-            GameObject.Find("Player Manager").GetComponent<ResourceManager>().AddDropOff(gameObject, typeList);
+            var buildingController = gameObject.GetComponent<BuildingController>();
+            if (buildingController == null)
+            {
+                throw new Exception(typeof(ResourceDropOff) + " added to a non-building Game Object");
+            }
+            GameManager.Instance.ResourceManagerFaction[buildingController.FactionIndex]
+                .AddDropOff(gameObject, typeList);
         }
     }
 }
