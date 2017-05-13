@@ -27,8 +27,11 @@ namespace XposeCraft.GameInternal
 {
     public class GameManager : MonoBehaviour
     {
+        /// <summary>
+        /// SerializableDictionary2 could not serialize Actor values.
+        /// </summary>
         [Serializable]
-        public class ActorLookupDictionary : SerializableDictionary2<GameObject, Actor>
+        public class ActorLookupDictionary : SerializableDictionary3<GameObject, Actor>
         {
         }
 

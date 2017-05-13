@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using XposeCraft.Game.Actors.Buildings;
+using XposeCraft.Game.Enums;
 using XposeCraft.GameInternal;
 
 namespace XposeCraft.Game.Helpers
@@ -44,10 +46,32 @@ namespace XposeCraft.Game.Helpers
             return GetVisibleEnemyBuildingsAsList<TBuilding>().ToArray();
         }
 
-        public static Position ClosestEmptySpaceTo(IBuilding building)
+        /// <summary>
+        /// Finds a closest empty space near a Building, that is valid for a placement of a specific type of a Building.
+        /// </summary>
+        /// <param name="closestToBuilding">Building near which the placement is searched from.</param>
+        /// <param name="forBuildingPlacement">Building type which should be able to be placed there.</param>
+        /// <returns>A vali</returns>
+        public static Position ClosestEmptySpaceTo(IBuilding closestToBuilding, BuildingType forBuildingPlacement)
         {
-            // TODO: implement, demo
-            return null;
+            // TODO: implement dynamically for closestToBuilding outside this array, demo
+            foreach (var position in new[]
+            {
+                PlaceType.MyBase.Center,
+                PlaceType.MyBase.Front,
+                PlaceType.MyBase.Back,
+                PlaceType.MyBase.Left,
+                PlaceType.MyBase.Right,
+                PlaceType.MyBase.UnderRampLeft,
+                PlaceType.MyBase.UnderRampRight,
+            })
+            {
+                if (position.IsValidPlacement(forBuildingPlacement))
+                {
+                    return position;
+                }
+            }
+            throw new Exception("Out of empty positions");
         }
     }
 }

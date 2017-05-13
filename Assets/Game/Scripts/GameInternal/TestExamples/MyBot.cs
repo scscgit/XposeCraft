@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using XposeCraft.Game;
 using XposeCraft.Game.Actors.Units;
 
-namespace XposeCraft.Test.TestExamples
+namespace XposeCraft.GameInternal.TestExamples
 {
     /// <summary>
     /// Any custom class made by a student.

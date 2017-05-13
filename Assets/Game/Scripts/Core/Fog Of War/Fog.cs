@@ -136,12 +136,25 @@ namespace XposeCraft.Core.Fog_Of_War
                 // Find all agents that saw the change in state
                 var agentIndexesSawChange = new List<int>();
                 var location = fog.DetermineLocInteger(hiddenAgentT[x].position);
+                if (signalAgents.LocationsSeenTemporary == null)
+                {
+                    Log.w("Fog hidden agent cannot find locations of nearby signal agents");
+                    return;
+                }
                 for (var agentIndex = 0; agentIndex < signalAgents.LocationsSeenTemporary.Length; agentIndex++)
                 {
-                    var agentSeenPositions = signalAgents.LocationsSeenTemporary[agentIndex];
-                    if (agentSeenPositions.Contains(location))
+                    try
                     {
-                        agentIndexesSawChange.Add(agentIndex);
+                        var agentSeenPositions = signalAgents.LocationsSeenTemporary[agentIndex];
+                        if (agentSeenPositions.Contains(location))
+                        {
+                            agentIndexesSawChange.Add(agentIndex);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        // Accessing index of agentSeenPositions caused a crash, there may be a hazard
+                        Log.e(e.Message);
                     }
                 }
                 var agentActorsSawChange = new List<Actor>();

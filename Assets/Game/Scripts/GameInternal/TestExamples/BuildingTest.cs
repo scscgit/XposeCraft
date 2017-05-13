@@ -1,12 +1,11 @@
 using System;
 using XposeCraft.Game;
 using XposeCraft.Game.Actors.Buildings;
-using XposeCraft.Game.Actors.Resources.Minerals;
 using XposeCraft.Game.Actors.Units;
 using XposeCraft.Game.Enums;
 using XposeCraft.Game.Helpers;
 
-namespace XposeCraft.Test.TestExamples
+namespace XposeCraft.GameInternal.TestExamples
 {
     /// <summary>
     /// Druha faza hry.
@@ -41,7 +40,7 @@ namespace XposeCraft.Test.TestExamples
                 if (args.Minerals > 150)
                 {
                     var baseCenter = BuildingHelper.GetBuildings<BaseCenter>()[0];
-                    var position = BuildingHelper.ClosestEmptySpaceTo(baseCenter);
+                    var position = BuildingHelper.ClosestEmptySpaceTo(baseCenter, BuildingType.NubianArmory);
                     FindWorkerThatGathers().CreateBuilding(BuildingType.NubianArmory, position);
 
                     // We only need one army production building for now
@@ -59,7 +58,7 @@ namespace XposeCraft.Test.TestExamples
                 )
                 {
                     var worker = (Worker) args.MyUnit;
-                    worker.SendGather(ResourceHelper.GetNearestResourceTo<Mineral>(worker));
+                    worker.SendGather(ResourceHelper.GetNearestMineralTo(worker));
                     BuildArmy(startNextStage);
                 }
                 args.ThisEvent.UnregisterEvent();

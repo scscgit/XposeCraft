@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using XposeCraft.Game.Actors;
 using XposeCraft.Game.Actors.Resources;
+using XposeCraft.Game.Actors.Resources.Minerals;
 using XposeCraft.Game.Actors.Units;
 using XposeCraft.GameInternal;
 
@@ -32,6 +33,16 @@ namespace XposeCraft.Game.Helpers
         public static TResource[] GetResources<TResource>() where TResource : IResource
         {
             return GetResourcesAsList<TResource>().ToArray();
+        }
+
+        /// <summary>
+        /// Finds a closest available Mineral to an Actor.
+        /// </summary>
+        /// <param name="actor">Actor whose Position will used for the search reference.</param>
+        /// <returns>A closest Mineral.</returns>
+        public static Mineral GetNearestMineralTo(IActor actor)
+        {
+            return GetNearestResourceTo<Mineral>(actor);
         }
 
         /// <summary>

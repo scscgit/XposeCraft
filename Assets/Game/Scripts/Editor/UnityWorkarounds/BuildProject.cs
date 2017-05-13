@@ -67,12 +67,12 @@ namespace XposeCraft.UnityWorkarounds
             EditorApplication.playmodeStateChanged += TestAfterPlaying;
         }
 
-        private static readonly string[] BuildScenes =
+        public static readonly string[] BuildScenes =
         {
             "Assets/Game/Scenes/BasicScene.unity"
         };
 
-        private static readonly string[] TestScenes =
+        public static readonly string[] TestScenes =
         {
             BuildScenes[0],
             "Assets/Game/Scenes/AutomationTest.unity"
@@ -81,7 +81,6 @@ namespace XposeCraft.UnityWorkarounds
         private static bool _stopTests;
         private static Thread _testBackgroundThread;
 
-        [MenuItem("Unity Test Tools/Build XposeCraft")]
         public static void Build()
         {
             var buildError = BuildPipeline.BuildPlayer(BuildScenes, GetLocation(), GetTarget(), GetOptions());
@@ -89,18 +88,16 @@ namespace XposeCraft.UnityWorkarounds
             {
                 Debug.LogError(buildError);
             }
-            //Test();
+            Test();
         }
 
         /// <summary>
         /// Run tests after combining and opening the scenes.
         /// </summary>
-        [Obsolete]
-        //[MenuItem("Unity Test Tools/Test XposeCraft")]
         public static void Test()
         {
             CleanTestRunner();
-            //OpenScenes(TestScenes);
+            OpenScenes(TestScenes);
             PlayerPrefs.SetInt("testAfterPlayingReady", 1);
             EditorApplication.isPlaying = true;
         }

@@ -7,7 +7,7 @@ using XposeCraft.Game.Control.GameActions;
 using XposeCraft.Game.Enums;
 using XposeCraft.Game.Helpers;
 
-namespace XposeCraft.Test.TestExamples
+namespace XposeCraft.GameInternal.TestExamples
 {
     /// <summary>
     /// Tretia faza hry.

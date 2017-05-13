@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using XposeCraft.Game;
 using XposeCraft.Game.Actors.Buildings;
-using XposeCraft.Game.Actors.Resources.Minerals;
 using XposeCraft.Game.Actors.Units;
 using XposeCraft.Game.Control;
 using XposeCraft.Game.Control.GameActions;
@@ -60,21 +59,33 @@ namespace XposeCraft.GameInternal
                 switch (playerIndex)
                 {
                     case 0:
-                        ExampleTestUnitQueue();
+                        RunPlayerTest();
                         break;
                     default:
-                        ExampleTestBuilding();
+                        switch (UnityEngine.Random.Range(0, 3))
+                        {
+                            case 0:
+                                DebugTestBuilding();
+                                break;
+                            case 1:
+                                DebugTestUnitQueue();
+                                break;
+                            case 2:
+                                RunEnemyPlayerExampleTest();
+                                break;
+                        }
                         break;
                 }
 
                 // Game bot run
-                RunPlayerTests();
+                RunPlayerTest();
             }
 
-            StartCoroutine(RunAfterSeconds(29, () =>
+            // Time-out after 10 minutes
+            StartCoroutine(RunAfterSeconds(600, () =>
             {
                 Log.i("----------------------------------");
-                Log.i(">>         End of Game.         <<");
+                Log.i(">>    End of Game, stalemate    <<");
                 Log.i("----------------------------------");
                 IntegrationTest.Fail();
                 Failed = true;
@@ -97,7 +108,7 @@ namespace XposeCraft.GameInternal
             Assert.AreEqual(center.PointLocation, new Position(center.X, center.Y).PointLocation);
         }
 
-        public void ExampleTestUnitQueue()
+        public void DebugTestUnitQueue()
         {
             var workers = UnitHelper.GetMyUnitsAsList<Worker>();
             workers[0]
@@ -105,7 +116,7 @@ namespace XposeCraft.GameInternal
                 .After(new CustomFunction(() =>
                     workers[0].CreateBuilding(BuildingType.BaseCenter, PlaceType.MyBase.Left)))
                 .After(new Move(PlaceType.MyBase.Right))
-                .After(new GatherResource(ResourceHelper.GetNearestResourceTo<Mineral>(workers[0])))
+                .After(new GatherResource(ResourceHelper.GetNearestMineralTo(workers[0])))
                 .After(new CustomFunction(() =>
                     workers[0].CreateBuilding(BuildingType.BaseCenter, PlaceType.MyBase.Right)));
 
@@ -129,7 +140,7 @@ namespace XposeCraft.GameInternal
             });
         }
 
-        public void ExampleTestBuilding()
+        public void DebugTestBuilding()
         {
             var workers = UnitHelper.GetMyUnitsAsList<Worker>();
             workers[0].CreateBuilding(BuildingType.NubianArmory, PlaceType.MyBase.Right);
@@ -137,7 +148,7 @@ namespace XposeCraft.GameInternal
             {
                 for (var index = 1; index < workers.Count; index++)
                 {
-                    workers[index].SendGather(ResourceHelper.GetNearestResourceTo<Mineral>(workers[index]));
+                    workers[index].SendGather(ResourceHelper.GetNearestMineralTo(workers[index]));
                 }
             }));
 
@@ -155,7 +166,7 @@ namespace XposeCraft.GameInternal
             });
         }
 
-        public void RunPlayerTests()
+        public void RunPlayerTest()
         {
             Log.i(">>  Starting a Planning Phase.  <<");
 
@@ -179,6 +190,36 @@ namespace XposeCraft.GameInternal
             {
                 Log.i(this, "Starting Economy Stage");
                 var economyTest = new EconomyTest();
+                economyTest.EconomyStage(buildingStage);
+            });
+
+            economyStage();
+        }
+
+        public void RunEnemyPlayerExampleTest()
+        {
+            Log.i(">>  Starting a Planning Phase.  <<");
+
+            var end = new Action(() => { Log.i(">>   End of a Planning Phase.   <<"); });
+
+            var battleStage = new Action(() =>
+            {
+                Log.i(this, "Starting Battle Stage");
+                var battleTest = new TestExamples.BattleTest();
+                battleTest.BattleStage(end);
+            });
+
+            var buildingStage = new Action(() =>
+            {
+                Log.i(this, "Starting Building Stage");
+                var buildingTest = new TestExamples.BuildingTest();
+                buildingTest.BuildingStage(battleStage);
+            });
+
+            var economyStage = new Action(() =>
+            {
+                Log.i(this, "Starting Economy Stage");
+                var economyTest = new TestExamples.EconomyTest();
                 economyTest.EconomyStage(buildingStage);
             });
 

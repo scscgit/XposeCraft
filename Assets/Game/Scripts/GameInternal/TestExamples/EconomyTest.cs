@@ -1,12 +1,11 @@
 using System;
 using XposeCraft.Game;
 using XposeCraft.Game.Actors.Buildings;
-using XposeCraft.Game.Actors.Resources.Minerals;
 using XposeCraft.Game.Actors.Units;
 using XposeCraft.Game.Enums;
 using XposeCraft.Game.Helpers;
 
-namespace XposeCraft.Test.TestExamples
+namespace XposeCraft.GameInternal.TestExamples
 {
     /// <summary>
     /// Prva faza hry.
@@ -20,7 +19,7 @@ namespace XposeCraft.Test.TestExamples
         {
             // Game started, the first worker will get to work
             Worker firstWorker = UnitHelper.GetMyUnits<Worker>()[0];
-            firstWorker.SendGather(ResourceHelper.GetNearestResourceTo<Mineral>(firstWorker));
+            firstWorker.SendGather(ResourceHelper.GetNearestMineralTo(firstWorker));
 
             EventForCreatingAnother();
             startNextStage();
@@ -42,7 +41,7 @@ namespace XposeCraft.Test.TestExamples
                         if (argsB.MyUnit.GetType() == typeof(Worker))
                         {
                             Worker worker = (Worker) argsB.MyUnit;
-                            worker.SendGather(ResourceHelper.GetNearestResourceTo<Mineral>(worker));
+                            worker.SendGather(ResourceHelper.GetNearestMineralTo(worker));
                             argsB.ThisEvent.UnregisterEvent();
                         }
                     });

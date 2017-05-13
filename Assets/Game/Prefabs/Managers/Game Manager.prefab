@@ -59,11 +59,23 @@ MonoBehaviour:
   WorkerPrefab: {fileID: 1000013194072380, guid: 7f050e5e6d3f94e42bd1ede82fa86849,
     type: 2}
   StartingWorkers: 3
-  Debug: 1
+  Debug: 0
   DisplayAllHealthBars: 1
   DisplayOnlyDamagedHealthBars: 1
   LogLevel: 1
   ActorLookup:
-    _serializedKeys: []
-    _serializedValues: []
-    _serializedCount: 0
+    _buckets: ffffffffffffffffffffffff
+    _hashCodes: 000000000000000000000000
+    _next: 000000000000000000000000
+    _count: 0
+    _version: 0
+    _freeList: -1
+    _freeCount: 0
+    _keys:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    _values:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}

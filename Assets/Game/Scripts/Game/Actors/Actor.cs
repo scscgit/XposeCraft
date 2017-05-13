@@ -75,8 +75,11 @@ namespace XposeCraft.Game.Actors
                     Player.CurrentPlayer.Units.Add(unit);
                 }
             }
-            // Storing the GameObject in a map in order to be able to find its representative Actor
-            GameManager.Instance.ActorLookup.Add(gameObject, instance);
+            if (gameObject != null)
+            {
+                // Storing the GameObject in a map in order to be able to find its representative Actor
+                GameManager.Instance.ActorLookup.Add(gameObject, instance);
+            }
             return instance;
         }
     }
