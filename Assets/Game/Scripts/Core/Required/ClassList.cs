@@ -760,6 +760,15 @@ namespace XposeCraft.Core.Required
             return FindNormalPath(pointLoc1, pointLoc2);
         }
 
+        public UPath FindPathShorterThan(Vector3 endLoc, Vector3 startLoc, int shorterThanLength)
+        {
+            Vector3 loc1 = gridScript.DetermineNearestPoint(endLoc, startLoc, 0);
+            Vector3 loc2 = gridScript.DetermineNearestPoint(startLoc, endLoc, 0);
+            int pointLoc1 = gridScript.DetermineLocation(loc1, gridI);
+            int pointLoc2 = gridScript.DetermineLocation(loc2, gridI);
+            return FindNormalPath(pointLoc1, pointLoc2, shorterThanLength);
+        }
+
         // Finds the First Path
         public UPath FindFirstPath(Vector3 startLoc, Vector3 endLoc)
         {
@@ -770,6 +779,12 @@ namespace XposeCraft.Core.Required
 
         // Finds a normal A* Path
         public UPath FindNormalPath(int startLoc, int endLoc)
+        {
+            return FindNormalPath(startLoc, endLoc, null);
+        }
+
+        // Finds a normal A* Path. If maxLengthLimit is set, will return null if the length exceeds the number
+        public UPath FindNormalPath(int startLoc, int endLoc, int? maxLengthLimit)
         {
             var points = gridScript.grids[gridI].points;
             int[] gcostList = new int[points.Length];
@@ -827,6 +842,10 @@ namespace XposeCraft.Core.Required
                     addedList[lPoint] = true;
                     openList.Add(lPoint, f_cost);
                     oLLength++;
+                }
+                if (maxLengthLimit.HasValue && oLLength > maxLengthLimit.Value)
+                {
+                    return null;
                 }
             }
             return mp;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Faction.Units;
 using XposeCraft.Core.Required;
+using XposeCraft.Game.Actors.Resources;
 using XposeCraft.GameInternal;
 using XposeCraft.GameInternal.Helpers;
 using BuildingType = XposeCraft.Core.Faction.Buildings.BuildingType;
@@ -23,6 +24,11 @@ namespace XposeCraft.Game.Actors.Buildings
         {
             get { return BuildingController.progressCur / BuildingController.progressReq; }
         }
+
+        /// <summary>
+        /// Internal property, do not use.
+        /// </summary>
+        internal List<Resource> NearbyResorces { get; set; }
 
         protected List<UnitType> CanProduceUnits
         {
@@ -76,10 +82,15 @@ namespace XposeCraft.Game.Actors.Buildings
 
         protected bool ProduceUnit(UnitType unitType)
         {
-            return BuildingController.unitProduction.StartProduction(
+            var result = BuildingController.unitProduction.StartProduction(
                 UnitHelper.FindUnitIndexInUnitProduction(unitType, BuildingController.unitProduction),
                 GameManager.Instance.ResourceManagerFaction[BuildingController.FactionIndex],
                 BuildingController.PlayerOwner);
+            if (result)
+            {
+                Tutorial.Instance.UnitProduction();
+            }
+            return result;
         }
 
         protected int QueuedUnits

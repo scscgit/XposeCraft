@@ -46,6 +46,11 @@ namespace XposeCraft.Game
                 IsRegistered = true
             };
             registeredEvents[gameEvent].Add(newEvent);
+
+            if (gameEvent == EventType.MineralsChanged)
+            {
+                Tutorial.Instance.EventMineralsChanged();
+            }
             return newEvent;
         }
 

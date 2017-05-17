@@ -219,7 +219,7 @@ namespace XposeCraft.Core.Faction.Buildings
                     ratioX,
                     ratioY))
                 {
-                    unitProduction.StartProduction(x, resourceManager, GameManager.Instance.GUIPlayer);
+                    unitProduction.StartProduction(x, resourceManager, GameManager.Instance.GuiPlayer);
                 }
                 if (bGUI.unitGUI.contains)
                 {

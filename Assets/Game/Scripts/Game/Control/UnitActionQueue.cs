@@ -105,6 +105,10 @@ namespace XposeCraft.Game.Control
         public UnitActionQueue After(IGameAction action)
         {
             _queue.Enqueue(action);
+            if (_queue.Count > 1)
+            {
+                Tutorial.Instance.ActionQueue();
+            }
             return this;
         }
     }

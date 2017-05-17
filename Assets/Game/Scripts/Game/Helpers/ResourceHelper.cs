@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using XposeCraft.Game.Actors;
+using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Resources;
 using XposeCraft.Game.Actors.Resources.Minerals;
 using XposeCraft.Game.Actors.Units;
@@ -53,16 +54,51 @@ namespace XposeCraft.Game.Helpers
         /// <returns>A closest Resource.</returns>
         public static TResource GetNearestResourceTo<TResource>(IActor actor) where TResource : IResource
         {
+            const int initialMaxLengthFromBase = 50;
             var closestResource = default(TResource);
+            var closestDistance = initialMaxLengthFromBase;
             ForEach<TResource, Resource>(resource =>
             {
-                if (closestResource == null
-                    || resource.Position.PathFrom(actor.Position) < closestResource.Position.PathFrom(actor.Position))
+                var distance = resource.Position.PathFrom(actor.Position).IsLengthLessThan(closestDistance);
+                // Resources further away than the initial distance are discarded immediately
+                if (distance == null)
                 {
-                    closestResource = resource;
+                    return;
                 }
+                closestResource = resource;
+                closestDistance = distance.Value;
             }, Player.CurrentPlayer.Resources);
             return closestResource;
+        }
+
+        /// <summary>
+        /// Finds all Resources situated near a Base.
+        /// </summary>
+        /// <param name="baseCenter">Base near which all nearest resources will be looked for.</param>
+        /// <typeparam name="TResource">Type of the Resource to be searched for.</typeparam>
+        /// <returns>List of resources.</returns>
+        public static IList<TResource> GetResourcesNearBase<TResource>(BaseCenter baseCenter)
+            where TResource : IResource
+        {
+            const int maxPathLengthFromBase = 50;
+            var building = (Building) baseCenter;
+            // The building has all its resources cached
+            if (building.NearbyResorces == null)
+            {
+                var allResourcesList = new List<Resource>();
+                ForEach<Resource, Resource>(resource =>
+                {
+                    if (resource.Position.PathFrom(baseCenter.Position).IsLengthLessThan(maxPathLengthFromBase) != null)
+                    {
+                        allResourcesList.Add(resource);
+                    }
+                }, Player.CurrentPlayer.Resources);
+                building.NearbyResorces = allResourcesList;
+            }
+            // They are further filtered by the chosen generic type
+            var list = new List<TResource>();
+            ForEach<TResource, Resource>(resource => { list.Add(resource); }, building.NearbyResorces);
+            return list;
         }
     }
 }

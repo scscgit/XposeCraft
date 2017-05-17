@@ -84,16 +84,51 @@ namespace XposeCraft.Game
             _to = to;
         }
 
+        /// <summary>
+        /// Calculates Path up to a certain Length, cancelling the calculation if it gets exceeded.
+        /// </summary>
+        /// <param name="length">Maximum Path Length.</param>
+        /// <returns>Length if it is less than <paramref name="length"/>, null if it is larger.</returns>
+        internal int? IsLengthLessThan(int length)
+        {
+            var uPath = CreateAPath()
+                .FindPathShorterThan(
+                    PositionHelper.PositionToLocation(To),
+                    PositionHelper.PositionToLocation(From),
+                    length
+                );
+            if (uPath == null)
+            {
+                return null;
+            }
+            StoreLength(uPath);
+            return Length;
+        }
+
         private void CalculateLength()
+        {
+            //var uPath = aPath.FindNormalPath(From.PointLocation, To.PointLocation);
+            // Finding the Path between the first available Positions between them.
+            StoreLength(CreateAPath()
+                .FindPath(
+                    PositionHelper.PositionToLocation(To),
+                    PositionHelper.PositionToLocation(From)));
+        }
+
+        private APath CreateAPath()
         {
             var uGrid = GameManager.Instance.UGrid;
             var aPath = new APath {gridScript = uGrid, gridI = uGrid.index};
             aPath.InitializeGrid();
-            //var uPath = aPath.FindNormalPath(From.PointLocation, To.PointLocation);
-            // Finding the Path between the first available Positions between them.
-            var uPath = aPath.FindPath(
-                PositionHelper.PositionToLocation(To),
-                PositionHelper.PositionToLocation(From));
+            return aPath;
+        }
+
+        /// <summary>
+        /// Stores the calculated values to the Path instance.
+        /// </summary>
+        /// <param name="uPath"></param>
+        private void StoreLength(UPath uPath)
+        {
             if (uPath == null)
             {
                 _length = InvalidPathLength;

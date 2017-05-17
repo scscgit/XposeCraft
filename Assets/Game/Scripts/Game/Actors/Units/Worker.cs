@@ -30,6 +30,10 @@ namespace XposeCraft.Game.Actors.Units
         /// <param name="resource">Resource to be gathered.</param>
         public void SendGather(IResource resource)
         {
+            if (resource != null)
+            {
+                Tutorial.Instance.SendGather();
+            }
             ActionQueue = new UnitActionQueue(new GatherResource(resource));
         }
 
@@ -54,6 +58,8 @@ namespace XposeCraft.Game.Actors.Units
                 ),
                 player
             );
+            // TODO: make sure the CurrentPlayer stays the same after the movement
+            Tutorial.Instance.CreateBuilding();
             // TODO: asynchronous after the movement
             GameManager.Instance.FiredEvent(player, EventType.BuildingStartedConstruction, new Arguments
             {

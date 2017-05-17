@@ -13,13 +13,22 @@ namespace XposeCraft.Game.Helpers
     /// </summary>
     public sealed class BuildingHelper : ActorHelper<IBuilding>
     {
+        /// <inheritdoc cref="GetMyBuildings{TBuilding}"/>
+        /// <typeparam name="TBuilding">Type of the Building to be searched for.</typeparam>
+        /// <returns>List of Buildings.</returns>
         public static IList<TBuilding> GetMyBuildingsAsList<TBuilding>() where TBuilding : IBuilding
         {
+            Tutorial.Instance.GetUnitOrBuilding();
             var list = new List<TBuilding>();
             ForEach<TBuilding, Building>(building => { list.Add(building); }, Player.CurrentPlayer.Buildings);
             return list;
         }
 
+        /// <summary>
+        /// Finds Player's owned Buildings, that he can control in the world.
+        /// </summary>
+        /// <typeparam name="TBuilding">Type of the Building to be searched for.</typeparam>
+        /// <returns>Array of Buildings.</returns>
         public static TBuilding[] GetMyBuildings<TBuilding>() where TBuilding : IBuilding
         {
             return GetMyBuildingsAsList<TBuilding>().ToArray();

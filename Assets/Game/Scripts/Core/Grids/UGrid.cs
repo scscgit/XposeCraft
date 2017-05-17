@@ -59,7 +59,7 @@ namespace XposeCraft.Core.Grids
             Gizmos.DrawCube(FindPointLoc.Value, new Vector3(nodeSize, nodeSize, nodeSize));
         }
 
-        void OnEnable()
+        public void OnEnable()
         {
 #if UNITY_EDITOR
             // Loading a local choice of displaying the Grid

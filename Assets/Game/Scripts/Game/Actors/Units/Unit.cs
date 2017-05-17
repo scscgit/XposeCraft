@@ -24,6 +24,7 @@ namespace XposeCraft.Game.Actors.Units
                     UnitController._actionDequeue.Finished();
                 }
                 // Initializes the callback mechanism in the controller
+                // TODO: clone before creating a representing dequeue
                 _actionQueue = value;
                 UnitController._actionDequeue =
                     new UnitActionQueue.UnitActionDequeue(this, UnitController, _actionQueue);

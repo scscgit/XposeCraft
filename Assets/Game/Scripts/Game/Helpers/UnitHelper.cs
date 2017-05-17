@@ -16,6 +16,7 @@ namespace XposeCraft.Game.Helpers
         /// <returns>List of Units</returns>
         public static IList<TUnit> GetMyUnitsAsList<TUnit>() where TUnit : IUnit
         {
+            Tutorial.Instance.GetUnitOrBuilding();
             var list = new List<TUnit>();
             ForEach<TUnit, Unit>(unit => { list.Add(unit); }, Player.CurrentPlayer.Units);
             return list;

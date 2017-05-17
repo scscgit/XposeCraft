@@ -72,7 +72,7 @@ namespace XposeCraft.Game.Actors
                 var unit = instance as Unit;
                 if (unit != null)
                 {
-                    Player.CurrentPlayer.Units.Add(unit);
+                    playerOwner.Units.Add(unit);
                 }
             }
             if (gameObject != null)

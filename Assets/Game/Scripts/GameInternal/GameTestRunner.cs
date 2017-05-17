@@ -18,8 +18,12 @@ namespace XposeCraft.GameInternal
 {
     public class GameTestRunner : MonoBehaviour
     {
+        public const string ScriptName = "Game Test";
+
         public static bool Passed { get; set; }
         public static bool Failed { get; set; }
+        internal bool WasStarted { get; private set; }
+        private bool _shouldRun = true;
 
         protected void Sleep(int milliseconds)
         {
@@ -32,8 +36,33 @@ namespace XposeCraft.GameInternal
             action.Invoke();
         }
 
-        private void Start()
+        private void OnDrawGizmos()
         {
+            if (name != ScriptName)
+            {
+                name = ScriptName;
+            }
+        }
+
+        private void OnEnable()
+        {
+            // If the GameTestRunner is located in the same Scene, it has to wait for loading of all other components
+            // The reason for moving him back to the main Sene without using Test Framework was to stop disabling him
+            _shouldRun = true;
+        }
+
+        private void Update()
+        {
+            if (!_shouldRun)
+            {
+                return;
+            }
+            _shouldRun = false;
+
+            // This is temporarily a duplicate assignment hotfix, as a prevention to not to have default Log Level
+            Log.Level = GameManager.Instance.LogLevel;
+
+            // Runs the tests for all Players
             RunTests();
         }
 
@@ -41,7 +70,7 @@ namespace XposeCraft.GameInternal
         {
             Passed = false;
             Failed = false;
-            Log.i("*** " + typeof(GameTestRunner).Name + ".RunTests called ***");
+            Log.d("*** " + typeof(GameTestRunner).Name + ".RunTests called ***");
 
             // Test for each Player
             for (var playerIndex = 0; playerIndex < GameManager.Instance.Players.Length; playerIndex++)
@@ -50,18 +79,28 @@ namespace XposeCraft.GameInternal
 
                 // Player state initialization
                 Player.CurrentPlayer = player;
-                Log.i(this, "Switching tested Player to " + player.name);
+                Log.d(this, "Switching tested Player to " + player.name);
 
                 // Meta-tests
-                SelfTests();
+                if (!WasStarted)
+                {
+                    SelfTests();
+                }
 
-                // Temporary Example Test
+                // Tests of all Players
                 switch (playerIndex)
                 {
+                    // GUI player with tests in the default file location and an access to the HotSwap
                     case 0:
                         try
                         {
-                            RunPlayerTest();
+                            if (!WasStarted || GameManager.Instance.HotSwap)
+                            {
+                                // Requires Players to prove their Tutorial level again, before executing their code
+                                // This also disregards the influence of self-tests on the tutorial
+                                Tutorial.Instance.TutorialResetIfPlayer();
+                                RunPlayerTest();
+                            }
                         }
                         catch (Exception)
                         {
@@ -70,13 +109,22 @@ namespace XposeCraft.GameInternal
                         }
                         break;
                     default:
-                        RunEnemyPlayerExampleTest();
+                        try
+                        {
+                            if (!WasStarted)
+                            {
+                                RunEnemyPlayerExampleTest();
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            player.Lost(Player.LoseReason.ExceptionThrown);
+                            throw;
+                        }
                         break;
                 }
-
-                // Game bot run
-                RunPlayerTest();
             }
+            WasStarted = true;
 
             // Time-out after 10 minutes
             StartCoroutine(RunAfterSeconds(600, () =>
@@ -86,8 +134,10 @@ namespace XposeCraft.GameInternal
                 Log.i("----------------------------------");
                 IntegrationTest.Fail();
                 Failed = true;
-                //IntegrationTest.Pass();
-                //Passed = true;
+                foreach (var player in GameManager.Instance.Players)
+                {
+                    player.Lost(Player.LoseReason.TimeoutStalemate);
+                }
             }));
         }
 
@@ -127,12 +177,12 @@ namespace XposeCraft.GameInternal
             {
                 if (args.EnemyBuildings[0] is BaseCenter & args.MyUnit != null)
                 {
-                    Log.i("Found enemy base, returning");
+                    Log.d("Found enemy base, returning");
                     args.MyUnit.MoveTo(PlaceType.MyBase.Center);
                 }
                 else
                 {
-                    Log.i("Found building " + args.EnemyBuildings[0].GetType());
+                    Log.d("Found building " + args.EnemyBuildings[0].GetType());
                 }
             });
         }
@@ -165,27 +215,27 @@ namespace XposeCraft.GameInternal
 
         public void RunPlayerTest()
         {
-            Log.i(">>  Starting a Planning Phase.  <<");
+            Log.d(">>  Starting a Planning Phase.  <<");
 
-            var end = new Action(() => { Log.i(">>   End of a Planning Phase.   <<"); });
+            var end = new Action(() => { Log.d(">>   End of a Planning Phase.   <<"); });
 
             var battleStage = new Action(() =>
             {
-                Log.i(this, "Starting Battle Stage");
+                Log.d(this, "Starting Battle Stage");
                 var battleTest = new BattleTest();
                 battleTest.BattleStage(end);
             });
 
             var buildingStage = new Action(() =>
             {
-                Log.i(this, "Starting Building Stage");
+                Log.d(this, "Starting Building Stage");
                 var buildingTest = new BuildingTest();
                 buildingTest.BuildingStage(battleStage);
             });
 
             var economyStage = new Action(() =>
             {
-                Log.i(this, "Starting Economy Stage");
+                Log.d(this, "Starting Economy Stage");
                 var economyTest = new EconomyTest();
                 economyTest.EconomyStage(buildingStage);
             });
@@ -195,27 +245,27 @@ namespace XposeCraft.GameInternal
 
         public void RunEnemyPlayerExampleTest()
         {
-            Log.i(">>  Starting a Planning Phase.  <<");
+            Log.d(">>  Starting a Planning Phase.  <<");
 
-            var end = new Action(() => { Log.i(">>   End of a Planning Phase.   <<"); });
+            var end = new Action(() => { Log.d(">>   End of a Planning Phase.   <<"); });
 
             var battleStage = new Action(() =>
             {
-                Log.i(this, "Starting Battle Stage");
+                Log.d(this, "Starting Battle Stage");
                 var battleTest = new TestExamples.BattleTest();
                 battleTest.BattleStage(end);
             });
 
             var buildingStage = new Action(() =>
             {
-                Log.i(this, "Starting Building Stage");
+                Log.d(this, "Starting Building Stage");
                 var buildingTest = new TestExamples.BuildingTest();
                 buildingTest.BuildingStage(battleStage);
             });
 
             var economyStage = new Action(() =>
             {
-                Log.i(this, "Starting Economy Stage");
+                Log.d(this, "Starting Economy Stage");
                 var economyTest = new TestExamples.EconomyTest();
                 economyTest.EconomyStage(buildingStage);
             });

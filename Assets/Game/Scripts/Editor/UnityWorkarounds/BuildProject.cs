@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Castle.Core.Internal;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -104,6 +105,9 @@ namespace XposeCraft.UnityWorkarounds
 
         private static void TestAfterPlaying()
         {
+            // Disables the runner located in basic non-testing scene
+            FindObjectsOfType<GameTestRunner>().ForEach(run => run.gameObject.SetActive(false));
+
             var allTestComponents = TestComponent.FindAllTestsOnScene().ToList();
             var dynamicTests = allTestComponents.Where(t => t.dynamic).ToList();
             var dynamicTestsToRun = dynamicTests.Select(c => c.dynamicTypeName).ToList();

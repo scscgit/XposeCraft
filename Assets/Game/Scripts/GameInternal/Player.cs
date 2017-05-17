@@ -174,7 +174,7 @@ namespace XposeCraft.GameInternal
                     throw new ArgumentOutOfRangeException("loseReason", loseReason, null);
             }
             GameTestRunner.Failed = true;
-            // TODO: this causes enemies to Win (if no remaining players)
+            // TODO: this causes enemies to Win (if no remaining players and not stalemate)
         }
     }
 }

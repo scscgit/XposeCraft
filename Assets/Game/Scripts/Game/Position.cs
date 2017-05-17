@@ -139,14 +139,25 @@ namespace XposeCraft.Game
         }
 
         /// <summary>
-        /// Describes whether a Building of the buildingType can be placed on the Position.
+        /// Checks whether a Building of the chosen type can be placed on the Position.
+        /// The condition is also that the Fog is currently uncovered there.
         /// </summary>
         /// <param name="buildingType">Type of the building meant to be built.</param>
         /// <returns>True if the building can be placed on the Position.</returns>
         public bool IsValidPlacement(BuildingType buildingType)
         {
-            return BuildingHelper.IsValidPlacement(
-                BuildingHelper.FindBuildingInFaction(buildingType, null), this, Location, true);
+            return IsFogUncovered()
+                   && BuildingHelper.IsValidPlacement(
+                       BuildingHelper.FindBuildingInFaction(buildingType, null), this, Location, false);
+        }
+
+        /// <summary>
+        /// Checks whether the Fog of War is uncovered on this position, making everything there visible.
+        /// </summary>
+        /// <returns>True if the Fog if uncovered.</returns>
+        public bool IsFogUncovered()
+        {
+            return GameManager.Instance.Fog.CheckLocation(Location);
         }
 
         public override bool Equals(object obj)
