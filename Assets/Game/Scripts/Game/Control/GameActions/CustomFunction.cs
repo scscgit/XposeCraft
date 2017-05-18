@@ -17,7 +17,7 @@ namespace XposeCraft.Game.Control.GameActions
             Function = function;
         }
 
-        public override bool Progress(IUnit unit, UnitController unitController)
+        internal override bool Progress(IUnit unit, UnitController unitController)
         {
             if (!base.Progress(unit, unitController))
             {

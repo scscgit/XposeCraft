@@ -16,7 +16,7 @@ namespace XposeCraft.Game.Control.GameActions
             Gathering = resource;
         }
 
-        public override bool Progress(IUnit unit, UnitController unitController)
+        internal override bool Progress(IUnit unit, UnitController unitController)
         {
             if (!base.Progress(unit, unitController))
             {
@@ -32,7 +32,7 @@ namespace XposeCraft.Game.Control.GameActions
             return true;
         }
 
-        public override void OnFinish(IUnit unit, UnitController unitController)
+        internal override void OnFinish(IUnit unit, UnitController unitController)
         {
             base.OnFinish(unit, unitController);
             ((Worker) unit).Gathering = null;

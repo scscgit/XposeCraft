@@ -88,7 +88,7 @@ namespace XposeCraft.Core.Faction
             miniMap.SetSize();
             select.ResizeSelectionWindow(ratio);
             lastWindowSize = new Vector2(Screen.width, Screen.height);
-            Debug.Log("Reconfiguring Windows");
+            Log.d("Reconfiguring Windows");
         }
 
         void Update()

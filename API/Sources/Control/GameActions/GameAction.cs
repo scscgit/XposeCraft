@@ -1,6 +1,6 @@
 namespace XposeCraft.Game.Control.GameActions
 {
-    public interface IGameAction
+    public abstract class GameAction : IGameAction
     {
     }
 }

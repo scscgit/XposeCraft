@@ -1,5 +1,5 @@
 using System;
-using UnityEngine;
+using XposeCraft.Game;
 
 namespace XposeCraft.Test
 {
@@ -9,7 +9,7 @@ namespace XposeCraft.Test
     /// Cielom je zbierat suroviny pomocou jednotiek pracovnikov
     /// a pri dostatocnom pocte surovin vytvarat dalsich pracovnikov na zrychlenie ekonomie.
     /// </summary>
-    public class EconomyTest : ScriptableObject
+    public class EconomyTest : BotScript
     {
         public MyBotData MyBotData;
 

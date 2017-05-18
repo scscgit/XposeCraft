@@ -1,5 +1,5 @@
 using System;
-using UnityEngine;
+using XposeCraft.Game;
 
 namespace XposeCraft.Test
 {
@@ -9,7 +9,7 @@ namespace XposeCraft.Test
     /// Cielom je pomocou pracovnikov vytvarat nove budovy,
     /// ktore budu produkovat vojenske jednotky, alebo inak ich vylepsovanim rozsirovat pravdepodobnost vyhry.
     /// </summary>
-    public class BuildingTest : ScriptableObject
+    public class BuildingTest : BotScript
     {
         public MyBotData MyBotData;
 

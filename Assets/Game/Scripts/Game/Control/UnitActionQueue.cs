@@ -17,7 +17,7 @@ namespace XposeCraft.Game.Control
             private IUnit _unit;
             private UnitController _unitController;
             private UnitActionQueue _unitActionQueue;
-            private IGameAction _currentAction;
+            private GameAction _currentAction;
 
             internal UnitActionDequeue(IUnit unit, UnitController unitController, UnitActionQueue queue)
             {
@@ -81,7 +81,7 @@ namespace XposeCraft.Game.Control
             set { Player.CurrentPlayer.ExceptionOnDeadUnitAction = value; }
         }
 
-        private Queue<IGameAction> _queue = new Queue<IGameAction>();
+        private Queue<GameAction> _queue = new Queue<GameAction>();
 
         public int QueueCount
         {
@@ -104,7 +104,7 @@ namespace XposeCraft.Game.Control
         /// <returns>This queue to add other actions.</returns>
         public UnitActionQueue After(IGameAction action)
         {
-            _queue.Enqueue(action);
+            _queue.Enqueue((GameAction) action);
             if (_queue.Count > 1)
             {
                 Tutorial.Instance.ActionQueue();

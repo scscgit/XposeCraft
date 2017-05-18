@@ -202,8 +202,8 @@ namespace XposeCraft.Game
                         "Vitajte v hre XposeCraft. Tento návod vám postupne ukáže základy hry.\n" +
                         "\n" +
                         "Prvou úlohou je otvorenie vášho editora, či už to je Visual Studio, Jetbrains " +
-                        "Rider, alebo obyčajný textový editor. V ňom otvorte triedu EconomyTest, " +
-                        "nachádzajúcu sa v adresári na ceste <b>Assets/Scripts/Test</b>.\n" +
+                        "Rider, alebo obyčajný textový editor. V ňom otvorte projekt a cez ten triedu " +
+                        "EconomyTest, nachádzajúcu sa v adresári na ceste <b>Assets/BotScripts/Test</b>.\n" +
                         "\n" +
                         "Následne do existujúcej metódy napíšte:\n" +
                         "<b>XposeCraft.Game.BotRunner.Tutorial = true;</b>\n" +
@@ -324,7 +324,7 @@ namespace XposeCraft.Game
                         "<b>XposeCraft.Game.BotRunner.Tutorial = false;</b>";
                     break;
             }
-            // If not any of first two states, proceed to the max state
+            // If not any of first three states, proceed to the max state
             _state = _maxState;
         }
     }

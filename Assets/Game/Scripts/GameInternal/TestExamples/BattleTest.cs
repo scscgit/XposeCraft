@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 using XposeCraft.Game;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Units;
@@ -16,7 +15,7 @@ namespace XposeCraft.GameInternal.TestExamples
     /// Cielom je pouzitim postavenych jednotiek znicit nepriatela,
     /// pripadne pocas boja stavat dalsie jednotky a rozsirovat svoju zakladnu.
     /// </summary>
-    internal class BattleTest : ScriptableObject
+    internal class BattleTest : BotScript
     {
         public MyBotData MyBotData;
 

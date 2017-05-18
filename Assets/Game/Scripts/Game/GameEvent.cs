@@ -1,5 +1,7 @@
 using System;
+#if UNITY_EDITOR
 using UnityEditor.Events;
+#endif
 using UnityEngine;
 using UnityEngine.Events;
 using XposeCraft.Game.Enums;
@@ -24,11 +26,6 @@ namespace XposeCraft.Game
         /// Type of the GameEvent that has to occur in the Game in order for the scheduled function to be run.
         /// </summary>
         public GameEventType Type { get; private set; }
-
-        /// <summary>
-        /// Scheduled function to be executed when the GameEvent occurs in the Game.
-        /// </summary>
-        public UnityAction<Arguments> FunctionWithArguments { get; private set; }
 
         private ArgumentsEvent _serializedEvent = new ArgumentsEvent();
 
