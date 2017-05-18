@@ -7,7 +7,7 @@ using XposeCraft.GameInternal;
 namespace XposeCraft.Game.Actors.Buildings
 {
     /// <summary>
-    /// A base building that creates new workers and receives collected materials.
+    /// A base building that creates new Workers and receives collected Resources.
     /// </summary>
     public class BaseCenter : Building, IUnitProduction
     {
@@ -29,14 +29,19 @@ namespace XposeCraft.Game.Actors.Buildings
             }
         }
 
-        public new List<UnitType> CanProduceUnits
+        public new List<UnitType> SupportsUnitProduction
         {
-            get { return base.CanProduceUnits; }
+            get { return base.SupportsUnitProduction; }
         }
 
-        public new bool ProduceUnit(UnitType unitType)
+        public new bool CanNowProduceUnit(UnitType unitType)
         {
-            return base.ProduceUnit(unitType);
+            return base.CanNowProduceUnit(unitType);
+        }
+
+        public new void ProduceUnit(UnitType unitType)
+        {
+            base.ProduceUnit(unitType);
         }
 
         public new int QueuedUnits

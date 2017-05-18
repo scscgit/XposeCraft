@@ -251,7 +251,7 @@ namespace XposeCraft.Game
                         "\n" +
                         "Hneď po spustení hry ale ešte nemáte dosť surovín. Je preto dôležité najprv pochopiť, " +
                         "ako v hre fungujú <b>udalosti</b>. Pomocou statickej metódy\n" +
-                        "<b>XposeCraft.Game.Event.Register</b>\n" +
+                        "<b>XposeCraft.Game.GameEvent.Register</b>\n" +
                         "si vyskúšajte zaregistrovať vhodnú udalosť. Jej typ nájdete v enumeračnom type " +
                         "<b>XposeCraft.Game.Enums.EventType</b>, pomocou ktorého si vyberiete " +
                         "<b>MineralsChanged</b>. Už zostáva iba vytvorenie anonymnej funkcie. V jazyku C# ju " +

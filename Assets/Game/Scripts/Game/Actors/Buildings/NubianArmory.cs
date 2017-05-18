@@ -5,25 +5,26 @@ namespace XposeCraft.Game.Actors.Buildings
 {
     public class NubianArmory : Building, IUnitProduction
     {
-        /// <inheritdoc cref="Building.CanProduceUnits"/>
-        public new List<UnitType> CanProduceUnits
+        public new List<UnitType> SupportsUnitProduction
         {
-            get { return base.CanProduceUnits; }
+            get { return base.SupportsUnitProduction; }
         }
 
-        /// <inheritdoc cref="Building.ProduceUnit"/>
-        public new bool ProduceUnit(UnitType unitType)
+        public new bool CanNowProduceUnit(UnitType unitType)
         {
-            return base.ProduceUnit(unitType);
+            return base.CanNowProduceUnit(unitType);
         }
 
-        /// <inheritdoc cref="Building.QueuedUnits"/>
+        public new void ProduceUnit(UnitType unitType)
+        {
+            base.ProduceUnit(unitType);
+        }
+
         public new int QueuedUnits
         {
             get { return base.QueuedUnits; }
         }
 
-        /// <inheritdoc cref="Building.QueueLimit"/>
         public new int QueueLimit
         {
             get { return base.QueueLimit; }

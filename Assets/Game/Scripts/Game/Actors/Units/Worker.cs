@@ -6,10 +6,10 @@ using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Resources;
 using XposeCraft.Game.Control;
 using XposeCraft.Game.Control.GameActions;
+using XposeCraft.Game.Enums;
 using XposeCraft.GameInternal;
 using XposeCraft.GameInternal.Helpers;
 using BuildingType = XposeCraft.Game.Enums.BuildingType;
-using EventType = XposeCraft.Game.Enums.EventType;
 
 namespace XposeCraft.Game.Actors.Units
 {
@@ -61,7 +61,7 @@ namespace XposeCraft.Game.Actors.Units
             // TODO: make sure the CurrentPlayer stays the same after the movement
             Tutorial.Instance.CreateBuilding();
             // TODO: asynchronous after the movement
-            GameManager.Instance.FiredEvent(player, EventType.BuildingStartedConstruction, new Arguments
+            GameManager.Instance.FiredEvent(player, GameEventType.BuildingStartedConstruction, new Arguments
             {
                 MyUnit = this,
                 MyBuilding = actor

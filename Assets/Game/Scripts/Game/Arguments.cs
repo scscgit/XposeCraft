@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Units;
+using Object = UnityEngine.Object;
 
 namespace XposeCraft.Game
 {
@@ -9,13 +10,13 @@ namespace XposeCraft.Game
     /// Description of a Game Event occurrence.
     /// </summary>
     [Serializable]
-    public class Arguments
+    public class Arguments : Object
     {
         /// <summary>
-        /// Before running the function, the instance to this current Event will be returned here and can be used,
+        /// Before running the function, the instance to this current GameEvent will be returned here and can be used,
         /// for example, to unregister it after the run.
         /// </summary>
-        public Event ThisEvent { get; set; }
+        public GameEvent ThisGameEvent { get; set; }
 
         // TODO: replace
         public IDictionary<string, string> StringMap { get; private set; }
@@ -59,10 +60,10 @@ namespace XposeCraft.Game
         /// TODO: do a deep clone.
         /// </summary>
         /// <param name="arguments">Arguments to have its parameters copied to the new instance.</param>
-        /// <param name="thisEvent">Event represented by the Arguments instance.</param>
-        public Arguments(Arguments arguments, Event thisEvent)
+        /// <param name="thisGameEvent">GameEvent represented by the Arguments instance.</param>
+        public Arguments(Arguments arguments, GameEvent thisGameEvent)
         {
-            ThisEvent = thisEvent;
+            ThisGameEvent = thisGameEvent;
             // TODO: clone
             StringMap = arguments.StringMap;
             Minerals = arguments.Minerals;

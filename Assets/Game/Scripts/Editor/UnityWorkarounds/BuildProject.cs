@@ -89,7 +89,7 @@ namespace XposeCraft.UnityWorkarounds
             {
                 Debug.LogError(buildError);
             }
-            Test();
+            //Test();
         }
 
         /// <summary>

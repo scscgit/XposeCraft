@@ -5,7 +5,7 @@ using XposeCraft.GameInternal;
 namespace XposeCraft.Inspector
 {
     [CustomPropertyDrawer(typeof(Player.RegisteredEventsDictionary))]
-    public class RegisteredEventsDictionaryDrawer : DictionaryDrawer<EventType, Player.EventList>
+    public class RegisteredEventsDictionaryDrawer : DictionaryDrawer<GameEventType, Player.EventList>
     {
     }
 }

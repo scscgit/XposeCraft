@@ -9,8 +9,6 @@ using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Resources;
 using XposeCraft.Game.Actors.Units;
 using XposeCraft.Game.Enums;
-using Event = XposeCraft.Game.Event;
-using EventType = XposeCraft.Game.Enums.EventType;
 using VisionState = XposeCraft.Core.Fog_Of_War.VisionReceiver.VisionState;
 
 namespace XposeCraft.GameInternal
@@ -34,12 +32,12 @@ namespace XposeCraft.GameInternal
         // Unity hot-swap serialization workarounds.
 
         [Serializable]
-        public class EventList : List<Event>
+        public class EventList : List<GameEvent>
         {
         }
 
         [Serializable]
-        public class RegisteredEventsDictionary : SerializableDictionary2<EventType, EventList>
+        public class RegisteredEventsDictionary : SerializableDictionary2<GameEventType, EventList>
         {
         }
 
@@ -116,7 +114,7 @@ namespace XposeCraft.GameInternal
             {
                 GameManager.Instance.FiredEvent(
                     this,
-                    EventType.EnemyUnitsOnSight,
+                    GameEventType.EnemyUnitsOnSight,
                     new Arguments
                     {
                         MyUnit = myActor as IUnit,
@@ -131,7 +129,7 @@ namespace XposeCraft.GameInternal
             {
                 GameManager.Instance.FiredEvent(
                     this,
-                    EventType.EnemyBuildingsOnSight,
+                    GameEventType.EnemyBuildingsOnSight,
                     new Arguments
                     {
                         MyUnit = myActor as IUnit,
@@ -157,24 +155,41 @@ namespace XposeCraft.GameInternal
             }
         }
 
+        public void Win()
+        {
+            if (this == GameManager.Instance.GuiPlayer)
+            {
+                GameTestRunner.Passed = true;
+            }
+        }
+
         public void Lost(LoseReason loseReason)
         {
             switch (loseReason)
             {
                 case LoseReason.ExceptionThrown:
-                    Log.e("Lost, because an exception was thrown");
+                    Log.e(string.Format("Player {0} lost because an exception was thrown", name));
                     break;
                 case LoseReason.AllBuildingsDestroyed:
-                    Log.e("Lost, because all your buildings were destroyed");
+                    Log.e(string.Format("Player {0} lost because all his buildings were destroyed", name));
                     break;
                 case LoseReason.TimeoutStalemate:
-                    Log.e("Stalemate, lost because of a game timeout");
+                    Log.e(string.Format("Stalemate. Player {0} lost because of a game timeout", name));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException("loseReason", loseReason, null);
             }
-            GameTestRunner.Failed = true;
+            if (this == GameManager.Instance.GuiPlayer)
+            {
+                GameTestRunner.Failed = true;
+            }
             // TODO: this causes enemies to Win (if no remaining players and not stalemate)
+        }
+
+        public void Lost(Exception exception)
+        {
+            Log.e(exception);
+            Lost(LoseReason.ExceptionThrown);
         }
     }
 }

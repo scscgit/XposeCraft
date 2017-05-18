@@ -58,7 +58,7 @@ namespace XposeCraft.Game.Actors
             if (gameObject != null && playerOwner != null)
             {
                 // Player signs the name of Game Object for cosmetic purposes
-                gameObject.name += " " + playerOwner.name;
+                gameObject.name = string.Format("{0} {1}", gameObject.name, playerOwner.name);
             }
             instance.GameObject = gameObject;
             instance.Initialize(playerOwner);

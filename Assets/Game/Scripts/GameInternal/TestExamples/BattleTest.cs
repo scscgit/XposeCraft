@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using XposeCraft.Game;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Units;
@@ -15,12 +16,14 @@ namespace XposeCraft.GameInternal.TestExamples
     /// Cielom je pouzitim postavenych jednotiek znicit nepriatela,
     /// pripadne pocas boja stavat dalsie jednotky a rozsirovat svoju zakladnu.
     /// </summary>
-    class BattleTest
+    internal class BattleTest : ScriptableObject
     {
+        public MyBotData MyBotData;
+
         public void BattleStage(Action startNextStage)
         {
             // Plan individual unit attacks or a return when meeting too many units
-            Event.Register(EventType.EnemyUnitsOnSight, args =>
+            GameEvent.Register(GameEventType.EnemyUnitsOnSight, args =>
             {
                 if (args.EnemyUnits.Length > UnitHelper.GetMyUnits<IUnit>().Length)
                 {
@@ -74,14 +77,14 @@ namespace XposeCraft.GameInternal.TestExamples
 
         void ScheduleTacticsWhenLowHp()
         {
-            Event.Register(EventType.UnitReceivedFire, args =>
+            GameEvent.Register(GameEventType.UnitReceivedFire, args =>
             {
                 UnitActionQueue oldActions = args.MyUnit.ActionQueue;
                 if (args.MyUnit.Health < args.MyUnit.MaxHealth / 2)
                 {
-                    // Any unit of course exposes its position in form of coordinates; MyBot is custom player’s class
-                    args.MyUnit.MoveTo(MyBot.HealMeetPointUnit.Position);
-                    MyBot.MeetPointEvent = Event.Register(EventType.UnitGainedHealth,
+                    // Any unit of course exposes its position in form of coordinates; MyBotData contains data
+                    args.MyUnit.MoveTo(MyBotData.HealMeetPointUnit.Position);
+                    MyBotData.MeetPointEvent = GameEvent.Register(GameEventType.UnitGainedHealth,
                         argsB => { argsB.MyUnit.ActionQueue = oldActions; });
                 }
             });
@@ -89,14 +92,14 @@ namespace XposeCraft.GameInternal.TestExamples
 
         void RememberEnemies()
         {
-            Event.Register(EventType.EnemyUnitsOnSight, args =>
+            GameEvent.Register(GameEventType.EnemyUnitsOnSight, args =>
             {
                 var enemies = args.EnemyUnits;
                 foreach (IUnit enemy in enemies)
                 {
-                    if (!MyBot.CurrentEnemies.Contains(enemy))
+                    if (!MyBotData.CurrentEnemies.Contains(enemy))
                     {
-                        MyBot.CurrentEnemies.Add(enemy);
+                        MyBotData.CurrentEnemies.Add(enemy);
                     }
                 }
                 // TODO: use Set; TODO: remove on kill / losing sight
@@ -106,7 +109,7 @@ namespace XposeCraft.GameInternal.TestExamples
         // Preferably called only when destroying enemy base
         void DestroyBuildings()
         {
-            Event.Register(EventType.EnemyBuildingsOnSight, args =>
+            GameEvent.Register(GameEventType.EnemyBuildingsOnSight, args =>
             {
                 // TODO: my unit does not necessarily have to be a unit, even building can see a building
                 var enemies = args.EnemyBuildings;

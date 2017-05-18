@@ -6,9 +6,10 @@ using XposeCraft.Core.Required;
 using XposeCraft.Core.Resources;
 using XposeCraft.Game;
 using XposeCraft.Game.Actors.Units;
+using XposeCraft.Game.Enums;
 using XposeCraft.GameInternal;
 using BuildingHelper = XposeCraft.GameInternal.Helpers.BuildingHelper;
-using EventType = XposeCraft.Game.Enums.EventType;
+using UnitType = XposeCraft.Core.Required.UnitType;
 
 namespace XposeCraft.Core.Faction.Buildings
 {
@@ -155,7 +156,7 @@ namespace XposeCraft.Core.Faction.Buildings
             GameManager.Instance.ActorLookup.Remove(gameObject);
             GameManager.Instance.ActorLookup.Add(placedBuilding.gameObject, placedActor);
             Destroy(gameObject);
-            GameManager.Instance.FiredEvent(PlayerOwner, EventType.BuildingCreated, new Arguments
+            GameManager.Instance.FiredEvent(PlayerOwner, GameEventType.BuildingCreated, new Arguments
             {
                 MyUnit = (IUnit) GameManager.Instance.ActorLookup[_lastBuildBy.gameObject],
                 MyBuilding = placedActor

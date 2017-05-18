@@ -72,7 +72,7 @@ namespace XposeCraft.GameInternal
             {
                 return;
             }
-            Debug.LogError(string.Format("{0}: ERROR!!! {1}", context, message));
+            Debug.LogError(string.Format("{0}: ERROR! {1}", context, message));
         }
 
         public static void e(object message)
@@ -81,7 +81,7 @@ namespace XposeCraft.GameInternal
             {
                 return;
             }
-            Debug.LogError(string.Format("ERROR!!! {0}", message));
+            Debug.LogError(string.Format("ERROR! {0}", message));
         }
     }
 }

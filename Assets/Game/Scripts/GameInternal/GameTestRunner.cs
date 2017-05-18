@@ -11,8 +11,6 @@ using XposeCraft.Game.Control.GameActions;
 using XposeCraft.Game.Enums;
 using XposeCraft.Game.Helpers;
 using XposeCraft.Test;
-using Event = XposeCraft.Game.Event;
-using EventType = XposeCraft.Game.Enums.EventType;
 
 namespace XposeCraft.GameInternal
 {
@@ -24,6 +22,16 @@ namespace XposeCraft.GameInternal
         public static bool Failed { get; set; }
         internal bool WasStarted { get; private set; }
         private bool _shouldRun = true;
+
+        private EconomyTest _playerEconomyTest;
+        private BuildingTest _playerBuildingTest;
+        private BattleTest _playerBattleTest;
+        private MyBotData _playerBotData;
+
+        private TestExamples.EconomyTest _enemyPlayerEconomyTest;
+        private TestExamples.BuildingTest _enemyPlayerBuildingTest;
+        private TestExamples.BattleTest _enemyPlayerBattleTest;
+        private TestExamples.MyBotData _enemyPlayerBotData;
 
         protected void Sleep(int milliseconds)
         {
@@ -102,10 +110,9 @@ namespace XposeCraft.GameInternal
                                 RunPlayerTest();
                             }
                         }
-                        catch (Exception)
+                        catch (Exception e)
                         {
-                            player.Lost(Player.LoseReason.ExceptionThrown);
-                            throw;
+                            player.Lost(e);
                         }
                         break;
                     default:
@@ -116,10 +123,9 @@ namespace XposeCraft.GameInternal
                                 RunEnemyPlayerExampleTest();
                             }
                         }
-                        catch (Exception)
+                        catch (Exception e)
                         {
-                            player.Lost(Player.LoseReason.ExceptionThrown);
-                            throw;
+                            player.Lost(e);
                         }
                         break;
                 }
@@ -173,7 +179,7 @@ namespace XposeCraft.GameInternal
                 .After(enemyBaseMovement);
             workers[2].ActionQueue = new UnitActionQueue(enemyBaseMovement);
 
-            Event.Register(EventType.EnemyBuildingsOnSight, args =>
+            GameEvent.Register(GameEventType.EnemyBuildingsOnSight, args =>
             {
                 if (args.EnemyBuildings[0] is BaseCenter & args.MyUnit != null)
                 {
@@ -199,7 +205,7 @@ namespace XposeCraft.GameInternal
                 }
             }));
 
-            Event.Register(EventType.MineralsChanged, args =>
+            GameEvent.Register(GameEventType.MineralsChanged, args =>
             {
                 Log.i(this, args.Minerals + " minerals");
                 var building = workers[0].CreateBuilding(BuildingType.NubianArmory, PlaceType.MyBase.Left);
@@ -209,7 +215,7 @@ namespace XposeCraft.GameInternal
                 {
                     worker.FinishBuiding(building);
                 }
-                args.ThisEvent.UnregisterEvent();
+                args.ThisGameEvent.UnregisterEvent();
             });
         }
 
@@ -219,25 +225,41 @@ namespace XposeCraft.GameInternal
 
             var end = new Action(() => { Log.d(">>   End of a Planning Phase.   <<"); });
 
+            if (_playerBotData == null)
+            {
+                _playerBotData = ScriptableObject.CreateInstance<MyBotData>();
+            }
+
             var battleStage = new Action(() =>
             {
                 Log.d(this, "Starting Battle Stage");
-                var battleTest = new BattleTest();
-                battleTest.BattleStage(end);
+                if (_playerBattleTest == null)
+                {
+                    _playerBattleTest = ScriptableObject.CreateInstance<BattleTest>();
+                }
+                _playerBattleTest.MyBotData = _playerBotData;
+                _playerBattleTest.BattleStage(end);
             });
 
             var buildingStage = new Action(() =>
             {
                 Log.d(this, "Starting Building Stage");
-                var buildingTest = new BuildingTest();
-                buildingTest.BuildingStage(battleStage);
+                if (_playerBuildingTest == null)
+                {
+                    _playerBuildingTest = ScriptableObject.CreateInstance<BuildingTest>();
+                }
+                _playerBuildingTest.MyBotData = _playerBotData;
+                _playerBuildingTest.BuildingStage(battleStage);
             });
 
             var economyStage = new Action(() =>
             {
-                Log.d(this, "Starting Economy Stage");
-                var economyTest = new EconomyTest();
-                economyTest.EconomyStage(buildingStage);
+                if (_playerEconomyTest == null)
+                {
+                    _playerEconomyTest = ScriptableObject.CreateInstance<EconomyTest>();
+                }
+                _playerEconomyTest.MyBotData = _playerBotData;
+                _playerEconomyTest.EconomyStage(buildingStage);
             });
 
             economyStage();
@@ -249,25 +271,42 @@ namespace XposeCraft.GameInternal
 
             var end = new Action(() => { Log.d(">>   End of a Planning Phase.   <<"); });
 
+            if (_enemyPlayerBotData == null)
+            {
+                _enemyPlayerBotData = ScriptableObject.CreateInstance<TestExamples.MyBotData>();
+            }
+
             var battleStage = new Action(() =>
             {
                 Log.d(this, "Starting Battle Stage");
-                var battleTest = new TestExamples.BattleTest();
-                battleTest.BattleStage(end);
+                if (_enemyPlayerBattleTest == null)
+                {
+                    _enemyPlayerBattleTest = ScriptableObject.CreateInstance<TestExamples.BattleTest>();
+                }
+                _enemyPlayerBattleTest.MyBotData = _enemyPlayerBotData;
+                _enemyPlayerBattleTest.BattleStage(end);
             });
 
             var buildingStage = new Action(() =>
             {
                 Log.d(this, "Starting Building Stage");
-                var buildingTest = new TestExamples.BuildingTest();
-                buildingTest.BuildingStage(battleStage);
+                if (_enemyPlayerBuildingTest == null)
+                {
+                    _enemyPlayerBuildingTest = ScriptableObject.CreateInstance<TestExamples.BuildingTest>();
+                }
+                _enemyPlayerBuildingTest.MyBotData = _enemyPlayerBotData;
+                _enemyPlayerBuildingTest.BuildingStage(battleStage);
             });
 
             var economyStage = new Action(() =>
             {
                 Log.d(this, "Starting Economy Stage");
-                var economyTest = new TestExamples.EconomyTest();
-                economyTest.EconomyStage(buildingStage);
+                if (_enemyPlayerEconomyTest == null)
+                {
+                    _enemyPlayerEconomyTest = ScriptableObject.CreateInstance<TestExamples.EconomyTest>();
+                }
+                _enemyPlayerEconomyTest.MyBotData = _enemyPlayerBotData;
+                _enemyPlayerEconomyTest.EconomyStage(buildingStage);
             });
 
             economyStage();

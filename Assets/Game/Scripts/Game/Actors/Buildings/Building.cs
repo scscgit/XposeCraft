@@ -30,7 +30,7 @@ namespace XposeCraft.Game.Actors.Buildings
         /// </summary>
         internal List<Resource> NearbyResorces { get; set; }
 
-        protected List<UnitType> CanProduceUnits
+        protected List<UnitType> SupportsUnitProduction
         {
             get
             {
@@ -50,6 +50,11 @@ namespace XposeCraft.Game.Actors.Buildings
                 }
                 return canProduceUnits;
             }
+        }
+
+        protected bool CanNowProduceUnit(UnitType unitType)
+        {
+            return SupportsUnitProduction.Contains(unitType);
         }
 
         /// <summary>
@@ -80,17 +85,26 @@ namespace XposeCraft.Game.Actors.Buildings
             UnitSelection.SetTarget(new List<UnitController> {builderUnit}, GameObject, GameObject.transform.position);
         }
 
-        protected bool ProduceUnit(UnitType unitType)
+        protected void ProduceUnit(UnitType unitType)
         {
-            var result = BuildingController.unitProduction.StartProduction(
-                UnitHelper.FindUnitIndexInUnitProduction(unitType, BuildingController.unitProduction),
+            int unitIndex;
+            try
+            {
+                unitIndex = UnitHelper.FindUnitIndexInUnitProduction(unitType, BuildingController.unitProduction);
+            }
+            catch (Exception)
+            {
+                throw new UnitProductionException(string.Format("{0} cannot produce {1} unit", this, unitType));
+            }
+            var success = BuildingController.unitProduction.StartProduction(
+                unitIndex,
                 GameManager.Instance.ResourceManagerFaction[BuildingController.FactionIndex],
                 BuildingController.PlayerOwner);
-            if (result)
+            if (!success)
             {
-                Tutorial.Instance.UnitProduction();
+                throw new NotEnoughResourcesException();
             }
-            return result;
+            Tutorial.Instance.UnitProduction();
         }
 
         protected int QueuedUnits

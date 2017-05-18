@@ -6,10 +6,12 @@ using XposeCraft.Core.Required;
 using XposeCraft.Core.Resources;
 using XposeCraft.Game;
 using XposeCraft.Game.Control;
+using XposeCraft.Game.Enums;
 using XposeCraft.GameInternal;
 using XposeCraft.UI.MiniMap;
-using EventType = XposeCraft.Game.Enums.EventType;
+using BuildingType = XposeCraft.Core.Faction.Buildings.BuildingType;
 using Unit = XposeCraft.Game.Actors.Units.Unit;
+using UnitType = XposeCraft.Core.Required.UnitType;
 
 namespace XposeCraft.Core.Faction.Units
 {
@@ -344,7 +346,7 @@ namespace XposeCraft.Core.Faction.Units
                         {
                             MyUnit = UnitActor
                         };
-                        GameManager.Instance.FiredEvent(PlayerOwner, EventType.MineralsChanged, args);
+                        GameManager.Instance.FiredEvent(PlayerOwner, GameEventType.MineralsChanged, args);
                     }
                     else if (anim.state != "Move")
                     {

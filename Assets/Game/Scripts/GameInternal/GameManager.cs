@@ -19,8 +19,6 @@ using XposeCraft.Game.Actors.Units;
 using XposeCraft.Game.Enums;
 using XposeCraft.GameInternal.Helpers;
 using Building = XposeCraft.Game.Actors.Buildings.Building;
-using Event = XposeCraft.Game.Event;
-using EventType = XposeCraft.Game.Enums.EventType;
 using Unit = XposeCraft.Game.Actors.Units.Unit;
 
 namespace XposeCraft.GameInternal
@@ -203,6 +201,13 @@ namespace XposeCraft.GameInternal
             }
 
             // Start the Test (build workaround)
+            // No longer required, the GameTestRunner is included in the project
+            //StartTest();
+        }
+
+        [Obsolete]
+        private void StartTest()
+        {
             var automationTestScene = SceneManager.GetSceneByName("AutomationTest");
             if (SceneManager.GetSceneByName("AutomationTest").IsValid())
             {
@@ -279,9 +284,9 @@ namespace XposeCraft.GameInternal
         /// TODO: if Arguments get reused between multiple players, do a deep clone.
         /// </summary>
         /// <param name="player">Context of the Model to be used.</param>
-        /// <param name="eventType">Game Event that is fired.</param>
+        /// <param name="gameEventType">Game Event that is fired.</param>
         /// <param name="args">Arguments to be used.</param>
-        public void FiredEvent(Player player, EventType eventType, Arguments args)
+        public void FiredEvent(Player player, GameEventType gameEventType, Arguments args)
         {
             lock (FiredEventLock)
             {
@@ -291,38 +296,38 @@ namespace XposeCraft.GameInternal
                                         "Maybe the Controller Script wasn't initialized by creating Actor?");
                 }
                 Player.CurrentPlayer = player;
-                Log.d("Event " + eventType + " fired with "
-                      + (!player.RegisteredEvents.ContainsKey(eventType)
+                Log.d("Event " + gameEventType + " fired with "
+                      + (!player.RegisteredEvents.ContainsKey(gameEventType)
                           ? "no"
-                          : player.RegisteredEvents[eventType].Count.ToString()) + " listeners");
-                if (!player.RegisteredEvents.ContainsKey(eventType))
+                          : player.RegisteredEvents[gameEventType].Count.ToString()) + " listeners");
+                if (!player.RegisteredEvents.ContainsKey(gameEventType))
                 {
                     return;
                 }
                 // Copy current events before iterating over them
-                var events = new List<Event>(player.RegisteredEvents[eventType]);
+                var events = new List<GameEvent>(player.RegisteredEvents[gameEventType]);
                 foreach (var registeredEvent in events)
                 {
-                    // If the function is missing, most likely for hot-swap reasons, it will get unregistered
-                    if (registeredEvent.Function == null)
-                    {
-                        Log.d(this, "Registered event " + registeredEvent.GameEvent + " didn't have any function");
-                        registeredEvent.UnregisterEvent();
-                        continue;
-                    }
                     // Minerals can be always initialized deterministically based on the Player
                     args.Minerals = ResourceHelper.GetMinerals(ResourceManagerFaction[player.FactionIndex]);
-                    registeredEvent.Function(new Arguments(args, registeredEvent));
+                    try
+                    {
+                        registeredEvent.RunFunction(new Arguments(args, registeredEvent));
+                    }
+                    catch (Exception e)
+                    {
+                        player.Lost(e);
+                    }
                 }
             }
         }
 
         [Obsolete]
-        public void FiredEventForAllPlayers(EventType eventType, Arguments args)
+        public void FiredEventForAllPlayers(GameEventType gameEventType, Arguments args)
         {
             foreach (var player in Players)
             {
-                FiredEvent(player, eventType, args);
+                FiredEvent(player, gameEventType, args);
             }
         }
 

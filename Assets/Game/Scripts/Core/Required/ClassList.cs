@@ -10,10 +10,10 @@ using XposeCraft.Core.Resources;
 using XposeCraft.Game;
 using XposeCraft.Game.Actors;
 using XposeCraft.Game.Actors.Buildings;
+using XposeCraft.Game.Enums;
 using XposeCraft.GameInternal;
 using XposeCraft.GameInternal.Helpers;
 using XposeCraft.UI.MiniMap;
-using EventType = XposeCraft.Game.Enums.EventType;
 using Object = UnityEngine.Object;
 
 namespace XposeCraft.Core.Required
@@ -1499,7 +1499,7 @@ namespace XposeCraft.Core.Required
                 jobs.RemoveAt(x);
                 x--;
                 jobsAmount--;
-                GameManager.Instance.FiredEvent(player, EventType.UnitProduced, new Arguments
+                GameManager.Instance.FiredEvent(player, GameEventType.UnitProduced, new Arguments
                 {
                     MyBuilding = (IBuilding) GameManager.Instance.ActorLookup[buildingController.gameObject],
                     MyUnit = actor

@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using XposeCraft.Game;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Units;
@@ -13,8 +14,10 @@ namespace XposeCraft.GameInternal.TestExamples
     /// Cielom je pomocou pracovnikov vytvarat nove budovy,
     /// ktore budu produkovat vojenske jednotky, alebo inak ich vylepsovanim rozsirovat pravdepodobnost vyhry.
     /// </summary>
-    class BuildingTest
+    internal class BuildingTest : ScriptableObject
     {
+        public MyBotData MyBotData;
+
         /// <summary>
         /// Finds a worker that is just gathering any materials, without any other task
         /// </summary>
@@ -35,7 +38,7 @@ namespace XposeCraft.GameInternal.TestExamples
         public void BuildingStage(Action startNextStage)
         {
             // A first building
-            Event.Register(EventType.MineralsChanged, args =>
+            GameEvent.Register(GameEventType.MineralsChanged, args =>
             {
                 if (args.Minerals >= 100)
                 {
@@ -45,12 +48,12 @@ namespace XposeCraft.GameInternal.TestExamples
                     FindWorkerThatGathers().FinishBuiding(building);
 
                     // We only need one army production building for now
-                    args.ThisEvent.UnregisterEvent();
+                    args.ThisGameEvent.UnregisterEvent();
                 }
             });
 
             // Worker will return to work afterwards
-            Event.Register(EventType.BuildingCreated, args =>
+            GameEvent.Register(GameEventType.BuildingCreated, args =>
             {
                 if (args.MyBuilding is NubianArmory
                     &&
@@ -60,23 +63,24 @@ namespace XposeCraft.GameInternal.TestExamples
                     worker.SendGather(ResourceHelper.GetNearestMineralTo(worker));
                     BuildArmy(startNextStage);
                 }
-                args.ThisEvent.UnregisterEvent();
+                args.ThisGameEvent.UnregisterEvent();
             });
         }
 
         void BuildArmy(Action startNextStage)
         {
-            Event.Register(EventType.MineralsChanged, args =>
+            GameEvent.Register(GameEventType.MineralsChanged, args =>
             {
                 if (args.Minerals > 100)
                 {
                     foreach (NubianArmory armory in BuildingHelper.GetMyBuildings<NubianArmory>())
                     {
-                        if (armory.ProduceUnit(UnitType.DonkeyGun))
+                        if (armory.CanNowProduceUnit(UnitType.DonkeyGun))
                         {
-                            if (MyBot.Army++ >= 5)
+                            armory.ProduceUnit(UnitType.DonkeyGun);
+                            if (MyBotData.Army++ >= 5)
                             {
-                                args.ThisEvent.UnregisterEvent();
+                                args.ThisGameEvent.UnregisterEvent();
                                 startNextStage();
                             }
                             break;

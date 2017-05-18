@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using XposeCraft.Game;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Units;
@@ -13,8 +14,10 @@ namespace XposeCraft.GameInternal.TestExamples
     /// Cielom je zbierat suroviny pomocou jednotiek pracovnikov
     /// a pri dostatocnom pocte surovin vytvarat dalsich pracovnikov na zrychlenie ekonomie.
     /// </summary>
-    class EconomyTest
+    internal class EconomyTest : ScriptableObject
     {
+        public MyBotData MyBotData;
+
         public void EconomyStage(Action startNextStage)
         {
             // Game started, the first worker will get to work
@@ -30,7 +33,7 @@ namespace XposeCraft.GameInternal.TestExamples
 
         void EventForCreatingAnother()
         {
-            Event.Register(EventType.MineralsChanged, argsA =>
+            GameEvent.Register(GameEventType.MineralsChanged, argsA =>
             {
                 if (argsA.Minerals >= 50)
                 {
@@ -39,13 +42,13 @@ namespace XposeCraft.GameInternal.TestExamples
                     baseCenter.ProduceUnit(UnitType.Worker);
 
                     // After creating (it means after few seconds), he will need to go gather too
-                    Event.Register(EventType.UnitProduced, argsB =>
+                    GameEvent.Register(GameEventType.UnitProduced, argsB =>
                     {
                         if (argsB.MyUnit is Worker)
                         {
                             Worker worker = (Worker) argsB.MyUnit;
                             worker.SendGather(ResourceHelper.GetNearestMineralTo(worker));
-                            argsB.ThisEvent.UnregisterEvent();
+                            argsB.ThisGameEvent.UnregisterEvent();
                         }
                     });
                 }
@@ -54,7 +57,7 @@ namespace XposeCraft.GameInternal.TestExamples
                 // After that, minerals will be left to go over 150.
                 if (UnitHelper.GetMyUnits<Worker>().Length >= 5)
                 {
-                    argsA.ThisEvent.UnregisterEvent();
+                    argsA.ThisGameEvent.UnregisterEvent();
                 }
             });
         }
