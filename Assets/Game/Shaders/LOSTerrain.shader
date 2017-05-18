@@ -18,7 +18,7 @@
 				"SplatCount" = "4"
 			}
 		CGPROGRAM
-		#pragma surface surf Lambert nolightmap
+		#pragma surface surf Lambert nolightmap addshadow
 		
 		struct Input {
 			float2 uv_FOWTex;

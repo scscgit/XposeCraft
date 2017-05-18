@@ -203,7 +203,7 @@ namespace XposeCraft.Game
                         "\n" +
                         "Prvou úlohou je otvorenie vášho editora, či už to je Visual Studio, Jetbrains " +
                         "Rider, alebo obyčajný textový editor. V ňom otvorte projekt a cez ten triedu " +
-                        "EconomyTest, nachádzajúcu sa v adresári na ceste <b>Assets/BotScripts/Test</b>.\n" +
+                        "EconomyTest, nachádzajúcu sa v adresári na ceste <b>Assets/BotScripts</b>.\n" +
                         "\n" +
                         "Následne do existujúcej metódy napíšte:\n" +
                         "<b>XposeCraft.Game.BotRunner.Tutorial = true;</b>\n" +
