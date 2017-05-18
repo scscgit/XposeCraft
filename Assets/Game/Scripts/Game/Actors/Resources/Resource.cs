@@ -12,9 +12,13 @@ namespace XposeCraft.Game.Actors.Resources
         /// <summary>
         /// Internal method, do not use.
         /// </summary>
-        internal void GatherByWorker(List<UnitController> builderUnits)
+        internal void GatherByWorker(List<UnitController> gatheringUnits)
         {
-            UnitSelection.SetTarget(builderUnits, GameObject, GameObject.transform.position);
+            if (GameObject == null)
+            {
+                throw new ResourceExhaustedException(this);
+            }
+            UnitSelection.SetTarget(gatheringUnits, GameObject, GameObject.transform.position);
         }
 
         internal static T CreateResourceActor<T>(GameObject gameObject) where T : Resource

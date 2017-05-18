@@ -78,10 +78,6 @@ namespace XposeCraft.GameInternal
         public List<Unit> EnemyVisibleUnits;
         public List<Building> EnemyVisibleBuildings;
 
-        // Currencies of the Player. (TODO)
-
-        public int Minerals = 80;
-
         // Run-time configuration of the Player
 
         private bool _exceptionOnDeadUnitAction = true;

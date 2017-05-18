@@ -13,7 +13,7 @@ namespace XposeCraft.Game.Helpers
         /// <inheritdoc cref="GetMyUnits{TUnit}"/>
         /// <typeparam name="TUnit">Type of the Unit to be searched for.</typeparam>
         /// <returns>List of Units</returns>
-        public static IList<TUnit> GetMyUnitsAsList<TUnit>() where TUnit : IUnit
+        public static List<TUnit> GetMyUnitsAsList<TUnit>() where TUnit : IUnit
         {
             throw new NotImplementedException();
         }
@@ -31,7 +31,7 @@ namespace XposeCraft.Game.Helpers
         /// <inheritdoc cref="GetVisibleEnemyUnits{TUnit}"/>
         /// <typeparam name="TUnit">Type of the Unit to be searched for.</typeparam>
         /// <returns>List of Units</returns>
-        public static IList<TUnit> GetVisibleEnemyUnitsAsList<TUnit>() where TUnit : IUnit
+        public static List<TUnit> GetVisibleEnemyUnitsAsList<TUnit>() where TUnit : IUnit
         {
             throw new NotImplementedException();
         }

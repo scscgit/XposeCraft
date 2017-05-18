@@ -12,14 +12,14 @@ namespace XposeCraft.Game.Control
         /// <summary>
         /// Internal accessor for a dequeue operation over the Action Queue.
         /// </summary>
-        internal class UnitActionDequeue
+        internal class ActionDequeue
         {
             private IUnit _unit;
             private UnitController _unitController;
             private UnitActionQueue _unitActionQueue;
             private GameAction _currentAction;
 
-            internal UnitActionDequeue(IUnit unit, UnitController unitController, UnitActionQueue queue)
+            internal ActionDequeue(IUnit unit, UnitController unitController, UnitActionQueue queue)
             {
                 _unit = unit;
                 _unitController = unitController;
@@ -47,6 +47,12 @@ namespace XposeCraft.Game.Control
                     return;
                 }
                 _currentAction = _unitActionQueue._queue.Peek();
+                if (_currentAction == null)
+                {
+                    Log.e("Null GameAction was enqueued in " + _unitController.name);
+                    _unitActionQueue._queue.Dequeue();
+                    return;
+                }
                 // Player context is needed for all asynchronous actions
                 Player.CurrentPlayer = _unitController.PlayerOwner;
                 try
@@ -67,7 +73,13 @@ namespace XposeCraft.Game.Control
 
             private void Remove()
             {
-                Log.d(string.Format("Unit {0} dequeued {1} action", _unitController.name, _currentAction.GetType()));
+                if (_currentAction == null)
+                {
+                    // If already Finished during the Progress, removal is not needed
+                    return;
+                }
+                Log.d(string.Format(
+                    "Unit {0} dequeued {1} action", _unitController.name, _currentAction.GetType().Name));
                 _unitActionQueue._queue.Dequeue();
             }
         }

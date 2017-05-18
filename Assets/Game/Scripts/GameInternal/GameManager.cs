@@ -96,6 +96,7 @@ namespace XposeCraft.GameInternal
                     }
                 }
                 // Failsafe, this is just GUI
+                Log.w("Could not find Gui Player, loading first as default");
                 return Players[0];
             }
         }

@@ -28,13 +28,13 @@ namespace XposeCraft.Game.Actors.Units
         /// <see cref="XposeCraft.Game.Helpers.ResourceHelper"/> provides various methods to find some.
         /// </summary>
         /// <param name="resource">Resource to be gathered.</param>
-        public void SendGather(IResource resource)
+        public UnitActionQueue SendGather(IResource resource)
         {
             if (resource != null)
             {
                 Tutorial.Instance.SendGather();
             }
-            ActionQueue = new UnitActionQueue(new GatherResource(resource));
+            return ActionQueue = new UnitActionQueue(new GatherResource(resource));
         }
 
         // TODO:

@@ -27,7 +27,7 @@ namespace XposeCraft.Game.Actors.Units
                 // TODO: clone before creating a representing dequeue
                 _actionQueue = value;
                 UnitController._actionDequeue =
-                    new UnitActionQueue.UnitActionDequeue(this, UnitController, _actionQueue);
+                    new UnitActionQueue.ActionDequeue(this, UnitController, _actionQueue);
                 UnitController._actionDequeue.Dequeue();
             }
         }

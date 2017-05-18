@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Enums;
 using XposeCraft.GameInternal;
@@ -16,7 +15,7 @@ namespace XposeCraft.Game.Helpers
         /// <inheritdoc cref="GetMyBuildings{TBuilding}"/>
         /// <typeparam name="TBuilding">Type of the Building to be searched for.</typeparam>
         /// <returns>List of Buildings.</returns>
-        public static IList<TBuilding> GetMyBuildingsAsList<TBuilding>() where TBuilding : IBuilding
+        public static List<TBuilding> GetMyBuildingsAsList<TBuilding>() where TBuilding : IBuilding
         {
             Tutorial.Instance.GetUnitOrBuilding();
             var list = new List<TBuilding>();
@@ -37,7 +36,7 @@ namespace XposeCraft.Game.Helpers
         /// <inheritdoc cref="GetVisibleEnemyBuildings{TUnit}"/>
         /// <typeparam name="TBuilding">Type of the Buildings to be searched for.</typeparam>
         /// <returns>List of Buildings</returns>
-        public static IList<TBuilding> GetVisibleEnemyBuildingsAsList<TBuilding>() where TBuilding : IBuilding
+        public static List<TBuilding> GetVisibleEnemyBuildingsAsList<TBuilding>() where TBuilding : IBuilding
         {
             var list = new List<TBuilding>();
             ForEach<TBuilding, Building>(

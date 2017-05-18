@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using XposeCraft.Game.Actors.Units;
 using XposeCraft.GameInternal;
 
@@ -14,7 +13,7 @@ namespace XposeCraft.Game.Helpers
         /// <inheritdoc cref="GetMyUnits{TUnit}"/>
         /// <typeparam name="TUnit">Type of the Unit to be searched for.</typeparam>
         /// <returns>List of Units</returns>
-        public static IList<TUnit> GetMyUnitsAsList<TUnit>() where TUnit : IUnit
+        public static List<TUnit> GetMyUnitsAsList<TUnit>() where TUnit : IUnit
         {
             Tutorial.Instance.GetUnitOrBuilding();
             var list = new List<TUnit>();
@@ -35,7 +34,7 @@ namespace XposeCraft.Game.Helpers
         /// <inheritdoc cref="GetVisibleEnemyUnits{TUnit}"/>
         /// <typeparam name="TUnit">Type of the Unit to be searched for.</typeparam>
         /// <returns>List of Units</returns>
-        public static IList<TUnit> GetVisibleEnemyUnitsAsList<TUnit>() where TUnit : IUnit
+        public static List<TUnit> GetVisibleEnemyUnitsAsList<TUnit>() where TUnit : IUnit
         {
             var list = new List<TUnit>();
             ForEach<TUnit, Unit>(unit => { list.Add(unit); }, Player.CurrentPlayer.EnemyVisibleUnits);

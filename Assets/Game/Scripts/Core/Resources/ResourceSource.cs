@@ -1,5 +1,6 @@
 using UnityEngine;
 using XposeCraft.Core.Grids;
+using XposeCraft.GameInternal;
 
 namespace XposeCraft.Core.Resources
 {
@@ -24,10 +25,23 @@ namespace XposeCraft.Core.Resources
                 amount = amount - rAmount;
                 return rAmount;
             }
-
             amount = 0;
+            if (!deleteWhenExhausted)
+            {
+                return amount;
+            }
             OpenPoints();
             Destroy(gameObject);
+            var sharedResources = GameManager.Instance.Players[0].Resources;
+            for (var playerResoureIndex = 0; playerResoureIndex < sharedResources.Count; playerResoureIndex++)
+            {
+                if (GameManager.Instance.ActorLookup[gameObject].Equals(sharedResources[playerResoureIndex]))
+                {
+                    sharedResources.RemoveAt(playerResoureIndex);
+                    return amount;
+                }
+            }
+            Log.w("Resource " + gameObject.name + " did not have Actor representation but was removed");
             return amount;
         }
 

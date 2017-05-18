@@ -17,7 +17,7 @@ namespace XposeCraft.Game.Helpers
         /// <inheritdoc cref="GetResources{TResource}"/>
         /// <typeparam name="TResource">Type of the Resource to be searched for.</typeparam>
         /// <returns>List of resources.</returns>
-        public static IList<TResource> GetResourcesAsList<TResource>() where TResource : IResource
+        public static List<TResource> GetResourcesAsList<TResource>() where TResource : IResource
         {
             throw new NotImplementedException();
         }
@@ -60,7 +60,7 @@ namespace XposeCraft.Game.Helpers
         /// <param name="baseCenter">Base near which all nearest resources will be looked for.</param>
         /// <typeparam name="TResource">Type of the Resource to be searched for.</typeparam>
         /// <returns>List of resources.</returns>
-        public static IList<TResource> GetResourcesNearBase<TResource>(BaseCenter baseCenter)
+        public static List<TResource> GetResourcesNearBase<TResource>(BaseCenter baseCenter)
             where TResource : IResource
         {
             throw new NotImplementedException();

@@ -14,7 +14,7 @@ namespace XposeCraft.Game.Helpers
         /// <inheritdoc cref="GetMyBuildings{TBuilding}"/>
         /// <typeparam name="TBuilding">Type of the Building to be searched for.</typeparam>
         /// <returns>List of Buildings.</returns>
-        public static IList<TBuilding> GetMyBuildingsAsList<TBuilding>() where TBuilding : IBuilding
+        public static List<TBuilding> GetMyBuildingsAsList<TBuilding>() where TBuilding : IBuilding
         {
             throw new NotImplementedException();
         }
@@ -32,7 +32,7 @@ namespace XposeCraft.Game.Helpers
         /// <inheritdoc cref="GetVisibleEnemyBuildings{TUnit}"/>
         /// <typeparam name="TBuilding">Type of the Buildings to be searched for.</typeparam>
         /// <returns>List of Buildings</returns>
-        public static IList<TBuilding> GetVisibleEnemyBuildingsAsList<TBuilding>() where TBuilding : IBuilding
+        public static List<TBuilding> GetVisibleEnemyBuildingsAsList<TBuilding>() where TBuilding : IBuilding
         {
             throw new NotImplementedException();
         }

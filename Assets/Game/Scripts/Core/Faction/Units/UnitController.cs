@@ -47,7 +47,7 @@ namespace XposeCraft.Core.Faction.Units
         public Vector3 targetPoint;
         public int size = 1;
         Health healthObj;
-        internal UnitActionQueue.UnitActionDequeue _actionDequeue { get; set; }
+        internal UnitActionQueue.ActionDequeue _actionDequeue { get; set; }
 
         protected Faction Faction
         {
@@ -341,12 +341,22 @@ namespace XposeCraft.Core.Faction.Units
                             target.transform.position.x,
                             transform.position.y,
                             target.transform.position.z));
-                        resource.DropOff(this);
-                        var args = new Arguments
+                        if (resource.target != null)
                         {
-                            MyUnit = UnitActor
-                        };
-                        GameManager.Instance.FiredEvent(PlayerOwner, GameEventType.MineralsChanged, args);
+                            resource.DropOff(this);
+                            GameManager.Instance.FiredEvent(
+                                PlayerOwner,
+                                GameEventType.MineralsChanged,
+                                new Arguments
+                                {
+                                    MyUnit = UnitActor
+                                });
+                        }
+                        else
+                        {
+                            ResetTarget();
+                            ProcessActionQueue();
+                        }
                     }
                     else if (anim.state != "Move")
                     {
