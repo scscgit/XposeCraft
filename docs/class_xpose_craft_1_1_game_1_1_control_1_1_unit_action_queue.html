@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">XposeCraft
-   &#160;<span id="projectnumber">0.1.0</span>
+   &#160;<span id="projectnumber">1.0.0-rc1</span>
    </div>
    <div id="projectbrief">Public API for Arena Gameplay</div>
   </td>
@@ -82,13 +82,24 @@ $(document).ready(function(){initNavTree('class_xpose_craft_1_1_game_1_1_control
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="class_xpose_craft_1_1_game_1_1_control_1_1_unit_action_queue-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">XposeCraft.Game.Control.UnitActionQueue Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Queue for IGameAction commands which can be assigned to a Unit in order to make it execute them.  
+ <a href="class_xpose_craft_1_1_game_1_1_control_1_1_unit_action_queue.html#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><b>ActionDequeue</b></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal accessor for a dequeue operation over the Action Queue. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:acc19fa97484abedd33372a8170c949dc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_control_1_1_unit_action_queue.html#acc19fa97484abedd33372a8170c949dc">UnitActionQueue</a> ()</td></tr>
@@ -96,9 +107,20 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7d2f2361460a8c56dcb81b76c1d2fb92"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_control_1_1_unit_action_queue.html#a7d2f2361460a8c56dcb81b76c1d2fb92">UnitActionQueue</a> (<a class="el" href="interface_xpose_craft_1_1_game_1_1_control_1_1_game_actions_1_1_i_game_action.html">IGameAction</a> action)</td></tr>
 <tr class="separator:a7d2f2361460a8c56dcb81b76c1d2fb92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d45e9741aab09399bb3709bbfbc45d8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_xpose_craft_1_1_game_1_1_control_1_1_unit_action_queue.html">UnitActionQueue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_control_1_1_unit_action_queue.html#a7d45e9741aab09399bb3709bbfbc45d8">After</a> (<a class="el" href="interface_xpose_craft_1_1_game_1_1_control_1_1_game_actions_1_1_i_game_action.html">IGameAction</a> action)</td></tr>
+<tr class="memdesc:a7d45e9741aab09399bb3709bbfbc45d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enqueues a new Action at the end of the Queue.  <a href="#a7d45e9741aab09399bb3709bbfbc45d8">More...</a><br /></td></tr>
 <tr class="separator:a7d45e9741aab09399bb3709bbfbc45d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a30859776c2d129dcb766301e2da19408"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_control_1_1_unit_action_queue.html#a30859776c2d129dcb766301e2da19408">ExceptionOnDeadUnitAction</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a30859776c2d129dcb766301e2da19408"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, attempt at executing an Action with a dead Unit will throw a <a class="el" href="">UnitDeadException</a>.  <a href="#a30859776c2d129dcb766301e2da19408">More...</a><br /></td></tr>
+<tr class="separator:a30859776c2d129dcb766301e2da19408"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6c4e319d408d241e6154cde39dbdbc5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_control_1_1_unit_action_queue.html#ad6c4e319d408d241e6154cde39dbdbc5">QueueCount</a><code> [get]</code></td></tr>
+<tr class="separator:ad6c4e319d408d241e6154cde39dbdbc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Queue for IGameAction commands which can be assigned to a Unit in order to make it execute them. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="acc19fa97484abedd33372a8170c949dc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acc19fa97484abedd33372a8170c949dc">&#9670;&nbsp;</a></span>UnitActionQueue() <span class="overload">[1/2]</span></h2>
 
@@ -151,18 +173,71 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Enqueues a new Action at the end of the Queue. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">action</td><td>Action to be acted on by the Queue owner after finishing all previous Actions.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>This queue to add other actions.</dd></dl>
+
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>W:/Unity/XposeCraft/Assets/Game/Scripts/Game/Control/<a class="el" href="_unit_action_queue_8cs.html">UnitActionQueue.cs</a></li>
-</ul>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a30859776c2d129dcb766301e2da19408"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30859776c2d129dcb766301e2da19408">&#9670;&nbsp;</a></span>ExceptionOnDeadUnitAction</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool XposeCraft.Game.Control.UnitActionQueue.ExceptionOnDeadUnitAction</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If true, attempt at executing an Action with a dead Unit will throw a <a class="el" href="">UnitDeadException</a>. </p>
+
+</div>
+</div>
+<a id="ad6c4e319d408d241e6154cde39dbdbc5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6c4e319d408d241e6154cde39dbdbc5">&#9670;&nbsp;</a></span>QueueCount</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int XposeCraft.Game.Control.UnitActionQueue.QueueCount</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_xpose_craft.html">XposeCraft</a></li><li class="navelem"><a class="el" href="namespace_xpose_craft_1_1_game.html">Game</a></li><li class="navelem"><a class="el" href="namespace_xpose_craft_1_1_game_1_1_control.html">Control</a></li><li class="navelem"><a class="el" href="class_xpose_craft_1_1_game_1_1_control_1_1_unit_action_queue.html">UnitActionQueue</a></li>
-    <li class="footer">Generated on Fri Apr 14 2017 13:09:40 for XposeCraft by
+    <li class="footer">Generated on Fri May 19 2017 19:19:28 for XposeCraft by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

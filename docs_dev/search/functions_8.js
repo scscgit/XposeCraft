@@ -1,0 +1,16 @@
+var searchData=
+[
+  ['i',['i',['../class_xpose_craft_1_1_game_internal_1_1_log.html#a9f2ca62a580caca6c56a319d2f068115',1,'XposeCraft.GameInternal.Log.i(object context, object message)'],['../class_xpose_craft_1_1_game_internal_1_1_log.html#ae0715428eb190057e22f4eda78b15cf8',1,'XposeCraft.GameInternal.Log.i(object message)']]],
+  ['initialize',['Initialize',['../class_xpose_craft_1_1_game_1_1_actors_1_1_actor.html#a013dcc9b6c00e0ed6fd9644ebdb3a4fe',1,'XposeCraft.Game.Actors.Actor.Initialize()'],['../class_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_building.html#a3b40ea81c4b1aacd70f0d8a966082e52',1,'XposeCraft.Game.Actors.Buildings.Building.Initialize()'],['../class_xpose_craft_1_1_game_1_1_actors_1_1_units_1_1_unit.html#a79a756d89a5bfb40a14295204cf30a26',1,'XposeCraft.Game.Actors.Units.Unit.Initialize()']]],
+  ['initializegrid',['InitializeGrid',['../class_xpose_craft_1_1_core_1_1_required_1_1_a_path.html#a5884ea6dd6b89bb6581d414159c7fcc5',1,'XposeCraft::Core::Required::APath']]],
+  ['inrange',['InRange',['../class_xpose_craft_1_1_core_1_1_required_1_1_s_weapon.html#a284e3a0c1912a6f68e16ad3f7edbdc70',1,'XposeCraft::Core::Required::SWeapon']]],
+  ['instantiatefinishedbuilding',['InstantiateFinishedBuilding',['../class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_building_helper.html#a97d7f5cfcd7d14c51a68f47c25e99e11',1,'XposeCraft::GameInternal::Helpers::BuildingHelper']]],
+  ['instantiateprogressbuilding',['InstantiateProgressBuilding',['../class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_building_helper.html#ae15a7cc930433d67f092d958350323a6',1,'XposeCraft::GameInternal::Helpers::BuildingHelper']]],
+  ['instantiateunit',['InstantiateUnit',['../class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_unit_helper.html#a3fa409268dbb3aeaf31b036b66cf94b0',1,'XposeCraft::GameInternal::Helpers::UnitHelper']]],
+  ['isavailable',['IsAvailable',['../class_xpose_craft_1_1_game_1_1_position.html#af34ee54dbf9207fa1b0e43ddff2cc7d1',1,'XposeCraft::Game::Position']]],
+  ['isbuildingoftype',['IsBuildingOfType',['../class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_building_helper.html#a94cb262c21d0b2bd544f3e9ca4fdab28',1,'XposeCraft::GameInternal::Helpers::BuildingHelper']]],
+  ['isfoguncovered',['IsFogUncovered',['../class_xpose_craft_1_1_game_1_1_position.html#a671d231a8af7531e5d29d582bf2e7e63',1,'XposeCraft::Game::Position']]],
+  ['isunitoftype',['IsUnitOfType',['../class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_unit_helper.html#a5727a9db9e6d153506fc7a6d7d6c6546',1,'XposeCraft::GameInternal::Helpers::UnitHelper']]],
+  ['isvalidlocation',['IsValidLocation',['../class_xpose_craft_1_1_core_1_1_grids_1_1_u_grid.html#a8e074848f34ad89bcd35b73ead751a3b',1,'XposeCraft.Core.Grids.UGrid.IsValidLocation(int location)'],['../class_xpose_craft_1_1_core_1_1_grids_1_1_u_grid.html#aeadc7d8df9c23b04a057513b8e22fccf',1,'XposeCraft.Core.Grids.UGrid.IsValidLocation(int location, int gridIndex)']]],
+  ['isvalidplacement',['IsValidPlacement',['../class_xpose_craft_1_1_game_1_1_position.html#a37df3535d5bdb171f3a60079d5ffd7f9',1,'XposeCraft.Game.Position.IsValidPlacement()'],['../class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_building_helper.html#aae48ad4737e6e16cba9db341407d8749',1,'XposeCraft.GameInternal.Helpers.BuildingHelper.IsValidPlacement()']]]
+];

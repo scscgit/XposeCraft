@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">XposeCraft
-   &#160;<span id="projectnumber">0.1.0</span>
+   &#160;<span id="projectnumber">1.0.0-rc1</span>
    </div>
    <div id="projectbrief">Public API for Arena Gameplay</div>
   </td>
@@ -82,63 +82,101 @@ $(document).ready(function(){initNavTree('interface_xpose_craft_1_1_game_1_1_act
 
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="interface_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_i_building-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">XposeCraft.Game.Actors.Buildings.IBuilding Interface Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><a class="el" href="class_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_building.html">Building</a> placed in the game.  
+ <a href="interface_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_i_building.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for XposeCraft.Game.Actors.Buildings.IBuilding:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="interface_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_i_building.png" usemap="#XposeCraft.Game.Actors.Buildings.IBuilding_map" alt=""/>
   <map id="XposeCraft.Game.Actors.Buildings.IBuilding_map" name="XposeCraft.Game.Actors.Buildings.IBuilding_map">
-<area href="interface_xpose_craft_1_1_game_1_1_actors_1_1_i_actor.html" alt="XposeCraft.Game.Actors.IActor" shape="rect" coords="152,0,446,24"/>
+<area href="interface_xpose_craft_1_1_game_1_1_actors_1_1_i_actor.html" title="Representation of a Game Actor in Unity. " alt="XposeCraft.Game.Actors.IActor" shape="rect" coords="152,0,446,24"/>
 <area href="class_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_building.html" alt="XposeCraft.Game.Actors.Buildings.Building" shape="rect" coords="152,112,446,136"/>
-<area href="class_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_base_center.html" title="A base building that creates new workers and receives collected materials. " alt="XposeCraft.Game.Actors.Buildings.BaseCenter" shape="rect" coords="0,168,294,192"/>
-<area href="class_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_nubian_armory.html" alt="XposeCraft.Game.Actors.Buildings.NubianArmory" shape="rect" coords="304,168,598,192"/>
+<area href="class_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_base_center.html" title="A base building that creates new Workers and receives collected IResources. " alt="XposeCraft.Game.Actors.Buildings.BaseCenter" shape="rect" coords="0,168,294,192"/>
+<area href="class_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_nubian_armory.html" title="DonkeyGun production Building, a first available figher factory. " alt="XposeCraft.Game.Actors.Buildings.NubianArmory" shape="rect" coords="304,168,598,192"/>
 </map>
  </div></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:ab13b86641c4183c385f6d474b01dadc9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_i_building.html#ab13b86641c4183c385f6d474b01dadc9">FinishBuildingByWorker</a> (List&lt; UnitController &gt; unitControllers)</td></tr>
-<tr class="separator:ab13b86641c4183c385f6d474b01dadc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a0bfb5e1b14f900e972f8adbcd39b6303"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_i_building.html#a0bfb5e1b14f900e972f8adbcd39b6303">Finished</a><code> [get]</code></td></tr>
+<tr class="memdesc:a0bfb5e1b14f900e972f8adbcd39b6303"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if the <a class="el" href="class_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_building.html">Building</a> is already fully constructed, which means the construction is not in a progress.  <a href="#a0bfb5e1b14f900e972f8adbcd39b6303">More...</a><br /></td></tr>
 <tr class="separator:a0bfb5e1b14f900e972f8adbcd39b6303"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af39cc8ec94626e9368dfb1cf70b03fe5"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_i_building.html#af39cc8ec94626e9368dfb1cf70b03fe5">Progress</a><code> [get]</code></td></tr>
-<tr class="separator:af39cc8ec94626e9368dfb1cf70b03fe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34268a7116056ab6fb7abb44f7cc7cfb"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_i_building.html#a34268a7116056ab6fb7abb44f7cc7cfb">ConstructionProgress</a><code> [get]</code></td></tr>
+<tr class="memdesc:a34268a7116056ab6fb7abb44f7cc7cfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Percentage progress of the <a class="el" href="class_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_building.html">Building</a> construction with values between 0 and 1.  <a href="#a34268a7116056ab6fb7abb44f7cc7cfb">More...</a><br /></td></tr>
+<tr class="separator:a34268a7116056ab6fb7abb44f7cc7cfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bb7a93bd43bad520901c7a9622f0a98"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_i_building.html#a2bb7a93bd43bad520901c7a9622f0a98">Destroyed</a><code> [get]</code></td></tr>
+<tr class="memdesc:a2bb7a93bd43bad520901c7a9622f0a98"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if the <a class="el" href="class_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_building.html">Building</a> has been already destroyed and cannot be ever used again.  <a href="#a2bb7a93bd43bad520901c7a9622f0a98">More...</a><br /></td></tr>
+<tr class="separator:a2bb7a93bd43bad520901c7a9622f0a98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interface_xpose_craft_1_1_game_1_1_actors_1_1_i_actor"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_xpose_craft_1_1_game_1_1_actors_1_1_i_actor')"><img src="closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="interface_xpose_craft_1_1_game_1_1_actors_1_1_i_actor.html">XposeCraft.Game.Actors.IActor</a></td></tr>
 <tr class="memitem:a7c6390a738d8b9a6fa320858911b6a3a inherit properties_interface_xpose_craft_1_1_game_1_1_actors_1_1_i_actor"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_xpose_craft_1_1_game_1_1_actors_1_1_i_actor.html#a7c6390a738d8b9a6fa320858911b6a3a">Position</a><code> [get]</code></td></tr>
+<tr class="memdesc:a7c6390a738d8b9a6fa320858911b6a3a inherit properties_interface_xpose_craft_1_1_game_1_1_actors_1_1_i_actor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current position of the <a class="el" href="class_xpose_craft_1_1_game_1_1_actors_1_1_actor.html">Actor</a>.  <a href="interface_xpose_craft_1_1_game_1_1_actors_1_1_i_actor.html#a7c6390a738d8b9a6fa320858911b6a3a">More...</a><br /></td></tr>
 <tr class="separator:a7c6390a738d8b9a6fa320858911b6a3a inherit properties_interface_xpose_craft_1_1_game_1_1_actors_1_1_i_actor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5090d059caa98ef4108a15cadd545510 inherit properties_interface_xpose_craft_1_1_game_1_1_actors_1_1_i_actor"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_xpose_craft_1_1_game_1_1_enums.html#a8ccd252f86e0fc948d1adad08ad0545b">OwnershipType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_xpose_craft_1_1_game_1_1_actors_1_1_i_actor.html#a5090d059caa98ef4108a15cadd545510">Ownership</a><code> [get]</code></td></tr>
+<tr class="memdesc:a5090d059caa98ef4108a15cadd545510 inherit properties_interface_xpose_craft_1_1_game_1_1_actors_1_1_i_actor"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks who owns the <a class="el" href="class_xpose_craft_1_1_game_1_1_actors_1_1_actor.html">Actor</a>.  <a href="interface_xpose_craft_1_1_game_1_1_actors_1_1_i_actor.html#a5090d059caa98ef4108a15cadd545510">More...</a><br /></td></tr>
+<tr class="separator:a5090d059caa98ef4108a15cadd545510 inherit properties_interface_xpose_craft_1_1_game_1_1_actors_1_1_i_actor"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8dcc18998ffd28a116947a17d88b6d14 inherit properties_interface_xpose_craft_1_1_game_1_1_actors_1_1_i_actor"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_xpose_craft_1_1_game_1_1_actors_1_1_i_actor.html#a8dcc18998ffd28a116947a17d88b6d14">Visible</a><code> [get]</code></td></tr>
+<tr class="memdesc:a8dcc18998ffd28a116947a17d88b6d14 inherit properties_interface_xpose_craft_1_1_game_1_1_actors_1_1_i_actor"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if the Player can see the <a class="el" href="class_xpose_craft_1_1_game_1_1_actors_1_1_actor.html">Actor</a>, so it is not hidden in the Fog.  <a href="interface_xpose_craft_1_1_game_1_1_actors_1_1_i_actor.html#a8dcc18998ffd28a116947a17d88b6d14">More...</a><br /></td></tr>
+<tr class="separator:a8dcc18998ffd28a116947a17d88b6d14 inherit properties_interface_xpose_craft_1_1_game_1_1_actors_1_1_i_actor"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab13b86641c4183c385f6d474b01dadc9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab13b86641c4183c385f6d474b01dadc9">&#9670;&nbsp;</a></span>FinishBuildingByWorker()</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p><a class="el" href="class_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_building.html">Building</a> placed in the game. </p>
+</div><h2 class="groupheader">Property Documentation</h2>
+<a id="a34268a7116056ab6fb7abb44f7cc7cfb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34268a7116056ab6fb7abb44f7cc7cfb">&#9670;&nbsp;</a></span>ConstructionProgress</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void XposeCraft.Game.Actors.Buildings.IBuilding.FinishBuildingByWorker </td>
-          <td>(</td>
-          <td class="paramtype">List&lt; UnitController &gt;&#160;</td>
-          <td class="paramname"><em>unitControllers</em></td><td>)</td>
-          <td></td>
+          <td class="memname">float XposeCraft.Game.Actors.Buildings.IBuilding.ConstructionProgress</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="class_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_building.html#aa8afe965ed93df52b0c618ca70c449b1">XposeCraft.Game.Actors.Buildings.Building</a>.</p>
+<p>Percentage progress of the <a class="el" href="class_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_building.html">Building</a> construction with values between 0 and 1. </p>
 
 </div>
 </div>
-<h2 class="groupheader">Property Documentation</h2>
+<a id="a2bb7a93bd43bad520901c7a9622f0a98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2bb7a93bd43bad520901c7a9622f0a98">&#9670;&nbsp;</a></span>Destroyed</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool XposeCraft.Game.Actors.Buildings.IBuilding.Destroyed</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>True if the <a class="el" href="class_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_building.html">Building</a> has been already destroyed and cannot be ever used again. </p>
+
+</div>
+</div>
 <a id="a0bfb5e1b14f900e972f8adbcd39b6303"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0bfb5e1b14f900e972f8adbcd39b6303">&#9670;&nbsp;</a></span>Finished</h2>
 
@@ -159,40 +197,17 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-</div>
-</div>
-<a id="af39cc8ec94626e9368dfb1cf70b03fe5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af39cc8ec94626e9368dfb1cf70b03fe5">&#9670;&nbsp;</a></span>Progress</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">float XposeCraft.Game.Actors.Buildings.IBuilding.Progress</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
+<p>True if the <a class="el" href="class_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_building.html">Building</a> is already fully constructed, which means the construction is not in a progress. </p>
 
 </div>
 </div>
-<hr/>The documentation for this interface was generated from the following file:<ul>
-<li>W:/Unity/XposeCraft/Assets/Game/Scripts/Game/Actors/Buildings/<a class="el" href="_i_building_8cs.html">IBuilding.cs</a></li>
-</ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_xpose_craft.html">XposeCraft</a></li><li class="navelem"><a class="el" href="namespace_xpose_craft_1_1_game.html">Game</a></li><li class="navelem"><a class="el" href="namespace_xpose_craft_1_1_game_1_1_actors.html">Actors</a></li><li class="navelem"><a class="el" href="namespace_xpose_craft_1_1_game_1_1_actors_1_1_buildings.html">Buildings</a></li><li class="navelem"><a class="el" href="interface_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_i_building.html">IBuilding</a></li>
-    <li class="footer">Generated on Fri Apr 14 2017 13:09:40 for XposeCraft by
+    <li class="footer">Generated on Fri May 19 2017 19:19:28 for XposeCraft by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

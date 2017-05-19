@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['enemybase',['EnemyBase',['../class_xpose_craft_1_1_game_1_1_enums_1_1_place_type.html#a1a9165be281127b3c714804f58d3ac4b',1,'XposeCraft::Game::Enums::PlaceType']]],
-  ['enemybuildings',['EnemyBuildings',['../class_xpose_craft_1_1_game_1_1_arguments.html#ab81e15158a84a07755d0d4f0e95ddb51',1,'XposeCraft::Game::Arguments']]],
-  ['enemyunits',['EnemyUnits',['../class_xpose_craft_1_1_game_1_1_arguments.html#a014836a1c1438507d8fc8cdfd745ff18',1,'XposeCraft::Game::Arguments']]]
+  ['constructionprogress',['ConstructionProgress',['../class_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_building.html#aa1a810c0644f447f261fda95f3f5f574',1,'XposeCraft.Game.Actors.Buildings.Building.ConstructionProgress()'],['../interface_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_i_building.html#a34268a7116056ab6fb7abb44f7cc7cfb',1,'XposeCraft.Game.Actors.Buildings.IBuilding.ConstructionProgress()']]],
+  ['currentlyafterhotswap',['CurrentlyAfterHotswap',['../class_xpose_craft_1_1_game_1_1_bot_runner.html#a8aade3f475c1292ca63a26518a7ae804',1,'XposeCraft::Game::BotRunner']]]
 ];

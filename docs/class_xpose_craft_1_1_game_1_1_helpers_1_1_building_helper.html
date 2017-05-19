@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">XposeCraft
-   &#160;<span id="projectnumber">0.1.0</span>
+   &#160;<span id="projectnumber">1.0.0-rc1</span>
    </div>
    <div id="projectbrief">Public API for Arena Gameplay</div>
   </td>
@@ -88,6 +88,9 @@ $(document).ready(function(){initNavTree('class_xpose_craft_1_1_game_1_1_helpers
 <div class="title">XposeCraft.Game.Helpers.BuildingHelper Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Helper class providing static methods for example to find IBuilding instances in the world.  
+ <a href="class_xpose_craft_1_1_game_1_1_helpers_1_1_building_helper.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for XposeCraft.Game.Helpers.BuildingHelper:</div>
 <div class="dyncontent">
@@ -100,25 +103,48 @@ Inheritance diagram for XposeCraft.Game.Helpers.BuildingHelper:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a8222b1e3066ea5934e6541054685a313"><td class="memItemLeft" align="right" valign="top">static IList&lt; TBuilding &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_helpers_1_1_building_helper.html#a8222b1e3066ea5934e6541054685a313">GetBuildingsAsList&lt; TBuilding &gt;</a> ()</td></tr>
-<tr class="separator:a8222b1e3066ea5934e6541054685a313"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af319c7ad3b1e263cc0b6112c2f98b98f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_xpose_craft_1_1_game_1_1_position.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_helpers_1_1_building_helper.html#af319c7ad3b1e263cc0b6112c2f98b98f">ClosestEmptySpaceTo</a> (<a class="el" href="interface_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_i_building.html">IBuilding</a> building)</td></tr>
-<tr class="separator:af319c7ad3b1e263cc0b6112c2f98b98f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13300db2fa6b660dbaf6f5fe2d9ea1a5"><td class="memItemLeft" align="right" valign="top">static TBuilding []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_helpers_1_1_building_helper.html#a13300db2fa6b660dbaf6f5fe2d9ea1a5">GetBuildings&lt; TBuilding &gt;</a> ()</td></tr>
-<tr class="separator:a13300db2fa6b660dbaf6f5fe2d9ea1a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c16d5079bfbb6ca4061608d7140ffd6"><td class="memItemLeft" align="right" valign="top">static List&lt; TBuilding &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_helpers_1_1_building_helper.html#a7c16d5079bfbb6ca4061608d7140ffd6">GetMyBuildingsAsList&lt; TBuilding &gt;</a> ()</td></tr>
+<tr class="memdesc:a7c16d5079bfbb6ca4061608d7140ffd6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TBuilding</td><td>Type of the Building to be searched for. </td></tr>
+  </table>
+  </dd>
+</dl>
+ <a href="#a7c16d5079bfbb6ca4061608d7140ffd6">More...</a><br /></td></tr>
+<tr class="separator:a7c16d5079bfbb6ca4061608d7140ffd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ceb0bb2f7ef563e5e8a9bbce1478dd0"><td class="memItemLeft" align="right" valign="top">static TBuilding []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_helpers_1_1_building_helper.html#a8ceb0bb2f7ef563e5e8a9bbce1478dd0">GetMyBuildings&lt; TBuilding &gt;</a> ()</td></tr>
+<tr class="memdesc:a8ceb0bb2f7ef563e5e8a9bbce1478dd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds Player's owned Buildings, that he can control in the world.  <a href="#a8ceb0bb2f7ef563e5e8a9bbce1478dd0">More...</a><br /></td></tr>
+<tr class="separator:a8ceb0bb2f7ef563e5e8a9bbce1478dd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d2e6591e26071f923aae000db293ecd"><td class="memItemLeft" align="right" valign="top">static List&lt; TBuilding &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_helpers_1_1_building_helper.html#a2d2e6591e26071f923aae000db293ecd">GetVisibleEnemyBuildingsAsList&lt; TBuilding &gt;</a> ()</td></tr>
+<tr class="memdesc:a2d2e6591e26071f923aae000db293ecd"><td class="mdescLeft">&#160;</td><td class="mdescRight"><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TBuilding</td><td>Type of the Buildings to be searched for. </td></tr>
+  </table>
+  </dd>
+</dl>
+ <a href="#a2d2e6591e26071f923aae000db293ecd">More...</a><br /></td></tr>
+<tr class="separator:a2d2e6591e26071f923aae000db293ecd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1160b0f4f0c5b3d7dd6381059f8e800"><td class="memItemLeft" align="right" valign="top">static TBuilding []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_helpers_1_1_building_helper.html#af1160b0f4f0c5b3d7dd6381059f8e800">GetVisibleEnemyBuildings&lt; TBuilding &gt;</a> ()</td></tr>
+<tr class="memdesc:af1160b0f4f0c5b3d7dd6381059f8e800"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds enemy Buildings, that the Player curently sees within the Fog of War.  <a href="#af1160b0f4f0c5b3d7dd6381059f8e800">More...</a><br /></td></tr>
+<tr class="separator:af1160b0f4f0c5b3d7dd6381059f8e800"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3448ebbe0778cd4a231908af7d9d607"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_xpose_craft_1_1_game_1_1_position.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_helpers_1_1_building_helper.html#aa3448ebbe0778cd4a231908af7d9d607">ClosestEmptySpaceTo</a> (<a class="el" href="interface_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_i_building.html">IBuilding</a> closestToBuilding, <a class="el" href="namespace_xpose_craft_1_1_game_1_1_enums.html#acb68bfbe5aac994446619a903c02855d">BuildingType</a> forBuildingPlacement)</td></tr>
+<tr class="memdesc:aa3448ebbe0778cd4a231908af7d9d607"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds a closest empty space near a Building, that is valid for a placement of a specific type of a Building.  <a href="#aa3448ebbe0778cd4a231908af7d9d607">More...</a><br /></td></tr>
+<tr class="separator:aa3448ebbe0778cd4a231908af7d9d607"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_methods_class_xpose_craft_1_1_game_1_1_helpers_1_1_actor_helper"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_xpose_craft_1_1_game_1_1_helpers_1_1_actor_helper')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_xpose_craft_1_1_game_1_1_helpers_1_1_actor_helper.html">XposeCraft.Game.Helpers.ActorHelper&lt; IBuilding &gt;</a></td></tr>
-<tr class="memitem:a1bc1876f95b4ac1699c8ee23672775f1 inherit pub_methods_class_xpose_craft_1_1_game_1_1_helpers_1_1_actor_helper"><td class="memItemLeft" align="right" valign="top">delegate void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_helpers_1_1_actor_helper.html#a1bc1876f95b4ac1699c8ee23672775f1">ForEachAction&lt; in TActor &gt;</a> (TActor unit)</td></tr>
-<tr class="separator:a1bc1876f95b4ac1699c8ee23672775f1 inherit pub_methods_class_xpose_craft_1_1_game_1_1_helpers_1_1_actor_helper"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_class_xpose_craft_1_1_game_1_1_helpers_1_1_actor_helper"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_xpose_craft_1_1_game_1_1_helpers_1_1_actor_helper')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="class_xpose_craft_1_1_game_1_1_helpers_1_1_actor_helper.html">XposeCraft.Game.Helpers.ActorHelper&lt; IBuilding &gt;</a></td></tr>
+<tr class="memitem:a1bc1876f95b4ac1699c8ee23672775f1 inherit pro_methods_class_xpose_craft_1_1_game_1_1_helpers_1_1_actor_helper"><td class="memItemLeft" align="right" valign="top">delegate void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_helpers_1_1_actor_helper.html#a1bc1876f95b4ac1699c8ee23672775f1">ForEachAction&lt; in TActor &gt;</a> (TActor unit)</td></tr>
+<tr class="separator:a1bc1876f95b4ac1699c8ee23672775f1 inherit pro_methods_class_xpose_craft_1_1_game_1_1_helpers_1_1_actor_helper"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_static_methods_class_xpose_craft_1_1_game_1_1_helpers_1_1_actor_helper"><td colspan="2" onclick="javascript:toggleInherit('pro_static_methods_class_xpose_craft_1_1_game_1_1_helpers_1_1_actor_helper')"><img src="closed.png" alt="-"/>&#160;Static Protected Member Functions inherited from <a class="el" href="class_xpose_craft_1_1_game_1_1_helpers_1_1_actor_helper.html">XposeCraft.Game.Helpers.ActorHelper&lt; IBuilding &gt;</a></td></tr>
 <tr class="memitem:a53e9272015ee63f7c180d675c5ed03ab inherit pro_static_methods_class_xpose_craft_1_1_game_1_1_helpers_1_1_actor_helper"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_helpers_1_1_actor_helper.html#a53e9272015ee63f7c180d675c5ed03ab">ForEach&lt; TActor, TFromActor &gt;</a> (ForEachAction&lt; TActor &gt; action, IList&lt; TFromActor &gt; from)</td></tr>
 <tr class="separator:a53e9272015ee63f7c180d675c5ed03ab inherit pro_static_methods_class_xpose_craft_1_1_game_1_1_helpers_1_1_actor_helper"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="af319c7ad3b1e263cc0b6112c2f98b98f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af319c7ad3b1e263cc0b6112c2f98b98f">&#9670;&nbsp;</a></span>ClosestEmptySpaceTo()</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Helper class providing static methods for example to find IBuilding instances in the world. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="aa3448ebbe0778cd4a231908af7d9d607"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3448ebbe0778cd4a231908af7d9d607">&#9670;&nbsp;</a></span>ClosestEmptySpaceTo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -130,8 +156,18 @@ Additional Inherited Members</h2></td></tr>
           <td class="memname">static <a class="el" href="class_xpose_craft_1_1_game_1_1_position.html">Position</a> XposeCraft.Game.Helpers.BuildingHelper.ClosestEmptySpaceTo </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="interface_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_i_building.html">IBuilding</a>&#160;</td>
-          <td class="paramname"><em>building</em></td><td>)</td>
+          <td class="paramname"><em>closestToBuilding</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="namespace_xpose_craft_1_1_game_1_1_enums.html#acb68bfbe5aac994446619a903c02855d">BuildingType</a>&#160;</td>
+          <td class="paramname"><em>forBuildingPlacement</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -141,10 +177,20 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Finds a closest empty space near a Building, that is valid for a placement of a specific type of a Building. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">closestToBuilding</td><td>Building near which the placement is searched from.</td></tr>
+    <tr><td class="paramname">forBuildingPlacement</td><td>Building type which should be able to be placed there.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A vali</dd></dl>
+
 </div>
 </div>
-<a id="a13300db2fa6b660dbaf6f5fe2d9ea1a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13300db2fa6b660dbaf6f5fe2d9ea1a5">&#9670;&nbsp;</a></span>GetBuildings< TBuilding >()</h2>
+<a id="a8ceb0bb2f7ef563e5e8a9bbce1478dd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ceb0bb2f7ef563e5e8a9bbce1478dd0">&#9670;&nbsp;</a></span>GetMyBuildings< TBuilding >()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -153,7 +199,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static TBuilding [] XposeCraft.Game.Helpers.BuildingHelper.GetBuildings&lt; TBuilding &gt; </td>
+          <td class="memname">static TBuilding [] XposeCraft.Game.Helpers.BuildingHelper.GetMyBuildings&lt; TBuilding &gt; </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -165,6 +211,15 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Finds Player's owned Buildings, that he can control in the world. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TBuilding</td><td>Type of the Building to be searched for.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Array of Buildings.</dd></dl>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
@@ -176,8 +231,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a8222b1e3066ea5934e6541054685a313"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8222b1e3066ea5934e6541054685a313">&#9670;&nbsp;</a></span>GetBuildingsAsList< TBuilding >()</h2>
+<a id="a7c16d5079bfbb6ca4061608d7140ffd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c16d5079bfbb6ca4061608d7140ffd6">&#9670;&nbsp;</a></span>GetMyBuildingsAsList< TBuilding >()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -186,7 +241,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static IList&lt;TBuilding&gt; XposeCraft.Game.Helpers.BuildingHelper.GetBuildingsAsList&lt; TBuilding &gt; </td>
+          <td class="memname">static List&lt;TBuilding&gt; XposeCraft.Game.Helpers.BuildingHelper.GetMyBuildingsAsList&lt; TBuilding &gt; </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -198,6 +253,15 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TBuilding</td><td>Type of the Building to be searched for. </td></tr>
+  </table>
+  </dd>
+</dl>
+</p>
+<dl class="section return"><dt>Returns</dt><dd>List of Buildings.</dd></dl>
 <div class="typeconstraint">
 <dl><dt><b>Type Constraints</b></dt><dd>
 <table border="0" cellspacing="2" cellpadding="0">
@@ -209,16 +273,98 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>W:/Unity/XposeCraft/Assets/Game/Scripts/Game/Helpers/<a class="el" href="_building_helper_8cs.html">BuildingHelper.cs</a></li>
-</ul>
+<a id="af1160b0f4f0c5b3d7dd6381059f8e800"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1160b0f4f0c5b3d7dd6381059f8e800">&#9670;&nbsp;</a></span>GetVisibleEnemyBuildings< TBuilding >()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static TBuilding [] XposeCraft.Game.Helpers.BuildingHelper.GetVisibleEnemyBuildings&lt; TBuilding &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Finds enemy Buildings, that the Player curently sees within the Fog of War. </p>
+<p>They cannot be controlled. </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TBuilding</td><td>Type of the Buildings to be searched for.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Array of Buildings.</dd></dl>
+<div class="typeconstraint">
+<dl><dt><b>Type Constraints</b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em>TBuilding</em></td><td>&#160;:</td><td valign="top"><em>IBuilding</em></td><td>&#160;</td></tr>
+</table>
+</dd>
+</dl>
+</div>
+
+</div>
+</div>
+<a id="a2d2e6591e26071f923aae000db293ecd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d2e6591e26071f923aae000db293ecd">&#9670;&nbsp;</a></span>GetVisibleEnemyBuildingsAsList< TBuilding >()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static List&lt;TBuilding&gt; XposeCraft.Game.Helpers.BuildingHelper.GetVisibleEnemyBuildingsAsList&lt; TBuilding &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">TBuilding</td><td>Type of the Buildings to be searched for. </td></tr>
+  </table>
+  </dd>
+</dl>
+</p>
+<dl class="section return"><dt>Returns</dt><dd>List of Buildings</dd></dl>
+<div class="typeconstraint">
+<dl><dt><b>Type Constraints</b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em>TBuilding</em></td><td>&#160;:</td><td valign="top"><em>IBuilding</em></td><td>&#160;</td></tr>
+</table>
+</dd>
+</dl>
+</div>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_xpose_craft.html">XposeCraft</a></li><li class="navelem"><a class="el" href="namespace_xpose_craft_1_1_game.html">Game</a></li><li class="navelem"><a class="el" href="namespace_xpose_craft_1_1_game_1_1_helpers.html">Helpers</a></li><li class="navelem"><a class="el" href="class_xpose_craft_1_1_game_1_1_helpers_1_1_building_helper.html">BuildingHelper</a></li>
-    <li class="footer">Generated on Fri Apr 14 2017 13:09:40 for XposeCraft by
+    <li class="footer">Generated on Fri May 19 2017 19:19:28 for XposeCraft by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

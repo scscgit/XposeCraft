@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['unittype',['UnitType',['../_building_8cs.html#a1550606cd8ce6aa3b49e00065e5c9710',1,'Building.cs']]]
+  ['object',['Object',['../_arguments_8cs.html#aef19bab18b9814edeef255c43e4f6bbc',1,'Arguments.cs']]]
 ];

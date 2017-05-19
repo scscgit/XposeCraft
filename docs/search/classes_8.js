@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['nubianarmory',['NubianArmory',['../class_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_nubian_armory.html',1,'XposeCraft::Game::Actors::Buildings']]]
+  ['path',['Path',['../class_xpose_craft_1_1_game_1_1_path.html',1,'XposeCraft::Game']]],
+  ['placetype',['PlaceType',['../class_xpose_craft_1_1_game_1_1_enums_1_1_place_type.html',1,'XposeCraft::Game::Enums']]],
+  ['position',['Position',['../class_xpose_craft_1_1_game_1_1_position.html',1,'XposeCraft::Game']]]
 ];

@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">XposeCraft
-   &#160;<span id="projectnumber">0.1.0</span>
+   &#160;<span id="projectnumber">1.0.0-rc1</span>
    </div>
    <div id="projectbrief">Public API for Arena Gameplay</div>
   </td>
@@ -83,36 +83,72 @@ $(document).ready(function(){initNavTree('class_xpose_craft_1_1_game_1_1_positio
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="class_xpose_craft_1_1_game_1_1_position-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">XposeCraft.Game.Position Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Map position defined by X and Y coordinates.  
+ <a href="class_xpose_craft_1_1_game_1_1_position.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a6ae9dd14fb9724c8a245df98a2ce0c7e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html#a6ae9dd14fb9724c8a245df98a2ce0c7e">Position</a> (int pointLocation)</td></tr>
+<tr class="memdesc:a6ae9dd14fb9724c8a245df98a2ce0c7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the <a class="el" href="class_xpose_craft_1_1_game_1_1_position.html" title="Map position defined by X and Y coordinates. ">Position</a> representing an internal grid point location on the map.  <a href="#a6ae9dd14fb9724c8a245df98a2ce0c7e">More...</a><br /></td></tr>
 <tr class="separator:a6ae9dd14fb9724c8a245df98a2ce0c7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab827c12ba6e071ffa118f7fee112e0bd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html#ab827c12ba6e071ffa118f7fee112e0bd">Position</a> (int x, int y)</td></tr>
+<tr class="memdesc:ab827c12ba6e071ffa118f7fee112e0bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the <a class="el" href="class_xpose_craft_1_1_game_1_1_position.html" title="Map position defined by X and Y coordinates. ">Position</a> from X and Y coordinates.  <a href="#ab827c12ba6e071ffa118f7fee112e0bd">More...</a><br /></td></tr>
 <tr class="separator:ab827c12ba6e071ffa118f7fee112e0bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad59ac851201148e20b54c53b1a7ce6ce"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_xpose_craft_1_1_game_1_1_path.html">Path</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html#ad59ac851201148e20b54c53b1a7ce6ce">PathFrom</a> (<a class="el" href="class_xpose_craft_1_1_game_1_1_position.html">Position</a> position)</td></tr>
+<tr class="memdesc:ad59ac851201148e20b54c53b1a7ce6ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a <a class="el" href="class_xpose_craft_1_1_game_1_1_path.html" title="Path between two Positions that uses pathfinding mainly for length comparison purposes. ">Path</a> representation between two Positions.  <a href="#ad59ac851201148e20b54c53b1a7ce6ce">More...</a><br /></td></tr>
 <tr class="separator:ad59ac851201148e20b54c53b1a7ce6ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37df3535d5bdb171f3a60079d5ffd7f9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html#a37df3535d5bdb171f3a60079d5ffd7f9">IsValidPlacement</a> (<a class="el" href="_building_8cs.html#aef9a82309be4035b116c6e2123ea0132">BuildingType</a> buildingType)</td></tr>
+<tr class="memitem:af34ee54dbf9207fa1b0e43ddff2cc7d1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html#af34ee54dbf9207fa1b0e43ddff2cc7d1">IsAvailable</a> ()</td></tr>
+<tr class="memdesc:af34ee54dbf9207fa1b0e43ddff2cc7d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Describes whether the <a class="el" href="class_xpose_craft_1_1_game_1_1_position.html" title="Map position defined by X and Y coordinates. ">Position</a> is available for movement or placement purposes.  <a href="#af34ee54dbf9207fa1b0e43ddff2cc7d1">More...</a><br /></td></tr>
+<tr class="separator:af34ee54dbf9207fa1b0e43ddff2cc7d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1f9b9e57313239f193089cfd4d7eae8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html">Position</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html#af1f9b9e57313239f193089cfd4d7eae8">FindNearestAvailable</a> ()</td></tr>
+<tr class="memdesc:af1f9b9e57313239f193089cfd4d7eae8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds a nearest available <a class="el" href="class_xpose_craft_1_1_game_1_1_position.html" title="Map position defined by X and Y coordinates. ">Position</a>.  <a href="#af1f9b9e57313239f193089cfd4d7eae8">More...</a><br /></td></tr>
+<tr class="separator:af1f9b9e57313239f193089cfd4d7eae8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37df3535d5bdb171f3a60079d5ffd7f9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html#a37df3535d5bdb171f3a60079d5ffd7f9">IsValidPlacement</a> (<a class="el" href="namespace_xpose_craft_1_1_game_1_1_enums.html#acb68bfbe5aac994446619a903c02855d">BuildingType</a> buildingType)</td></tr>
+<tr class="memdesc:a37df3535d5bdb171f3a60079d5ffd7f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether a Building of the chosen type can be placed on the <a class="el" href="class_xpose_craft_1_1_game_1_1_position.html" title="Map position defined by X and Y coordinates. ">Position</a>.  <a href="#a37df3535d5bdb171f3a60079d5ffd7f9">More...</a><br /></td></tr>
 <tr class="separator:a37df3535d5bdb171f3a60079d5ffd7f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a671d231a8af7531e5d29d582bf2e7e63"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html#a671d231a8af7531e5d29d582bf2e7e63">IsFogUncovered</a> ()</td></tr>
+<tr class="memdesc:a671d231a8af7531e5d29d582bf2e7e63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether the Fog of War is uncovered on this position, making everything there visible.  <a href="#a671d231a8af7531e5d29d582bf2e7e63">More...</a><br /></td></tr>
+<tr class="separator:a671d231a8af7531e5d29d582bf2e7e63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3a4d775de6c862dad7e16fb8c813447"><td class="memItemLeft" align="right" valign="top">override bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html#ab3a4d775de6c862dad7e16fb8c813447">Equals</a> (object obj)</td></tr>
+<tr class="separator:ab3a4d775de6c862dad7e16fb8c813447"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cd1abcd54bcc509b4db3652ae6f804e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html#a6cd1abcd54bcc509b4db3652ae6f804e">Equals</a> (<a class="el" href="class_xpose_craft_1_1_game_1_1_position.html">Position</a> position)</td></tr>
+<tr class="separator:a6cd1abcd54bcc509b4db3652ae6f804e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd0cd901b400a95e546b588e71f924ea"><td class="memItemLeft" align="right" valign="top">override int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html#afd0cd901b400a95e546b588e71f924ea">GetHashCode</a> ()</td></tr>
+<tr class="separator:afd0cd901b400a95e546b588e71f924ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a7ce49b95ff9f69a9fac333223b6fe75a"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html#a7ce49b95ff9f69a9fac333223b6fe75a">operator==</a> (<a class="el" href="class_xpose_craft_1_1_game_1_1_position.html">Position</a> a, <a class="el" href="class_xpose_craft_1_1_game_1_1_position.html">Position</a> b)</td></tr>
+<tr class="separator:a7ce49b95ff9f69a9fac333223b6fe75a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15b3d12987522d28f42d5b84f6e07f91"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html#a15b3d12987522d28f42d5b84f6e07f91">operator!=</a> (<a class="el" href="class_xpose_craft_1_1_game_1_1_position.html">Position</a> a, <a class="el" href="class_xpose_craft_1_1_game_1_1_position.html">Position</a> b)</td></tr>
+<tr class="separator:a15b3d12987522d28f42d5b84f6e07f91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a357cd5061fc67426d518b4101d4b5234"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html#a357cd5061fc67426d518b4101d4b5234">X</a><code> [get]</code></td></tr>
+<tr class="memdesc:a357cd5061fc67426d518b4101d4b5234"><td class="mdescLeft">&#160;</td><td class="mdescRight">Representing X coordinate.  <a href="#a357cd5061fc67426d518b4101d4b5234">More...</a><br /></td></tr>
 <tr class="separator:a357cd5061fc67426d518b4101d4b5234"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3c3bab0c44b07282115886c2185b7cd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html#aa3c3bab0c44b07282115886c2185b7cd">Y</a><code> [get]</code></td></tr>
+<tr class="memdesc:aa3c3bab0c44b07282115886c2185b7cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Representing Y coordinate.  <a href="#aa3c3bab0c44b07282115886c2185b7cd">More...</a><br /></td></tr>
 <tr class="separator:aa3c3bab0c44b07282115886c2185b7cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4509e3019e596e1759a9bfde7f4a473"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html#ac4509e3019e596e1759a9bfde7f4a473">PointLocation</a><code> [get]</code></td></tr>
+<tr class="memdesc:ac4509e3019e596e1759a9bfde7f4a473"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal grid point location on the map.  <a href="#ac4509e3019e596e1759a9bfde7f4a473">More...</a><br /></td></tr>
 <tr class="separator:ac4509e3019e596e1759a9bfde7f4a473"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a549febd77f7e11bf1dd0be36913d9499"><td class="memItemLeft" align="right" valign="top">Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html#a549febd77f7e11bf1dd0be36913d9499">Location</a><code> [get]</code></td></tr>
+<tr class="memdesc:a549febd77f7e11bf1dd0be36913d9499"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Vector3 representation.  <a href="#a549febd77f7e11bf1dd0be36913d9499">More...</a><br /></td></tr>
 <tr class="separator:a549febd77f7e11bf1dd0be36913d9499"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Map position defined by X and Y coordinates. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6ae9dd14fb9724c8a245df98a2ce0c7e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6ae9dd14fb9724c8a245df98a2ce0c7e">&#9670;&nbsp;</a></span>Position() <span class="overload">[1/2]</span></h2>
 
@@ -128,6 +164,20 @@ Properties</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Create the <a class="el" href="class_xpose_craft_1_1_game_1_1_position.html" title="Map position defined by X and Y coordinates. ">Position</a> representing an internal grid point location on the map. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pointLocation</td><td>Internal grid point location on the map.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">ArgumentException</td><td>Thrown when the location is out of bounds within the map.</td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -157,9 +207,137 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Create the <a class="el" href="class_xpose_craft_1_1_game_1_1_position.html" title="Map position defined by X and Y coordinates. ">Position</a> from X and Y coordinates. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>X coordinate.</td></tr>
+    <tr><td class="paramname">y</td><td>Y coordinate.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">ArgumentException</td><td>Thrown when a coordinate is out of bounds within the map.</td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ab3a4d775de6c862dad7e16fb8c813447"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3a4d775de6c862dad7e16fb8c813447">&#9670;&nbsp;</a></span>Equals() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">override bool XposeCraft.Game.Position.Equals </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>obj</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6cd1abcd54bcc509b4db3652ae6f804e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6cd1abcd54bcc509b4db3652ae6f804e">&#9670;&nbsp;</a></span>Equals() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool XposeCraft.Game.Position.Equals </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html">Position</a>&#160;</td>
+          <td class="paramname"><em>position</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af1f9b9e57313239f193089cfd4d7eae8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1f9b9e57313239f193089cfd4d7eae8">&#9670;&nbsp;</a></span>FindNearestAvailable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html">Position</a> XposeCraft.Game.Position.FindNearestAvailable </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Finds a nearest available <a class="el" href="class_xpose_craft_1_1_game_1_1_position.html" title="Map position defined by X and Y coordinates. ">Position</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd>Available <a class="el" href="class_xpose_craft_1_1_game_1_1_position.html" title="Map position defined by X and Y coordinates. ">Position</a>.</dd></dl>
+
+</div>
+</div>
+<a id="afd0cd901b400a95e546b588e71f924ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd0cd901b400a95e546b588e71f924ea">&#9670;&nbsp;</a></span>GetHashCode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">override int XposeCraft.Game.Position.GetHashCode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af34ee54dbf9207fa1b0e43ddff2cc7d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af34ee54dbf9207fa1b0e43ddff2cc7d1">&#9670;&nbsp;</a></span>IsAvailable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool XposeCraft.Game.Position.IsAvailable </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Describes whether the <a class="el" href="class_xpose_craft_1_1_game_1_1_position.html" title="Map position defined by X and Y coordinates. ">Position</a> is available for movement or placement purposes. </p>
+<dl class="section return"><dt>Returns</dt><dd>True if the <a class="el" href="class_xpose_craft_1_1_game_1_1_position.html" title="Map position defined by X and Y coordinates. ">Position</a> is available.</dd></dl>
+
+</div>
+</div>
+<a id="a671d231a8af7531e5d29d582bf2e7e63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a671d231a8af7531e5d29d582bf2e7e63">&#9670;&nbsp;</a></span>IsFogUncovered()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool XposeCraft.Game.Position.IsFogUncovered </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Checks whether the Fog of War is uncovered on this position, making everything there visible. </p>
+<dl class="section return"><dt>Returns</dt><dd>True if the Fog if uncovered.</dd></dl>
+
+</div>
+</div>
 <a id="a37df3535d5bdb171f3a60079d5ffd7f9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a37df3535d5bdb171f3a60079d5ffd7f9">&#9670;&nbsp;</a></span>IsValidPlacement()</h2>
 
@@ -169,11 +347,93 @@ Properties</h2></td></tr>
         <tr>
           <td class="memname">bool XposeCraft.Game.Position.IsValidPlacement </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="_building_8cs.html#aef9a82309be4035b116c6e2123ea0132">BuildingType</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespace_xpose_craft_1_1_game_1_1_enums.html#acb68bfbe5aac994446619a903c02855d">BuildingType</a>&#160;</td>
           <td class="paramname"><em>buildingType</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+<p>Checks whether a Building of the chosen type can be placed on the <a class="el" href="class_xpose_craft_1_1_game_1_1_position.html" title="Map position defined by X and Y coordinates. ">Position</a>. </p>
+<p>The condition is also that the Fog is currently uncovered there. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buildingType</td><td>Type of the building meant to be built.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True if the building can be placed on the <a class="el" href="class_xpose_craft_1_1_game_1_1_position.html" title="Map position defined by X and Y coordinates. ">Position</a>.</dd></dl>
+
+</div>
+</div>
+<a id="a15b3d12987522d28f42d5b84f6e07f91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a15b3d12987522d28f42d5b84f6e07f91">&#9670;&nbsp;</a></span>operator!=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool XposeCraft.Game.Position.operator!= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html">Position</a>&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html">Position</a>&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7ce49b95ff9f69a9fac333223b6fe75a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ce49b95ff9f69a9fac333223b6fe75a">&#9670;&nbsp;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool XposeCraft.Game.Position.operator== </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html">Position</a>&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html">Position</a>&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -194,6 +454,15 @@ Properties</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Creates a <a class="el" href="class_xpose_craft_1_1_game_1_1_path.html" title="Path between two Positions that uses pathfinding mainly for length comparison purposes. ">Path</a> representation between two Positions. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">position</td><td><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html" title="Map position defined by X and Y coordinates. ">Position</a> of the path origin.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="class_xpose_craft_1_1_game_1_1_path.html" title="Path between two Positions that uses pathfinding mainly for length comparison purposes. ">Path</a> between two Positions.</dd></dl>
+
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
@@ -212,10 +481,12 @@ Properties</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Internal Vector3 representation. </p>
 
 </div>
 </div>
@@ -239,6 +510,8 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Internal grid point location on the map. </p>
+
 </div>
 </div>
 <a id="a357cd5061fc67426d518b4101d4b5234"></a>
@@ -260,6 +533,8 @@ Properties</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Representing X coordinate. </p>
 
 </div>
 </div>
@@ -283,18 +558,17 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Representing Y coordinate. </p>
+
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
-<li>W:/Unity/XposeCraft/Assets/Game/Scripts/Game/<a class="el" href="_position_8cs.html">Position.cs</a></li>
-</ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_xpose_craft.html">XposeCraft</a></li><li class="navelem"><a class="el" href="namespace_xpose_craft_1_1_game.html">Game</a></li><li class="navelem"><a class="el" href="class_xpose_craft_1_1_game_1_1_position.html">Position</a></li>
-    <li class="footer">Generated on Fri Apr 14 2017 13:09:40 for XposeCraft by
+    <li class="footer">Generated on Fri May 19 2017 19:19:28 for XposeCraft by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

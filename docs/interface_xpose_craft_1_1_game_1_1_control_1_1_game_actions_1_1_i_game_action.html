@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">XposeCraft
-   &#160;<span id="projectnumber">0.1.0</span>
+   &#160;<span id="projectnumber">1.0.0-rc1</span>
    </div>
    <div id="projectbrief">Public API for Arena Gameplay</div>
   </td>
@@ -81,67 +81,37 @@ $(document).ready(function(){initNavTree('interface_xpose_craft_1_1_game_1_1_con
 </div>
 
 <div class="header">
-  <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="interface_xpose_craft_1_1_game_1_1_control_1_1_game_actions_1_1_i_game_action-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">XposeCraft.Game.Control.GameActions.IGameAction Interface Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Command which a IUnit is able to execute in a queue, one at a time.  
+ <a href="interface_xpose_craft_1_1_game_1_1_control_1_1_game_actions_1_1_i_game_action.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for XposeCraft.Game.Control.GameActions.IGameAction:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="interface_xpose_craft_1_1_game_1_1_control_1_1_game_actions_1_1_i_game_action.png" usemap="#XposeCraft.Game.Control.GameActions.IGameAction_map" alt=""/>
   <map id="XposeCraft.Game.Control.GameActions.IGameAction_map" name="XposeCraft.Game.Control.GameActions.IGameAction_map">
-<area href="class_xpose_craft_1_1_game_1_1_control_1_1_game_actions_1_1_game_action.html" alt="XposeCraft.Game.Control.GameActions.GameAction" shape="rect" coords="698,56,1037,80"/>
+<area href="class_xpose_craft_1_1_game_1_1_control_1_1_game_actions_1_1_game_action.html" alt="XposeCraft.Game.Control.GameActions.GameAction" shape="rect" coords="872,56,1211,80"/>
 <area href="class_xpose_craft_1_1_game_1_1_control_1_1_game_actions_1_1_attack.html" title="Action of attack on a unit. " alt="XposeCraft.Game.Control.GameActions.Attack" shape="rect" coords="0,112,339,136"/>
 <area href="class_xpose_craft_1_1_game_1_1_control_1_1_game_actions_1_1_attack_move.html" title="Action of a movement to a new position, during which the unit attacks any enemies before it continues..." alt="XposeCraft.Game.Control.GameActions.AttackMove" shape="rect" coords="349,112,688,136"/>
 <area href="class_xpose_craft_1_1_game_1_1_control_1_1_game_actions_1_1_custom_function.html" title="Action of invoking a custom function within the action queue. " alt="XposeCraft.Game.Control.GameActions.CustomFunction" shape="rect" coords="698,112,1037,136"/>
-<area href="class_xpose_craft_1_1_game_1_1_control_1_1_game_actions_1_1_move.html" title="Action of a movement to a new position. " alt="XposeCraft.Game.Control.GameActions.Move" shape="rect" coords="1047,112,1386,136"/>
-<area href="class_xpose_craft_1_1_game_1_1_control_1_1_game_actions_1_1_wait_for_actions_of.html" title="Action of waiting for other units to finish their own queue. " alt="XposeCraft.Game.Control.GameActions.WaitForActionsOf" shape="rect" coords="1396,112,1735,136"/>
+<area href="class_xpose_craft_1_1_game_1_1_control_1_1_game_actions_1_1_gather_resource.html" title="Gathers a chosen Resource and returns back to the BaseCenter with collected Resources, which are subsequenty available for spending by Player anywhere. " alt="XposeCraft.Game.Control.GameActions.GatherResource" shape="rect" coords="1047,112,1386,136"/>
+<area href="class_xpose_craft_1_1_game_1_1_control_1_1_game_actions_1_1_move.html" title="Action of a movement to a new position. " alt="XposeCraft.Game.Control.GameActions.Move" shape="rect" coords="1396,112,1735,136"/>
+<area href="class_xpose_craft_1_1_game_1_1_control_1_1_game_actions_1_1_wait_for_actions_of.html" title="Action of waiting for other units to finish their own queue. " alt="XposeCraft.Game.Control.GameActions.WaitForActionsOf" shape="rect" coords="1745,112,2084,136"/>
 </map>
  </div></div>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:ab5fff813b66ecfa8ebc48598f3d09d34"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interface_xpose_craft_1_1_game_1_1_control_1_1_game_actions_1_1_i_game_action.html#ab5fff813b66ecfa8ebc48598f3d09d34">Progress</a> ()</td></tr>
-<tr class="memdesc:ab5fff813b66ecfa8ebc48598f3d09d34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Action invocation that attempts to finish the required operation.  <a href="#ab5fff813b66ecfa8ebc48598f3d09d34">More...</a><br /></td></tr>
-<tr class="separator:ab5fff813b66ecfa8ebc48598f3d09d34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab5fff813b66ecfa8ebc48598f3d09d34"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5fff813b66ecfa8ebc48598f3d09d34">&#9670;&nbsp;</a></span>Progress()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool XposeCraft.Game.Control.GameActions.IGameAction.Progress </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Action invocation that attempts to finish the required operation. </p>
-<dl class="section return"><dt>Returns</dt><dd>true if the operation is finished and the Action should never be invoked again.</dd></dl>
-
-<p>Implemented in <a class="el" href="class_xpose_craft_1_1_game_1_1_control_1_1_game_actions_1_1_game_action.html#a800f9ca453dac61d4f25286000cceeb7">XposeCraft.Game.Control.GameActions.GameAction</a>.</p>
-
-</div>
-</div>
-<hr/>The documentation for this interface was generated from the following file:<ul>
-<li>W:/Unity/XposeCraft/Assets/Game/Scripts/Game/Control/GameActions/<a class="el" href="_i_game_action_8cs.html">IGameAction.cs</a></li>
-</ul>
-</div><!-- contents -->
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Command which a IUnit is able to execute in a queue, one at a time. </p>
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_xpose_craft.html">XposeCraft</a></li><li class="navelem"><a class="el" href="namespace_xpose_craft_1_1_game.html">Game</a></li><li class="navelem"><a class="el" href="namespace_xpose_craft_1_1_game_1_1_control.html">Control</a></li><li class="navelem"><a class="el" href="namespace_xpose_craft_1_1_game_1_1_control_1_1_game_actions.html">GameActions</a></li><li class="navelem"><a class="el" href="interface_xpose_craft_1_1_game_1_1_control_1_1_game_actions_1_1_i_game_action.html">IGameAction</a></li>
-    <li class="footer">Generated on Fri Apr 14 2017 13:09:40 for XposeCraft by
+    <li class="footer">Generated on Fri May 19 2017 19:19:28 for XposeCraft by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

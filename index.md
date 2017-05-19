@@ -12,7 +12,9 @@ Je potrebné stiahnuť súbory z tohto GitHub projektu. Najrýchlejší spôsob 
 # Programátorské rozhranie hry (API)
 Jazyk, v ktorom je napísaná samotná hra a ktorý sa používa aj na písanie robota sa volá **C#**. Existujú rôzne návody vo forme kníh alebo webstránok, príkladmi sú jedna **[anglická](https://www.tutorialspoint.com/csharp/csharp_basic_syntax.htm)** a jedna **[česká](http://programujte.com/clanky/34-serial-c/)** stránka, ktoré sa zaoberajú úplnými základmi. Platí ale, že väčšinou už prvé lekcie pracujú s funkciami z rámca .NET, akou je napríklad [`Console.WriteLine`](https://msdn.microsoft.com/en-us/library/system.console.writeline(v=vs.110).aspx). Počas programovania robota bude ale táto znalosť zbytočná, keďže sa neprogramuje aplikácia pre konzolu. Poskytujem ale podobnú funkcionalitu, ktorú je dobrovoľne možné využívať na písanie správ do výstupného logu zobrazovaného po spustení simulácie, napríklad cez `Log.i(object kontext, string sprava);`.
 
-## [Dokumentácia celého API pomocou nástroja Doxygen](docs/annotated.html)
+## [Dokumentácia verejného API robota pomocou nástroja Doxygen](docs/annotated.html)
+
+## [Dokumentácia vývojárskeho API na prispievanie do projektu](docs_dev/annotated.html)
 
 ## Písanie testov a overovanie úspešnosti
 Práca na vlastnom kóde robota prebieha výhradne v adresári (balíku) **[Test](https://github.com/scscgit/XposeCraft/tree/master/Assets/Scripts/Test)**, nachádzajúcom sa v adresári projektu. Obsahuje 3 triedy s fázami hry prebiehajúcimi v nasledujúcom poradí:

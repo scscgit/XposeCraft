@@ -1,0 +1,5 @@
+var searchData=
+[
+  ['objamount',['objAmount',['../class_xpose_craft_1_1_core_1_1_required_1_1_mini_map_element.html#a2173bf48b673461668cb953bc14cba4a',1,'XposeCraft::Core::Required::MiniMapElement']]],
+  ['ownership',['Ownership',['../class_xpose_craft_1_1_game_1_1_actors_1_1_actor.html#ac183f28960a4e6c9d85c5767224c4f0f',1,'XposeCraft.Game.Actors.Actor.Ownership()'],['../class_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_building.html#a858a78f932405b0be6ed99944a886956',1,'XposeCraft.Game.Actors.Buildings.Building.Ownership()'],['../interface_xpose_craft_1_1_game_1_1_actors_1_1_i_actor.html#a5090d059caa98ef4108a15cadd545510',1,'XposeCraft.Game.Actors.IActor.Ownership()'],['../class_xpose_craft_1_1_game_1_1_actors_1_1_resources_1_1_resource.html#a02c5e25da843d845d9bbc45496499de7',1,'XposeCraft.Game.Actors.Resources.Resource.Ownership()'],['../class_xpose_craft_1_1_game_1_1_actors_1_1_units_1_1_unit.html#ad019adf98e495e7dd1ac903daf268ecc',1,'XposeCraft.Game.Actors.Units.Unit.Ownership()']]]
+];
