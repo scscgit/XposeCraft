@@ -4,11 +4,19 @@ using UnityEngine;
 using XposeCraft.Core.Faction.Units;
 using XposeCraft.Core.Required;
 using XposeCraft.Game.Actors.Resources.Minerals;
+using XposeCraft.Game.Enums;
+using XposeCraft.GameInternal;
 
 namespace XposeCraft.Game.Actors.Resources
 {
+    /// <inheritdoc cref="IResource"/>
     public abstract class Resource : Actor, IResource
     {
+        public bool Exhausted
+        {
+            get { return GameObject == null; }
+        }
+
         /// <summary>
         /// Internal method, do not use.
         /// </summary>
@@ -33,6 +41,17 @@ namespace XposeCraft.Game.Actors.Resources
                     throw new InvalidOperationException("Invalid Resource type of GameObject based on its name");
             }
             return Create<T>(type, gameObject, null);
+        }
+
+
+        public override OwnershipType Ownership
+        {
+            get { return OwnershipType.Friendly; }
+        }
+
+        public override bool Visible
+        {
+            get { return Player.CurrentPlayer.Resources.Contains(this); }
         }
     }
 }

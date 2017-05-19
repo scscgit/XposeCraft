@@ -3,6 +3,7 @@ using XposeCraft.Game.Actors.Units;
 
 namespace XposeCraft.Game.Control.GameActions
 {
+    /// <inheritdoc cref="IGameAction"/>
     public abstract class GameAction : IGameAction
     {
         /// <summary>
@@ -14,15 +15,11 @@ namespace XposeCraft.Game.Control.GameActions
         /// <returns>true if the operation is finished and the Action should never be invoked again.</returns>
         internal virtual bool Progress(IUnit unit, UnitController unitController)
         {
-            if (unitController != null)
-            {
-                return true;
-            }
-            if (UnitActionQueue.ExceptionOnDeadUnitAction)
+            if (unit.Dead)
             {
                 throw new UnitDeadException();
             }
-            return false;
+            return true;
         }
 
         /// <summary>

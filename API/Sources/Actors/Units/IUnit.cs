@@ -1,8 +1,12 @@
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Control;
+using XposeCraft.Game.Control.GameActions;
 
 namespace XposeCraft.Game.Actors.Units
 {
+    /// <summary>
+    /// Unit able to freely move in the game and enqueue multiple <see cref="IGameAction"/> commands.
+    /// </summary>
     public interface IUnit : IActor
     {
         /// <summary>
@@ -47,5 +51,10 @@ namespace XposeCraft.Game.Actors.Units
         /// <param name="position">Target position.</param>
         /// <returns>Chained queue to add other actions.</returns>
         UnitActionQueue AttackMoveTo(Position position);
+
+        /// <summary>
+        /// True if the Unit already died an can never be used again.
+        /// </summary>
+        bool Dead { get; }
     }
 }

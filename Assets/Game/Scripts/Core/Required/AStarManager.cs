@@ -67,17 +67,25 @@ namespace XposeCraft.Core.Required
             int startListAmount = listAmount;
             for (int x = 0; x < amountOfThreads && x < startListAmount; x++)
             {
-                if (!startedThreads[x])
+                if (startedThreads[x])
                 {
-                    apath[x].myPath = null;
-                    apath[x].start = startList[x];
-                    apath[x].gridI = indexList[x];
-                    apath[x].end = targetList[x];
-                    apath[x].generate = true;
-                    apath[x].index = returnList[x].name;
-                    ThreadPool.QueueUserWorkItem(apath[x].FindMTPath);
-                    startedThreads[x] = true;
+                    continue;
                 }
+                // If the unit already died, skip the calculation
+                if (returnList[x] == null)
+                {
+                    apath[x].generate = false;
+                    startedThreads[x] = true;
+                    continue;
+                }
+                apath[x].myPath = null;
+                apath[x].start = startList[x];
+                apath[x].gridI = indexList[x];
+                apath[x].end = targetList[x];
+                apath[x].generate = true;
+                apath[x].index = returnList[x].name;
+                ThreadPool.QueueUserWorkItem(apath[x].FindMTPath);
+                startedThreads[x] = true;
             }
             for (int x = 0; x < amountOfThreads; x++)
             {
@@ -93,7 +101,8 @@ namespace XposeCraft.Core.Required
                 {
                     continue;
                 }
-                if (_finishActionList[y] != null)
+                // If the GameObject is null, the unit has died during calculation and the result should be discarded
+                if (_finishActionList[y] != null && returnList[y] != null)
                 {
                     _finishActionList[y].Invoke(new PathFoundArguments {APath = apath[x], GameObject = returnList[y]});
                 }

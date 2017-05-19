@@ -17,7 +17,7 @@ namespace XposeCraft.Game
         /// </summary>
         public GameEvent ThisGameEvent { get; set; }
 
-        public IDictionary<string, string> StringMap { get; private set; }
+        public IDictionary<string, string> StringMap { get; }
 
         // Game resources
 

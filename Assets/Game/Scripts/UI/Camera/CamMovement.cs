@@ -20,29 +20,27 @@ namespace XposeCraft.UI.Camera
             MouseBorderMovement();
             KeyMovement();
             ScrollWheel();
-            if (moveSpeedCur.x < 0 && moveSpeedCur.x * Time.deltaTime + transform.position.x < movementBorders.x)
+            if (moveSpeedCur.x < 0 && moveSpeedCur.x + transform.position.x < movementBorders.x)
             {
                 transform.position = new Vector3(movementBorders.x, transform.position.y, transform.position.z);
                 moveSpeedCur = new Vector2(0, moveSpeedCur.y);
             }
-            else if (moveSpeedCur.x > 0
-                     && moveSpeedCur.x * Time.deltaTime + transform.position.x > movementBorders.width)
+            else if (moveSpeedCur.x > 0 && moveSpeedCur.x + transform.position.x > movementBorders.width)
             {
                 transform.position = new Vector3(movementBorders.width, transform.position.y, transform.position.z);
                 moveSpeedCur = new Vector2(0, moveSpeedCur.y);
             }
-            if (moveSpeedCur.y < 0 && moveSpeedCur.y * Time.deltaTime + transform.position.z < movementBorders.y)
+            if (moveSpeedCur.y < 0 && moveSpeedCur.y + transform.position.z < movementBorders.y)
             {
                 transform.position = new Vector3(transform.position.x, transform.position.y, movementBorders.y);
                 moveSpeedCur = new Vector2(moveSpeedCur.x, 0);
             }
-            else if (moveSpeedCur.y > 0
-                     && moveSpeedCur.y * Time.deltaTime + transform.position.z > movementBorders.height)
+            else if (moveSpeedCur.y > 0 && moveSpeedCur.y + transform.position.z > movementBorders.height)
             {
                 transform.position = new Vector3(transform.position.x, transform.position.y, movementBorders.height);
                 moveSpeedCur = new Vector2(moveSpeedCur.x, 0);
             }
-            transform.Translate(moveSpeedCur.x * Time.deltaTime, 0, moveSpeedCur.y * Time.deltaTime);
+            transform.Translate(moveSpeedCur.x, 0, moveSpeedCur.y);
         }
 
         // Movement For if the Mouse Goes to a certain area oncreen

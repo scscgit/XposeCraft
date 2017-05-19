@@ -5,10 +5,12 @@ using XposeCraft.Core.Required;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Control;
 using XposeCraft.Game.Control.GameActions;
+using XposeCraft.Game.Enums;
 using XposeCraft.GameInternal;
 
 namespace XposeCraft.Game.Actors.Units
 {
+    /// <inheritdoc cref="IUnit"/>
     public abstract class Unit : Actor, IUnit
     {
         private UnitActionQueue _actionQueue;
@@ -18,6 +20,10 @@ namespace XposeCraft.Game.Actors.Units
             get { return _actionQueue; }
             set
             {
+                if (Dead)
+                {
+                    throw new UnitDeadException();
+                }
                 // Cancels the previous pending action by finishing it
                 if (UnitController._actionDequeue != null)
                 {
@@ -88,6 +94,21 @@ namespace XposeCraft.Game.Actors.Units
         public UnitActionQueue AttackMoveTo(Position position)
         {
             return ActionQueue = new UnitActionQueue(new AttackMove(position));
+        }
+
+        public bool Dead
+        {
+            get { return GameObject == null; }
+        }
+
+        public override OwnershipType Ownership
+        {
+            get { return Player.CurrentPlayer.Units.Contains(this) ? OwnershipType.Owned : OwnershipType.Enemy; }
+        }
+
+        public override bool Visible
+        {
+            get { return Ownership == OwnershipType.Owned || Player.CurrentPlayer.EnemyVisibleUnits.Contains(this); }
         }
     }
 }

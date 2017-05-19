@@ -3,6 +3,9 @@ using XposeCraft.GameInternal;
 
 namespace XposeCraft.Game.Enums
 {
+    /// <summary>
+    /// Useful places near a Base.
+    /// </summary>
     [Serializable]
     public class PlaceType
     {

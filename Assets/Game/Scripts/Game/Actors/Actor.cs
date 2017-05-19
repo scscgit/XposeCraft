@@ -2,13 +2,12 @@ using System;
 using UnityEngine;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Units;
+using XposeCraft.Game.Enums;
 using XposeCraft.GameInternal;
 
 namespace XposeCraft.Game.Actors
 {
-    /// <summary>
-    /// Representation of a Game Actor in Unity.
-    /// </summary>
+    /// <inheritdoc cref="IActor"/>
     public abstract class Actor : ScriptableObject, IActor
     {
         [SerializeField] private GameObject _gameObject;
@@ -19,13 +18,14 @@ namespace XposeCraft.Game.Actors
             set { _gameObject = value; }
         }
 
-        /// <summary>
-        /// Current Position of the Actor.
-        /// </summary>
         public Position Position
         {
             get { return new Position(GameManager.Instance.UGrid.DetermineLocation(GameObject.transform.position)); }
         }
+
+        public abstract OwnershipType Ownership { get; }
+
+        public abstract bool Visible { get; }
 
         protected virtual void Initialize(Player playerOwner)
         {

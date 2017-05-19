@@ -3,7 +3,7 @@ using System;
 namespace XposeCraft.Game
 {
     /// <summary>
-    /// Path between two Positions mainly for length comparison purposes.
+    /// Path between two Positions that uses pathfinding mainly for length comparison purposes.
     /// </summary>
     [Serializable]
     public class Path

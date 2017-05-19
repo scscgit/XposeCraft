@@ -7,7 +7,7 @@ using XposeCraft.Game.Enums;
 namespace XposeCraft.Game.Actors.Units
 {
     /// <summary>
-    /// Can gather various resources and build various buildings.
+    /// Unit that can gather various Resources and build various Buildings.
     /// </summary>
     public class Worker : Unit
     {
@@ -26,6 +26,13 @@ namespace XposeCraft.Game.Actors.Units
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Sends the Worker to Create a Building of a specific type.
+        /// </summary>
+        /// <param name="buildingType">Type of the Building to be created.</param>
+        /// <param name="position">Position where the Building will be placed.
+        /// Use Position.IsValidPlacement to check if the position can be used.</param>
+        /// <returns>Instance of the building in a progress state.</returns>
         public IBuilding CreateBuilding(BuildingType buildingType, Position position)
         {
             throw new NotImplementedException();

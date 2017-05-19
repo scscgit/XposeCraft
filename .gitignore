@@ -46,4 +46,4 @@ sysinfo.txt
 
 # Doxygen Documentation
 /[Dd]ocs/*
-!/[Dd]ocs/[Dd]oxyfile
+!/[Dd]ocs/[Dd]oxyfile*

@@ -4,23 +4,14 @@ using XposeCraft.Game.Control;
 
 namespace XposeCraft.Game.Actors.Units
 {
+    /// <inheritdoc cref="IUnit"/>
     public abstract class Unit : Actor, IUnit
     {
-        public UnitActionQueue ActionQueue
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        public UnitActionQueue ActionQueue { get; set; }
 
-        public int Health
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public int Health { get; }
 
-        public int MaxHealth
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public int MaxHealth { get; }
 
         public UnitActionQueue Attack(IUnit unit)
         {
@@ -41,5 +32,7 @@ namespace XposeCraft.Game.Actors.Units
         {
             throw new NotImplementedException();
         }
+
+        public bool Dead { get; }
     }
 }

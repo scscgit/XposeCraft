@@ -7,6 +7,9 @@ using XposeCraft.GameInternal;
 
 namespace XposeCraft.Game.Control
 {
+    /// <summary>
+    /// Queue for <see cref="IGameAction"/> commands which can be assigned to a Unit in order to make it execute them.
+    /// </summary>
     public class UnitActionQueue
     {
         /// <summary>
@@ -63,8 +66,17 @@ namespace XposeCraft.Game.Control
                     }
                     Remove();
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    if (e is UnitDeadException)
+                    {
+                        _unitActionQueue._queue.Clear();
+                        if (ExceptionOnDeadUnitAction)
+                        {
+                            throw new UnitDeadException();
+                        }
+                        return;
+                    }
                     // If the progress failed because of an exception, it mustn't block the queue (debugging purposes)
                     Remove();
                     throw;
@@ -85,7 +97,7 @@ namespace XposeCraft.Game.Control
         }
 
         /// <summary>
-        /// If true, attempt at executing an Action with a dead Unit will throw a <see cref="UnitDeadException"></see>.
+        /// If true, attempt at executing an Action with a dead Unit will throw a <see cref="UnitDeadException"/>.
         /// </summary>
         public static bool ExceptionOnDeadUnitAction
         {

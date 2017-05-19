@@ -2,6 +2,9 @@ using System;
 
 namespace XposeCraft.Game.Enums
 {
+    /// <summary>
+    /// Useful places near a Base.
+    /// </summary>
     [Serializable]
     public class PlaceType
     {
@@ -13,15 +16,9 @@ namespace XposeCraft.Game.Enums
         public Position UnderRampLeft;
         public Position UnderRampRight;
 
-        public static PlaceType MyBase
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public static PlaceType MyBase { get; }
 
-        public static PlaceType EnemyBase
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public static PlaceType EnemyBase { get; }
 
         public PlaceType(Position[] positions)
         {

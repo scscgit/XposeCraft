@@ -3,6 +3,9 @@ using XposeCraft.Game.Control.GameActions;
 
 namespace XposeCraft.Game.Control
 {
+    /// <summary>
+    /// Queue for <see cref="IGameAction"/> commands which can be assigned to a Unit in order to make it execute them.
+    /// </summary>
     public class UnitActionQueue
     {
         /// <summary>

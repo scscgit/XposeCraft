@@ -30,8 +30,14 @@ namespace XposeCraft.Game.Actors.Buildings
         /// <exception cref="NotEnoughResourcesException">Not enough resources to enqueue the production.</exception>
         void ProduceUnit(UnitType unitType);
 
+        /// <summary>
+        /// Number of currently queued Units that will be produced.
+        /// </summary>
         int QueuedUnits { get; }
 
+        /// <summary>
+        /// Maximum number of Units that can be queued at once to be produced.
+        /// </summary>
         int QueueLimit { get; }
     }
 }

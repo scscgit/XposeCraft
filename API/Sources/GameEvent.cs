@@ -3,6 +3,10 @@ using XposeCraft.Game.Enums;
 
 namespace XposeCraft.Game
 {
+    /// <summary>
+    /// Event registered in the game system of events, triggering its anonymous function on <see cref="GameEventType"/>
+    /// game event occurrence. This function receives an event description in the form of <see cref="Arguments"/>.
+    /// </summary>
     [Serializable]
     public class GameEvent
     {
@@ -20,16 +24,20 @@ namespace XposeCraft.Game
         {
         }
 
-        public void RunFunction(Arguments arguments)
-        {
-            throw new NotImplementedException();
-        }
-
+        /// <summary>
+        /// Registers a new instance in the game event system to wait for the <see cref="GameEventType"/> occurrence.
+        /// </summary>
+        /// <param name="gameEventType">Type of the game event to get triggered on.</param>
+        /// <param name="function">Function to be executed on the event trigger, receiving an event description.</param>
+        /// <returns>Registered event representation, which can be later used to unregister it.</returns>
         public static GameEvent Register(GameEventType gameEventType, Action<Arguments> function)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Unregisters the registered GameEvent.
+        /// </summary>
         public void UnregisterEvent()
         {
             throw new NotImplementedException();

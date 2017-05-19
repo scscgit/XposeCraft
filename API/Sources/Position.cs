@@ -12,26 +12,17 @@ namespace XposeCraft.Game
         /// <summary>
         /// Representing X coordinate.
         /// </summary>
-        public int X
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public int X { get; }
 
         /// <summary>
         /// Representing Y coordinate.
         /// </summary>
-        public int Y
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public int Y { get; }
 
         /// <summary>
         /// Internal grid point location on the map.
         /// </summary>
-        public int PointLocation
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public int PointLocation { get; }
 
         /// <summary>
         /// Create the Position representing an internal grid point location on the map.

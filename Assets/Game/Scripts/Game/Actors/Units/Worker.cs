@@ -14,7 +14,7 @@ using BuildingType = XposeCraft.Game.Enums.BuildingType;
 namespace XposeCraft.Game.Actors.Units
 {
     /// <summary>
-    /// Can gather various resources and build various buildings.
+    /// Unit that can gather various Resources and build various Buildings.
     /// </summary>
     public class Worker : Unit
     {
@@ -37,13 +37,20 @@ namespace XposeCraft.Game.Actors.Units
             return ActionQueue = new UnitActionQueue(new GatherResource(resource));
         }
 
-        // TODO:
-        // 1. send worker to the position near building, queued event when arrival
-        // 2. start construction object, queued event when finished
-        // 2.5. if interrupted, worker can repeat step 1 and continue on 2 without creating a new object
-        // 3. finished event, return to gather
+        /// <summary>
+        /// Sends the Worker to Create a Building of a specific type.
+        /// </summary>
+        /// <param name="buildingType">Type of the Building to be created.</param>
+        /// <param name="position">Position where the Building will be placed.
+        /// Use Position.IsValidPlacement to check if the position can be used.</param>
+        /// <returns>Instance of the building in a progress state.</returns>
         public IBuilding CreateBuilding(BuildingType buildingType, Position position)
         {
+            // TODO:
+            // 1. send worker to the position near building, queued event when arrival
+            // 2. start construction object, queued event when finished
+            // 2.5. if interrupted, worker can repeat step 1 and continue on 2 without creating a new object
+            // 3. finished event, return to gather
             StopGathering();
             var player = Player.CurrentPlayer;
             var actor = Create<Building>(

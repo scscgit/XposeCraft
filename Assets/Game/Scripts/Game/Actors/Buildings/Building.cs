@@ -4,6 +4,7 @@ using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Faction.Units;
 using XposeCraft.Core.Required;
 using XposeCraft.Game.Actors.Resources;
+using XposeCraft.Game.Enums;
 using XposeCraft.GameInternal;
 using XposeCraft.GameInternal.Helpers;
 using BuildingType = XposeCraft.Core.Faction.Buildings.BuildingType;
@@ -11,6 +12,7 @@ using UnitType = XposeCraft.Game.Enums.UnitType;
 
 namespace XposeCraft.Game.Actors.Buildings
 {
+    /// <inheritdoc cref="IBuilding"/>
     public abstract class Building : Actor, IBuilding
     {
         protected BuildingController BuildingController;
@@ -23,6 +25,24 @@ namespace XposeCraft.Game.Actors.Buildings
         public float ConstructionProgress
         {
             get { return BuildingController.progressCur / BuildingController.progressReq; }
+        }
+
+        public bool Destroyed
+        {
+            get { return GameObject == null; }
+        }
+
+        public override OwnershipType Ownership
+        {
+            get { return Player.CurrentPlayer.Buildings.Contains(this) ? OwnershipType.Owned : OwnershipType.Enemy; }
+        }
+
+        public override bool Visible
+        {
+            get
+            {
+                return Ownership == OwnershipType.Owned || Player.CurrentPlayer.EnemyVisibleBuildings.Contains(this);
+            }
         }
 
         /// <summary>

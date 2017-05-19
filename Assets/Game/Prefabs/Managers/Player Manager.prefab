@@ -257,7 +257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5340020de85e27d439ab4beab660c186, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: {x: 80, y: 80}
+  moveSpeed: {x: 1.2, y: 1.2}
   modifier: 2
   scrollMinMax: {x: -120, y: 70}
   scrollSpeed: 0.9

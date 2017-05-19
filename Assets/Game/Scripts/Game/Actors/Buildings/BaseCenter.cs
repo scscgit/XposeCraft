@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using XposeCraft.Game.Actors.Resources;
+using XposeCraft.Game.Actors.Units;
 using XposeCraft.Game.Enums;
 using XposeCraft.GameInternal;
 
 namespace XposeCraft.Game.Actors.Buildings
 {
     /// <summary>
-    /// A base building that creates new Workers and receives collected Resources.
+    /// A base building that creates new <see cref="Worker"/>s and receives collected <see cref="IResource"/>s.
     /// </summary>
     public class BaseCenter : Building, IUnitProduction
     {

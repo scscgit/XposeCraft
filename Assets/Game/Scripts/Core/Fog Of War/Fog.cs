@@ -146,14 +146,14 @@ namespace XposeCraft.Core.Fog_Of_War
                     try
                     {
                         var agentSeenPositions = signalAgents.LocationsSeenTemporary[agentIndex];
-                        if (agentSeenPositions.Contains(location))
+                        if (agentSeenPositions != null && agentSeenPositions.Contains(location))
                         {
                             agentIndexesSawChange.Add(agentIndex);
                         }
                     }
                     catch (Exception e)
                     {
-                        // Accessing index of agentSeenPositions caused a crash, there may be a hazard
+                        // This problem seems to be fixed as LocationsSeenTemporary[agentIndex] just wasn't initialized
                         Log.w("LocationsSeenTemporary problem: " + e.Message);
                     }
                 }
@@ -461,6 +461,7 @@ namespace XposeCraft.Core.Fog_Of_War
 
                     // Display signal agents in the Fog
                     var signalAgents = _signalAgentsFactions[factionIndex];
+                    // NOTE: agentsAmount changes during the iteration!
                     signalAgents.LocationsSeenTemporary = new List<int>[signalAgents.agentsAmount];
                     var locationsSeenTemporary = signalAgents.LocationsSeenTemporary;
                     for (var signalAgentIndex = 0; signalAgentIndex < signalAgents.agentsAmount; signalAgentIndex++)

@@ -80,7 +80,7 @@ namespace XposeCraft.GameInternal
 
         // Run-time configuration of the Player
 
-        private bool _exceptionOnDeadUnitAction = true;
+        private bool _exceptionOnDeadUnitAction;
 
         public bool ExceptionOnDeadUnitAction
         {
