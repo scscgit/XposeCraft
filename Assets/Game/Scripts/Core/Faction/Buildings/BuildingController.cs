@@ -192,6 +192,12 @@ namespace XposeCraft.Core.Faction.Buildings
             building.OpenPoints(grid, gridI, loc);
             Destroy(gameObject);
             gui.Killed(gameObject);
+            PlayerOwner.Buildings.Remove(
+                GameManager.Instance.ActorLookup[gameObject] as Game.Actors.Buildings.Building);
+            if (PlayerOwner.Buildings.Count == 0)
+            {
+                PlayerOwner.Lost(Player.LoseReason.AllBuildingsDestroyed);
+            }
         }
 
         public void DisplayHealth()

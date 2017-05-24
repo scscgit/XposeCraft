@@ -88,8 +88,7 @@ namespace XposeCraft.Game.Actors.Units
             {
                 return false;
             }
-            ((Building) building).FinishBuildingByWorker(UnitController);
-            return true;
+            return ((Building) building).FinishBuildingByWorker(UnitController);
         }
 
         private void StopGathering()

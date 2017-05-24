@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-using XposeCraft.GameInternal;
 
-namespace XposeCraft.Game
+namespace XposeCraft.GameInternal
 {
     /// <summary>
     /// Game tutorial for making the jump-start into the game easier for new programmers.
@@ -291,7 +290,7 @@ namespace XposeCraft.Game
                     _text =
                         "Pomaly sa blížite ku koncu návodu. Vedlajšou vlastnosťou hry, ktorú pochopíte, je " +
                         "<b>výmena kódu za behu hry</b>. Využívali ste ju zatiaľ celú dobu, keď ste uložili " +
-                        "zmeny pred návratom do Unity, ale môže byť hodné aj vypnúť ju, nech hra pokračuje " +
+                        "zmeny pred návratom do Unity, ale môže byť vhodné aj vypnúť ju, nech hra pokračuje " +
                         "bez viacnásobného spúšťania vášho kódu. Bez nej budete hru reštartovať obyčajne v Unity.\n" +
                         "\n" +
                         "Vypnúť (alebo cez true zapnúť) ju môžete cez:\n" +

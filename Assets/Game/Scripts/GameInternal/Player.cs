@@ -20,6 +20,11 @@ namespace XposeCraft.GameInternal
     public class Player : MonoBehaviour
     {
         /// <summary>
+        /// True if already lost.
+        /// </summary>
+        public bool LostGame;
+
+        /// <summary>
         /// Reason of losing.
         /// </summary>
         public enum LoseReason
@@ -157,10 +162,16 @@ namespace XposeCraft.GameInternal
             {
                 GameTestRunner.Passed = true;
             }
+            Log.i(string.Format("Player {0} won the game", name));
         }
 
         public void Lost(LoseReason loseReason)
         {
+            if (LostGame)
+            {
+                return;
+            }
+            LostGame = true;
             switch (loseReason)
             {
                 case LoseReason.ExceptionThrown:
@@ -179,7 +190,21 @@ namespace XposeCraft.GameInternal
             {
                 GameTestRunner.Failed = true;
             }
-            // TODO: this causes enemies to Win (if no remaining players and not stalemate)
+            // This causes enemies to Win if they don't have any more enemies
+            if (loseReason == LoseReason.TimeoutStalemate)
+            {
+                return;
+            }
+            foreach (var enemyFactionIndex in Faction.EnemyFactionIndexes())
+            {
+                foreach (var player in GameManager.Instance.Players)
+                {
+                    if (this != player && player.FactionIndex == enemyFactionIndex)
+                    {
+                        player.Win();
+                    }
+                }
+            }
         }
 
         public void Lost(Exception exception)

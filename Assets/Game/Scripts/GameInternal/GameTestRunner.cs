@@ -3,6 +3,7 @@ using System.Collections;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.Assertions;
+using XposeCraft.BotScripts;
 using XposeCraft.Game;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Units;
@@ -10,7 +11,6 @@ using XposeCraft.Game.Control;
 using XposeCraft.Game.Control.GameActions;
 using XposeCraft.Game.Enums;
 using XposeCraft.Game.Helpers;
-using XposeCraft.Test;
 
 namespace XposeCraft.GameInternal
 {

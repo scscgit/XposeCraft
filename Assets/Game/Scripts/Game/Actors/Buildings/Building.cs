@@ -80,8 +80,12 @@ namespace XposeCraft.Game.Actors.Buildings
         /// <summary>
         /// Internal method, do not use.
         /// </summary>
-        internal void AttackedByUnit(UnitController attackerUnit)
+        internal bool AttackedByUnit(UnitController attackerUnit)
         {
+            if (Destroyed)
+            {
+                return true;
+            }
             if (GameManager.Instance.Factions[BuildingController.FactionIndex]
                     .Relations[attackerUnit.FactionIndex]
                     .state != 2)
@@ -89,13 +93,18 @@ namespace XposeCraft.Game.Actors.Buildings
                 throw new Exception("The target Building is not enemy, so it cannot be attacked");
             }
             UnitSelection.SetTarget(new List<UnitController> {attackerUnit}, GameObject, GameObject.transform.position);
+            return false;
         }
 
         /// <summary>
         /// Internal method, do not use.
         /// </summary>
-        internal void FinishBuildingByWorker(UnitController builderUnit)
+        internal bool FinishBuildingByWorker(UnitController builderUnit)
         {
+            if (Destroyed)
+            {
+                return false;
+            }
             if (GameManager.Instance.Factions[BuildingController.FactionIndex]
                     .Relations[builderUnit.FactionIndex]
                     .state == 2)
@@ -103,6 +112,7 @@ namespace XposeCraft.Game.Actors.Buildings
                 throw new Exception("The target Building belongs to an enemy, so a worker cannot be construct it");
             }
             UnitSelection.SetTarget(new List<UnitController> {builderUnit}, GameObject, GameObject.transform.position);
+            return true;
         }
 
         protected void ProduceUnit(UnitType unitType)

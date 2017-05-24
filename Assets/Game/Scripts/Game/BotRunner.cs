@@ -18,11 +18,11 @@ namespace XposeCraft.Game
             {
                 if (value)
                 {
-                    Game.Tutorial.Instance.TutorialStart();
+                    GameInternal.Tutorial.Instance.TutorialStart();
                 }
                 else
                 {
-                    Game.Tutorial.Instance.TutorialStop();
+                    GameInternal.Tutorial.Instance.TutorialStop();
                 }
             }
         }
@@ -36,7 +36,7 @@ namespace XposeCraft.Game
             set
             {
                 GameManager.Instance.HotSwap = value;
-                Game.Tutorial.Instance.OnHotSwap();
+                GameInternal.Tutorial.Instance.OnHotSwap();
             }
         }
 
@@ -56,6 +56,16 @@ namespace XposeCraft.Game
         public static int Speed
         {
             set { GameObject.Find("Player Manager").GetComponent<AlterTime>().NormalSpeed = value; }
+        }
+
+        /// <summary>
+        /// Logs a string message into the Unity console.
+        /// All C# objects provide method ToString() that can be used to get a string format.
+        /// </summary>
+        /// <param name="message">Mesage to be displayed.</param>
+        public static void Log(string message)
+        {
+            GameInternal.Log.i(message);
         }
     }
 }

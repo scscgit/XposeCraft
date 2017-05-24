@@ -17,7 +17,17 @@ namespace XposeCraft.Game.Actors.Units
 
         public UnitActionQueue ActionQueue
         {
-            get { return _actionQueue; }
+            get
+            {
+                if (_actionQueue != null)
+                {
+                    return _actionQueue;
+                }
+                _actionQueue = new UnitActionQueue();
+                UnitController._actionDequeue = new UnitActionQueue.ActionDequeue(this, UnitController, _actionQueue);
+                UnitController._actionDequeue.Dequeue();
+                return _actionQueue;
+            }
             set
             {
                 if (Dead)
@@ -32,8 +42,7 @@ namespace XposeCraft.Game.Actors.Units
                 // Initializes the callback mechanism in the controller
                 // TODO: clone before creating a representing dequeue
                 _actionQueue = value;
-                UnitController._actionDequeue =
-                    new UnitActionQueue.ActionDequeue(this, UnitController, _actionQueue);
+                UnitController._actionDequeue = new UnitActionQueue.ActionDequeue(this, UnitController, _actionQueue);
                 UnitController._actionDequeue.Dequeue();
             }
         }
@@ -41,8 +50,12 @@ namespace XposeCraft.Game.Actors.Units
         /// <summary>
         /// Internal method, do not use.
         /// </summary>
-        internal void AttackedByUnit(UnitController attackerUnit)
+        internal bool AttackedByUnit(UnitController attackerUnit)
         {
+            if (Dead)
+            {
+                return true;
+            }
             if (GameManager.Instance.Factions[UnitController.FactionIndex]
                     .Relations[attackerUnit.FactionIndex]
                     .state != 2)
@@ -50,6 +63,7 @@ namespace XposeCraft.Game.Actors.Units
                 throw new Exception("The target Unit is not enemy, so it cannot be attacked");
             }
             UnitSelection.SetTarget(new List<UnitController> {attackerUnit}, GameObject, GameObject.transform.position);
+            return false;
         }
 
         public int Health

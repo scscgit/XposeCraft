@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using XposeCraft.Core.Required;
 using XposeCraft.Game;
 using XposeCraft.GameInternal.Helpers;
 #if UNITY_EDITOR
@@ -19,7 +18,6 @@ namespace XposeCraft.Core.Grids
         public Grid[] grids = new Grid[1];
         public bool generate;
         public int index;
-        public APath pathfinding;
         public Texture selectionTexture;
 
         public int FindPointGridIndex { get; set; }

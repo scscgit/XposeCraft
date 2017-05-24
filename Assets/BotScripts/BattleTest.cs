@@ -1,7 +1,7 @@
 using System;
 using XposeCraft.Game;
 
-namespace XposeCraft.Test
+namespace XposeCraft.BotScripts
 {
     /// <summary>
     /// Tretia faza hry.

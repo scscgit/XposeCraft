@@ -19,6 +19,8 @@ namespace XposeCraft.Core.Faction.Units
         public float checkDist = 1;
         public int layer;
         Transform myTransform;
+        public int lastValidLocation { get; set; }
+        private int _movementStuckCounter;
 
         private void Awake()
         {
@@ -43,18 +45,29 @@ namespace XposeCraft.Core.Faction.Units
                 RequestPath(target);
                 return;
             }
-            var pointLoc = gridScript.grids[gridI].points[myPath.list[curPoint]].loc;
+            var point = gridScript.grids[gridI].points[myPath.list[curPoint]];
+            var pointLoc = point.loc;
             float distFromPlace = (
                 new Vector3(pointLoc.x, 0, pointLoc.z) - new Vector3(myTransform.position.x, 0, myTransform.position.z)
             ).sqrMagnitude;
             if (distFromPlace < checkDist)
             {
+                _movementStuckCounter = 0;
+                if (point.children.Length > 0)
+                {
+                    lastValidLocation = myPath.list[curPoint];
+                }
                 curPoint++;
                 if (curPoint == myPath.list.Length)
                 {
                     pathComplete = true;
                     return;
                 }
+            }
+            else if (++_movementStuckCounter > 1000)
+            {
+                // If stuck under cliff, un-stuck
+                myTransform.position = point.loc;
             }
             // Lerp Rotation
             Quaternion targetRotation = Quaternion.LookRotation(
@@ -75,6 +88,7 @@ namespace XposeCraft.Core.Faction.Units
         {
             myPath = path;
             curPoint = 0;
+            _movementStuckCounter = 0;
         }
 
         void OnDrawGizmosSelected()

@@ -84,6 +84,7 @@ namespace XposeCraft.Core.Required
                 apath[x].end = targetList[x];
                 apath[x].generate = true;
                 apath[x].index = returnList[x].name;
+                apath[x].lastValidLocation = returnList[x].GetComponent<UnitMovement>().lastValidLocation;
                 ThreadPool.QueueUserWorkItem(apath[x].FindMTPath);
                 startedThreads[x] = true;
             }

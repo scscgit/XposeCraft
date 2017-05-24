@@ -1,6 +1,6 @@
 using XposeCraft.Game;
 
-namespace XposeCraft.Test
+namespace XposeCraft.BotScripts
 {
     /// <summary>
     /// Additional serialized place to store custom data and references.

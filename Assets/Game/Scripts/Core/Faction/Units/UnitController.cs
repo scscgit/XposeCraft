@@ -410,6 +410,7 @@ namespace XposeCraft.Core.Faction.Units
         {
             anim.Die(gameObject);
             gui.Killed(gameObject);
+            PlayerOwner.Units.Remove(GameManager.Instance.ActorLookup[gameObject] as Unit);
         }
 
         public void Select(bool select)

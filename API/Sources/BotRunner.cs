@@ -41,5 +41,15 @@ namespace XposeCraft.Game
         {
             set { throw new NotImplementedException(); }
         }
+
+        /// <summary>
+        /// Logs a string message into the Unity console.
+        /// All C# objects provide method ToString() that can be used to get a string format.
+        /// </summary>
+        /// <param name="message">Mesage to be displayed.</param>
+        public static void Log(string message)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

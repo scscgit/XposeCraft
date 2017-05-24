@@ -700,6 +700,7 @@ namespace XposeCraft.Core.Required
         public UPath myPath;
         public GridPoint[] mGrid;
         public string index = "";
+        public int lastValidLocation;
 
         // TODO add in auto copy of the Grid Array
         public bool generate;
@@ -716,10 +717,17 @@ namespace XposeCraft.Core.Required
                 }
                 //myPath = FindPath(end, start);
                 // Testing the usage of Path API instead of a direct access during this GUI request
+
+                // Overrides the starting position by a last valid one in the event that it is invalid, e.g. on a cliff
+                var startLocation = gridScript.DetermineLocation(start);
+                if (gridScript.grids[gridI].points[startLocation].children.Length == 0)
+                {
+                    startLocation = lastValidLocation;
+                }
                 myPath = new UPath
                 {
                     list = new Path(
-                        new Position(gridScript.DetermineLocation(start)),
+                        new Position(startLocation),
                         new Position(gridScript.DetermineLocation(end))
                     ).PointLocations
                 };

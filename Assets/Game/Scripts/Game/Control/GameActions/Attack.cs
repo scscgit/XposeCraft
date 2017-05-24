@@ -42,8 +42,7 @@ namespace XposeCraft.Game.Control.GameActions
             var targetUnit = Target as Unit;
             if (targetUnit != null)
             {
-                targetUnit.AttackedByUnit(unitController);
-                return true;
+                return targetUnit.AttackedByUnit(unitController);
             }
             var targetBuilding = Target as Building;
             if (targetBuilding == null)
@@ -51,8 +50,7 @@ namespace XposeCraft.Game.Control.GameActions
                 throw new Exception(
                     "Fatal error, constructor hasn't properly asserted that Target is Unit or Building");
             }
-            targetBuilding.AttackedByUnit(unitController);
-            return true;
+            return targetBuilding.AttackedByUnit(unitController);
         }
     }
 }

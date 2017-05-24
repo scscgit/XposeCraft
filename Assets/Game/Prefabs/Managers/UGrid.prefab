@@ -67,15 +67,4 @@ MonoBehaviour:
       m_Bits: 256
   generate: 0
   index: 0
-  pathfinding:
-    start: {x: 0, y: 0, z: 0}
-    end: {x: 0, y: 0, z: 0}
-    gridScript: {fileID: 0}
-    gridI: 0
-    myPath:
-      list: 
-      color: {r: 1, g: 1, b: 1, a: 1}
-      displayPath: 0
-    index: 
-    generate: 0
   selectionTexture: {fileID: 2800000, guid: 349e81cd9cb2b524f87ae272c078acc5, type: 3}
