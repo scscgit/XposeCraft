@@ -1452,14 +1452,10 @@ namespace XposeCraft.Core.Required
 
         public bool StartProduction(int x, ResourceManager resourceManager, Player player)
         {
-            var job = new ProduceUnit(units[x], player);
-            // If there are available resources, uses them before starting the production, otherwise returns
-            for (var index = 0; index < resourceManager.resourceTypes.Length; index++)
+            var job = TryConstructProduction(x, resourceManager, player);
+            if (job == null)
             {
-                if (resourceManager.resourceTypes[index].amount < job.cost[index])
-                {
-                    return false;
-                }
+                return false;
             }
             for (var index = 0; index < resourceManager.resourceTypes.Length; index++)
             {
@@ -1471,6 +1467,20 @@ namespace XposeCraft.Core.Required
                 jobsAmount++;
             }
             return true;
+        }
+
+        public ProduceUnit TryConstructProduction(int x, ResourceManager resourceManager, Player player)
+        {
+            var job = new ProduceUnit(units[x], player);
+            // If there are available resources, uses them before starting the production, otherwise returns null
+            for (var index = 0; index < resourceManager.resourceTypes.Length; index++)
+            {
+                if (resourceManager.resourceTypes[index].amount < job.cost[index])
+                {
+                    return null;
+                }
+            }
+            return job;
         }
 
         public void CancelProduction(int x, ResourceManager resourceManager)

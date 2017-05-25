@@ -74,7 +74,11 @@ namespace XposeCraft.Game.Actors.Buildings
 
         protected bool CanNowProduceUnit(UnitType unitType)
         {
-            return SupportsUnitProduction.Contains(unitType);
+            return SupportsUnitProduction.Contains(unitType)
+                   && null != BuildingController.unitProduction.TryConstructProduction(
+                       UnitHelper.FindUnitIndexInUnitProduction(unitType, BuildingController.unitProduction),
+                       GameManager.Instance.ResourceManagerFaction[BuildingController.FactionIndex],
+                       BuildingController.PlayerOwner);
         }
 
         /// <summary>

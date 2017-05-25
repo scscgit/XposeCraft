@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using XposeCraft.Collections;
 using XposeCraft.Core.Faction;
+using XposeCraft.Core.Faction.Units;
 using XposeCraft.Game;
 using XposeCraft.Game.Actors;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Resources;
 using XposeCraft.Game.Actors.Units;
+using XposeCraft.Game.Control.GameActions;
 using XposeCraft.Game.Enums;
 using VisionState = XposeCraft.Core.Fog_Of_War.VisionReceiver.VisionState;
 
@@ -22,7 +24,7 @@ namespace XposeCraft.GameInternal
         /// <summary>
         /// True if already lost.
         /// </summary>
-        public bool LostGame;
+        public bool LostGame { get; set; }
 
         /// <summary>
         /// Reason of losing.
@@ -93,8 +95,53 @@ namespace XposeCraft.GameInternal
             set { _exceptionOnDeadUnitAction = value; }
         }
 
-        public void EnemyVisibilityChanged(
-            Actor enemyActor, List<Actor> actorsSawChange, VisionState previousState, VisionState newState)
+        public void EnemyOnSight(
+            GameObject enemyActorGameObject,
+            Actor enemyActor,
+            List<GameObject> myActorGameObjectsSaw,
+            List<Actor> myActorsSaw,
+            VisionState previousState,
+            VisionState newState)
+        {
+            if (newState == VisionState.Vision)
+            {
+                EvaluateAttackMove(enemyActor, myActorGameObjectsSaw, myActorsSaw);
+            }
+            // Evaluating visibility event if a change occurred
+            if (previousState != newState)
+            {
+                EnemyVisibilityChanged(enemyActor, myActorsSaw, previousState, newState);
+            }
+        }
+
+        private static void EvaluateAttackMove(
+            Actor enemyActor,
+            List<GameObject> myActorGameObjectsSaw,
+            List<Actor> myActorsSaw)
+        {
+            // Evaluating Attack Move
+            for (var myActorIndex = 0; myActorIndex < myActorsSaw.Count; myActorIndex++)
+            {
+                var myActorSaw = myActorsSaw[myActorIndex];
+                // Only Units can respond to seeing an enemy by Attack Move
+                if (!(myActorSaw is IUnit))
+                {
+                    continue;
+                }
+                // TODO: optimize performance by not requesting the component every time
+                var myUnitController = myActorGameObjectsSaw[myActorIndex].GetComponent<UnitController>();
+                if (!myUnitController.IsAttackMove || myUnitController.AttackMoveTarget != null)
+                {
+                    continue;
+                }
+                // A new target causes Attack to be performed before continuing the queue
+                Attack.AttackUnitOrBuilding(enemyActor, myUnitController);
+                myUnitController.AttackMoveTarget = enemyActor;
+            }
+        }
+
+        private void EnemyVisibilityChanged(
+            Actor enemyActor, List<Actor> myActorsSawChange, VisionState previousState, VisionState newState)
         {
             if (previousState == VisionState.Vision && newState != VisionState.Vision)
             {
@@ -102,7 +149,7 @@ namespace XposeCraft.GameInternal
             }
             else if (previousState == VisionState.Undiscovered || previousState == VisionState.Discovered)
             {
-                EnemyTurnedToVisible(enemyActor, actorsSawChange);
+                EnemyTurnedToVisible(enemyActor, myActorsSawChange);
             }
         }
 

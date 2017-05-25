@@ -26,7 +26,7 @@ namespace XposeCraft.Game.Control.GameActions
         /// <inheritdoc cref="GatherResource"/>
         /// <param name="resource">Resource to be gathered.</param>
         /// <exception cref="ResourceExhaustedException">The Resource was already exhausted before the attempt to go gather it.</exception>
-        public GatherResource(IResource resource) : this(resource, true)
+        public GatherResource(IResource resource) : this(resource, false)
         {
         }
 
@@ -74,6 +74,7 @@ namespace XposeCraft.Game.Control.GameActions
             {
                 return;
             }
+            // TODO: maybe guard against dead unit state is needed
             base.OnFinish(unit, unitController);
             ((Worker) unit).Gathering = null;
             Log.d(unit + " is no longer gathering");

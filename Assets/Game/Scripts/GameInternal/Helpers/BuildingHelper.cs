@@ -54,7 +54,19 @@ namespace XposeCraft.GameInternal.Helpers
                 "Building of the chosen building type is not available in your Faction");
         }
 
-        public static bool IsBuildingOfType(string buildingName, BuildingType buildingType)
+        public static BuildingType PrefabToType(GameObject buildingPrefab)
+        {
+            foreach (var value in (BuildingType[]) Enum.GetValues(typeof(BuildingType)))
+            {
+                if (IsBuildingOfType(buildingPrefab.name, value))
+                {
+                    return value;
+                }
+            }
+            throw new InvalidOperationException("Building prefab name isn't valid and doesn't represent a type");
+        }
+
+        private static bool IsBuildingOfType(string buildingName, BuildingType buildingType)
         {
             switch (buildingType)
             {

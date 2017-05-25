@@ -94,7 +94,19 @@ namespace XposeCraft.GameInternal.Helpers
                 "Cannot determine " + unitType + "'s unit index for the Unit Production from its custom name");
         }
 
-        public static bool IsUnitOfType(string unitName, UnitType unitType)
+        public static UnitType PrefabToType(GameObject unitPrefab)
+        {
+            foreach (var value in (UnitType[]) Enum.GetValues(typeof(UnitType)))
+            {
+                if (IsUnitOfType(unitPrefab.name, value))
+                {
+                    return value;
+                }
+            }
+            throw new InvalidOperationException("Unit prefab name isn't valid and doesn't represent a type");
+        }
+
+        private static bool IsUnitOfType(string unitName, UnitType unitType)
         {
             switch (unitType)
             {

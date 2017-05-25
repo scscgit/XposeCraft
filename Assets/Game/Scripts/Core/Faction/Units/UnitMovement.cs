@@ -1,6 +1,7 @@
 using UnityEngine;
 using XposeCraft.Core.Grids;
 using XposeCraft.Core.Required;
+using XposeCraft.GameInternal;
 
 namespace XposeCraft.Core.Faction.Units
 {
@@ -28,6 +29,12 @@ namespace XposeCraft.Core.Faction.Units
             pathing = GameObject.Find("A*").GetComponent<AStarManager>();
             gridScript = GameObject.Find("UGrid").GetComponent<UGrid>();
             myTransform = GetComponent<Transform>();
+        }
+
+        private void Start()
+        {
+            // Default starting position to prevent glitch about running over the entire map to position zero
+            lastValidLocation = GameManager.Instance.UGrid.DetermineLocation(transform.position);
         }
 
         void FixedUpdate()

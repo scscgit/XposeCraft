@@ -5,6 +5,7 @@ using XposeCraft.Core.Fog_Of_War;
 using XposeCraft.Core.Required;
 using XposeCraft.Core.Resources;
 using XposeCraft.Game;
+using XposeCraft.Game.Actors;
 using XposeCraft.Game.Control;
 using XposeCraft.Game.Enums;
 using XposeCraft.GameInternal;
@@ -47,6 +48,8 @@ namespace XposeCraft.Core.Faction.Units
         public Vector3 targetPoint;
         public int size = 1;
         Health healthObj;
+        public bool IsAttackMove { get; set; }
+        public Actor AttackMoveTarget { get; set; }
         internal UnitActionQueue.ActionDequeue _actionDequeue { get; set; }
 
         protected Faction Faction
@@ -268,31 +271,31 @@ namespace XposeCraft.Core.Faction.Units
                     {
                         movement.pathComplete = true;
                     }
+                    if (tState == TargetState.Undecided)
+                    {
+                        BuildingController targetController = target.GetComponent<BuildingController>();
+                        switch (Faction.Relations[targetController.FactionIndex].state)
+                        {
+                            case 0:
+                                tState = TargetState.Ally;
+                                break;
+                            case 1:
+                                tState = TargetState.Neutral;
+                                break;
+                            case 2:
+                                tState = TargetState.Enemy;
+                                break;
+                            case 3:
+                                tState = TargetState.Self;
+                                break;
+                        }
+                    }
                     if (movement.pathComplete)
                     {
                         transform.LookAt(new Vector3(
                             target.transform.position.x,
                             transform.position.y,
                             target.transform.position.z));
-                        if (tState == TargetState.Undecided)
-                        {
-                            BuildingController targetController = target.GetComponent<BuildingController>();
-                            switch (Faction.Relations[targetController.FactionIndex].state)
-                            {
-                                case 0:
-                                    tState = TargetState.Ally;
-                                    break;
-                                case 1:
-                                    tState = TargetState.Neutral;
-                                    break;
-                                case 2:
-                                    tState = TargetState.Enemy;
-                                    break;
-                                case 3:
-                                    tState = TargetState.Self;
-                                    break;
-                            }
-                        }
                         switch (tState)
                         {
                             case TargetState.Self:
@@ -327,6 +330,15 @@ namespace XposeCraft.Core.Faction.Units
                     else if (anim.state != "Move")
                     {
                         anim.state = "Move";
+                        anim.Animate();
+                    }
+                    if (tState == TargetState.Enemy
+                        && weapon.fighterUnit
+                        && weapon.InRange(target.transform.position, transform.position)
+                        || (transform.position - target.transform.position).magnitude < 2)
+                    {
+                        movement.pathComplete = true;
+                        anim.state = "Idle";
                         anim.Animate();
                     }
                     break;

@@ -25,11 +25,16 @@ namespace XposeCraft.Game.Control.GameActions
             {
                 return false;
             }
+            MoveToPosition(Where, unitController);
+            return true;
+        }
+
+        internal static void MoveToPosition(Position where, UnitController unitController)
+        {
             UnitSelection.SetTarget(
                 new List<UnitController> {unitController},
                 GameManager.Instance.Terrain.gameObject,
-                PositionHelper.PositionToLocation(Where));
-            return true;
+                PositionHelper.PositionToLocation(where));
         }
     }
 }

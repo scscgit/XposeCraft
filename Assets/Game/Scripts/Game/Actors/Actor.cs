@@ -65,7 +65,7 @@ namespace XposeCraft.Game.Actors
             var building = instance as Building;
             if (building != null)
             {
-                Player.CurrentPlayer.Buildings.Add(building);
+                playerOwner.Buildings.Add(building);
             }
             else
             {

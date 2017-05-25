@@ -118,37 +118,45 @@ namespace XposeCraft.Core.Fog_Of_War
             }
         }
 
+        /// <summary>
+        /// Updates the hidden renderers based on their respective hideNextSetting.
+        /// This triggers the visibility change events for signal agents.
+        /// </summary>
+        /// <param name="renderOnScreen"></param>
+        /// <param name="fog"></param>
+        /// <param name="signalAgents">Their LocationsSeenTemporary array will be used to check and trigger the
+        /// visibility change event of the actor represented by the specific SignalAgent. This event will
+        /// inform him of renderers that he sees. For the Attack Move purpose, this will be checked always.</param>
         public void SetRenderers(bool renderOnScreen, Fog fog, SignalAgents signalAgents)
         {
             for (int x = 0; x < hideAmount; x++)
             {
                 var previousState = (VisionReceiver.VisionState) hideCurrentSetting[x];
                 var newState = (VisionReceiver.VisionState) hideNextSetting[x];
-                if (previousState == newState)
+                if (previousState != newState)
                 {
-                    continue;
+                    if (renderOnScreen)
+                    {
+                        hiddenRend[x].SetRenderer(newState);
+                    }
+                    hideCurrentSetting[x] = hideNextSetting[x];
                 }
-                if (renderOnScreen)
-                {
-                    hiddenRend[x].SetRenderer(newState);
-                }
-                hideCurrentSetting[x] = hideNextSetting[x];
-                // Find all agents that saw the change in state
-                var agentIndexesSawChange = new List<int>();
+                // Find all agents that saw the hidden agent or his change in state
+                var signalIndexesSawHidden = new List<int>();
                 var location = fog.DetermineLocInteger(hiddenAgentT[x].position);
                 if (signalAgents.LocationsSeenTemporary == null)
                 {
                     Log.w("Fog hidden agent cannot find locations of nearby signal agents");
                     return;
                 }
-                for (var agentIndex = 0; agentIndex < signalAgents.LocationsSeenTemporary.Length; agentIndex++)
+                for (var signalIndex = 0; signalIndex < signalAgents.LocationsSeenTemporary.Length; signalIndex++)
                 {
                     try
                     {
-                        var agentSeenPositions = signalAgents.LocationsSeenTemporary[agentIndex];
+                        var agentSeenPositions = signalAgents.LocationsSeenTemporary[signalIndex];
                         if (agentSeenPositions != null && agentSeenPositions.Contains(location))
                         {
-                            agentIndexesSawChange.Add(agentIndex);
+                            signalIndexesSawHidden.Add(signalIndex);
                         }
                     }
                     catch (Exception e)
@@ -157,9 +165,21 @@ namespace XposeCraft.Core.Fog_Of_War
                         Log.w("LocationsSeenTemporary problem: " + e.Message);
                     }
                 }
-                var agentActorsSawChange = new List<Actor>();
-                agentIndexesSawChange.ForEach(agentIndex => agentActorsSawChange.Add(
-                    GameManager.Instance.ActorLookup[signalAgents.agents[agentIndex]]));
+
+                // Conversion to Lists of GameObjects and Actors
+                var signalAgentsSawHidden = new List<GameObject>();
+                signalIndexesSawHidden.ForEach(signalIndex =>
+                {
+                    // For an unknown reason, sometimes the index would try to get accessed above the agent count
+                    if (signalIndex < signalAgents.agents.Count)
+                    {
+                        signalAgentsSawHidden.Add(signalAgents.agents[signalIndex]);
+                    }
+                });
+                var agentActorsSawHidden = new List<Actor>();
+                signalAgentsSawHidden.ForEach(signalAgent => agentActorsSawHidden.Add(
+                    GameManager.Instance.ActorLookup[signalAgent]));
+
                 // Notifies Players about the change
                 if (!GameManager.Instance.ActorLookup.ContainsKey(hiddenAgent[x]))
                 {
@@ -174,7 +194,13 @@ namespace XposeCraft.Core.Fog_Of_War
                     {
                         if (player.FactionIndex == enemyFactionIndex)
                         {
-                            player.EnemyVisibilityChanged(actor, agentActorsSawChange, previousState, newState);
+                            player.EnemyOnSight(
+                                hiddenAgent[x],
+                                actor,
+                                signalAgentsSawHidden,
+                                agentActorsSawHidden,
+                                previousState,
+                                newState);
                         }
                     }
                 }
@@ -464,7 +490,7 @@ namespace XposeCraft.Core.Fog_Of_War
                     // NOTE: agentsAmount changes during the iteration!
                     signalAgents.LocationsSeenTemporary = new List<int>[signalAgents.agentsAmount];
                     var locationsSeenTemporary = signalAgents.LocationsSeenTemporary;
-                    for (var signalAgentIndex = 0; signalAgentIndex < signalAgents.agentsAmount; signalAgentIndex++)
+                    for (var signalAgentIndex = 0; signalAgentIndex < locationsSeenTemporary.Length; signalAgentIndex++)
                     {
                         // For an unknown reason, this didn't work if used just as a for condition
                         if (signalAgentIndex >= _signalAgentsFactionLocations[factionIndex].Length)
@@ -749,28 +775,9 @@ namespace XposeCraft.Core.Fog_Of_War
 
         public void AddRenderer(GameObject obj, VisionReceiver receiver)
         {
-            int ownerFaction;
-            var unit = obj.GetComponent<UnitController>();
-            if (unit != null)
-            {
-                ownerFaction = unit.FactionIndex;
-            }
-            else
-            {
-                var building = obj.GetComponent<BuildingController>();
-                if (building != null)
-                {
-                    ownerFaction = building.FactionIndex;
-                }
-                else
-                {
-                    throw new Exception(
-                        "Actor cannot determine its faction index for visibility exception purposes");
-                }
-            }
             for (var factionIndex = 0; factionIndex < GameManager.Instance.Factions.Length; factionIndex++)
             {
-                if (factionIndex == ownerFaction)
+                if (factionIndex == FindFactionIndex(obj))
                 {
                     // Player that owns the unit will not be included in its hiding
                     continue;
@@ -823,7 +830,7 @@ namespace XposeCraft.Core.Fog_Of_War
             {
                 return buildingController.FactionIndex;
             }
-            throw new Exception("Cannot find Controller containing faction index needed for signal agent");
+            throw new Exception("Cannot find Controller containing faction index needed for signal agent or renderer");
         }
     }
 }

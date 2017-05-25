@@ -39,18 +39,23 @@ namespace XposeCraft.Game.Control.GameActions
             {
                 return false;
             }
-            var targetUnit = Target as Unit;
+            return AttackUnitOrBuilding(Target, unitController);
+        }
+
+        internal static bool AttackUnitOrBuilding(IActor target, UnitController attackerUnitController)
+        {
+            var targetUnit = target as Unit;
             if (targetUnit != null)
             {
-                return targetUnit.AttackedByUnit(unitController);
+                return targetUnit.AttackedByUnit(attackerUnitController);
             }
-            var targetBuilding = Target as Building;
+            var targetBuilding = target as Building;
             if (targetBuilding == null)
             {
                 throw new Exception(
                     "Fatal error, constructor hasn't properly asserted that Target is Unit or Building");
             }
-            return targetBuilding.AttackedByUnit(unitController);
+            return targetBuilding.AttackedByUnit(attackerUnitController);
         }
     }
 }

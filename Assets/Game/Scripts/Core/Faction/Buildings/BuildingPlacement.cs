@@ -6,6 +6,7 @@ using XposeCraft.Core.Grids;
 using XposeCraft.Core.Required;
 using XposeCraft.Core.Resources;
 using XposeCraft.Game;
+using XposeCraft.Game.Actors;
 using XposeCraft.GameInternal;
 using XposeCraft.GameInternal.Helpers;
 
@@ -156,13 +157,16 @@ namespace XposeCraft.Core.Faction.Buildings
             }
             try
             {
-                PlaceProgressBuilding(
-                    build,
-                    unitSelect.curSelectedS,
-                    factionIndex,
-                    new Position(loc),
-                    obj.transform.rotation,
-                    ResourceManagerPlayerOnly);
+                Actor.Create<Game.Actors.Buildings.Building>(
+                    BuildingHelper.DetermineBuildingType(BuildingHelper.PrefabToType(build.obj)),
+                    PlaceProgressBuilding(
+                        build,
+                        unitSelect.curSelectedS,
+                        factionIndex,
+                        new Position(loc),
+                        obj.transform.rotation,
+                        ResourceManagerPlayerOnly),
+                    GameManager.Instance.GuiPlayer);
             }
             catch (InvalidOperationException)
             {
