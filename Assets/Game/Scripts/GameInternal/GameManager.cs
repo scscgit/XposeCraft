@@ -276,6 +276,8 @@ namespace XposeCraft.GameInternal
                     GameTestRunner.Passed = false;
                 }
             }
+            // Allows developer to switch this on the run
+            Log.Level = LogLevel;
         }
 
         /// <summary>

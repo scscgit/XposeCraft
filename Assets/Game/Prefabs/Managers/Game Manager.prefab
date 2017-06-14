@@ -64,7 +64,7 @@ MonoBehaviour:
   DisplayAllHealthBars: 1
   DisplayOnlyDamagedHealthBars: 1
   HotSwap: 1
-  LogLevel: 1
+  LogLevel: 2
   ActorLookup:
     _buckets: ffffffffffffffffffffffff
     _hashCodes: 000000000000000000000000

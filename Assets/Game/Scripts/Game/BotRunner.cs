@@ -65,7 +65,10 @@ namespace XposeCraft.Game
         /// <param name="message">Mesage to be displayed.</param>
         public static void Log(string message)
         {
-            GameInternal.Log.i(message);
+            if (GameManager.Instance.GuiPlayer == Player.CurrentPlayer)
+            {
+                Debug.Log(message);
+            }
         }
     }
 }

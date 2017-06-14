@@ -320,7 +320,12 @@ namespace XposeCraft.Core.Fog_Of_War
                 for (int y = 0; y < length; y++)
                 {
                     RaycastHit hit;
-                    Physics.Raycast(new Vector3(x * disp, 1000, y * disp), Vector3.down, out hit, 10000, terrainLayer);
+                    Physics.Raycast(
+                        new Vector3(x * disp + startPos.x, 1000, y * disp + startPos.z),
+                        Vector3.down,
+                        out hit,
+                        10000,
+                        terrainLayer);
                     fogHeight[x + y * width] = hit.point.y;
                 }
             }
@@ -646,25 +651,13 @@ namespace XposeCraft.Core.Fog_Of_War
                                 fogColor);
                             break;
                         }
-                        if (dist < radius * radius - 2)
+                        if (dist >= radius * radius - 2)
                         {
-                            if (locY > fogHeight[x + y * width])
-                            {
-                                if (locY - fogHeight[x + y * width] <= downwardSlopeHeight)
-                                {
-                                    MarkVisible(
-                                        x, y, agentIndex, signalAgents, ref fogVisionTemporary, ref fogColorTemporary,
-                                        fogColor);
-                                }
-                                else
-                                {
-                                    MarkVisible(
-                                        x, y, agentIndex, signalAgents, ref fogVisionTemporary, ref fogColorTemporary,
-                                        fogColor);
-                                    break;
-                                }
-                            }
-                            else if (fogHeight[x + y * width] - locY <= upwardSlopeHeight)
+                            break;
+                        }
+                        if (locY > fogHeight[x + y * width])
+                        {
+                            if (locY - fogHeight[x + y * width] <= downwardSlopeHeight)
                             {
                                 MarkVisible(
                                     x, y, agentIndex, signalAgents, ref fogVisionTemporary, ref fogColorTemporary,
@@ -678,8 +671,17 @@ namespace XposeCraft.Core.Fog_Of_War
                                 break;
                             }
                         }
+                        else if (fogHeight[x + y * width] - locY <= upwardSlopeHeight)
+                        {
+                            MarkVisible(
+                                x, y, agentIndex, signalAgents, ref fogVisionTemporary, ref fogColorTemporary,
+                                fogColor);
+                        }
                         else
                         {
+                            MarkVisible(
+                                x, y, agentIndex, signalAgents, ref fogVisionTemporary, ref fogColorTemporary,
+                                fogColor);
                             break;
                         }
                     }

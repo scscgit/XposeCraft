@@ -698,9 +698,16 @@ namespace XposeCraft.Core.Required
         public UGrid gridScript;
         public int gridI;
         public UPath myPath;
-        public GridPoint[] mGrid;
         public string index = "";
         public int lastValidLocation;
+
+        private GridPoint[][] copyGridPointsGrids;
+
+        private GridPoint[] copyGridPoints
+        {
+            get { return copyGridPointsGrids[gridI]; }
+            set { copyGridPointsGrids[gridI] = value; }
+        }
 
         // TODO add in auto copy of the Grid Array
         public bool generate;
@@ -715,20 +722,7 @@ namespace XposeCraft.Core.Required
                 {
                     return;
                 }
-                // Direct pathfinding access used when not on main Grid
-                if (gridI != 0)
-                {
-                    myPath = FindPath(end, gridScript.grids[gridI].points[DetermineLocationSafe(start, gridI)].loc);
-                    return;
-                }
-                // Testing the usage of Path API instead of a direct access only for main Grid
-                myPath = new UPath
-                {
-                    list = new Path(
-                        new Position(DetermineLocationSafe(start, gridI)),
-                        new Position(gridScript.DetermineLocation(end, gridI))
-                    ).PointLocations
-                };
+                myPath = FindPath(end, gridScript.grids[gridI].points[DetermineLocationSafe(start, gridI)].loc);
             }
             catch (Exception e)
             {
@@ -746,24 +740,35 @@ namespace XposeCraft.Core.Required
         {
             // Overrides the starting position by a last valid one in the event that it is invalid, e.g. on a cliff
             var startLocation = gridScript.DetermineLocation(startPosition, gridIndex);
-            if (gridScript.grids[gridIndex].points[startLocation].children.Length == 0)
+            if (gridScript.grids[gridIndex].points.Length <= startLocation
+                && gridScript.grids[gridIndex].points[startLocation].children.Length == 0)
             {
                 startLocation = lastValidLocation;
             }
             return startLocation;
         }
 
+        /// <summary>
+        /// Initializes the temporary copy of Grid Points (for a current Grid) to use their children references.
+        /// The states are not relevant, as they are reset before every pathfinding operation.
+        /// </summary>
         public void InitializeGrid()
         {
-            if (mGrid != null && mGrid.Length != 0)
+            // Every available Grid will be able to be stored based on its Grid Index
+            if (copyGridPointsGrids == null || copyGridPointsGrids.Length != gridScript.grids.Length)
+            {
+                copyGridPointsGrids = new GridPoint[gridScript.grids.Length][];
+            }
+            // Initialization will not occur if it's already done for the specific Grid
+            if (copyGridPoints != null && copyGridPoints.Length != 0)
             {
                 return;
             }
             var points = gridScript.grids[gridI].points;
-            mGrid = new GridPoint[points.Length];
-            for (int z = 0; z < mGrid.Length; z++)
+            copyGridPoints = new GridPoint[points.Length];
+            for (int z = 0; z < copyGridPoints.Length; z++)
             {
-                mGrid[z] = new GridPoint(points[z]);
+                copyGridPoints[z] = new GridPoint(points[z]);
             }
         }
 
@@ -807,9 +812,9 @@ namespace XposeCraft.Core.Required
             int[] gcostList = new int[points.Length];
             bool[] checkedList = new bool[points.Length];
             bool[] addedList = new bool[points.Length];
-            for (int x = 0; x < mGrid.Length; x++)
+            for (int x = 0; x < copyGridPoints.Length; x++)
             {
-                mGrid[x].state = points[x].state;
+                copyGridPoints[x].state = points[x].state;
             }
 
             BinaryHeap openList = new BinaryHeap();
@@ -828,7 +833,7 @@ namespace XposeCraft.Core.Required
                 openList.Remove();
                 if (point == endLoc)
                 {
-                    UPath lp = BackTrack(startLoc, endLoc, mGrid);
+                    UPath lp = BackTrack(startLoc, endLoc, copyGridPoints);
                     if (lp != null)
                     {
                         mp = lp;
@@ -836,21 +841,22 @@ namespace XposeCraft.Core.Required
                     }
                 }
                 oLLength--;
-                for (var x = 0; x < mGrid[point].children.Length; x++)
+                for (var x = 0; x < copyGridPoints[point].children.Length; x++)
                 {
-                    int lPoint = mGrid[point].children[x];
-                    if (checkedList[lPoint] || mGrid[lPoint].state == 2)
+                    int lPoint = copyGridPoints[point].children[x];
+                    if (checkedList[lPoint] || copyGridPoints[lPoint].state == 2)
                     {
                         continue;
                     }
-                    g_cost = (int) ((mGrid[lPoint].loc - mGrid[point].loc).sqrMagnitude + gcostList[point]);
+                    g_cost = (int) ((copyGridPoints[lPoint].loc - copyGridPoints[point].loc).sqrMagnitude
+                                    + gcostList[point]);
                     if (addedList[lPoint] && gcostList[lPoint] <= g_cost)
                     {
                         continue;
                     }
-                    h_cost = (int) (mGrid[lPoint].loc - mGrid[endLoc].loc).sqrMagnitude;
+                    h_cost = (int) (copyGridPoints[lPoint].loc - copyGridPoints[endLoc].loc).sqrMagnitude;
                     f_cost = g_cost + h_cost;
-                    mGrid[lPoint].parent = point;
+                    copyGridPoints[lPoint].parent = point;
                     gcostList[lPoint] = g_cost;
                     if (addedList[lPoint])
                     {
@@ -930,9 +936,9 @@ namespace XposeCraft.Core.Required
             float[] gcostList = new float[pointsLength];
             bool[] checkedList = new bool[pointsLength];
             bool[] addedList = new bool[pointsLength];
-            for (int x = 0; x < mGrid.Length; x++)
+            for (int x = 0; x < copyGridPoints.Length; x++)
             {
-                mGrid[x].state = gridScript.grids[gridI].points[x].state;
+                copyGridPoints[x].state = gridScript.grids[gridI].points[x].state;
             }
             List<int> openList = new List<int> {startLoc};
             int oLLength = 1;
@@ -944,27 +950,28 @@ namespace XposeCraft.Core.Required
                 openList.RemoveAt(0);
                 if (point == endLoc)
                 {
-                    return BackTrack(startLoc, endLoc, mGrid);
+                    return BackTrack(startLoc, endLoc, copyGridPoints);
                 }
                 oLLength--;
-                for (var x = 0; x < mGrid[point].children.Length; x++)
+                for (var x = 0; x < copyGridPoints[point].children.Length; x++)
                 {
-                    int lPoint = mGrid[point].children[x];
-                    if (lPoint != endLoc && (checkedList[lPoint] || mGrid[lPoint].state == 2))
+                    int lPoint = copyGridPoints[point].children[x];
+                    if (lPoint != endLoc && (checkedList[lPoint] || copyGridPoints[lPoint].state == 2))
                     {
                         continue;
                     }
-                    float g_cost = (new Vector3(mGrid[lPoint].loc.x, 0, mGrid[lPoint].loc.z)
-                                    - new Vector3(mGrid[point].loc.x, 0, mGrid[point].loc.z)
+                    float g_cost = (new Vector3(copyGridPoints[lPoint].loc.x, 0, copyGridPoints[lPoint].loc.z)
+                                    - new Vector3(copyGridPoints[point].loc.x, 0, copyGridPoints[point].loc.z)
                                    ).sqrMagnitude + gcostList[point];
-                    float h_cost = (new Vector3(mGrid[lPoint].loc.x, 0, mGrid[lPoint].loc.z)
-                                    - new Vector3(mGrid[endLoc].loc.x, 0, mGrid[endLoc].loc.z)).sqrMagnitude;
+                    float h_cost = (new Vector3(copyGridPoints[lPoint].loc.x, 0, copyGridPoints[lPoint].loc.z)
+                                    - new Vector3(copyGridPoints[endLoc].loc.x, 0, copyGridPoints[endLoc].loc.z))
+                        .sqrMagnitude;
                     float f_cost = g_cost + h_cost;
                     if (addedList[lPoint] && !(fcostList[lPoint] > f_cost))
                     {
                         continue;
                     }
-                    mGrid[lPoint].parent = point;
+                    copyGridPoints[lPoint].parent = point;
                     fcostList[lPoint] = f_cost;
                     gcostList[lPoint] = g_cost;
                     if (addedList[lPoint])

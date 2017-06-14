@@ -282,7 +282,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 15
-  upwardSightHeight: 10
+  upwardSightHeight: 5
   downwardSightHeight: 10
 --- !u!114 &114000011897728376
 MonoBehaviour:

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 namespace XposeCraft.GameInternal
 {
@@ -184,6 +185,22 @@ namespace XposeCraft.GameInternal
         }
 
         private void FixedUpdate()
+        {
+            var previousState = _state;
+            ProcessSteps();
+            if (_state == previousState)
+            {
+                return;
+            }
+            Analytics.CustomEvent("Tutorial Step Changed", new Dictionary<string, object>
+            {
+                {"step", (int) _state},
+                {"stepName", _state.ToString()},
+                {"previousStep", (int) previousState},
+            });
+        }
+
+        private void ProcessSteps()
         {
             switch (_state)
             {
