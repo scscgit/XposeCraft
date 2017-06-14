@@ -22,6 +22,8 @@ namespace XposeCraft.GameInternal.Helpers
                     return typeof(Worker);
                 case UnitType.DonkeyGun:
                     return typeof(DonkeyGun);
+                case UnitType.WraithRaider:
+                    return typeof(WraithRaider);
                 default:
                     throw new InvalidEnumArgumentException();
             }
@@ -35,6 +37,8 @@ namespace XposeCraft.GameInternal.Helpers
                     return UnitType.Worker;
                 case "DonkeyGun":
                     return UnitType.DonkeyGun;
+                case "WraithRaiderStarship":
+                    return UnitType.WraithRaider;
                 default:
                     throw new Exception("Cannot determine the Unit Type from the Faction Unit");
             }

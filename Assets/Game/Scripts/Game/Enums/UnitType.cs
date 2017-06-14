@@ -7,5 +7,6 @@ namespace XposeCraft.Game.Enums
     {
         Worker,
         DonkeyGun,
+        WraithRaider,
     }
 }

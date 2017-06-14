@@ -59,13 +59,17 @@ namespace XposeCraft.Core.Grids
 
         public void OnEnable()
         {
+            for (var i = 0; i < grids.Length; i++)
+            {
 #if UNITY_EDITOR
-            // Loading a local choice of displaying the Grid
-            grids[index].displayGrid = EditorPrefs.GetBool("XposeCraft_UGrid_DisplayGrid", default(bool));
-            grids[index].displayLines = EditorPrefs.GetBool("XposeCraft_UGrid_DisplayLines", default(bool));
+                // Loading a local choice of displaying the Grid (the same for each of them)
+                var grid = grids[i];
+                grid.displayGrid = EditorPrefs.GetBool("XposeCraft_UGrid_DisplayGrid", default(bool));
+                grid.displayLines = EditorPrefs.GetBool("XposeCraft_UGrid_DisplayLines", default(bool));
 #endif
-            // Regenerating the Grid when the Game starts
-            GenerateGrid(index);
+                // Regenerating the Grid when the Game starts
+                GenerateGrid(i);
+            }
         }
 
 #if UNITY_EDITOR

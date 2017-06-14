@@ -65,6 +65,19 @@ MonoBehaviour:
     displaceLayer:
       serializedVersion: 2
       m_Bits: 256
+  - size: 200
+    startLoc: {x: -200, y: 100, z: -200}
+    octileConnection: 1
+    nodeDist: 2
+    displaceDown: 1
+    checkSlope: 0
+    slopeMax: 1
+    checkLayer:
+      serializedVersion: 2
+      m_Bits: 0
+    displaceLayer:
+      serializedVersion: 2
+      m_Bits: 256
   generate: 0
   index: 0
   selectionTexture: {fileID: 2800000, guid: 349e81cd9cb2b524f87ae272c078acc5, type: 3}

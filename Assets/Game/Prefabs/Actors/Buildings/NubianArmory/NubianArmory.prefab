@@ -374,6 +374,16 @@ MonoBehaviour:
       rate: 1
       amount: 1
       description: Fighter
+    - UnitIndex: 2
+      Player: {fileID: 0}
+      canProduce: 1
+      cost: fa000000
+      customTexture: {fileID: 0}
+      customName: WraithRaider
+      dur: 50
+      rate: 1
+      amount: 1
+      description: Flying Starship
     jobs: []
     jobsAmount: 0
     canBuildAtOnce: 1

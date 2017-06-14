@@ -14,6 +14,8 @@ namespace XposeCraft.Game
     {
         private const int InvalidPathLength = 0;
 
+        internal int _gridIndex = GameManager.Instance.UGrid.index;
+
         [SerializeField] private Position _from;
         [SerializeField] private Position _to;
         private int? _length;
@@ -117,8 +119,7 @@ namespace XposeCraft.Game
 
         private APath CreateAPath()
         {
-            var uGrid = GameManager.Instance.UGrid;
-            var aPath = new APath {gridScript = uGrid, gridI = uGrid.index};
+            var aPath = new APath {gridScript = GameManager.Instance.UGrid, gridI = _gridIndex};
             aPath.InitializeGrid();
             return aPath;
         }

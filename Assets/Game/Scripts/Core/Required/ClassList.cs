@@ -715,20 +715,18 @@ namespace XposeCraft.Core.Required
                 {
                     return;
                 }
-                //myPath = FindPath(end, start);
-                // Testing the usage of Path API instead of a direct access during this GUI request
-
-                // Overrides the starting position by a last valid one in the event that it is invalid, e.g. on a cliff
-                var startLocation = gridScript.DetermineLocation(start);
-                if (gridScript.grids[gridI].points[startLocation].children.Length == 0)
+                // Direct pathfinding access used when not on main Grid
+                if (gridI != 0)
                 {
-                    startLocation = lastValidLocation;
+                    myPath = FindPath(end, gridScript.grids[gridI].points[DetermineLocationSafe(start, gridI)].loc);
+                    return;
                 }
+                // Testing the usage of Path API instead of a direct access only for main Grid
                 myPath = new UPath
                 {
                     list = new Path(
-                        new Position(startLocation),
-                        new Position(gridScript.DetermineLocation(end))
+                        new Position(DetermineLocationSafe(start, gridI)),
+                        new Position(gridScript.DetermineLocation(end, gridI))
                     ).PointLocations
                 };
             }
@@ -742,6 +740,17 @@ namespace XposeCraft.Core.Required
             {
                 generate = false;
             }
+        }
+
+        private int DetermineLocationSafe(Vector3 startPosition, int gridIndex)
+        {
+            // Overrides the starting position by a last valid one in the event that it is invalid, e.g. on a cliff
+            var startLocation = gridScript.DetermineLocation(startPosition, gridIndex);
+            if (gridScript.grids[gridIndex].points[startLocation].children.Length == 0)
+            {
+                startLocation = lastValidLocation;
+            }
+            return startLocation;
         }
 
         public void InitializeGrid()
@@ -761,8 +770,8 @@ namespace XposeCraft.Core.Required
         // The Vector3 based implementation
         public UPath FindPath(Vector3 endLoc, Vector3 startLoc)
         {
-            Vector3 loc1 = gridScript.DetermineNearestPoint(endLoc, startLoc, 0);
-            Vector3 loc2 = gridScript.DetermineNearestPoint(startLoc, endLoc, 0);
+            Vector3 loc1 = gridScript.DetermineNearestPoint(endLoc, startLoc, gridI);
+            Vector3 loc2 = gridScript.DetermineNearestPoint(startLoc, endLoc, gridI);
             int pointLoc1 = gridScript.DetermineLocation(loc1, gridI);
             int pointLoc2 = gridScript.DetermineLocation(loc2, gridI);
             return FindNormalPath(pointLoc1, pointLoc2);
@@ -770,8 +779,8 @@ namespace XposeCraft.Core.Required
 
         public UPath FindPathShorterThan(Vector3 endLoc, Vector3 startLoc, int shorterThanLength)
         {
-            Vector3 loc1 = gridScript.DetermineNearestPoint(endLoc, startLoc, 0);
-            Vector3 loc2 = gridScript.DetermineNearestPoint(startLoc, endLoc, 0);
+            Vector3 loc1 = gridScript.DetermineNearestPoint(endLoc, startLoc, gridI);
+            Vector3 loc2 = gridScript.DetermineNearestPoint(startLoc, endLoc, gridI);
             int pointLoc1 = gridScript.DetermineLocation(loc1, gridI);
             int pointLoc2 = gridScript.DetermineLocation(loc2, gridI);
             return FindNormalPath(pointLoc1, pointLoc2, shorterThanLength);

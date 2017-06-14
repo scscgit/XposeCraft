@@ -143,6 +143,11 @@ MonoBehaviour:
     technologyEffect: 
     technologyUpgrade: []
     available: 0
+  - obj: {fileID: 1767369295992830, guid: d595c95428f58ae4eb862d641812ea3a, type: 2}
+    cost: 
+    technologyEffect: 
+    technologyUpgrade: []
+    available: 0
   BuildingList:
   - autoBuild: 0
     tempObj: {fileID: 1000012642638208, guid: 9ff48ade0aac8cb4ba49dd2c0365f861, type: 2}
@@ -207,6 +212,11 @@ MonoBehaviour:
     technologyUpgrade: []
     available: 0
   - obj: {fileID: 1000012727340272, guid: 2b19777a5a42be44e903619f45f1a941, type: 2}
+    cost: 
+    technologyEffect: 
+    technologyUpgrade: []
+    available: 0
+  - obj: {fileID: 1767369295992830, guid: d595c95428f58ae4eb862d641812ea3a, type: 2}
     cost: 
     technologyEffect: 
     technologyUpgrade: []
