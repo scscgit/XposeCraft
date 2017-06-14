@@ -10,5 +10,6 @@ var class_xpose_craft_1_1_core_1_1_faction_1_1_units_1_1_unit_movement =
     [ "pathComplete", "class_xpose_craft_1_1_core_1_1_faction_1_1_units_1_1_unit_movement.html#a23ad1d5f9ebf961679d608e049c2c15e", null ],
     [ "rotateSpeed", "class_xpose_craft_1_1_core_1_1_faction_1_1_units_1_1_unit_movement.html#a630dd6f14010e757c1c2b579d5ec77e7", null ],
     [ "speed", "class_xpose_craft_1_1_core_1_1_faction_1_1_units_1_1_unit_movement.html#ac96759059b37d8d3168222ed32b90e25", null ],
-    [ "target", "class_xpose_craft_1_1_core_1_1_faction_1_1_units_1_1_unit_movement.html#adb9ad4c00b41a010677f337dc75d9163", null ]
+    [ "target", "class_xpose_craft_1_1_core_1_1_faction_1_1_units_1_1_unit_movement.html#adb9ad4c00b41a010677f337dc75d9163", null ],
+    [ "lastValidLocation", "class_xpose_craft_1_1_core_1_1_faction_1_1_units_1_1_unit_movement.html#ab2acedb9d0de4c7435a30004ec1e90b4", null ]
 ];

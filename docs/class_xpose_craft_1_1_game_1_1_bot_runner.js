@@ -1,5 +1,6 @@
 var class_xpose_craft_1_1_game_1_1_bot_runner =
 [
+    [ "Log", "class_xpose_craft_1_1_game_1_1_bot_runner.html#a78c51ebb69e8d0601ad17752051fce50", null ],
     [ "CurrentlyAfterHotswap", "class_xpose_craft_1_1_game_1_1_bot_runner.html#a8aade3f475c1292ca63a26518a7ae804", null ],
     [ "HotSwap", "class_xpose_craft_1_1_game_1_1_bot_runner.html#a781236c43d21e852c25547d44abc4426", null ],
     [ "Speed", "class_xpose_craft_1_1_game_1_1_bot_runner.html#a863ac58a63d40d188c37e2e81dff99d8", null ],

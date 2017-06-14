@@ -33,12 +33,12 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_a_star_manager_8cs.html",
-"class_xpose_craft_1_1_core_1_1_faction_1_1_buildings_1_1_building_controller.html#a8b04184909a2a2e0a5daf12598addb34",
-"class_xpose_craft_1_1_core_1_1_faction_1_1_units_1_1_unit_controller.html#add090d3bdedf6a3f114cee66cbb60c88",
-"class_xpose_craft_1_1_core_1_1_required_1_1_b_g_u_i_setting.html#ac78574a7205357edc5602dc39081c1e5",
-"class_xpose_craft_1_1_core_1_1_required_1_1_unit.html#af4c99b42617bfc80c1764672a79c1163",
-"class_xpose_craft_1_1_game_internal_1_1_game_manager.html#a0134deb2f267fc9db525d82dbfc10025",
-"functions_func_n.html"
+"class_xpose_craft_1_1_core_1_1_faction_1_1_buildings_1_1_building_controller.html#a7538cc65abc4258be846e3a58269fcdb",
+"class_xpose_craft_1_1_core_1_1_faction_1_1_units_1_1_unit_controller.html#ac397a5fa8a393030ec87baae652d909d",
+"class_xpose_craft_1_1_core_1_1_required_1_1_a_star_manager.html",
+"class_xpose_craft_1_1_core_1_1_required_1_1_technology.html#a60889c61fa92b06cef6026fdab2e096b",
+"class_xpose_craft_1_1_game_1_1_position.html",
+"dir_f6df3785dc2b269c5b7ad8f348b20afb.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

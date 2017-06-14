@@ -8,9 +8,7 @@ var searchData=
   ['instantiateprogressbuilding',['InstantiateProgressBuilding',['../class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_building_helper.html#ae15a7cc930433d67f092d958350323a6',1,'XposeCraft::GameInternal::Helpers::BuildingHelper']]],
   ['instantiateunit',['InstantiateUnit',['../class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_unit_helper.html#a3fa409268dbb3aeaf31b036b66cf94b0',1,'XposeCraft::GameInternal::Helpers::UnitHelper']]],
   ['isavailable',['IsAvailable',['../class_xpose_craft_1_1_game_1_1_position.html#af34ee54dbf9207fa1b0e43ddff2cc7d1',1,'XposeCraft::Game::Position']]],
-  ['isbuildingoftype',['IsBuildingOfType',['../class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_building_helper.html#a94cb262c21d0b2bd544f3e9ca4fdab28',1,'XposeCraft::GameInternal::Helpers::BuildingHelper']]],
   ['isfoguncovered',['IsFogUncovered',['../class_xpose_craft_1_1_game_1_1_position.html#a671d231a8af7531e5d29d582bf2e7e63',1,'XposeCraft::Game::Position']]],
-  ['isunitoftype',['IsUnitOfType',['../class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_unit_helper.html#a5727a9db9e6d153506fc7a6d7d6c6546',1,'XposeCraft::GameInternal::Helpers::UnitHelper']]],
   ['isvalidlocation',['IsValidLocation',['../class_xpose_craft_1_1_core_1_1_grids_1_1_u_grid.html#a8e074848f34ad89bcd35b73ead751a3b',1,'XposeCraft.Core.Grids.UGrid.IsValidLocation(int location)'],['../class_xpose_craft_1_1_core_1_1_grids_1_1_u_grid.html#aeadc7d8df9c23b04a057513b8e22fccf',1,'XposeCraft.Core.Grids.UGrid.IsValidLocation(int location, int gridIndex)']]],
   ['isvalidplacement',['IsValidPlacement',['../class_xpose_craft_1_1_game_1_1_position.html#a37df3535d5bdb171f3a60079d5ffd7f9',1,'XposeCraft.Game.Position.IsValidPlacement()'],['../class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_building_helper.html#aae48ad4737e6e16cba9db341407d8749',1,'XposeCraft.GameInternal.Helpers.BuildingHelper.IsValidPlacement()']]]
 ];

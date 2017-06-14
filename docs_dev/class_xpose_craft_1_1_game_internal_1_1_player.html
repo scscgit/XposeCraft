@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">XposeCraft
-   &#160;<span id="projectnumber">1.0.0-rc1</span>
+   &#160;<span id="projectnumber">1.0.1-rc1</span>
    </div>
    <div id="projectbrief">Developer API</div>
   </td>
@@ -123,8 +123,8 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:afed39e9f3af1e200d6e3df0e88958fe5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_internal_1_1_player.html#afed39e9f3af1e200d6e3df0e88958fe5">EnemyVisibilityChanged</a> (<a class="el" href="class_xpose_craft_1_1_game_1_1_actors_1_1_actor.html">Actor</a> enemyActor, List&lt; <a class="el" href="class_xpose_craft_1_1_game_1_1_actors_1_1_actor.html">Actor</a> &gt; actorsSawChange, <a class="el" href="_player_8cs.html#ab93b5dd8f0d854c824b1d822c220b4a8">VisionState</a> previousState, <a class="el" href="_player_8cs.html#ab93b5dd8f0d854c824b1d822c220b4a8">VisionState</a> newState)</td></tr>
-<tr class="separator:afed39e9f3af1e200d6e3df0e88958fe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c0aed6f3266ee96b324856122b8ad0e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_internal_1_1_player.html#a0c0aed6f3266ee96b324856122b8ad0e">EnemyOnSight</a> (GameObject enemyActorGameObject, <a class="el" href="class_xpose_craft_1_1_game_1_1_actors_1_1_actor.html">Actor</a> enemyActor, List&lt; GameObject &gt; myActorGameObjectsSaw, List&lt; <a class="el" href="class_xpose_craft_1_1_game_1_1_actors_1_1_actor.html">Actor</a> &gt; myActorsSaw, <a class="el" href="_player_8cs.html#ab93b5dd8f0d854c824b1d822c220b4a8">VisionState</a> previousState, <a class="el" href="_player_8cs.html#ab93b5dd8f0d854c824b1d822c220b4a8">VisionState</a> newState)</td></tr>
+<tr class="separator:a0c0aed6f3266ee96b324856122b8ad0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a197dc61eb62bbeb7df9dbd2abf8d87c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_internal_1_1_player.html#a197dc61eb62bbeb7df9dbd2abf8d87c5">Win</a> ()</td></tr>
 <tr class="separator:a197dc61eb62bbeb7df9dbd2abf8d87c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0735f3701daba14161584fb8efcce8db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_internal_1_1_player.html#a0735f3701daba14161584fb8efcce8db">Lost</a> (<a class="el" href="class_xpose_craft_1_1_game_internal_1_1_player.html#a28deb5c16a214b0e99a30dfa454e70d4">LoseReason</a> loseReason)</td></tr>
@@ -167,6 +167,9 @@ Static Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:aae0693c08f527222eb733b346513feb0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_internal_1_1_player.html#aae0693c08f527222eb733b346513feb0">LostGame</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:aae0693c08f527222eb733b346513feb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">True if already lost.  <a href="#aae0693c08f527222eb733b346513feb0">More...</a><br /></td></tr>
+<tr class="separator:aae0693c08f527222eb733b346513feb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a570f6a474c77db1cdc7f467fc8cf7996"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_internal_1_1_player.html#a570f6a474c77db1cdc7f467fc8cf7996">ExceptionOnDeadUnitAction</a><code> [get, set]</code></td></tr>
 <tr class="separator:a570f6a474c77db1cdc7f467fc8cf7996"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -204,23 +207,35 @@ Properties</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="afed39e9f3af1e200d6e3df0e88958fe5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afed39e9f3af1e200d6e3df0e88958fe5">&#9670;&nbsp;</a></span>EnemyVisibilityChanged()</h2>
+<a id="a0c0aed6f3266ee96b324856122b8ad0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c0aed6f3266ee96b324856122b8ad0e">&#9670;&nbsp;</a></span>EnemyOnSight()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void XposeCraft.GameInternal.Player.EnemyVisibilityChanged </td>
+          <td class="memname">void XposeCraft.GameInternal.Player.EnemyOnSight </td>
           <td>(</td>
+          <td class="paramtype">GameObject&#160;</td>
+          <td class="paramname"><em>enemyActorGameObject</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype"><a class="el" href="class_xpose_craft_1_1_game_1_1_actors_1_1_actor.html">Actor</a>&#160;</td>
           <td class="paramname"><em>enemyActor</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">List&lt; GameObject &gt;&#160;</td>
+          <td class="paramname"><em>myActorGameObjectsSaw</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">List&lt; <a class="el" href="class_xpose_craft_1_1_game_1_1_actors_1_1_actor.html">Actor</a> &gt;&#160;</td>
-          <td class="paramname"><em>actorsSawChange</em>, </td>
+          <td class="paramname"><em>myActorsSaw</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -494,6 +509,30 @@ Properties</h2></td></tr>
 
 </div>
 </div>
+<a id="aae0693c08f527222eb733b346513feb0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae0693c08f527222eb733b346513feb0">&#9670;&nbsp;</a></span>LostGame</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool XposeCraft.GameInternal.Player.LostGame</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>True if already lost. </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>W:/Unity/XposeCraft/Assets/Game/Scripts/GameInternal/<a class="el" href="_player_8cs.html">Player.cs</a></li>
 </ul>
@@ -503,7 +542,7 @@ Properties</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_xpose_craft.html">XposeCraft</a></li><li class="navelem"><a class="el" href="namespace_xpose_craft_1_1_game_internal.html">GameInternal</a></li><li class="navelem"><a class="el" href="class_xpose_craft_1_1_game_internal_1_1_player.html">Player</a></li>
-    <li class="footer">Generated on Fri May 19 2017 19:21:16 for XposeCraft by
+    <li class="footer">Generated on Wed Jun 14 2017 15:49:24 for XposeCraft by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

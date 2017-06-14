@@ -124,7 +124,9 @@ var class_xpose_craft_1_1_core_1_1_faction_1_1_units_1_1_unit_controller =
     [ "vision", "class_xpose_craft_1_1_core_1_1_faction_1_1_units_1_1_unit_controller.html#a8ecc8ce963095ec7b4f8da842d53859d", null ],
     [ "weapon", "class_xpose_craft_1_1_core_1_1_faction_1_1_units_1_1_unit_controller.html#a86fd65a82eb3a40618d6a252d3dff0d0", null ],
     [ "_actionDequeue", "class_xpose_craft_1_1_core_1_1_faction_1_1_units_1_1_unit_controller.html#ae4d67efaf823de1b35657b24770388d9", null ],
+    [ "AttackMoveTarget", "class_xpose_craft_1_1_core_1_1_faction_1_1_units_1_1_unit_controller.html#a3753569da6abe4a8f481085add481749", null ],
     [ "Faction", "class_xpose_craft_1_1_core_1_1_faction_1_1_units_1_1_unit_controller.html#a8f372a59a31413401ca7e8369fc76966", null ],
+    [ "IsAttackMove", "class_xpose_craft_1_1_core_1_1_faction_1_1_units_1_1_unit_controller.html#a7d6eb086e7a8c0f38efff4fcdbcef90d", null ],
     [ "PlayerOwner", "class_xpose_craft_1_1_core_1_1_faction_1_1_units_1_1_unit_controller.html#a416039fa8dc9888bc3279be2efe95e24", null ],
     [ "UnitActor", "class_xpose_craft_1_1_core_1_1_faction_1_1_units_1_1_unit_controller.html#af3d44ab4aaae3afcd258e233609cdab8", null ]
 ];

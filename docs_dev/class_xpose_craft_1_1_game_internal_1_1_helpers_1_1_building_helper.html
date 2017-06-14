@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">XposeCraft
-   &#160;<span id="projectnumber">1.0.0-rc1</span>
+   &#160;<span id="projectnumber">1.0.1-rc1</span>
    </div>
    <div id="projectbrief">Developer API</div>
   </td>
@@ -96,8 +96,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a2641ea66699c3451aa2d5831f43b0feb"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_building.html">Building</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_building_helper.html#a2641ea66699c3451aa2d5831f43b0feb">FindBuildingInFaction</a> (<a class="el" href="namespace_xpose_craft_1_1_core_1_1_faction_1_1_buildings.html#afcb219a65ef51375415cccd8f7c78fcb">BuildingType</a> buildingType, <a class="el" href="class_xpose_craft_1_1_core_1_1_faction_1_1_units_1_1_unit_controller.html">UnitController</a> unitController)</td></tr>
 <tr class="memdesc:a2641ea66699c3451aa2d5831f43b0feb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds a Building representation of a chosen BuildingType within current <a class="el" href="class_xpose_craft_1_1_game_internal_1_1_player.html" title="Data structures that make up the Model of a Player used within a game. ">Player</a>'s Faction.  <a href="#a2641ea66699c3451aa2d5831f43b0feb">More...</a><br /></td></tr>
 <tr class="separator:a2641ea66699c3451aa2d5831f43b0feb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94cb262c21d0b2bd544f3e9ca4fdab28"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_building_helper.html#a94cb262c21d0b2bd544f3e9ca4fdab28">IsBuildingOfType</a> (string buildingName, <a class="el" href="namespace_xpose_craft_1_1_core_1_1_faction_1_1_buildings.html#afcb219a65ef51375415cccd8f7c78fcb">BuildingType</a> buildingType)</td></tr>
-<tr class="separator:a94cb262c21d0b2bd544f3e9ca4fdab28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac14d343902777ea3dfcf195373898e9c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespace_xpose_craft_1_1_core_1_1_faction_1_1_buildings.html#afcb219a65ef51375415cccd8f7c78fcb">BuildingType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_building_helper.html#ac14d343902777ea3dfcf195373898e9c">PrefabToType</a> (GameObject buildingPrefab)</td></tr>
+<tr class="separator:ac14d343902777ea3dfcf195373898e9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae15a7cc930433d67f092d958350323a6"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_xpose_craft_1_1_core_1_1_faction_1_1_buildings_1_1_building_controller.html">BuildingController</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_building_helper.html#ae15a7cc930433d67f092d958350323a6">InstantiateProgressBuilding</a> (<a class="el" href="class_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_building.html">Building</a> building, GameObject buildingPrefab, int factionIndex, <a class="el" href="class_xpose_craft_1_1_game_1_1_position.html">Position</a> position, Quaternion rotation)</td></tr>
 <tr class="separator:ae15a7cc930433d67f092d958350323a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97d7f5cfcd7d14c51a68f47c25e99e11"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_xpose_craft_1_1_core_1_1_faction_1_1_buildings_1_1_building_controller.html">BuildingController</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_building_helper.html#a97d7f5cfcd7d14c51a68f47c25e99e11">InstantiateFinishedBuilding</a> (<a class="el" href="class_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_building.html">Building</a> building, GameObject finishedBuildingPrefab, Vector3 transformPosition, int loc, int factionIndex)</td></tr>
@@ -342,42 +342,6 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a94cb262c21d0b2bd544f3e9ca4fdab28"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a94cb262c21d0b2bd544f3e9ca4fdab28">&#9670;&nbsp;</a></span>IsBuildingOfType()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool XposeCraft.GameInternal.Helpers.BuildingHelper.IsBuildingOfType </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>buildingName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespace_xpose_craft_1_1_core_1_1_faction_1_1_buildings.html#afcb219a65ef51375415cccd8f7c78fcb">BuildingType</a>&#160;</td>
-          <td class="paramname"><em>buildingType</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="aae48ad4737e6e16cba9db341407d8749"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aae48ad4737e6e16cba9db341407d8749">&#9670;&nbsp;</a></span>IsValidPlacement()</h2>
 
@@ -426,6 +390,32 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ac14d343902777ea3dfcf195373898e9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac14d343902777ea3dfcf195373898e9c">&#9670;&nbsp;</a></span>PrefabToType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="namespace_xpose_craft_1_1_core_1_1_faction_1_1_buildings.html#afcb219a65ef51375415cccd8f7c78fcb">BuildingType</a> XposeCraft.GameInternal.Helpers.BuildingHelper.PrefabToType </td>
+          <td>(</td>
+          <td class="paramtype">GameObject&#160;</td>
+          <td class="paramname"><em>buildingPrefab</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>W:/Unity/XposeCraft/Assets/Game/Scripts/GameInternal/Helpers/<a class="el" href="nternal_2_helpers_2_building_helper_8cs.html">BuildingHelper.cs</a></li>
 </ul>
@@ -435,7 +425,7 @@ Static Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_xpose_craft.html">XposeCraft</a></li><li class="navelem"><a class="el" href="namespace_xpose_craft_1_1_game_internal.html">GameInternal</a></li><li class="navelem"><a class="el" href="namespace_xpose_craft_1_1_game_internal_1_1_helpers.html">Helpers</a></li><li class="navelem"><a class="el" href="class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_building_helper.html">BuildingHelper</a></li>
-    <li class="footer">Generated on Fri May 19 2017 19:21:16 for XposeCraft by
+    <li class="footer">Generated on Wed Jun 14 2017 15:49:24 for XposeCraft by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

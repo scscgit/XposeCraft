@@ -1,6 +1,7 @@
 var searchData=
 [
   ['target',['Target',['../class_xpose_craft_1_1_game_1_1_control_1_1_game_actions_1_1_attack.html#aef250481e7f8e761518e0f65a1d4f3d1',1,'XposeCraft::Game::Control::GameActions::Attack']]],
+  ['targetframeworkversion45',['TargetFrameworkVersion45',['../class_plugins_1_1_editor_1_1_jet_brains_1_1_rider_plugin.html#ac1e080685998531851f9b7f6c5904e3b',1,'Plugins::Editor::JetBrains::RiderPlugin']]],
   ['techproductionindex',['techProductionIndex',['../class_xpose_craft_1_1_core_1_1_faction_1_1_g_u_i_manager.html#a0ca897d443dff0f1282c21a7ee984148',1,'XposeCraft::Core::Faction::GUIManager']]],
   ['terrain',['Terrain',['../class_xpose_craft_1_1_game_internal_1_1_game_manager.html#a330b64f193af98fe9853f35ba4cd9b59',1,'XposeCraft::GameInternal::GameManager']]],
   ['this_5btkey_20key_2c_20tvalue_20defaultvalue_5d',['this[TKey key, TValue defaultValue]',['../class_xpose_craft_1_1_collections_1_1_serializable_dictionary3.html#a816a1dd93658a1c0d3187f200acd6f49',1,'XposeCraft::Collections::SerializableDictionary3']]],

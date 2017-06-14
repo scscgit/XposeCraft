@@ -13,8 +13,10 @@ var searchData=
   ['resourceexhaustedexception',['ResourceExhaustedException',['../class_xpose_craft_1_1_game_1_1_actors_1_1_resources_1_1_resource_exhausted_exception.html',1,'XposeCraft::Game::Actors::Resources']]],
   ['resourceg',['ResourceG',['../class_xpose_craft_1_1_core_1_1_required_1_1_resource_g.html',1,'XposeCraft::Core::Required']]],
   ['resourcegenerate',['ResourceGenerate',['../class_xpose_craft_1_1_core_1_1_resources_1_1_resource_generate.html',1,'XposeCraft::Core::Resources']]],
-  ['resourcehelper',['ResourceHelper',['../class_xpose_craft_1_1_game_1_1_helpers_1_1_resource_helper.html',1,'XposeCraft.Game.Helpers.ResourceHelper'],['../class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_resource_helper.html',1,'XposeCraft.GameInternal.Helpers.ResourceHelper']]],
+  ['resourcehelper',['ResourceHelper',['../class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_resource_helper.html',1,'XposeCraft.GameInternal.Helpers.ResourceHelper'],['../class_xpose_craft_1_1_game_1_1_helpers_1_1_resource_helper.html',1,'XposeCraft.Game.Helpers.ResourceHelper']]],
   ['resourcemanager',['ResourceManager',['../class_xpose_craft_1_1_core_1_1_resources_1_1_resource_manager.html',1,'XposeCraft::Core::Resources']]],
   ['resourcesource',['ResourceSource',['../class_xpose_craft_1_1_core_1_1_resources_1_1_resource_source.html',1,'XposeCraft::Core::Resources']]],
-  ['resourcetype',['ResourceType',['../class_xpose_craft_1_1_core_1_1_required_1_1_resource_type.html',1,'XposeCraft::Core::Required']]]
+  ['resourcetype',['ResourceType',['../class_xpose_craft_1_1_core_1_1_required_1_1_resource_type.html',1,'XposeCraft::Core::Required']]],
+  ['riderassetpostprocessor',['RiderAssetPostprocessor',['../class_plugins_1_1_editor_1_1_jet_brains_1_1_rider_asset_postprocessor.html',1,'Plugins::Editor::JetBrains']]],
+  ['riderplugin',['RiderPlugin',['../class_plugins_1_1_editor_1_1_jet_brains_1_1_rider_plugin.html',1,'Plugins::Editor::JetBrains']]]
 ];

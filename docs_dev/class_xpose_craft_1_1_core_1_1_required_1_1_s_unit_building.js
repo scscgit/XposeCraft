@@ -3,6 +3,7 @@ var class_xpose_craft_1_1_core_1_1_required_1_1_s_unit_building =
     [ "CancelProduction", "class_xpose_craft_1_1_core_1_1_required_1_1_s_unit_building.html#a55f5be8921a5f07170ec9bc3d5c15466", null ],
     [ "Produce", "class_xpose_craft_1_1_core_1_1_required_1_1_s_unit_building.html#af7ae5750b3de685abb99b5455830720d", null ],
     [ "StartProduction", "class_xpose_craft_1_1_core_1_1_required_1_1_s_unit_building.html#ab714495d102d248bf805008a88263155", null ],
+    [ "TryConstructProduction", "class_xpose_craft_1_1_core_1_1_required_1_1_s_unit_building.html#a6f034da2c36ee8d8f73525bbbc68a808", null ],
     [ "buildLoc", "class_xpose_craft_1_1_core_1_1_required_1_1_s_unit_building.html#ac684960033447771b778fe741c4dc8f4", null ],
     [ "canBuildAtOnce", "class_xpose_craft_1_1_core_1_1_required_1_1_s_unit_building.html#af2b01cf0c57c61ce36a9fbd7c8597f82", null ],
     [ "canProduce", "class_xpose_craft_1_1_core_1_1_required_1_1_s_unit_building.html#aee92e862c5e0548555ebf25603e0e4d9", null ],

@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">XposeCraft
-   &#160;<span id="projectnumber">1.0.0-rc1</span>
+   &#160;<span id="projectnumber">1.0.1-rc1</span>
    </div>
    <div id="projectbrief">Developer API</div>
   </td>
@@ -100,8 +100,8 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:a9ab6974163301dd6a8dc1741458f75ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bca8a54c13bb9b953fe67018aa9c023"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_unit_helper.html#a6bca8a54c13bb9b953fe67018aa9c023">FindUnitIndexInUnitProduction</a> (<a class="el" href="class_xpose_craft_1_1_core_1_1_required_1_1_unit_type.html">UnitType</a> unitType, <a class="el" href="class_xpose_craft_1_1_core_1_1_required_1_1_s_unit_building.html">SUnitBuilding</a> unitProduction)</td></tr>
 <tr class="separator:a6bca8a54c13bb9b953fe67018aa9c023"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5727a9db9e6d153506fc7a6d7d6c6546"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_unit_helper.html#a5727a9db9e6d153506fc7a6d7d6c6546">IsUnitOfType</a> (string unitName, <a class="el" href="class_xpose_craft_1_1_core_1_1_required_1_1_unit_type.html">UnitType</a> unitType)</td></tr>
-<tr class="separator:a5727a9db9e6d153506fc7a6d7d6c6546"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a707871d7a439cdadecbf53470e6d7dca"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_xpose_craft_1_1_core_1_1_required_1_1_unit_type.html">UnitType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_unit_helper.html#a707871d7a439cdadecbf53470e6d7dca">PrefabToType</a> (GameObject unitPrefab)</td></tr>
+<tr class="separator:a707871d7a439cdadecbf53470e6d7dca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3fa409268dbb3aeaf31b036b66cf94b0"><td class="memItemLeft" align="right" valign="top">static GameObject&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_unit_helper.html#a3fa409268dbb3aeaf31b036b66cf94b0">InstantiateUnit</a> (GameObject prefab, Vector3 location, int factionIndex)</td></tr>
 <tr class="separator:a3fa409268dbb3aeaf31b036b66cf94b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -288,8 +288,8 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a5727a9db9e6d153506fc7a6d7d6c6546"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5727a9db9e6d153506fc7a6d7d6c6546">&#9670;&nbsp;</a></span>IsUnitOfType()</h2>
+<a id="a707871d7a439cdadecbf53470e6d7dca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a707871d7a439cdadecbf53470e6d7dca">&#9670;&nbsp;</a></span>PrefabToType()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -298,21 +298,11 @@ Static Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static bool XposeCraft.GameInternal.Helpers.UnitHelper.IsUnitOfType </td>
+          <td class="memname">static <a class="el" href="class_xpose_craft_1_1_core_1_1_required_1_1_unit_type.html">UnitType</a> XposeCraft.GameInternal.Helpers.UnitHelper.PrefabToType </td>
           <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>unitName</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">GameObject&#160;</td>
+          <td class="paramname"><em>unitPrefab</em></td><td>)</td>
           <td></td>
-          <td class="paramtype"><a class="el" href="class_xpose_craft_1_1_core_1_1_required_1_1_unit_type.html">UnitType</a>&#160;</td>
-          <td class="paramname"><em>unitType</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -333,7 +323,7 @@ Static Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_xpose_craft.html">XposeCraft</a></li><li class="navelem"><a class="el" href="namespace_xpose_craft_1_1_game_internal.html">GameInternal</a></li><li class="navelem"><a class="el" href="namespace_xpose_craft_1_1_game_internal_1_1_helpers.html">Helpers</a></li><li class="navelem"><a class="el" href="class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_unit_helper.html">UnitHelper</a></li>
-    <li class="footer">Generated on Fri May 19 2017 19:21:16 for XposeCraft by
+    <li class="footer">Generated on Wed Jun 14 2017 15:49:24 for XposeCraft by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

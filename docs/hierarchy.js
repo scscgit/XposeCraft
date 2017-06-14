@@ -29,7 +29,8 @@ var hierarchy =
         ] ],
         [ "XposeCraft.Game.Actors.Units.Unit", "class_xpose_craft_1_1_game_1_1_actors_1_1_units_1_1_unit.html", [
           [ "XposeCraft.Game.Actors.Units.DonkeyGun", "class_xpose_craft_1_1_game_1_1_actors_1_1_units_1_1_donkey_gun.html", null ],
-          [ "XposeCraft.Game.Actors.Units.Worker", "class_xpose_craft_1_1_game_1_1_actors_1_1_units_1_1_worker.html", null ]
+          [ "XposeCraft.Game.Actors.Units.Worker", "class_xpose_craft_1_1_game_1_1_actors_1_1_units_1_1_worker.html", null ],
+          [ "XposeCraft.Game.Actors.Units.WraithRaider", "class_xpose_craft_1_1_game_1_1_actors_1_1_units_1_1_wraith_raider.html", null ]
         ] ]
       ] ],
       [ "XposeCraft.Game.Actors.Buildings.IBuilding", "interface_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_i_building.html", [

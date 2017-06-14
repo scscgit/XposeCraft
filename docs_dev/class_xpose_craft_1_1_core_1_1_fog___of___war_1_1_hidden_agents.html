@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">XposeCraft
-   &#160;<span id="projectnumber">1.0.0-rc1</span>
+   &#160;<span id="projectnumber">1.0.1-rc1</span>
    </div>
    <div id="projectbrief">Developer API</div>
   </td>
@@ -103,6 +103,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6bf03064be23be447597eb5645a66a05"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_core_1_1_fog___of___war_1_1_hidden_agents.html#a6bf03064be23be447597eb5645a66a05">DisplayAll</a> ()</td></tr>
 <tr class="separator:a6bf03064be23be447597eb5645a66a05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16cb3208702efac4f3fe972161433da2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_xpose_craft_1_1_core_1_1_fog___of___war_1_1_hidden_agents.html#a16cb3208702efac4f3fe972161433da2">SetRenderers</a> (bool renderOnScreen, <a class="el" href="class_xpose_craft_1_1_core_1_1_fog___of___war_1_1_fog.html">Fog</a> fog, <a class="el" href="class_xpose_craft_1_1_core_1_1_fog___of___war_1_1_signal_agents.html">SignalAgents</a> signalAgents)</td></tr>
+<tr class="memdesc:a16cb3208702efac4f3fe972161433da2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the hidden renderers based on their respective hideNextSetting.  <a href="#a16cb3208702efac4f3fe972161433da2">More...</a><br /></td></tr>
 <tr class="separator:a16cb3208702efac4f3fe972161433da2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -256,6 +257,17 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Updates the hidden renderers based on their respective hideNextSetting. </p>
+<p>This triggers the visibility change events for signal agents. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">renderOnScreen</td><td></td></tr>
+    <tr><td class="paramname">fog</td><td></td></tr>
+    <tr><td class="paramname">signalAgents</td><td>Their LocationsSeenTemporary array will be used to check and trigger the visibility change event of the actor represented by the specific SignalAgent. This event will inform him of renderers that he sees. For the Attack Move purpose, this will be checked always.</td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -380,7 +392,7 @@ Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_xpose_craft.html">XposeCraft</a></li><li class="navelem"><a class="el" href="namespace_xpose_craft_1_1_core.html">Core</a></li><li class="navelem"><a class="el" href="namespace_xpose_craft_1_1_core_1_1_fog___of___war.html">Fog_Of_War</a></li><li class="navelem"><a class="el" href="class_xpose_craft_1_1_core_1_1_fog___of___war_1_1_hidden_agents.html">HiddenAgents</a></li>
-    <li class="footer">Generated on Fri May 19 2017 19:21:16 for XposeCraft by
+    <li class="footer">Generated on Wed Jun 14 2017 15:49:23 for XposeCraft by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

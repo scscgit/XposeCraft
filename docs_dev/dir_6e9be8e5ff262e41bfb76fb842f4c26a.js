@@ -9,5 +9,8 @@ var dir_6e9be8e5ff262e41bfb76fb842f4c26a =
     [ "Unit.cs", "_unit_8cs.html", [
       [ "Unit", "class_xpose_craft_1_1_game_1_1_actors_1_1_units_1_1_unit.html", "class_xpose_craft_1_1_game_1_1_actors_1_1_units_1_1_unit" ]
     ] ],
-    [ "Worker.cs", "_worker_8cs.html", "_worker_8cs" ]
+    [ "Worker.cs", "_worker_8cs.html", "_worker_8cs" ],
+    [ "WraithRaider.cs", "_wraith_raider_8cs.html", [
+      [ "WraithRaider", "class_xpose_craft_1_1_game_1_1_actors_1_1_units_1_1_wraith_raider.html", null ]
+    ] ]
 ];

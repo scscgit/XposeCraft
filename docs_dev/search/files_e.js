@@ -9,5 +9,7 @@ var searchData=
   ['resourcegenerate_2ecs',['ResourceGenerate.cs',['../_resource_generate_8cs.html',1,'']]],
   ['resourcehelper_2ecs',['ResourceHelper.cs',['../_helpers_2_resource_helper_8cs.html',1,'(Global Namespace)'],['../nternal_2_helpers_2_resource_helper_8cs.html',1,'(Global Namespace)']]],
   ['resourcemanager_2ecs',['ResourceManager.cs',['../_resource_manager_8cs.html',1,'']]],
-  ['resourcesource_2ecs',['ResourceSource.cs',['../_resource_source_8cs.html',1,'']]]
+  ['resourcesource_2ecs',['ResourceSource.cs',['../_resource_source_8cs.html',1,'']]],
+  ['riderassetpostprocessor_2ecs',['RiderAssetPostprocessor.cs',['../_rider_asset_postprocessor_8cs.html',1,'']]],
+  ['riderplugin_2ecs',['RiderPlugin.cs',['../_rider_plugin_8cs.html',1,'']]]
 ];

@@ -14,5 +14,7 @@ var searchData=
   ['withinscreen',['WithinScreen',['../class_xpose_craft_1_1_core_1_1_required_1_1_unit_selection.html#a1bfbed52594adf0e2f4e4f698e6a904d',1,'XposeCraft::Core::Required::UnitSelection']]],
   ['worker',['Worker',['../class_xpose_craft_1_1_game_1_1_actors_1_1_units_1_1_worker.html',1,'XposeCraft.Game.Actors.Units.Worker'],['../namespace_xpose_craft_1_1_game_1_1_enums.html#a084766bb06d4a2591f6d88cf089e985aa62efb9ec331e364b96efe68c8b03ca20',1,'XposeCraft.Game.Enums.Worker()']]],
   ['worker_2ecs',['Worker.cs',['../_worker_8cs.html',1,'']]],
-  ['workerprefab',['WorkerPrefab',['../class_xpose_craft_1_1_game_internal_1_1_game_manager.html#a3aee02dd0dddd75292997ba931267c38',1,'XposeCraft::GameInternal::GameManager']]]
+  ['workerprefab',['WorkerPrefab',['../class_xpose_craft_1_1_game_internal_1_1_game_manager.html#a3aee02dd0dddd75292997ba931267c38',1,'XposeCraft::GameInternal::GameManager']]],
+  ['wraithraider',['WraithRaider',['../class_xpose_craft_1_1_game_1_1_actors_1_1_units_1_1_wraith_raider.html',1,'XposeCraft.Game.Actors.Units.WraithRaider'],['../namespace_xpose_craft_1_1_game_1_1_enums.html#a084766bb06d4a2591f6d88cf089e985aa63699ba77ab4d223ae5f10d9878ee099',1,'XposeCraft.Game.Enums.WraithRaider()']]],
+  ['wraithraider_2ecs',['WraithRaider.cs',['../_wraith_raider_8cs.html',1,'']]]
 ];

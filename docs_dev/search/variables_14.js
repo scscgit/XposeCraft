@@ -11,7 +11,7 @@ var searchData=
   ['unitindex',['UnitIndex',['../class_xpose_craft_1_1_core_1_1_required_1_1_produce_unit.html#a460d6b00122d5179acd2468c9dcf7fcb',1,'XposeCraft::Core::Required::ProduceUnit']]],
   ['unitlist',['UnitList',['../class_xpose_craft_1_1_core_1_1_faction_1_1_faction.html#aaf762c21d178ca561ec63aac38007701',1,'XposeCraft::Core::Faction::Faction']]],
   ['unitproduction',['unitProduction',['../class_xpose_craft_1_1_core_1_1_faction_1_1_buildings_1_1_building_controller.html#a1865aab1a39b08b4841224867beaf53a',1,'XposeCraft::Core::Faction::Buildings::BuildingController']]],
-  ['units',['units',['../class_xpose_craft_1_1_core_1_1_required_1_1_s_unit_building.html#a5be94b3cab68dcdae1323fac17a6a9d9',1,'XposeCraft.Core.Required.SUnitBuilding.units()'],['../class_xpose_craft_1_1_game_internal_1_1_player.html#a8ba04d63994d341568b26547275be2f8',1,'XposeCraft.GameInternal.Player.Units()']]],
+  ['units',['Units',['../class_xpose_craft_1_1_game_internal_1_1_player.html#a8ba04d63994d341568b26547275be2f8',1,'XposeCraft.GameInternal.Player.Units()'],['../class_xpose_craft_1_1_core_1_1_required_1_1_s_unit_building.html#a5be94b3cab68dcdae1323fac17a6a9d9',1,'XposeCraft.Core.Required.SUnitBuilding.units()']]],
   ['unittypes',['UnitTypes',['../class_xpose_craft_1_1_core_1_1_faction_1_1_faction_manager.html#a6f8b3e908df3ef9a903115e134e74d9a',1,'XposeCraft::Core::Faction::FactionManager']]],
   ['universalbuild',['universalBuild',['../class_xpose_craft_1_1_core_1_1_faction_1_1_g_u_i_manager.html#a728d2ab77923aeaec6e47f58a86b77be',1,'XposeCraft::Core::Faction::GUIManager']]],
   ['updateinterval',['updateInterval',['../class_xpose_craft_1_1_core_1_1_misc_1_1_h_u_d_f_p_s.html#a8bb8262b869089fd855a2d44a2d6c87b',1,'XposeCraft::Core::Misc::HUDFPS']]],

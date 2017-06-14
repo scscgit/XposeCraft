@@ -11,6 +11,9 @@ var hierarchy =
       [ "XposeCraft.Game.Helpers.UnitHelper", "class_xpose_craft_1_1_game_1_1_helpers_1_1_unit_helper.html", null ]
     ] ],
     [ "XposeCraft.Core.Required.APath", "class_xpose_craft_1_1_core_1_1_required_1_1_a_path.html", null ],
+    [ "AssetPostprocessor", null, [
+      [ "Plugins.Editor.JetBrains.RiderAssetPostprocessor", "class_plugins_1_1_editor_1_1_jet_brains_1_1_rider_asset_postprocessor.html", null ]
+    ] ],
     [ "XposeCraft.Core.Required.BGUISetting", "class_xpose_craft_1_1_core_1_1_required_1_1_b_g_u_i_setting.html", null ],
     [ "XposeCraft.Core.Required.BinaryHeap", "class_xpose_craft_1_1_core_1_1_required_1_1_binary_heap.html", null ],
     [ "XposeCraft.Game.BotRunner", "class_xpose_craft_1_1_game_1_1_bot_runner.html", null ],
@@ -62,7 +65,8 @@ var hierarchy =
         ] ],
         [ "XposeCraft.Game.Actors.Units.Unit", "class_xpose_craft_1_1_game_1_1_actors_1_1_units_1_1_unit.html", [
           [ "XposeCraft.Game.Actors.Units.DonkeyGun", "class_xpose_craft_1_1_game_1_1_actors_1_1_units_1_1_donkey_gun.html", null ],
-          [ "XposeCraft.Game.Actors.Units.Worker", "class_xpose_craft_1_1_game_1_1_actors_1_1_units_1_1_worker.html", null ]
+          [ "XposeCraft.Game.Actors.Units.Worker", "class_xpose_craft_1_1_game_1_1_actors_1_1_units_1_1_worker.html", null ],
+          [ "XposeCraft.Game.Actors.Units.WraithRaider", "class_xpose_craft_1_1_game_1_1_actors_1_1_units_1_1_wraith_raider.html", null ]
         ] ]
       ] ],
       [ "XposeCraft.Game.Actors.Buildings.IBuilding", "interface_xpose_craft_1_1_game_1_1_actors_1_1_buildings_1_1_i_building.html", [
@@ -180,6 +184,7 @@ var hierarchy =
     [ "XposeCraft.Core.Required.ResourceG", "class_xpose_craft_1_1_core_1_1_required_1_1_resource_g.html", null ],
     [ "XposeCraft.GameInternal.Helpers.ResourceHelper", "class_xpose_craft_1_1_game_internal_1_1_helpers_1_1_resource_helper.html", null ],
     [ "XposeCraft.Core.Required.ResourceType", "class_xpose_craft_1_1_core_1_1_required_1_1_resource_type.html", null ],
+    [ "Plugins.Editor.JetBrains.RiderPlugin", "class_plugins_1_1_editor_1_1_jet_brains_1_1_rider_plugin.html", null ],
     [ "XposeCraft.Core.Required.SAnimSounds", "class_xpose_craft_1_1_core_1_1_required_1_1_s_anim_sounds.html", null ],
     [ "XposeCraft.Core.Required.SBuild", "class_xpose_craft_1_1_core_1_1_required_1_1_s_build.html", null ],
     [ "XposeCraft.Core.Required.SBuildingAnim", "class_xpose_craft_1_1_core_1_1_required_1_1_s_building_anim.html", null ],

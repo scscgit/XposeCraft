@@ -12,7 +12,8 @@ var class_xpose_craft_1_1_core_1_1_required_1_1_a_path =
     [ "gridI", "class_xpose_craft_1_1_core_1_1_required_1_1_a_path.html#a085d7a9a07380c65da17f5b8015427d0", null ],
     [ "gridScript", "class_xpose_craft_1_1_core_1_1_required_1_1_a_path.html#ab79820c5ea88195ff01c612dff74bddd", null ],
     [ "index", "class_xpose_craft_1_1_core_1_1_required_1_1_a_path.html#ae6d4fa0b80bd3b8df42788713c74b869", null ],
-    [ "mGrid", "class_xpose_craft_1_1_core_1_1_required_1_1_a_path.html#a4b73bcd8b59a5712ff1a7e496ef09d1f", null ],
+    [ "lastValidLocation", "class_xpose_craft_1_1_core_1_1_required_1_1_a_path.html#a2ccadecf1a5f9b94add8b2f290e84df3", null ],
     [ "myPath", "class_xpose_craft_1_1_core_1_1_required_1_1_a_path.html#a1bb88432590707609a97193f55e465fe", null ],
-    [ "start", "class_xpose_craft_1_1_core_1_1_required_1_1_a_path.html#a0c5868c49c1167fee813c7fc23e61a37", null ]
+    [ "start", "class_xpose_craft_1_1_core_1_1_required_1_1_a_path.html#a0c5868c49c1167fee813c7fc23e61a37", null ],
+    [ "copyGridPoints", "class_xpose_craft_1_1_core_1_1_required_1_1_a_path.html#a58b9404d4c00bf686bb25873103857ae", null ]
 ];
