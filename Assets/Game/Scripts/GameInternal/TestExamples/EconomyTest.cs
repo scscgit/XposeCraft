@@ -2,6 +2,7 @@ using System;
 using XposeCraft.Game;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Units;
+using XposeCraft.Game.Control.GameActions;
 using XposeCraft.Game.Enums;
 using XposeCraft.Game.Helpers;
 
@@ -16,6 +17,7 @@ namespace XposeCraft.GameInternal.TestExamples
     internal class EconomyTest : BotScript
     {
         public MyBotData MyBotData;
+        private GameEvent _producingWorker;
 
         public void EconomyStage(Action startNextStage)
         {
@@ -23,10 +25,11 @@ namespace XposeCraft.GameInternal.TestExamples
             Worker[] firstWorkers = UnitHelper.GetMyUnits<Worker>();
             foreach (Worker worker in firstWorkers)
             {
-                worker.SendGather(ResourceHelper.GetNearestMineralTo(worker));
+                Gather(worker);
             }
 
             EventForCreatingAnother();
+            BattleTest.RegisterReceiveFire();
             startNextStage();
         }
 
@@ -34,31 +37,68 @@ namespace XposeCraft.GameInternal.TestExamples
         {
             GameEvent.Register(GameEventType.MineralsChanged, argsA =>
             {
-                if (argsA.Minerals >= 50)
+                if (_producingWorker == null && argsA.Minerals >= 50)
                 {
                     // After he collected minerals, another worker will be built
                     var baseCenter = BuildingHelper.GetMyBuildings<BaseCenter>()[0];
                     baseCenter.ProduceUnit(UnitType.Worker);
 
                     // After creating (it means after few seconds), he will need to go gather too
-                    GameEvent.Register(GameEventType.UnitProduced, argsB =>
+                    _producingWorker = GameEvent.Register(GameEventType.UnitProduced, argsB =>
                     {
                         if (argsB.MyUnit is Worker)
                         {
                             Worker worker = (Worker) argsB.MyUnit;
-                            worker.SendGather(ResourceHelper.GetNearestMineralTo(worker));
+                            Gather(worker);
                             argsB.ThisGameEvent.UnregisterEvent();
+                            _producingWorker = null;
                         }
                     });
                 }
 
                 // This event will work only while there are not enough workers.
                 // After that, minerals will be left to go over 150.
-                if (UnitHelper.GetMyUnits<Worker>().Length >= 5)
+                if (UnitHelper.GetMyUnits<Worker>().Length >= 6)
                 {
                     argsA.ThisGameEvent.UnregisterEvent();
                 }
             });
+        }
+
+        public static void Gather(Worker worker)
+        {
+            var resource = ResourceHelper.GetNearestMineralTo(worker);
+            if (resource == null)
+            {
+                BotRunner.Log("Worker couldn't find another Resource");
+                return;
+            }
+            if (CreateBaseIfNone(worker))
+            {
+                return;
+            }
+            worker.SendGather(resource).After(new CustomFunction(() => Gather(worker)));
+        }
+
+        private static bool CreateBaseIfNone(Worker worker)
+        {
+            // If all bases were destroyed, try to make a new one
+            var bases = BuildingHelper.GetMyBuildings<BaseCenter>();
+            if (bases.Length == 0)
+            {
+                worker.CreateBuilding(
+                    BuildingType.BaseCenter,
+                    BuildingHelper.ClosestEmptySpaceTo(
+                        BuildingHelper.GetMyBuildings<IBuilding>()[0],
+                        BuildingType.BaseCenter));
+                return true;
+            }
+            if (!bases[0].Finished)
+            {
+                worker.FinishBuiding(bases[0]);
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -5,9 +5,11 @@ using XposeCraft.Core.Grids;
 using XposeCraft.Core.Required;
 using XposeCraft.Core.Resources;
 using XposeCraft.Game;
+using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Actors.Units;
 using XposeCraft.Game.Enums;
 using XposeCraft.GameInternal;
+using Building = XposeCraft.Core.Required.Building;
 using BuildingHelper = XposeCraft.GameInternal.Helpers.BuildingHelper;
 using UnitType = XposeCraft.Core.Required.UnitType;
 
@@ -164,7 +166,7 @@ namespace XposeCraft.Core.Faction.Buildings
             return placedBuilding.gameObject;
         }
 
-        public void Damage(UnitType nType, int damage)
+        public void Damage(UnitType nType, int damage, GameObject attacker)
         {
             for (int x = 0; x < type.weaknesses.Length; x++)
             {
@@ -184,6 +186,15 @@ namespace XposeCraft.Core.Faction.Buildings
             if (health <= 0)
             {
                 Killed();
+            }
+            else
+            {
+                // If still not destroyed, the Owner gets notified
+                GameManager.Instance.FiredEvent(PlayerOwner, GameEventType.BuildingReceivedFire, new Arguments
+                {
+                    EnemyUnits = new[] {(IUnit) GameManager.Instance.ActorLookup[attacker]},
+                    MyBuilding = (IBuilding) GameManager.Instance.ActorLookup[gameObject]
+                });
             }
         }
 

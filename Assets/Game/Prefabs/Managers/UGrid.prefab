@@ -58,7 +58,7 @@ MonoBehaviour:
     nodeDist: 2
     displaceDown: 1
     checkSlope: 1
-    slopeMax: 1
+    slopeMax: 2
     checkLayer:
       serializedVersion: 2
       m_Bits: 3072

@@ -53,7 +53,7 @@ namespace XposeCraft.Game.Helpers
         /// <returns>A closest Resource.</returns>
         public static TResource GetNearestResourceTo<TResource>(IActor actor) where TResource : IResource
         {
-            const int initialMaxLengthFromBase = 50;
+            const int initialMaxLengthFromBase = 90;
             var closestResource = default(TResource);
             var closestDistance = initialMaxLengthFromBase;
             ForEach<TResource, Resource>(resource =>

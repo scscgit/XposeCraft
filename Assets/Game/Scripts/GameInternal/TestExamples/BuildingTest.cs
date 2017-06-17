@@ -16,12 +16,13 @@ namespace XposeCraft.GameInternal.TestExamples
     internal class BuildingTest : BotScript
     {
         public MyBotData MyBotData;
+        private GameEvent _producingDonkeyGun;
 
         /// <summary>
         /// Finds a worker that is just gathering any materials, without any other task
         /// </summary>
         /// <returns>A bored worker</returns>
-        private Worker FindWorkerThatGathers()
+        public static Worker FindWorkerThatGathers()
         {
             foreach (Worker worker in UnitHelper.GetMyUnits<Worker>())
             {
@@ -59,7 +60,7 @@ namespace XposeCraft.GameInternal.TestExamples
                     args.MyUnit is Worker)
                 {
                     var worker = (Worker) args.MyUnit;
-                    worker.SendGather(ResourceHelper.GetNearestMineralTo(worker));
+                    EconomyTest.Gather(worker);
                     BuildArmy(startNextStage);
                 }
                 args.ThisGameEvent.UnregisterEvent();
@@ -68,22 +69,34 @@ namespace XposeCraft.GameInternal.TestExamples
 
         void BuildArmy(Action startNextStage)
         {
-            GameEvent.Register(GameEventType.MineralsChanged, args =>
+            GameEvent.Register(GameEventType.MineralsChanged, argsMinerals =>
             {
-                if (args.Minerals > 100)
+                if (MyBotData.Army >= 5)
                 {
-                    foreach (NubianArmory armory in BuildingHelper.GetMyBuildings<NubianArmory>())
+                    argsMinerals.ThisGameEvent.UnregisterEvent();
+                    startNextStage();
+                    return;
+                }
+                if (_producingDonkeyGun != null || argsMinerals.Minerals <= 100)
+                {
+                    return;
+                }
+                foreach (NubianArmory armory in BuildingHelper.GetMyBuildings<NubianArmory>())
+                {
+                    if (armory.CanNowProduceUnit(UnitType.DonkeyGun))
                     {
-                        if (armory.CanNowProduceUnit(UnitType.DonkeyGun))
+                        armory.ProduceUnit(UnitType.DonkeyGun);
+                        _producingDonkeyGun = GameEvent.Register(GameEventType.UnitProduced, argsUnit =>
                         {
-                            armory.ProduceUnit(UnitType.DonkeyGun);
-                            if (MyBotData.Army++ >= 5)
+                            if (argsUnit.MyUnit is DonkeyGun)
                             {
-                                args.ThisGameEvent.UnregisterEvent();
-                                startNextStage();
+                                MyBotData.Army++;
+                                BotRunner.Log("My army contains " + MyBotData.Army + " battle units");
+                                argsUnit.ThisGameEvent.UnregisterEvent();
+                                _producingDonkeyGun = null;
                             }
-                            break;
-                        }
+                        });
+                        break;
                     }
                 }
             });

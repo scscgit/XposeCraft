@@ -36,6 +36,10 @@ namespace XposeCraft.Game.Control.GameActions
         /// <exception cref="ResourceExhaustedException">The Resource was already exhausted before the attempt to go gather it.</exception>
         public GatherResource(IResource resource, bool exceptionIfExhausted)
         {
+            if (resource == null)
+            {
+                throw new ArgumentNullException("resource");
+            }
             _exceptionIfExhausted = exceptionIfExhausted;
             Gathering = resource;
         }

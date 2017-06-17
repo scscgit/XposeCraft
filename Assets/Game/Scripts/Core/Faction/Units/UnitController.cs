@@ -6,6 +6,7 @@ using XposeCraft.Core.Required;
 using XposeCraft.Core.Resources;
 using XposeCraft.Game;
 using XposeCraft.Game.Actors;
+using XposeCraft.Game.Actors.Units;
 using XposeCraft.Game.Control;
 using XposeCraft.Game.Enums;
 using XposeCraft.GameInternal;
@@ -396,7 +397,7 @@ namespace XposeCraft.Core.Faction.Units
                 : Faction.Relations[factionIndex].state;
         }
 
-        public void Damage(UnitType nType, int attackDamage)
+        public void Damage(UnitType nType, int attackDamage, GameObject attacker)
         {
             for (int x = 0; x < type.weaknesses.Length; x++)
             {
@@ -416,6 +417,15 @@ namespace XposeCraft.Core.Faction.Units
             if (health <= 0)
             {
                 Killed();
+            }
+            else
+            {
+                // If still not killed, the Owner gets notified
+                GameManager.Instance.FiredEvent(PlayerOwner, GameEventType.UnitReceivedFire, new Arguments
+                {
+                    EnemyUnits = new[] {(IUnit) GameManager.Instance.ActorLookup[attacker]},
+                    MyUnit = UnitActor
+                });
             }
         }
 

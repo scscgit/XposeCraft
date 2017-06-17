@@ -40,10 +40,10 @@ namespace XposeCraft.Core.Required
             switch (type)
             {
                 case "Unit":
-                    target.GetComponent<UnitController>().Damage(selfType, attackDamage);
+                    target.GetComponent<UnitController>().Damage(selfType, attackDamage, self);
                     break;
                 case "Building":
-                    target.GetComponent<BuildingController>().Damage(selfType, attackDamage);
+                    target.GetComponent<BuildingController>().Damage(selfType, attackDamage, self);
                     break;
             }
             lastAttackTime = Time.time;

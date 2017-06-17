@@ -56,6 +56,48 @@ namespace XposeCraft.GameInternal.TestExamples
             DestroyBuildings();
         }
 
+        public static void RegisterReceiveFire()
+        {
+            var receivedFire = new Action<Arguments>(args =>
+            {
+                foreach (var enemyUnit in args.EnemyUnits)
+                {
+                    BotRunner.Log(enemyUnit + " attacked me");
+                    // The Unit defends itself
+                    if (args.MyUnit != null)
+                    {
+                        EnqueueFirst(new Attack(enemyUnit), args.MyUnit);
+                    }
+                    // Another Unit helps
+                    AttackUnit(enemyUnit);
+                }
+            });
+            GameEvent.Register(GameEventType.UnitReceivedFire, args => receivedFire.Invoke(args));
+            GameEvent.Register(GameEventType.BuildingReceivedFire, args => receivedFire.Invoke(args));
+        }
+
+        public static void AttackUnit(IUnit enemyUnit)
+        {
+            var donkeys = UnitHelper.GetMyUnits<DonkeyGun>();
+            if (donkeys.Length < 2)
+            {
+                EnqueueFirst(new Attack(enemyUnit), BuildingTest.FindWorkerThatGathers());
+                return;
+            }
+            foreach (var donkeyGun in UnitHelper.GetMyUnits<DonkeyGun>())
+            {
+                EnqueueFirst(new Attack(enemyUnit), donkeyGun);
+            }
+        }
+
+        public static void EnqueueFirst(IGameAction gameAction, IUnit myUnit)
+        {
+            // Puts the new target above the current Queue
+            var oldQueue = myUnit.ActionQueue;
+            myUnit.ActionQueue = new UnitActionQueue(gameAction)
+                .After(new CustomFunction(() => myUnit.ActionQueue = oldQueue));
+        }
+
         void GoAttack()
         {
             var myUnits = UnitHelper.GetMyUnits<IUnit>();
@@ -71,7 +113,18 @@ namespace XposeCraft.GameInternal.TestExamples
 
         void WorkersCanExpand()
         {
+            var baseCenter = BuildingHelper.GetMyBuildings<BaseCenter>()[0];
+            if (baseCenter != null && baseCenter.CanNowProduceUnit(UnitType.Worker))
+            {
+                baseCenter.ProduceUnit(UnitType.Worker);
+            }
+            var nubianArmory = BuildingHelper.GetMyBuildings<NubianArmory>()[0];
+            if (nubianArmory != null && nubianArmory.CanNowProduceUnit(UnitType.WraithRaider))
+            {
+                nubianArmory.ProduceUnit(UnitType.WraithRaider);
+            }
             // TODO: make workers expand to other minerals over the map
+            BuildingTest.FindWorkerThatGathers().MoveTo(PlaceType.MyBase.UnderRampLeft);
         }
 
         void ScheduleTacticsWhenLowHp()
