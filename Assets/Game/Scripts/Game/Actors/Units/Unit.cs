@@ -25,6 +25,7 @@ namespace XposeCraft.Game.Actors.Units
                 }
                 _actionQueue = new UnitActionQueue();
                 UnitController._actionDequeue = new UnitActionQueue.ActionDequeue(this, UnitController, _actionQueue);
+                _actionQueue.Dequeue = UnitController._actionDequeue;
                 UnitController._actionDequeue.Dequeue();
                 return _actionQueue;
             }
@@ -37,12 +38,13 @@ namespace XposeCraft.Game.Actors.Units
                 // Cancels the previous pending action by finishing it
                 if (UnitController._actionDequeue != null)
                 {
-                    UnitController._actionDequeue.Finished();
+                    UnitController._actionDequeue.Finish();
                 }
                 // Initializes the callback mechanism in the controller
                 // TODO: clone before creating a representing dequeue
                 _actionQueue = value;
                 UnitController._actionDequeue = new UnitActionQueue.ActionDequeue(this, UnitController, _actionQueue);
+                _actionQueue.Dequeue = UnitController._actionDequeue;
                 UnitController._actionDequeue.Dequeue();
             }
         }

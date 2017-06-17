@@ -26,7 +26,6 @@ namespace XposeCraft.Core.Faction.Buildings
         UGrid uGrid;
         public int gridI;
         int loc;
-        int factionIndex;
         public bool placed { get; set; }
 
         public void Start()
@@ -77,11 +76,6 @@ namespace XposeCraft.Core.Faction.Buildings
             place = true;
             build = nBuild;
             obj = Instantiate(nBuild.tempObj, Vector3.zero, Quaternion.identity);
-        }
-
-        public void SetFaction(int id)
-        {
-            factionIndex = id;
         }
 
         public void OnDrawGizmos()
@@ -162,7 +156,7 @@ namespace XposeCraft.Core.Faction.Buildings
                     PlaceProgressBuilding(
                         build,
                         unitSelect.curSelectedS,
-                        factionIndex,
+                        GameManager.Instance.GuiPlayer.FactionIndex,
                         new Position(loc),
                         obj.transform.rotation,
                         ResourceManagerPlayerOnly),

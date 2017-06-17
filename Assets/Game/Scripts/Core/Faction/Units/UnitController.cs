@@ -315,6 +315,7 @@ namespace XposeCraft.Core.Faction.Units
                                 else
                                 {
                                     ResetTarget();
+                                    return;
                                 }
                                 break;
                             case TargetState.Enemy:

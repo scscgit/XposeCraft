@@ -22,6 +22,11 @@ namespace XposeCraft.Game.Control
             private UnitActionQueue _unitActionQueue;
             private GameAction _currentAction;
 
+            public bool IsRunningAction
+            {
+                get { return _currentAction != null; }
+            }
+
             internal ActionDequeue(IUnit unit, UnitController unitController, UnitActionQueue queue)
             {
                 _unit = unit;
@@ -29,7 +34,7 @@ namespace XposeCraft.Game.Control
                 _unitActionQueue = queue;
             }
 
-            public void Finished()
+            public void Finish()
             {
                 if (_currentAction == null)
                 {
@@ -44,7 +49,7 @@ namespace XposeCraft.Game.Control
 
             public void Dequeue()
             {
-                Finished();
+                Finish();
                 if (_unitActionQueue._queue.Count == 0)
                 {
                     return;
@@ -109,8 +114,10 @@ namespace XposeCraft.Game.Control
 
         public int QueueCount
         {
-            get { return _queue.Count; }
+            get { return _queue.Count + (Dequeue == null ? 0 : Dequeue.IsRunningAction ? 1 : 0); }
         }
+
+        internal ActionDequeue Dequeue { get; set; }
 
         public UnitActionQueue()
         {

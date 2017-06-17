@@ -1282,7 +1282,10 @@ namespace XposeCraft.Core.Required
                 for (int y = -closeLength; y <= closeLength; y++)
                 {
                     if (closePoints[(x + closeWidth) * closeLength + (y + closeLength)] != 0
-                        && grid.points[index + x + y * grid.size].state == 2)
+                        // The point is unavailable
+                        && grid.points[index + x + y * grid.size].state == 2
+                        // The point is disconnected from others, e.g. on a cliff
+                        || grid.points[index + x + y * grid.size].children.Length == 0)
                     {
                         return false;
                     }

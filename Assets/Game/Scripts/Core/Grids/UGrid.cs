@@ -419,6 +419,10 @@ namespace XposeCraft.Core.Grids
             bool[] checkList = new bool[grids[i].points.Length];
             while (!found || childAmount > 0)
             {
+                if (children.Count == 0)
+                {
+                    throw new Exception("Could not find any Path");
+                }
                 int[] pointChildren = grids[i].points[children[0]].children;
                 for (int x = 0; x < pointChildren.Length; x++)
                 {

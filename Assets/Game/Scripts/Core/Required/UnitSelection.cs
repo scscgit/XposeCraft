@@ -85,10 +85,6 @@ namespace XposeCraft.Core.Required
             gridScript = GameObject.Find("UGrid").GetComponent<UGrid>();
             FactionM = GameObject.Find("Faction Manager").GetComponent<FactionManager>();
             placement = gameObject.GetComponent<BuildingPlacement>();
-            if (placement)
-            {
-                placement.SetFaction(FactionIndex);
-            }
             guiManager = gameObject.GetComponent<GUIManager>();
             GameObject obj = GameObject.Find("MiniMap");
             if (obj)
