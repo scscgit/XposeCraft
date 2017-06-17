@@ -44,6 +44,49 @@ namespace XposeCraft.GameInternal.Helpers
             }
         }
 
+        public static int FindUnitIndexInUnitProduction(UnitType unitType, SUnitBuilding unitProduction)
+        {
+            string typeName;
+            switch (unitType)
+            {
+                case UnitType.Worker:
+                    typeName = "Goblin";
+                    break;
+                case UnitType.DonkeyGun:
+                    typeName = "DonkeyGun";
+                    break;
+                case UnitType.WraithRaider:
+                    typeName = "WraithRaider";
+                    break;
+                default:
+                    throw new Exception("Unknown Unit Type name");
+            }
+            for (var unitIndex = 0; unitIndex < unitProduction.units.Length; unitIndex++)
+            {
+                if (typeName == unitProduction.units[unitIndex].customName)
+                {
+                    return unitIndex;
+                }
+            }
+            throw new Exception(
+                "Cannot determine " + unitType + "'s unit index for the Unit Production from its custom name");
+        }
+
+        private static bool IsUnitOfType(string unitName, UnitType unitType)
+        {
+            switch (unitType)
+            {
+                case UnitType.Worker:
+                    return unitName.Equals("Goblin");
+                case UnitType.DonkeyGun:
+                    return unitName.Equals("DonkeyGun");
+                case UnitType.WraithRaider:
+                    return unitName.Equals("WraithRaiderStarship");
+                default:
+                    return false;
+            }
+        }
+
         /// <summary>
         /// Finds a Unit representation of a chosen UnitType within current Player's Faction.
         /// </summary>
@@ -73,31 +116,6 @@ namespace XposeCraft.GameInternal.Helpers
                 "Unit " + unitType + " is not available in your Faction");
         }
 
-        public static int FindUnitIndexInUnitProduction(UnitType unitType, SUnitBuilding unitProduction)
-        {
-            string typeName;
-            switch (unitType)
-            {
-                case UnitType.Worker:
-                    typeName = "Goblin";
-                    break;
-                case UnitType.DonkeyGun:
-                    typeName = "DonkeyGun";
-                    break;
-                default:
-                    throw new Exception("Unknown Unit Type name");
-            }
-            for (var unitIndex = 0; unitIndex < unitProduction.units.Length; unitIndex++)
-            {
-                if (typeName == unitProduction.units[unitIndex].customName)
-                {
-                    return unitIndex;
-                }
-            }
-            throw new Exception(
-                "Cannot determine " + unitType + "'s unit index for the Unit Production from its custom name");
-        }
-
         public static UnitType PrefabToType(GameObject unitPrefab)
         {
             foreach (var value in (UnitType[]) Enum.GetValues(typeof(UnitType)))
@@ -108,19 +126,6 @@ namespace XposeCraft.GameInternal.Helpers
                 }
             }
             throw new InvalidOperationException("Unit prefab name isn't valid and doesn't represent a type");
-        }
-
-        private static bool IsUnitOfType(string unitName, UnitType unitType)
-        {
-            switch (unitType)
-            {
-                case UnitType.Worker:
-                    return unitName.Equals("Goblin");
-                case UnitType.DonkeyGun:
-                    return unitName.Equals("DonkeyGun");
-                default:
-                    return false;
-            }
         }
 
         public static GameObject InstantiateUnit(GameObject prefab, Vector3 location, int factionIndex)

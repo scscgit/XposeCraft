@@ -740,8 +740,8 @@ namespace XposeCraft.Core.Required
         {
             // Overrides the starting position by a last valid one in the event that it is invalid, e.g. on a cliff
             var startLocation = gridScript.DetermineLocation(startPosition, gridIndex);
-            if (gridScript.grids[gridIndex].points.Length <= startLocation
-                && gridScript.grids[gridIndex].points[startLocation].children.Length == 0)
+            if (gridScript.grids[gridIndex].points.Length >= startLocation
+                || gridScript.grids[gridIndex].points[startLocation].children.Length == 0)
             {
                 startLocation = lastValidLocation;
             }

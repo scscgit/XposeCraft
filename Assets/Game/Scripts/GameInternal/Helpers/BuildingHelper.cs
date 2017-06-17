@@ -27,6 +27,19 @@ namespace XposeCraft.GameInternal.Helpers
             }
         }
 
+        private static bool IsBuildingOfType(string buildingName, BuildingType buildingType)
+        {
+            switch (buildingType)
+            {
+                case BuildingType.BaseCenter:
+                    return buildingName.Equals("HelidroneStation");
+                case BuildingType.NubianArmory:
+                    return buildingName.Equals("NubianArmory");
+                default:
+                    return false;
+            }
+        }
+
         /// <summary>
         /// Finds a Building representation of a chosen BuildingType within current Player's Faction.
         /// </summary>
@@ -64,19 +77,6 @@ namespace XposeCraft.GameInternal.Helpers
                 }
             }
             throw new InvalidOperationException("Building prefab name isn't valid and doesn't represent a type");
-        }
-
-        private static bool IsBuildingOfType(string buildingName, BuildingType buildingType)
-        {
-            switch (buildingType)
-            {
-                case BuildingType.BaseCenter:
-                    return buildingName.Equals("HelidroneStation");
-                case BuildingType.NubianArmory:
-                    return buildingName.Equals("NubianArmory");
-                default:
-                    return false;
-            }
         }
 
         public static BuildingController InstantiateProgressBuilding(

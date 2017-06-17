@@ -10,6 +10,7 @@ namespace XposeCraft.GameInternal.TestExamples
     internal class MyBotData : BotScript
     {
         public int Army;
+        public bool Rushed;
         public Unit HealMeetPointUnit { get; set; }
         public GameEvent MeetPointEvent { get; set; }
         public List<IUnit> CurrentEnemies = new List<IUnit>();

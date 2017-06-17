@@ -38,23 +38,30 @@ namespace XposeCraft.GameInternal.TestExamples
         public void BuildingStage(Action startNextStage)
         {
             // A first building
-            GameEvent.Register(GameEventType.MineralsChanged, args =>
-            {
-                if (args.Minerals >= 100)
-                {
-                    var baseCenter = BuildingHelper.GetMyBuildings<BaseCenter>()[0];
-                    var position = BuildingHelper.ClosestEmptySpaceTo(baseCenter, BuildingType.NubianArmory);
-                    IBuilding building = FindWorkerThatGathers().CreateBuilding(BuildingType.NubianArmory, position);
-                    FindWorkerThatGathers().FinishBuiding(building);
+            GameEvent.Register(GameEventType.MineralsChanged, args => BuildNubianArmory(args));
 
-                    // We only need one army production building for now
+            GameEvent.Register(GameEventType.BuildingCreated, args =>
+            {
+                // A second building
+                if (BuildNubianArmory(args))
+                {
                     args.ThisGameEvent.UnregisterEvent();
+
+                    // A third building
+                    GameEvent.Register(GameEventType.BuildingCreated, argsThird =>
+                    {
+                        // A second building
+                        if (BuildNubianArmory(argsThird))
+                        {
+                            argsThird.ThisGameEvent.UnregisterEvent();
+                        }
+                    });
                 }
             });
 
-            // Worker will return to work afterwards
             GameEvent.Register(GameEventType.BuildingCreated, args =>
             {
+                // Worker will return to work afterwards
                 if (args.MyBuilding is NubianArmory
                     &&
                     args.MyUnit is Worker)
@@ -67,14 +74,36 @@ namespace XposeCraft.GameInternal.TestExamples
             });
         }
 
+        private bool BuildNubianArmory(Arguments args)
+        {
+            if (args.Minerals < 100)
+            {
+                return false;
+            }
+            var baseCenter = BuildingHelper.GetMyBuildings<BaseCenter>()[0];
+            var position = BuildingHelper.ClosestEmptySpaceTo(baseCenter, BuildingType.NubianArmory);
+            IBuilding building = FindWorkerThatGathers().CreateBuilding(BuildingType.NubianArmory, position);
+            FindWorkerThatGathers().FinishBuiding(building);
+
+            // We only need one army production building for now
+            args.ThisGameEvent.UnregisterEvent();
+            return true;
+        }
+
         void BuildArmy(Action startNextStage)
         {
             GameEvent.Register(GameEventType.MineralsChanged, argsMinerals =>
             {
-                if (MyBotData.Army >= 5)
+                // First wave starts at 5 units
+                if (!MyBotData.Rushed && MyBotData.Army >= 5)
+                {
+                    startNextStage();
+                    MyBotData.Rushed = true;
+                }
+                // Production ends after 20
+                else if (MyBotData.Army >= 20)
                 {
                     argsMinerals.ThisGameEvent.UnregisterEvent();
-                    startNextStage();
                     return;
                 }
                 if (_producingDonkeyGun != null || argsMinerals.Minerals <= 100)
@@ -83,9 +112,18 @@ namespace XposeCraft.GameInternal.TestExamples
                 }
                 foreach (NubianArmory armory in BuildingHelper.GetMyBuildings<NubianArmory>())
                 {
+                    if (armory.QueuedUnits >= 2)
+                    {
+                        continue;
+                    }
                     if (armory.CanNowProduceUnit(UnitType.DonkeyGun))
                     {
                         armory.ProduceUnit(UnitType.DonkeyGun);
+                        // Additional mineral sink: producing one more expensive Unit if too rich
+                        if (armory.CanNowProduceUnit(UnitType.WraithRaider))
+                        {
+                            armory.ProduceUnit(UnitType.WraithRaider);
+                        }
                         _producingDonkeyGun = GameEvent.Register(GameEventType.UnitProduced, argsUnit =>
                         {
                             if (argsUnit.MyUnit is DonkeyGun)
@@ -96,7 +134,6 @@ namespace XposeCraft.GameInternal.TestExamples
                                 _producingDonkeyGun = null;
                             }
                         });
-                        break;
                     }
                 }
             });

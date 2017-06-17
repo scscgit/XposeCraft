@@ -17,15 +17,11 @@ namespace XposeCraft.Game.Control
         /// </summary>
         internal class ActionDequeue
         {
+            public GameAction CurrentAction { get; private set; }
+
             private IUnit _unit;
             private UnitController _unitController;
             private UnitActionQueue _unitActionQueue;
-            private GameAction _currentAction;
-
-            public bool IsRunningAction
-            {
-                get { return _currentAction != null; }
-            }
 
             internal ActionDequeue(IUnit unit, UnitController unitController, UnitActionQueue queue)
             {
@@ -36,12 +32,12 @@ namespace XposeCraft.Game.Control
 
             public void Finish()
             {
-                if (_currentAction == null)
+                if (CurrentAction == null)
                 {
                     return;
                 }
-                var previousAction = _currentAction;
-                _currentAction = null;
+                var previousAction = CurrentAction;
+                CurrentAction = null;
                 // Player context is needed for all asynchronous actions
                 Player.CurrentPlayer = _unitController.PlayerOwner;
                 previousAction.OnFinish(_unit, _unitController);
@@ -54,8 +50,8 @@ namespace XposeCraft.Game.Control
                 {
                     return;
                 }
-                _currentAction = _unitActionQueue._queue.Peek();
-                if (_currentAction == null)
+                CurrentAction = _unitActionQueue._queue.Peek();
+                if (CurrentAction == null)
                 {
                     Log.e("Null GameAction was enqueued in " + _unitController.name);
                     _unitActionQueue._queue.Dequeue();
@@ -65,7 +61,7 @@ namespace XposeCraft.Game.Control
                 Player.CurrentPlayer = _unitController.PlayerOwner;
                 try
                 {
-                    if (!_currentAction.Progress(_unit, _unitController))
+                    if (!CurrentAction.Progress(_unit, _unitController))
                     {
                         return;
                     }
@@ -90,13 +86,13 @@ namespace XposeCraft.Game.Control
 
             private void Remove()
             {
-                if (_currentAction == null)
+                if (CurrentAction == null)
                 {
                     // If already Finished during the Progress, removal is not needed
                     return;
                 }
                 Log.d(string.Format(
-                    "Unit {0} dequeued {1} action", _unitController.name, _currentAction.GetType().Name));
+                    "Unit {0} dequeued {1} action", _unitController.name, CurrentAction.GetType().Name));
                 _unitActionQueue._queue.Dequeue();
             }
         }
@@ -112,9 +108,14 @@ namespace XposeCraft.Game.Control
 
         private Queue<GameAction> _queue = new Queue<GameAction>();
 
+        public GameAction CurrentAction
+        {
+            get { return Dequeue.CurrentAction; }
+        }
+
         public int QueueCount
         {
-            get { return _queue.Count + (Dequeue == null ? 0 : Dequeue.IsRunningAction ? 1 : 0); }
+            get { return _queue.Count + (Dequeue == null ? 0 : Dequeue.CurrentAction != null ? 1 : 0); }
         }
 
         internal ActionDequeue Dequeue { get; set; }

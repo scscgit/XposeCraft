@@ -93,6 +93,8 @@ namespace XposeCraft.Game.Actors.Units
 
         private void StopGathering()
         {
+            // This is deprecated and all using functions should be converted to GameActions
+            ActionQueue = new UnitActionQueue();
             Gathering = null;
         }
     }

@@ -58,7 +58,7 @@ namespace XposeCraft.GameInternal.TestExamples
 
                 // This event will work only while there are not enough workers.
                 // After that, minerals will be left to go over 150.
-                if (UnitHelper.GetMyUnits<Worker>().Length >= 6)
+                if (UnitHelper.GetMyUnits<Worker>().Length >= 7)
                 {
                     argsA.ThisGameEvent.UnregisterEvent();
                 }

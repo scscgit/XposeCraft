@@ -281,6 +281,7 @@ GameObject:
   - component: {fileID: 114126555984733706}
   - component: {fileID: 114689553205657880}
   - component: {fileID: 114401170970163022}
+  - component: {fileID: 114989641841191176}
   m_Layer: 12
   m_Name: WraithRaiderStarship
   m_TagString: Unit
@@ -1283,6 +1284,37 @@ MonoBehaviour:
       y: 0
       width: 2
       height: 6
+--- !u!114 &114989641841191176
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1767369295992830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eab88aa3238fe894094528d0ae0a5b70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  renderers:
+  - {fileID: 23266507485366506}
+  - {fileID: 23779893443107170}
+  - {fileID: 23968430951954996}
+  - {fileID: 23443893658723052}
+  - {fileID: 23214383992125246}
+  - {fileID: 23516192687735672}
+  - {fileID: 23964663496510722}
+  - {fileID: 23616543629068470}
+  - {fileID: 23990570191701360}
+  - {fileID: 23127644397043554}
+  - {fileID: 23415829404371872}
+  defaultMat: []
+  pastVisibleMat:
+  - {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  hideObjectWhenNotSeen: 0
+  hideCursorIcon: 1
+  hideObject: 1
+  anchors: []
+  curState: 0
 --- !u!114 &114991570269079552
 MonoBehaviour:
   m_ObjectHideFlags: 1

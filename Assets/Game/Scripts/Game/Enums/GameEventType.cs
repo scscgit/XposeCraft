@@ -13,6 +13,8 @@ namespace XposeCraft.Game.Enums
         EnemyBuildingsOnSight,
         UnitReceivedFire,
         BuildingReceivedFire,
+
+        // Currently not implemented; will work slowly over time, near buildings or by a specific healer unit
         UnitGainedHealth,
     }
 }

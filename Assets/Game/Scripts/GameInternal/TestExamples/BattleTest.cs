@@ -100,13 +100,24 @@ namespace XposeCraft.GameInternal.TestExamples
 
         void GoAttack()
         {
-            var myUnits = UnitHelper.GetMyUnits<IUnit>();
+            var myUnits = UnitHelper.GetMyUnits<Unit>();
+            // Default meet point is any other unit
+            MyBotData.HealMeetPointUnit = myUnits[0];
             // TODO: decide if units can do this or just after ForEach
             Array.ForEach(myUnits, unit =>
             {
+                // Busy builders won't go into the war
+                if (unit is Worker && !(unit.ActionQueue.CurrentAction is GatherResource))
+                {
+                    return;
+                }
                 unit.AttackMoveTo(PlaceType.EnemyBase.Right)
                     .After(new WaitForActionsOf(myUnits))
-                    .After(new CustomFunction(() => { WorkersCanExpand(); }))
+                    .After(new CustomFunction(() =>
+                    {
+                        MyBotData.HealMeetPointUnit = unit;
+                        WorkersCanExpand();
+                    }))
                     .After(new AttackMove(PlaceType.EnemyBase.Center));
             });
         }
@@ -118,11 +129,6 @@ namespace XposeCraft.GameInternal.TestExamples
             {
                 baseCenter.ProduceUnit(UnitType.Worker);
             }
-            var nubianArmory = BuildingHelper.GetMyBuildings<NubianArmory>()[0];
-            if (nubianArmory != null && nubianArmory.CanNowProduceUnit(UnitType.WraithRaider))
-            {
-                nubianArmory.ProduceUnit(UnitType.WraithRaider);
-            }
             // TODO: make workers expand to other minerals over the map
             BuildingTest.FindWorkerThatGathers().MoveTo(PlaceType.MyBase.UnderRampLeft);
         }
@@ -131,13 +137,24 @@ namespace XposeCraft.GameInternal.TestExamples
         {
             GameEvent.Register(GameEventType.UnitReceivedFire, args =>
             {
-                UnitActionQueue oldActions = args.MyUnit.ActionQueue;
-                if (args.MyUnit.Health < args.MyUnit.MaxHealth / 2)
+                // If attacking, run away
+                if (args.MyUnit.ActionQueue.CurrentAction is Attack
+                    || args.MyUnit.ActionQueue.CurrentAction is AttackMove)
                 {
-                    // Any unit of course exposes its position in form of coordinates; MyBotData contains data
-                    args.MyUnit.MoveTo(MyBotData.HealMeetPointUnit.Position);
-                    MyBotData.MeetPointEvent = GameEvent.Register(GameEventType.UnitGainedHealth,
-                        argsB => { argsB.MyUnit.ActionQueue = oldActions; });
+                    UnitActionQueue oldActions = args.MyUnit.ActionQueue;
+                    if (args.MyUnit.Health < args.MyUnit.MaxHealth / 2)
+                    {
+                        // Any unit of course exposes its position in form of coordinates; MyBotData contains data
+                        args.MyUnit.MoveTo(MyBotData.HealMeetPointUnit.Position);
+                        BotRunner.Log("Unit " + args.MyUnit + " is waiting to be healed");
+                        MyBotData.MeetPointEvent = GameEvent.Register(GameEventType.UnitGainedHealth,
+                            argsB => { argsB.MyUnit.ActionQueue = oldActions; });
+                    }
+                }
+                // If hiding, defend
+                else if (args.EnemyUnits.Length > 0)
+                {
+                    EnqueueFirst(new Attack(args.EnemyUnits[0]), args.MyUnit);
                 }
             });
         }
