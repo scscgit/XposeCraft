@@ -156,7 +156,10 @@ namespace XposeCraft.GameInternal.Helpers
             }
             if (receiver)
             {
+                // Workaround Awake to update the color based on FactionColorChange after FactionIndex gets changed
+                receiver.Awake();
                 receiver.OnEnable();
+                receiver.SetRenderer(receiver.curState);
             }
         }
     }

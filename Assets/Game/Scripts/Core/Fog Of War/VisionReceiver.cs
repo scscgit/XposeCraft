@@ -1,4 +1,5 @@
 using UnityEngine;
+using XposeCraft.Core.Faction;
 using XposeCraft.GameInternal;
 using XposeCraft.UI.Cursor;
 
@@ -27,9 +28,19 @@ namespace XposeCraft.Core.Fog_Of_War
         CursorObject cursorObj;
         public VisionState curState = VisionState.Vision;
         private bool _quitting;
+        private FactionColorChange _factionColorChange;
 
-        private void Awake()
+        public void Awake()
         {
+            // The colors to be initialized with can be overridden by FactionColorChange
+            _factionColorChange = gameObject.GetComponent<FactionColorChange>();
+            if (_factionColorChange != null && _factionColorChange.enabled)
+            {
+                _factionColorChange.ChangeColors();
+                defaultMat = new Color[0];
+                pastVisibleMat = new Color[0];
+            }
+
             int matAmount = 0;
             for (int x = 0; x < renderers.Length; x++)
             {

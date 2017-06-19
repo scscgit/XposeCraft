@@ -32,7 +32,7 @@ namespace XposeCraft.Core.Resources
             }
             OpenPoints();
             Destroy(gameObject);
-            var sharedResources = GameManager.Instance.Players[0].Resources;
+            var sharedResources = GameManager.Instance.Players[0].SharedResources;
             for (var playerResoureIndex = 0; playerResoureIndex < sharedResources.Count; playerResoureIndex++)
             {
                 if (GameManager.Instance.ActorLookup[gameObject].Equals(sharedResources[playerResoureIndex]))

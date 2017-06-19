@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 114000010995196164}
   - component: {fileID: 114000011897728376}
   - component: {fileID: 114884600965467332}
+  - component: {fileID: 114348434230958454}
   m_Layer: 11
   m_Name: NubianArmory
   m_TagString: Building
@@ -433,6 +434,19 @@ MonoBehaviour:
   nextBuild: {fileID: 0}
   size: 1
   gridI: 0
+--- !u!114 &114348434230958454
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011171905086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55d6e0d86477cee4184aa0757d925dd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaterialRenderer:
+  - {fileID: 23000012276478008}
 --- !u!114 &114884600965467332
 MonoBehaviour:
   m_ObjectHideFlags: 1

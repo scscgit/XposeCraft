@@ -21,6 +21,9 @@ namespace XposeCraft.GameInternal.TestExamples
 
         public void EconomyStage(Action startNextStage)
         {
+            BotRunner.Tutorial = false;
+            BotRunner.HotSwap = false;
+
             // Game started, the first worker will get to work
             Worker[] firstWorkers = UnitHelper.GetMyUnits<Worker>();
             foreach (Worker worker in firstWorkers)

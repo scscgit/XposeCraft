@@ -20,7 +20,8 @@ namespace XposeCraft.Game.Helpers
         public static List<TResource> GetResourcesAsList<TResource>() where TResource : IResource
         {
             var list = new List<TResource>();
-            ForEach<TResource, Resource>(resource => { list.Add(resource); }, Player.CurrentPlayer.Resources);
+            ForEach<TResource, Resource>(resource => { list.Add(resource); },
+                GameManager.Instance.Players[0].SharedResources);
             return list;
         }
 
@@ -66,7 +67,7 @@ namespace XposeCraft.Game.Helpers
                 }
                 closestResource = resource;
                 closestDistance = distance.Value;
-            }, Player.CurrentPlayer.Resources);
+            }, GameManager.Instance.Players[0].SharedResources);
             return closestResource;
         }
 
@@ -91,7 +92,7 @@ namespace XposeCraft.Game.Helpers
                     {
                         allResourcesList.Add(resource);
                     }
-                }, Player.CurrentPlayer.Resources);
+                }, GameManager.Instance.Players[0].SharedResources);
                 building.NearbyResorces = allResourcesList;
             }
             // They are further filtered by the chosen generic type

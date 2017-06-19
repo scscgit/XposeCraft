@@ -282,6 +282,7 @@ GameObject:
   - component: {fileID: 114689553205657880}
   - component: {fileID: 114401170970163022}
   - component: {fileID: 114989641841191176}
+  - component: {fileID: 114218795248656226}
   m_Layer: 12
   m_Name: WraithRaiderStarship
   m_TagString: Unit
@@ -1202,6 +1203,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   cont: {fileID: 114126555984733706}
+--- !u!114 &114218795248656226
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1767369295992830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55d6e0d86477cee4184aa0757d925dd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaterialRenderer:
+  - {fileID: 23616543629068470}
 --- !u!114 &114238763119140354
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1214,7 +1228,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 15
-  rotateSpeed: 11
+  rotateSpeed: 13
   target: {x: 0, y: 0, z: 0}
   gridI: 1
   myPath:

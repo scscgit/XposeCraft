@@ -1,5 +1,6 @@
 using UnityEngine;
 using XposeCraft.Core.Faction.Buildings;
+using XposeCraft.GameInternal;
 
 namespace XposeCraft.Core.Faction
 {
@@ -15,9 +16,9 @@ namespace XposeCraft.Core.Faction
         Camera cam;
         int cur;
 
-        public void Start()
+        private void OnGUI()
         {
-            GameObject.Find("Player Manager").GetComponent<GUIManager>().AddProgress(this);
+            DisplayProgress();
         }
 
         public void DisplayProgress()
@@ -25,6 +26,11 @@ namespace XposeCraft.Core.Faction
             if (!build)
             {
                 build = GetComponent<BuildingController>();
+            }
+            // Enemy Faction progress won't get displayed
+            if (build.FactionIndex != GameManager.Instance.GuiPlayer.FactionIndex)
+            {
+                return;
             }
             if (!cam)
             {

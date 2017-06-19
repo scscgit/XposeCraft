@@ -1154,6 +1154,16 @@ namespace XposeCraft.Core.Required
         public List<int> elementFaction { get; set; }
         public int objAmount { get; set; }
 
+        public MiniMapElement()
+        {
+            elementObj = new List<GameObject>();
+            elementTransform = new List<Transform>();
+            elementMap = new List<MiniMapSignal>();
+            elementLoc = new List<Vector2>();
+            elementFaction = new List<int>();
+            // TODO: implement function to display them, extract existing example with cameraLoc from MiniMap class
+        }
+
         public void AddElement(GameObject obj, string tag, MiniMapSignal map, int faction, Vector2 loc)
         {
             elementObj.Add(obj);

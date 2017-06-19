@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using XposeCraft.Game.Actors.Buildings;
 using XposeCraft.Game.Enums;
@@ -59,7 +58,7 @@ namespace XposeCraft.Game.Helpers
         /// </summary>
         /// <param name="closestToBuilding">Building near which the placement is searched from.</param>
         /// <param name="forBuildingPlacement">Building type which should be able to be placed there.</param>
-        /// <returns>A vali</returns>
+        /// <returns>A valid empty space closest to a Building or null if out of visible empty positions.</returns>
         public static Position ClosestEmptySpaceTo(IBuilding closestToBuilding, BuildingType forBuildingPlacement)
         {
             // TODO: implement dynamically for closestToBuilding outside this array, demo
@@ -79,7 +78,7 @@ namespace XposeCraft.Game.Helpers
                     return position;
                 }
             }
-            throw new Exception("Out of empty positions");
+            return null;
         }
     }
 }

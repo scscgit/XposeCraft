@@ -16,6 +16,10 @@ namespace XposeCraft.Game
         {
             set
             {
+                if (GameManager.Instance.GuiPlayer != Player.CurrentPlayer)
+                {
+                    return;
+                }
                 if (value)
                 {
                     GameInternal.Tutorial.Instance.TutorialStart();
@@ -35,6 +39,10 @@ namespace XposeCraft.Game
         {
             set
             {
+                if (GameManager.Instance.GuiPlayer != Player.CurrentPlayer)
+                {
+                    return;
+                }
                 GameManager.Instance.HotSwap = value;
                 GameInternal.Tutorial.Instance.OnHotSwap();
             }
@@ -55,7 +63,14 @@ namespace XposeCraft.Game
         /// </summary>
         public static int Speed
         {
-            set { GameObject.Find("Player Manager").GetComponent<AlterTime>().NormalSpeed = value; }
+            set
+            {
+                if (GameManager.Instance.GuiPlayer != Player.CurrentPlayer)
+                {
+                    return;
+                }
+                GameObject.Find("Player Manager").GetComponent<AlterTime>().NormalSpeed = value;
+            }
         }
 
         /// <summary>
@@ -65,10 +80,11 @@ namespace XposeCraft.Game
         /// <param name="message">Mesage to be displayed.</param>
         public static void Log(string message)
         {
-            if (GameManager.Instance.GuiPlayer == Player.CurrentPlayer)
+            if (GameManager.Instance.GuiPlayer != Player.CurrentPlayer)
             {
-                Debug.Log(message);
+                return;
             }
+            Debug.Log(message);
         }
     }
 }

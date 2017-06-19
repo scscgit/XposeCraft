@@ -43,7 +43,6 @@ namespace XposeCraft.Game.Actors.Resources
             return Create<T>(type, gameObject, null);
         }
 
-
         public override OwnershipType Ownership
         {
             get { return OwnershipType.Friendly; }
@@ -51,7 +50,7 @@ namespace XposeCraft.Game.Actors.Resources
 
         public override bool Visible
         {
-            get { return Player.CurrentPlayer.Resources.Contains(this); }
+            get { return GameManager.Instance.Players[0].SharedResources.Contains(this); }
         }
     }
 }

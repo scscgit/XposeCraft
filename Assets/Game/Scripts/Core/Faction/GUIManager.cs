@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using XposeCraft.Core.Faction.Buildings;
 using XposeCraft.Core.Faction.Units;
@@ -54,7 +53,6 @@ namespace XposeCraft.Core.Faction
         public int buildingProductionIndex { get; set; }
         public bool lastState;
         int progressAmount;
-        List<Progress> progressList = new List<Progress>(0);
         MiniMap miniMap;
 
         void OnDrawGizmos()
@@ -109,17 +107,6 @@ namespace XposeCraft.Core.Faction
             mouseOverTechProduction = false;
             useGUILayout = false;
             GUI.depth = 10;
-            for (int x = 0; x < progressAmount; x++)
-            {
-                if (progressList[x] == null)
-                {
-                    progressList.RemoveAt(x);
-                    x--;
-                    progressAmount--;
-                    continue;
-                }
-                progressList[x].DisplayProgress();
-            }
             if (GameManager.Instance.DisplayAllHealthBars)
             {
                 foreach (var unit in select.UnitList)
@@ -433,12 +420,6 @@ namespace XposeCraft.Core.Faction
                 buildingDescriptionLocation.width * ratio.x,
                 buildingDescriptionLocation.height * ratio.y);
             GUI.Box(rectLoc, faction.BuildingList[buildingProductionIndex].description);
-        }
-
-        public void AddProgress(Progress progress)
-        {
-            progressList.Add(progress);
-            progressAmount++;
         }
     }
 }

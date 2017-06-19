@@ -63,6 +63,7 @@ MonoBehaviour:
   Debug: 0
   DisplayAllHealthBars: 1
   DisplayOnlyDamagedHealthBars: 1
+  NoColorChangeMyFaction: 1
   HotSwap: 1
   LogLevel: 2
   ActorLookup:

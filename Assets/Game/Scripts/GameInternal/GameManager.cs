@@ -54,6 +54,7 @@ namespace XposeCraft.GameInternal
         public bool Debug;
         public bool DisplayAllHealthBars;
         public bool DisplayOnlyDamagedHealthBars;
+        public bool NoColorChangeMyFaction = true;
         public bool HotSwap = true;
         public Log.LogLevel LogLevel = Log.LogLevel.Debug;
 
@@ -159,6 +160,8 @@ namespace XposeCraft.GameInternal
             {
                 resources.Add(Resource.CreateResourceActor<Resource>(resourceSource.gameObject));
             }
+            // Initialize Resources to use the shared list
+            Instance.Players[0].SharedResources = resources;
 
             foreach (var player in Players)
             {
@@ -184,9 +187,6 @@ namespace XposeCraft.GameInternal
                             player.FactionIndex),
                         player);
                 }
-
-                // Initialize Resources to use the shared list
-                player.Resources = resources;
 
                 // Initialize (single) enemy player for each of them
                 var enemyFactionIndex = player.Faction.EnemyFactionIndexes()[0];

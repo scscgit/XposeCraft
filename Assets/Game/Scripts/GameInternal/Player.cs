@@ -80,7 +80,11 @@ namespace XposeCraft.GameInternal
 
         public List<Unit> Units;
         public List<Building> Buildings;
-        public List<Resource> Resources;
+
+        /// <summary>
+        /// Only the first Player's (index 0) Resources are being used!
+        /// </summary>
+        public List<Resource> SharedResources;
 
         public List<Unit> EnemyVisibleUnits;
         public List<Building> EnemyVisibleBuildings;

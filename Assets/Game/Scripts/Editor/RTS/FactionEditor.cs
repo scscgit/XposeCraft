@@ -2921,6 +2921,11 @@ namespace XposeCraft.RTS
                                 "Element : ",
                                 arraySelect1,
                                 elementName);
+                            if (arraySelect1 >= healthObj.element.Length)
+                            {
+                                // This mustn't go out of bounds of the allowed selection
+                                arraySelect1 = 0;
+                            }
                             healthObj.element[arraySelect1].image = EditorGUI.ObjectField(
                                 new Rect(400 * rect.x, 540 * rect.y, 100 * rect.x, 50 * rect.y),
                                 healthObj.element[arraySelect1].image,

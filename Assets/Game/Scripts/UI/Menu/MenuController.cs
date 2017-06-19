@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Serialization;
+using XposeCraft.GameInternal;
 
 namespace XposeCraft.UI.Menu
 {
@@ -30,10 +31,12 @@ namespace XposeCraft.UI.Menu
             if (show)
             {
                 _ui.Hide();
+                Tutorial.Instance.HiddenCompletely = false;
             }
             else
             {
                 _ui.Show();
+                Tutorial.Instance.HiddenCompletely = true;
             }
         }
 

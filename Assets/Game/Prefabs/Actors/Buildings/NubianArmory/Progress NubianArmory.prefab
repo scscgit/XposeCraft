@@ -55,6 +55,8 @@ GameObject:
   - component: {fileID: 65000011049116700}
   - component: {fileID: 114000012375218950}
   - component: {fileID: 114249849218919016}
+  - component: {fileID: 114364119352293890}
+  - component: {fileID: 114002907671197670}
   m_Layer: 11
   m_Name: Progress NubianArmory
   m_TagString: Building
@@ -250,6 +252,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41005d3ab5c4f734bb377328f81383f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerOwner: {fileID: 0}
   type:
     name: Name
     strengths: []
@@ -322,6 +325,30 @@ MonoBehaviour:
   nextBuild: {fileID: 1000011171905086, guid: 198f8f2ec110f1d45b53821cfddab293, type: 2}
   size: 1
   gridI: 0
+--- !u!114 &114002907671197670
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013646490096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb699bb1984990244ad81b2632f19328, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  yIncrease: 8
+  scale: 60
+  yScale: 40
+  texture:
+  - {fileID: 2800000, guid: 4591fd8dc7a99c34e80fea5790a052eb, type: 3}
+  - {fileID: 2800000, guid: d29efd449b74d5f4fb46cf53dd155235, type: 3}
+  - {fileID: 2800000, guid: 7df681ee514882349ac7801c146e7cbf, type: 3}
+  - {fileID: 2800000, guid: c7503229fbc28284cbff135e9ee7f60a, type: 3}
+  - {fileID: 2800000, guid: b3e7201301e908848accb1428e347c56, type: 3}
+  - {fileID: 2800000, guid: 9dc6496f8e47882489c8020c44eb2718, type: 3}
+  - {fileID: 2800000, guid: 27676cba12e030049be98f1e7fcdd522, type: 3}
+  - {fileID: 2800000, guid: be643835c263c6441a07bd7f8aa25838, type: 3}
+  color: {r: 0, g: 1, b: 0, a: 1}
 --- !u!114 &114249849218919016
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -343,3 +370,16 @@ MonoBehaviour:
   hideObject: 1
   anchors: []
   curState: 0
+--- !u!114 &114364119352293890
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013646490096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55d6e0d86477cee4184aa0757d925dd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaterialRenderer:
+  - {fileID: 23000010719859156}

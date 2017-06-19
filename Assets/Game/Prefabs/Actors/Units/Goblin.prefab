@@ -1008,6 +1008,7 @@ GameObject:
   - component: {fileID: 114000012985283474}
   - component: {fileID: 114000010615598230}
   - component: {fileID: 114834148937920304}
+  - component: {fileID: 114336912376829556}
   m_Layer: 9
   m_Name: Goblin
   m_TagString: Unit
@@ -2681,7 +2682,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1444569047576652}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 20, y: 20, z: 20}
   m_Children: []
@@ -2694,7 +2695,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1751721853274418}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
@@ -3017,6 +3018,19 @@ MonoBehaviour:
   radius: 15
   upwardSightHeight: 5
   downwardSightHeight: 10
+--- !u!114 &114336912376829556
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013194072380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55d6e0d86477cee4184aa0757d925dd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaterialRenderer:
+  - {fileID: 137000012113163060}
 --- !u!114 &114654793298989042
 MonoBehaviour:
   m_ObjectHideFlags: 1

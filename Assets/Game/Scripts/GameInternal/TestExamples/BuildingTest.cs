@@ -82,6 +82,10 @@ namespace XposeCraft.GameInternal.TestExamples
             }
             var baseCenter = BuildingHelper.GetMyBuildings<BaseCenter>()[0];
             var position = BuildingHelper.ClosestEmptySpaceTo(baseCenter, BuildingType.NubianArmory);
+            if (position == null)
+            {
+                return false;
+            }
             IBuilding building = FindWorkerThatGathers().CreateBuilding(BuildingType.NubianArmory, position);
             FindWorkerThatGathers().FinishBuiding(building);
 

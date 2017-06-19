@@ -42,6 +42,8 @@ namespace XposeCraft.GameInternal
             get { return _instance ?? (_instance = GameObject.Find(GameManager.ScriptName).GetComponent<Tutorial>()); }
         }
 
+        public bool HiddenCompletely { get; set; }
+
         public void TutorialResetIfPlayer()
         {
             if (!IsGuiPlayer())
@@ -149,7 +151,7 @@ namespace XposeCraft.GameInternal
         private void OnGUI()
         {
             // Disabled state
-            if (_text == null)
+            if (HiddenCompletely || _text == null)
             {
                 return;
             }
